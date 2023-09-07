@@ -58,3 +58,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.menu-backdrop{
+  @apply bg-background bg-opacity-50 fixed z-10 backdrop-blur;
+}

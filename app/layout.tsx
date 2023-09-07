@@ -20,11 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TopLoader />
             <Navbar />
-            <ScrollArea>
+            <ScrollArea className='min-h-screen w-screen xl:px-36 2xl:px-64'>
               {children}
             </ScrollArea>
         </ThemeProvider>
