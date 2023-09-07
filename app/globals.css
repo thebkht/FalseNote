@@ -60,5 +60,57 @@
 }
 
 .menu-backdrop{
-  @apply bg-background bg-opacity-50 fixed z-10 backdrop-blur;
+  @apply bg-background bg-opacity-70 fixed z-10 backdrop-blur-md;
+}
+
+.feed{
+  @apply flex flex-col items-center justify-start;
+}
+
+.feed__empty{
+  @apply flex flex-col items-center justify-start;
+}
+
+.feed__empty_title{
+  @apply font-bold text-3xl text-center;
+}
+
+.feed__empty_subtitle{
+  @apply font-normal text-xl text-center mt-2.5;
+}
+
+.feed__empty_search{
+  @apply mt-5;
+}
+
+.search{
+  @apply w-full;
+}
+
+.search__container{
+  @apply relative block transition-opacity duration-200 ;
+}
+
+.search__form{
+  @apply flex flex-col items-stretch justify-center;
+}
+
+.input{
+  @apply rounded-3xl flex items-center justify-start m-0 p-0 border transition duration-200 cursor-text;
+}
+
+.input__icon{
+  @apply inline-block flex-none m-0;
+}
+
+.search__form_icon{
+  @apply text-secondary transition duration-200;
+}
+
+.icon{
+  @apply inline-block align-top w-auto h-full;
+}
+
+.input__field{
+  @apply flex-1 w-full h-full p-2.5 text-base font-normal text-secondary bg-transparent border-none outline-none;
 }

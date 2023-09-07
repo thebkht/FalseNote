@@ -10,7 +10,7 @@ import { MobileNav } from "./mobile-nav"; */
 
 function Navbar() {
   return (
-    <nav className="fixed w-full z-[40] flex menu-backdrop items-center justify-between bg-background p-2 border-b xl:px-36 2xl:px-64">
+    <nav className="fixed w-full z-[40] flex menu-backdrop items-center justify-between bg-background p-3 border-b xl:px-36 2xl:px-64">
       <Link href="/" className="font-bold">
         {/* <Icons.logo /> */} FalseNotes
       </Link>
@@ -21,7 +21,7 @@ function Navbar() {
       <div className="flex items-center gap-4">
       {items.map((item) => (
           <Button key={item.title} variant={"ghost"} size={"icon"} asChild>
-            <Link href={item.url}><item.icon /></Link>
+            <Link href={item.url}><item.icon className="h-[1.2rem] w-[1.2rem]" /></Link>
           </Button>
         ))}
         <ModeToggle />

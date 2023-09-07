@@ -23,7 +23,9 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TopLoader />
-            <Navbar />
+            <div className="block">
+              <Navbar />
+            </div>
             <ScrollArea className='min-h-screen w-screen xl:px-36 2xl:px-64'>
               {children}
             </ScrollArea>
