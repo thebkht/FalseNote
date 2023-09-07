@@ -4,15 +4,16 @@ import Link from "next/link";
 import { MenuIcon, SearchIcon } from "lucide-react";
 import { ModeToggle } from "../mode-toggle";
 import { UserNav } from "./user-nav";
-/* import { Icons } from "../icons";
-import { ModeToggle } from "../mode-toggle";
-import { MobileNav } from "./mobile-nav"; */
+import { Icons } from "../icon";
 
 function Navbar() {
   return (
-    <nav className="fixed w-full z-[40] flex menu-backdrop items-center justify-between bg-background p-3 border-b xl:px-36 2xl:px-64">
+    <nav className="menu">
+      <div className="menu-backdrop h-[65px] w-full">
+      </div>
+      <div className="menu-container p-3 border-b xl:px-36 2xl:px-64">
       <Link href="/" className="font-bold">
-        {/* <Icons.logo /> */} FalseNotes
+        <Icons.logo />
       </Link>
 
       <div className="hidden lg:flex items-center gap-16">
@@ -31,6 +32,7 @@ function Navbar() {
         </Button> */}
       </div>
       {/* <MobileNav /> */}
+      </div>
     </nav>
   );
 }

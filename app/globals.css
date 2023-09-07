@@ -60,7 +60,15 @@
 }
 
 .menu-backdrop{
-  @apply bg-background bg-opacity-70 fixed z-10 backdrop-blur-md;
+  @apply bg-background bg-opacity-70 fixed z-10 backdrop-blur-md w-full top-0 left-0;
+}
+
+.menu-backdrop{
+  opacity: var(--tw-bg-opacity);
+}
+
+.menu-container{
+  @apply fixed z-20 flex items-center justify-between w-full;
 }
 
 .feed{
@@ -117,4 +125,8 @@
 
 .input__field:focus-visible{
   @apply !ring-0 !ring-offset-0 !ring-offset-transparent !ring-secondary !ring-opacity-100;
+}
+
+.feed__empty_featured{
+  @apply block w-full mt-9;
 }

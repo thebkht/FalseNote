@@ -26,7 +26,7 @@ export default function RootLayout({
             <div className="block">
               <Navbar />
             </div>
-            <ScrollArea className='min-h-screen w-screen xl:px-36 2xl:px-64'>
+            <ScrollArea className='min-h-screen max-w-screen xl:px-36 2xl:px-64'>
               {children}
             </ScrollArea>
         </ThemeProvider>

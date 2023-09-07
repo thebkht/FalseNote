@@ -1,6 +1,7 @@
+import FeaturedDev from '@/components/feed/featured/featured-dev'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import Image from 'next/image'
 
 export default function Home() {
   return (
@@ -21,9 +22,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="feed__empty_featured">
-          
-        </div>
+        <FeaturedDev />
       </div>
      </div>
     </main>
