@@ -21,10 +21,13 @@ export default function FeaturedDev() {
                 <div className="flex gap-4 w-full items-center" key={item.name}>
                   <div>
                   <div className="flex">
-                  <Avatar>
-                    <AvatarImage src={item.profileImg} />
-                    <AvatarFallback>{item.fallback}</AvatarFallback>
-                  </Avatar>
+                  <Button variant="secondary" className="relative h-8 w-8 mr-4 rounded-full" asChild>
+                         <Avatar className="h-8 w-8">
+                              <AvatarImage src={item.profileImg} alt={item.username} />
+                              <AvatarFallback>{item.fallback}</AvatarFallback>
+
+                         </Avatar>
+                    </Button>
                   <div>
                     <p className="text-sm font-medium leading-none">{item.name}</p>
                     <p className="text-sm text-muted-foreground">@{item.username}</p>
