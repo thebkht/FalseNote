@@ -16,10 +16,13 @@ export default function Home() {
               <div className="input__icon">
                 <Search className='search__form_icon' />
               </div>
-              <Input placeholder="Search for people or tags" className="input__field" />
+              <Input placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
             </div>
             </div>
           </div>
+        </div>
+        <div className="feed__empty_featured">
+          
         </div>
       </div>
      </div>

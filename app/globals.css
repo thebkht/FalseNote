@@ -96,7 +96,7 @@
 }
 
 .input{
-  @apply rounded-3xl flex items-center justify-start m-0 p-0 border transition duration-200 cursor-text;
+  @apply rounded-3xl flex items-center justify-start m-0 p-0 border transition duration-200 cursor-text px-2;
 }
 
 .input__icon{
@@ -112,5 +112,9 @@
 }
 
 .input__field{
-  @apply flex-1 w-full h-full p-2.5 text-base font-normal text-secondary bg-transparent border-none outline-none;
+  @apply flex-1 w-full py-2 font-normal text-secondary-foreground bg-transparent border-none outline-none appearance-none min-w-0 text-sm rounded-none resize-none text-left;
+}
+
+.input__field:focus-visible{
+  @apply !ring-0 !ring-offset-0 !ring-offset-transparent !ring-secondary !ring-opacity-100;
 }
