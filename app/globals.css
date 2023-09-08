@@ -60,11 +60,11 @@
 }
 
 .menu-backdrop{
-  @apply bg-background bg-opacity-70 fixed z-10 backdrop-blur-md w-full top-0 left-0;
+  @apply bg-background fixed z-10 backdrop-blur-md w-full top-0 left-0;
 }
 
 .menu-backdrop{
-  opacity: var(--tw-bg-opacity);
+  background-color: hsl(var(--background) / 0.7);
 }
 
 .menu-container{
