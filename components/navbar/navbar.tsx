@@ -9,9 +9,9 @@ import { Icons } from "../icon";
 function Navbar() {
   return (
     <nav className="menu">
-      <div className="menu-backdrop h-[65px] w-full">
+      <div className="menu-backdrop h-[60px] border-b w-full">
       </div>
-      <div className="menu-container p-3 border-b xl:px-36 2xl:px-64">
+      <div className="menu-container p-3 xl:px-36 2xl:px-64">
       <Link href="/" className="font-bold">
         <Icons.logo />
       </Link>
