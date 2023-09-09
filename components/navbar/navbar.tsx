@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { items } from "./items";
 import Link from "next/link";
 import { MenuIcon, SearchIcon } from "lucide-react";
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "@/components/mode-toggle";
 import { UserNav } from "./user-nav";
-import { Icons } from "../icon";
+import { Icons } from "@/components/icon";
 
 function Navbar() {
   return (
