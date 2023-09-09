@@ -1,10 +1,10 @@
-import { GalleryVerticalEnd, PlusCircle, User2 } from "lucide-react";
+import { GalleryVerticalEnd, Plus, User2 } from "lucide-react";
 
 export const items = [
      {
           title: 'New Post',
-          url: '/new-post',
-          icon: PlusCircle
+          url: '/editor',
+          icon: Plus
      },
      {
           title: 'Feed',

@@ -23,10 +23,8 @@ export default function RootLayout({
       <body className={`${inter.className} bg-popover`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TopLoader />
-            <div className="block">
-              <Navbar />
-            </div>
-            <ScrollArea className='min-h-screen max-w-screen xl:px-36 2xl:px-64'>
+          <Navbar />
+            <ScrollArea className='h-screen max-w-screen xl:px-36 2xl:px-64'>
               {children}
             </ScrollArea>
         </ThemeProvider>
