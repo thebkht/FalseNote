@@ -26,10 +26,10 @@ function Navbar() {
           </Button>
         ))}
         <ModeToggle />
-        <UserNav />
-        {/* <Button asChild>
+        {/* <UserNav /> */}
+        <Button asChild>
           <Link href={"/signin"}>Login</Link>
-        </Button> */}
+        </Button>
       </div>
       {/* <MobileNav /> */}
       </div>

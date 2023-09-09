@@ -5,7 +5,7 @@ import { Search } from 'lucide-react'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 feed">
+    <main className="flex min-h-screen flex-col items-center justify-between feed">
      <div className="feed__content">
      <div className="feed__empty">
         <div className="feed__empty_title">My Feed</div>

@@ -15,6 +15,7 @@ import {
      DropdownMenuShortcut,
      DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Link from "next/link"
 
 export function UserNav() {
      return (
@@ -38,10 +39,12 @@ export function UserNav() {
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
+                    <Link href="/user">
                     <DropdownMenuItem>
                          Profile
                          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                          <DropdownMenuItem>
