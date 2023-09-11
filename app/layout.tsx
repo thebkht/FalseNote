@@ -22,7 +22,7 @@ export default async function MainLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-popover`}>
+      <body className={`${inter.className}`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
           <TopLoader />

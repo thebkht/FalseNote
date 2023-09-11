@@ -18,7 +18,7 @@ export default function FeaturedDev() {
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
             {
               featuredItems.map((item, index) => (
-                <div className="flex gap-4 w-full items-center" key={item.name}>
+                <div className="flex gap-4 w-full items-center justify-between" key={item.name}>
                   <div>
                   <div className="flex">
                   <Button variant="secondary" className="relative h-8 w-8 mr-4 rounded-full" asChild>
@@ -33,7 +33,7 @@ export default function FeaturedDev() {
                     <p className="text-sm text-muted-foreground">@{item.username}</p>
                   </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{item.bio}</p>
+                  <p className="text-sm text-muted-foreground hidden md:block">{item.bio}</p>
                   </div>
                   <Button variant="outline" size={"lg"} className="flex-shrink-0">
                     <Plus className="h-4 w-4 mr-2" /> Follow
