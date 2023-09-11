@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import TopLoader from '@/components/providers/top-loader'
 import Navbar from '@/components/navbar/navbar'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function MainLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TopLoader />
           {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
