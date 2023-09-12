@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 
 
 export async function GET(request: Request) {
-  const user = await useSession().data?.user as any;
   try {
     // Create the Users table
     await sql`
@@ -30,6 +29,12 @@ export async function GET(request: Request) {
         CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         LastUpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         AuthorID INT REFERENCES Users(UserID),
+        CoverImage VARCHAR(255), -- Store URL or BLOB for binary data
+        Visibility VARCHAR(255) DEFAULT 'Public', -- Public, Private, or Unlisted
+        Draft BOOLEAN DEFAULT FALSE,
+        Views INT DEFAULT 0,
+        Likes INT DEFAULT 0,
+        Dislikes INT DEFAULT 0,
         BlogPostID INT
       );
     `;
@@ -41,6 +46,8 @@ export async function GET(request: Request) {
         Content TEXT, -- For comment text or markdown
         CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         AuthorID INT REFERENCES Users(UserID),
+        Likes INT DEFAULT 0,
+        Dislikes INT DEFAULT 0,
         BlogPostID INT REFERENCES BlogPosts(PostID)
       );
     `;
@@ -64,19 +71,38 @@ export async function GET(request: Request) {
       );
     `;
 
-    // Check if the user exists in the Users table
-    const userExists = await sql`
-      SELECT * FROM Users
-      WHERE Email = ${user.email}; // Replace with the user's email received during GitHub login
+    // Create the Follows table
+    await sql`
+      CREATE TABLE IF NOT EXISTS Follows (
+        FollowID SERIAL PRIMARY KEY,
+        FollowerID INT REFERENCES Users(UserID),
+        FolloweeID INT REFERENCES Users(UserID),
+        CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
     `;
 
-    if (!userExists.rows[0]) {
-      // User doesn't exist, add them to the Users table
-      await sql`
-        INSERT INTO Users (Username, Name, Email, GitHubProfileURL)
-        VALUES (${user.username}, ${user.name}, ${user.email}, ${user.githubProfileURL});
-      `;
-    }
+    // Create the Notifications table
+    await sql`
+      CREATE TABLE IF NOT EXISTS Notifications (
+        NotificationID SERIAL PRIMARY KEY,
+        Content TEXT,
+        CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UserID INT REFERENCES Users(UserID)
+      );
+    `;
+
+    // Create the UserSettings table
+    await sql`
+      CREATE TABLE IF NOT EXISTS UserSettings (
+        UserSettingID SERIAL PRIMARY KEY,
+        DarkMode BOOLEAN,
+        Language VARCHAR(255),
+        UserID INT REFERENCES Users(UserID)
+      );
+    `;
+
+    
+
 
     return NextResponse.json({ result: 'Tables created successfully' }, { status: 200 });
   } catch (error) {
