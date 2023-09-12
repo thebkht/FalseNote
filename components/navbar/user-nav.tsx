@@ -1,3 +1,4 @@
+"use client"
 import {
      Avatar,
      AvatarFallback,
@@ -15,15 +16,17 @@ import {
      DropdownMenuShortcut,
      DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import Link from "next/link"
+import { signOut, useSession } from "next-auth/react"
 
 export function UserNav() {
+     const { data: session } = useSession();
+     const user = session?.user as any;
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                          <Avatar className="h-8 w-8">
-                              <AvatarImage src="https://avatars.githubusercontent.com/u/62228656" alt="@yusupovbg" />
+                              <AvatarImage src={ user.image } alt={ user.name } />
                               <AvatarFallback>BG</AvatarFallback>
 
                          </Avatar>
@@ -32,29 +35,29 @@ export function UserNav() {
                <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                          <div className="flex flex-col space-y-1">
-                              <p className="text-sm font-medium leading-none">yusupovbg</p>
+                              <p className="text-sm font-medium leading-none">{ user.name }</p>
                               <p className="text-xs leading-none text-muted-foreground">
-                                   m@example.com
+                                   { user.email }
                               </p>
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href="/user">
                     <DropdownMenuItem>
                          Profile
                          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
-                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                          <DropdownMenuItem>
                               Settings
                               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                          </DropdownMenuItem>
-                         <DropdownMenuItem>
+                         
+                         <DropdownMenuItem onClick={() => signOut()}>
                               Log out
                               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                          </DropdownMenuItem>
+                         
                     </DropdownMenuGroup>
                </DropdownMenuContent>
           </DropdownMenu>
