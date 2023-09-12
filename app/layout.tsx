@@ -20,8 +20,6 @@ export default async function Rootayout({
 }: {
   children: React.ReactNode
 }) {
-  console.log(process.env.GITHUB_ID)
-  console.log(process.env.GITHUB_SECRET)
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
