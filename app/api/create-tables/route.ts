@@ -1,7 +1,10 @@
 import { sql } from '@vercel/postgres';
+import { useSession } from 'next-auth/react';
 import { NextResponse } from 'next/server';
 
+
 export async function GET(request: Request) {
+  const user = await useSession().data?.user as any;
   try {
     // Create the Users table
     await sql`
@@ -60,6 +63,20 @@ export async function GET(request: Request) {
         FOREIGN KEY (TagID) REFERENCES Tags(TagID)
       );
     `;
+
+    // Check if the user exists in the Users table
+    const userExists = await sql`
+      SELECT * FROM Users
+      WHERE Email = ${user.email}; // Replace with the user's email received during GitHub login
+    `;
+
+    if (!userExists.rows[0]) {
+      // User doesn't exist, add them to the Users table
+      await sql`
+        INSERT INTO Users (Username, Name, Email, GitHubProfileURL)
+        VALUES (${user.username}, ${user.name}, ${user.email}, ${user.githubProfileURL});
+      `;
+    }
 
     return NextResponse.json({ result: 'Tables created successfully' }, { status: 200 });
   } catch (error) {
