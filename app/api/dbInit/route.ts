@@ -1,5 +1,4 @@
 import { sql } from '@vercel/postgres';
-import { useSession } from 'next-auth/react';
 import { NextResponse } from 'next/server';
 
 

@@ -1,7 +1,7 @@
 import { sql } from '@vercel/postgres';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function GET(request: Request) {
   try {
     // Execute a query to fetch all table names
     const result = await sql`
@@ -15,10 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const tables = result.rows.map((row) => row.table_name);
 
     // Respond with the list of tables
-    res.status(200).json({ tables });
+    return NextResponse.json({ tables }, { status: 200});
   } catch (error) {
-    // Handle any errors that occur during the query
-    console.error('Error fetching tables:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
