@@ -8,7 +8,7 @@ const nextConfig = {
 module.exports = {
      ...nextConfig,
      env: {
-          GITHUB_ID: process.env.GITHUB_CLIENT_ID,
-          GITHUB_ECRET: process.env.GITHUB_CLIENT_SECRET,
+          GITHUB_ID: process.env.GITHUB_ID,
+          GITHUB_ECRET: process.env.GITHUB_SECRET,
         },
 }
