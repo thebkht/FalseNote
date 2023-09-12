@@ -32,7 +32,7 @@ function Navbar() {
 
         </div>
         {
-          user.data ?
+          session ?
             <div className="flex items-center gap-4">
               {items.map((item) => (
                 <>
