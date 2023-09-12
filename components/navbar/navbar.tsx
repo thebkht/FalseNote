@@ -17,7 +17,8 @@ import {
 
 
 function Navbar() {
-  const user = useSession();
+  const { data: session } = useSession();
+  const user = session?.user;
   return (
     <nav className="menu">
       <div className="menu-backdrop h-[60px] border-b w-full">
@@ -53,9 +54,12 @@ function Navbar() {
               <UserNav />
 
             </div>
-            : <Button onClick={() => signIn("github")}>
+            : <>
+              <ModeToggle />
+            <Button onClick={() => signIn("github")}>
                 Join Now
             </Button>
+            </>
         }
       </div>
     </nav>
