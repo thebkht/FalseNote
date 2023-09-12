@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -6,8 +8,10 @@ import {
      AvatarImage,
 
 } from "@/components/ui/avatar"
+import { useSession } from "next-auth/react";
 
 export default function EditorNavbar() {
+     const user = useSession().data?.user as any;
      return (
           <nav className="menu">
                <div className="menu-backdrop h-[60px] border-b w-full">
@@ -16,13 +20,13 @@ export default function EditorNavbar() {
                     
                          <Link href="/user" className="flex align-items-center">
                               <Avatar className="h-8 w-8">
-                                   <AvatarImage src="https://avatars.githubusercontent.com/u/62228656" alt="@yusupovbg" />
+                                   <AvatarImage src={ user?.image } alt={ user?.name } />
                                    <AvatarFallback>BG</AvatarFallback>
 
                               </Avatar>
                               <Button variant="ghost" size={"sm"} asChild>
                               <div className="font-medium">
-                              yusupovbg
+                                   { user?.name }
                               </div>
                               </Button>
                               
