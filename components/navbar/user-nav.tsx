@@ -18,12 +18,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
-import UsernameDisplay from "@/components/get-username"
+import { useUsername } from "../useUsername"
 
 export function UserNav() {
      const { data: session } = useSession();
      const user = session?.user as any;
-     const username = UsernameDisplay() as any;
+     const username = useUsername(user.name) as any;
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
