@@ -35,7 +35,11 @@ export const config = {
           // User doesn't exist, add them to the Users table
           try {
             await sql`
+<<<<<<< HEAD
               INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
+=======
+              INSERT INTO Users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
+>>>>>>> 4d2e6756e2aaac81d47b27b989e9a6f184437d12
               VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${sanitizedBio}, ${avatar_url}, ${location});
             `;
             console.log(`User '${username}' added to the database.`);
