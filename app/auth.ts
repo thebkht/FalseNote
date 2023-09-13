@@ -14,7 +14,7 @@ export const config = {
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === 'github' && user) {
-        const { login: username, name, email, bio, html_url: githubProfileURL, avatar_url } = profile as any;
+        const { login: username, name, email, bio, html_url: githubProfileURL, avatar_url, location } = profile as any;
   
         console.log("GitHub Profile:", profile);
   
@@ -35,8 +35,8 @@ export const config = {
           // User doesn't exist, add them to the Users table
           try {
             await sql`
-              INSERT INTO Users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture)
-              VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${sanitizedBio}, ${avatar_url});
+              INSERT INTO Users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
+              VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${sanitizedBio}, ${avatar_url}, ${location});
             `;
             console.log(`User '${username}' added to the database.`);
           } catch (error) {
