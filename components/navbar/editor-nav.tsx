@@ -19,7 +19,7 @@ export default function EditorNavbar() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userData = await getUserByUsername("user?.name");
+        const userData = await getUserByUsername(user?.name);
         setUsername(userData.username);
       } catch (error) {
         // Handle errors

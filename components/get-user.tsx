@@ -1,6 +1,7 @@
 export async function getUserByUsername(username: string) {
      try {
-       const response = await fetch(`/api/users/${username}`);
+          const encodedString = username.replace(/ /g, "%20");
+       const response = await fetch(`/api/users/${encodedString}`);
        if (!response.ok) {
          throw new Error(`Error fetching user data: ${response.statusText}`);
        }
