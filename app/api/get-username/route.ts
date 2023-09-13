@@ -3,7 +3,7 @@ import { sql } from "@vercel/postgres";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export default async function handler() {
+async function handler() {
      
 } async (req : Request, res: Response) => {
   try {
@@ -38,3 +38,5 @@ export default async function handler() {
     return NextResponse.json({ error: "Internal server error" }, {status: 500});
   }
 };
+
+export { handler as GET, handler as POST }
