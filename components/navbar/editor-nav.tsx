@@ -21,7 +21,7 @@ export default function EditorNavbar() {
                          <Link href="/user" className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1">
                                    <AvatarImage src={ user?.image } alt={ user?.name } />
-                                   <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                                   <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 
                               </Avatar>
                               <Button variant="ghost" size={"sm"} asChild>
