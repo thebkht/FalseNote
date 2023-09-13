@@ -18,16 +18,26 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 export function UserNav() {
-     const { data: session } = useSession();
-     const user = session?.user as any;
+     const [username, setUsername] = useState(null)
+     const [isLoading, setLoading] = useState(true)
+     const user = useSession().data?.user as any;
+     useEffect(() => {
+          fetch(`/api/users/${user.name}`)
+               .then((res) => res.json())
+               .then((data) => {
+                    setUsername(data.username)
+                    setLoading(false)
+               })
+     }, [user.name])
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                          <Avatar className="h-8 w-8">
-                              <AvatarImage src={ user.image } alt={ user.name } />
+                              <AvatarImage src={user.image} alt={user.name} />
                               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                          </Avatar>
                     </Button>
@@ -35,18 +45,18 @@ export function UserNav() {
                <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                          <div className="flex flex-col space-y-1">
-                              <p className="text-sm font-medium leading-none">{ user.name }</p>
+                              <p className="text-sm font-medium leading-none">{user.name}</p>
                               <p className="text-xs leading-none text-muted-foreground">
-                                   { user.email }
+                                   {user.email}
                               </p>
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href={`/${user?.name}`}>
-                    <DropdownMenuItem>
-                         Profile
-                         <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    <Link href={`/${username}`}>
+                         <DropdownMenuItem>
+                              Profile
+                              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                         </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
@@ -54,12 +64,12 @@ export function UserNav() {
                               Settings
                               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                          </DropdownMenuItem>
-                         
+
                          <DropdownMenuItem onClick={() => signOut()}>
                               Log out
                               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                          </DropdownMenuItem>
-                         
+
                     </DropdownMenuGroup>
                </DropdownMenuContent>
           </DropdownMenu>

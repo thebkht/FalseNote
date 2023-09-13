@@ -9,16 +9,27 @@ import {
 
 } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function EditorNavbar() {
+     const [username, setUsername] = useState(null)
+     const [isLoading, setLoading] = useState(true)
      const user = useSession().data?.user as any;
+     useEffect(() => {
+          fetch(`/api/users/${user.name}`)
+               .then((res) => res.json())
+               .then((data) => {
+                    setUsername(data.username)
+                    setLoading(false)
+               })
+     }, [user.name])
      return (
           <nav className="menu">
                <div className="menu-backdrop h-[60px] border-b w-full">
                </div>
                <div className="menu-container p-3 xl:px-36 2xl:px-64">
                     
-                         <Link href={`/${user?.name}`} className="flex align-items-center">
+                         <Link href={`/${username}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1">
                                    <AvatarImage src={ user?.image } alt={ user?.name } />
                                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>

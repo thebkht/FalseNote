@@ -1,17 +1,20 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
-export async function GET({ req, params }: { params: { slug: string }, req: Request }) {
+export async function GET(req: Request, { params }: { params: { username: string }}) {
   try {
-    // Get the 'name' route parameter from the request object
-    const name  = params.slug;
+    // Get the 'slug' route parameter from the request object
+    const username = params.username;
+    console.log(username)
 
     // Execute a query to fetch the specific user by name
     const result = await sql`
-      SELECT * FROM users WHERE Name = ${name} OR Username = ${name}
+      SELECT * FROM users WHERE Name = ${username} OR Username = ${username}
     `;
 
-    if (result.rows.length === 0) {
+    console.log(result)
+
+    if (result.rowCount === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
@@ -20,4 +23,3 @@ export async function GET({ req, params }: { params: { slug: string }, req: Requ
     return NextResponse.json({ error }, { status: 500 });
   }
 }
-
