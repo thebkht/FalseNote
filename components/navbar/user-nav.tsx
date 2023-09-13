@@ -18,17 +18,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
-import { useUsername } from "../useUsername"
-import { useEffect, useState } from "react"
 
 export function UserNav() {
      const { data: session } = useSession();
      const user = session?.user as any;
-     const [name, setName] = useState("");
-     useEffect(() => {
-          setName(user.name);
-     }, [user.name])
-     const username = useUsername({ params: { name } });
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
@@ -49,7 +42,7 @@ export function UserNav() {
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href={`/${username}`}>
+                    <Link href={`/${user?.name}`}>
                     <DropdownMenuItem>
                          Profile
                          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
