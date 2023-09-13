@@ -8,7 +8,9 @@ export async function GET(request: Request) {
       SELECT * FROM users
     `;
 
-    return NextResponse.json({ result }, { status: 200});
+    const users = result.rows;
+
+    return NextResponse.json({ users }, { status: 200});
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

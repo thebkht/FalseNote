@@ -6,8 +6,20 @@ import { featuredItems } from "./items";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function FeaturedDev() {
+  const [data, setData] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+ 
+  useEffect(() => {
+    fetch('/api/users')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data)
+        setLoading(false)
+      })
+  }, [])
   return (
     <div className="feed__empty_featured">
       <Card className="feed__empty_featured_card">
@@ -17,7 +29,7 @@ export default function FeaturedDev() {
         <CardContent>
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
             {
-              featuredItems.map((item, index) => (
+              featuredItems.map(item => (
                 <div className="flex gap-4 w-full items-center justify-between" key={item.name}>
                   <div>
                   <div className="flex">
