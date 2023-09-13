@@ -21,7 +21,7 @@ export const config = {
         // Check if the user exists in your database based on their email
         const userExists = await sql`
           SELECT * FROM Users
-          WHERE Email = ${email};
+          WHERE Username = ${username};
         `;
   
         if (!userExists.rows[0]) {
@@ -35,10 +35,32 @@ export const config = {
           // User doesn't exist, add them to the Users table
           try {
             await sql`
-              INSERT INTO Users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
+              INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
               VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${sanitizedBio}, ${avatar_url}, ${location});
             `;
             console.log(`User '${username}' added to the database.`);
+
+            const sessionUser = await sql`
+              SELECT Userid FROM users
+              WHERE Username = ${username};
+            `;
+
+            console.log("Session User:", sessionUser.rows[0]);
+
+            const userId = sessionUser.rows[0].userid;
+            console.log("User ID:", userId);
+
+            const userSettingsExists = await sql`
+              SELECT * FROM usersettings
+              WHERE Userid = ${ userId };
+            `;
+            if (!userSettingsExists.rows[0]) {
+              await sql`
+                INSERT INTO UserSettings (UserId) VALUEs (${ userId });
+              `;
+              console.log(`User '${username}' added to the usersettings table.`);
+            }
+
           } catch (error) {
             console.error("Error inserting user into the database:", error);
             return false; // Do not continue with the sign-in process

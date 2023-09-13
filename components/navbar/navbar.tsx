@@ -50,39 +50,12 @@ function Navbar() {
                 </TooltipProvider>
                 </>
               ))}
-              <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <ModeToggle />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Mode Toggle</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <UserNav />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{ user?.name }</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              <ModeToggle />
+                <UserNav />
 
             </div>
             : <div className="flex items-center gap-4">
-              <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <ModeToggle />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Mode Toggle</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              <ModeToggle />
             <Button onClick={() => signIn("github")}>
                 Join
             </Button>

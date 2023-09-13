@@ -93,12 +93,12 @@ export async function GET(request: Request) {
 
     // Create the UserSettings table
     await sql`
-      CREATE TABLE IF NOT EXISTS UserSettings (
-        UserSettingID SERIAL PRIMARY KEY,
-        DarkMode BOOLEAN,
-        Language VARCHAR(255),
-        UserID INT REFERENCES Users(UserID)
-      );
+    CREATE TABLE IF NOT EXISTS UserSettings (
+      UserSettingID SERIAL PRIMARY KEY,
+      Appearance VARCHAR(255) DEFAULT 'System',
+      Language VARCHAR(255) DEFAULT 'English',
+      UserID INT REFERENCES Users(UserID)
+    );    
     `;
 
     
