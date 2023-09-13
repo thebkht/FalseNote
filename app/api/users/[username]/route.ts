@@ -5,14 +5,13 @@ export async function GET(req: Request, { params }: { params: { username: string
   try {
     // Get the 'slug' route parameter from the request object
     const username = params.username;
-    console.log(username)
 
     // Execute a query to fetch the specific user by name
     const result = await sql`
       SELECT * FROM users WHERE Name = ${username} OR Username = ${username}
     `;
 
-    console.log(result)
+    console.log("Query result:", result)
 
     if (result.rowCount === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
