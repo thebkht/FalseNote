@@ -5,10 +5,10 @@ import { NextResponse } from "next/server";
 
 async function handler() {
      
-} async (req : Request, res: Response) => {
+} async (req : Request) => {
   try {
     // Get the user's session from the server-side
-    const session = await getServerSession(config);
+    const session = await getServerSession();
 
     // Retrieve the user session data, assuming you are using NextAuth.js
     const user = session?.user;
