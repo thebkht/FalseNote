@@ -23,7 +23,7 @@ import { useUsername } from "../useUsername"
 export function UserNav() {
      const { data: session } = useSession();
      const user = session?.user as any;
-     const username = useUsername(user.name) as any;
+     const username = useUsername(user?.name);
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>

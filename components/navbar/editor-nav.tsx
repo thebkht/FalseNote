@@ -13,7 +13,7 @@ import { useUsername } from "../useUsername";
 
 export default function EditorNavbar() {
      const user = useSession().data?.user as any;
-     const username = useUsername(user.name) as any;
+     const username = useUsername(user?.name);
      return (
           <nav className="menu">
                <div className="menu-backdrop h-[60px] border-b w-full">
