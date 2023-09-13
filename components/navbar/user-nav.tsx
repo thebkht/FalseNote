@@ -28,7 +28,7 @@ export function UserNav() {
           fetch(`/api/users/${user.name}`)
                .then((res) => res.json())
                .then((data) => {
-                    setUsername(data.username)
+                    setUsername(data.Username)
                     setLoading(false)
                })
      }, [user?.name])
