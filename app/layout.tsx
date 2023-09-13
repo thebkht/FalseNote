@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google'
 import TopLoader from '@/components/providers/top-loader'
 import Navbar from '@/components/navbar/navbar'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Analytics } from '@vercel/analytics/react';
 import AuthProvider from '@/components/providers/auth-provider'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,7 +26,6 @@ export default async function Rootayout({
           <AuthProvider>
           <TopLoader />
           {children}
-          <Analytics />
           </AuthProvider>
         </ThemeProvider>
       </body>

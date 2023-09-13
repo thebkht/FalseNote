@@ -19,9 +19,9 @@ export default function EditorNavbar() {
                <div className="menu-container p-3 xl:px-36 2xl:px-64">
                     
                          <Link href="/user" className="flex align-items-center">
-                              <Avatar className="h-8 w-8">
+                              <Avatar className="h-8 w-8 mr-1">
                                    <AvatarImage src={ user?.image } alt={ user?.name } />
-                                   <AvatarFallback>BG</AvatarFallback>
+                                   <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
 
                               </Avatar>
                               <Button variant="ghost" size={"sm"} asChild>

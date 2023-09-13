@@ -12,33 +12,44 @@ export const config = {
     GitHub({ clientId: process.env.GITHUB_CLIENT_ID, clientSecret: process.env.GITHUB_CLIENT_SECRET }),
   ],
   callbacks: {
-     async signIn({ user, account, profile }) {
-       if (account?.provider === 'github' && user) {
-          const { username, name, email, bio, html_url: githubProfileURL } : {
-               username: string;
-               name: string;
-               email: string;
-               bio: string;
-               html_url: string;
-             } = profile as any;
-         // Check if the user exists in your database based on their email
-         const userExists = await sql`
-           SELECT * FROM Users
-           WHERE Email = ${email};
-         `;
- 
-         if (!userExists.rows[0]) {
-           // User doesn't exist, add them to the Users table
-           await sql`
-             INSERT INTO Users (Username, Name, Email, GitHubProfileURL)
-             VALUES (${username}, ${name}, ${email}, ${githubProfileURL});
-           `;
-         }
-       }
- 
-       return true; // Continue with the sign-in process
-     },
-   },
+    async signIn({ user, account, profile }) {
+      if (account?.provider === 'github' && user) {
+        const { login: username, name, email, bio, html_url: githubProfileURL, avatar_url } = profile as any;
+  
+        console.log("GitHub Profile:", profile);
+  
+        // Check if the user exists in your database based on their email
+        const userExists = await sql`
+          SELECT * FROM Users
+          WHERE Email = ${email};
+        `;
+  
+        if (!userExists.rows[0]) {
+          if (!username) {
+            console.error("GitHub username is null. Cannot insert user into the database.");
+            return false; // Do not continue with the sign-in process
+          }
+  
+          // Check if bio is null, and if so, set it to an empty string
+        const sanitizedBio = bio || "";
+          // User doesn't exist, add them to the Users table
+          try {
+            await sql`
+              INSERT INTO Users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture)
+              VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${sanitizedBio}, ${avatar_url});
+            `;
+            console.log(`User '${username}' added to the database.`);
+          } catch (error) {
+            console.error("Error inserting user into the database:", error);
+            return false; // Do not continue with the sign-in process
+          }
+        }
+      }
+  
+      return true; // Continue with the sign-in process
+    },
+  },
+  
 } satisfies NextAuthConfig
 
 // Helper function to get session without passing config every time
