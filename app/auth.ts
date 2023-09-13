@@ -6,6 +6,7 @@ import { Profile } from "next-auth"
 
 
 import GitHub from "next-auth/providers/github"
+import { NextResponse } from "next/server"
 
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth
@@ -61,7 +62,7 @@ export const config = {
               `;
               console.log(`User '${username}' added to the usersettings table.`);
             }
-
+            return NextResponse.json({ username }, {status: 200});
           } catch (error) {
             console.error("Error inserting user into the database:", error);
             return false; // Do not continue with the sign-in process
