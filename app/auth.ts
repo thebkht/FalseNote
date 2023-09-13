@@ -71,14 +71,27 @@ export const config = {
   
       return true; // Continue with the sign-in process
     },
-    async session({session, user}) {
+    async session({session}) {
       const sessionUserName = session.user?.name;
-      console.log(user.id);
-      // try{
-      //   await
-      // }
+      
+      try{
+        const isName = await sql`SELECT * FROM users WHERE Name = ${sessionUserName}`;
 
-      return session
+        if(isName.rows[0]){
+          const updatedSession = {
+            ...session,
+            user: {
+              ...session.user,
+              name: isName.rows[0].Username as string,
+            },
+          };
+    
+          return updatedSession;
+        }
+      } catch(error){
+        console.error("Error there is no user:", error);
+            
+      } return session;
     },
   },
   
