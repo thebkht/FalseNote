@@ -3,7 +3,7 @@ import { sql } from "@vercel/postgres";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export default async function GET() {
+export default async function handler() {
      
 } async (req : Request, res: Response) => {
   try {
