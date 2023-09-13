@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { sql } from "@vercel/postgres"
 
-//useUsernameProps
 export function useUsername(
-     { params }: { params: { name: string } }
+     { params }: { params: { name?: string } }
 ) {
   const [username, setUsername] = useState(null);
 
