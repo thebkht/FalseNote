@@ -9,16 +9,18 @@ import {
 
 } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react";
+import UsernameDisplay from "../get-username";
 
 export default function EditorNavbar() {
      const user = useSession().data?.user as any;
+     const username = UsernameDisplay() as any;
      return (
           <nav className="menu">
                <div className="menu-backdrop h-[60px] border-b w-full">
                </div>
                <div className="menu-container p-3 xl:px-36 2xl:px-64">
                     
-                         <Link href="/user" className="flex align-items-center">
+                         <Link href={`/${username}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1">
                                    <AvatarImage src={ user?.image } alt={ user?.name } />
                                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>

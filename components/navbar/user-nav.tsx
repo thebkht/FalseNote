@@ -18,10 +18,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
+import UsernameDisplay from "@/components/get-username"
 
 export function UserNav() {
      const { data: session } = useSession();
      const user = session?.user as any;
+     const username = UsernameDisplay() as any;
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
@@ -29,7 +31,6 @@ export function UserNav() {
                          <Avatar className="h-8 w-8">
                               <AvatarImage src={ user.image } alt={ user.name } />
                               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-
                          </Avatar>
                     </Button>
                </DropdownMenuTrigger>
@@ -43,7 +44,7 @@ export function UserNav() {
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href="/user">
+                    <Link href={`/${username}`}>
                     <DropdownMenuItem>
                          Profile
                          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
