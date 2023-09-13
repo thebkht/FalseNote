@@ -16,13 +16,13 @@ export default function EditorNavbar() {
      const [isLoading, setLoading] = useState(true)
      const user = useSession().data?.user as any;
      useEffect(() => {
-          fetch(`/api/users/${user.name}`)
+          fetch(`/api/users/${user?.name}`)
                .then((res) => res.json())
                .then((data) => {
                     setUsername(data.username)
                     setLoading(false)
                })
-     }, [user.name])
+     }, [user?.name])
      return (
           <nav className="menu">
                <div className="menu-backdrop h-[60px] border-b w-full">

@@ -31,7 +31,7 @@ export function UserNav() {
                     setUsername(data.username)
                     setLoading(false)
                })
-     }, [user.name])
+     }, [user?.name])
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
