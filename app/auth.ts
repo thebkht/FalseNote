@@ -62,7 +62,6 @@ export const config = {
               `;
               console.log(`User '${username}' added to the usersettings table.`);
             }
-            return NextResponse.json({ username }, {status: 200});
           } catch (error) {
             console.error("Error inserting user into the database:", error);
             return false; // Do not continue with the sign-in process
@@ -72,10 +71,15 @@ export const config = {
   
       return true; // Continue with the sign-in process
     },
-    async jwt({ token, user, account, profile }) {
-      console.log(profile);
-      return token
-    }
+    async session({session, user}) {
+      const sessionUserName = session.user?.name;
+      console.log(user.id);
+      // try{
+      //   await
+      // }
+
+      return session
+    },
   },
   
 } satisfies NextAuthConfig
