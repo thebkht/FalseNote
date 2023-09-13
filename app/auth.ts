@@ -2,6 +2,7 @@ import { sql } from "@vercel/postgres"
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next"
 import type { NextAuthOptions as NextAuthConfig } from "next-auth"
 import { getServerSession } from "next-auth"
+import { Profile } from "next-auth"
 
 
 import GitHub from "next-auth/providers/github"
@@ -70,6 +71,10 @@ export const config = {
   
       return true; // Continue with the sign-in process
     },
+    async jwt({ token, user, account, profile }) {
+      console.log(profile);
+      return token
+    }
   },
   
 } satisfies NextAuthConfig
