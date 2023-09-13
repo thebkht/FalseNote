@@ -71,31 +71,31 @@ export const config = {
   
       return true; // Continue with the sign-in process
     },
-    async session({session}) {
-      const sessionUserName = session.user?.name;
+    // async session({session}) {
+    //   const sessionUserName = session.user?.name;
       
-      try{
-        const isName = await sql`SELECT * FROM users WHERE Name = ${sessionUserName}`;
+    //   try{
+    //     const isName = await sql`SELECT * FROM users WHERE Name = ${sessionUserName}`;
 
-        console.log(isName.rows[0])
+    //     console.log(isName.rows[0])
 
-        if(isName.rows[0]){
-          const updatedSession = {
-            ...session,
-            user: {
-              ...session.user,
-              name: isName.rows[0].Username as string,
-            },
-          };
+    //     if(isName.rows[0]){
+    //       const updatedSession = {
+    //         ...session,
+    //         user: {
+    //           ...session.user,
+    //           name: isName.rows[0].Username as string,
+    //         },
+    //       };
     
-          return updatedSession;
-        }
-        console.log("Name changed to username")
-      } catch(error){
-        console.error("Error there is no user:", error);
+    //       return updatedSession;
+    //     }
+    //     console.log("Name changed to username")
+    //   } catch(error){
+    //     console.error("Error there is no user:", error);
             
-      } return session;
-    },
+    //   } return session;
+    // },
   },
   
 } satisfies NextAuthConfig
