@@ -10,10 +10,15 @@ import {
 } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react";
 import { useUsername } from "../useUsername";
+import { useEffect, useState } from "react";
 
 export default function EditorNavbar() {
      const user = useSession().data?.user as any;
-     const username = useUsername(user?.name);
+     const [name, setName] = useState("");
+     useEffect(() => {
+          setName(user.name);
+     }, [user.name])
+     const username = useUsername({ params: { name } });
      return (
           <nav className="menu">
                <div className="menu-backdrop h-[60px] border-b w-full">
