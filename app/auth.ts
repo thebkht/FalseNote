@@ -77,6 +77,8 @@ export const config = {
       try{
         const isName = await sql`SELECT * FROM users WHERE Name = ${sessionUserName}`;
 
+        console.log(isName.rows[0])
+
         if(isName.rows[0]){
           const updatedSession = {
             ...session,
@@ -88,6 +90,7 @@ export const config = {
     
           return updatedSession;
         }
+        console.log("Name changed to username")
       } catch(error){
         console.error("Error there is no user:", error);
             
