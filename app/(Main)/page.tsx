@@ -1,3 +1,4 @@
+"use client"
 import FeaturedDev from '@/components/feed/featured/featured-dev'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'

@@ -10,6 +10,7 @@ export async function GET(request: Request) {
 
     const users = result.rows;
 
+    console.log(users);
     return NextResponse.json({ users }, { status: 200});
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
