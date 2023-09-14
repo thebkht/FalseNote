@@ -38,12 +38,10 @@ export default function FeaturedDev() {
             {featuredDevs.map((item: { userId: Key | null | undefined; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; }) => (
               <div className="flex gap-4 w-full items-center justify-between" key={item.userId}>
                 <div className="flex items-center">
-                  <Button variant="secondary" className="relative h-8 w-8 mr-4 rounded-full" asChild>
-                    <Avatar className="h-8 w-8">
+                <Avatar className="h-10 w-10 mr-4">
                       <AvatarImage src={item.profilepicture} alt={item.username} />
-                      <AvatarFallback>{item.name?.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                     </Avatar>
-                  </Button>
                   {
                     item.name === null ? (
                       <div>
