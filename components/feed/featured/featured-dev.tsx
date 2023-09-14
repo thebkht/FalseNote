@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import { Key } from "react";
 import { useEffect, useState } from "react";
 import { getFeaturedDevs } from "@/components/get-user";
+import Link from "next/link";
 
 export default function FeaturedDev() {
   const [featuredDevs, setFeaturedDevs] = useState([]);
@@ -37,7 +38,7 @@ export default function FeaturedDev() {
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs.map((item: { userId: Key | null | undefined; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; }) => (
               <div className="flex gap-4 w-full items-center justify-between" key={item.userId}>
-                <div className="flex items-center">
+                <Link href={`/${item.username}`}  className="flex items-center">
                 <Avatar className="h-10 w-10 mr-4">
                       <AvatarImage src={item.profilepicture} alt={item.username} />
                       <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
@@ -54,7 +55,7 @@ export default function FeaturedDev() {
                   </div>
                     )
                   }
-                </div>
+                </Link>
                 <p className="text-sm text-muted-foreground hidden md:block">{item.bio}</p>
                 <Button variant="outline" size={"lg"} className="flex-shrink-0">
                   <Plus className="h-4 w-4 mr-2" /> Follow
