@@ -85,14 +85,14 @@ export default function Page({ params }: { params: { username: string } }) {
           </div>
 
           <ul className="details list-none space-y-3">
-            <li className="flex items-center">
+            {user?.location && <li className="flex items-center">
               <MapPin className="h-5 w-5 mr-1" />
               {user?.location}
-            </li>
-            <li className="flex items-center">
+            </li>}
+            {user?.email && <li className="flex items-center">
               <Mail className="h-5 w-5 mr-1" />
               {user?.email}
-            </li>
+            </li>}
             <li className="flex items-center">
               <Icons.gitHub className="h-5 w-5 mr-1" />
               {user?.githubprofileurl.replace("https://github.com/", "")}
