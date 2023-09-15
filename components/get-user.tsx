@@ -18,7 +18,9 @@ export async function getFeaturedDevs() {
         const response = await fetch("/api/users");
         if (!response.ok) {
           throw new Error(`Error fetching featured devs: ${response.statusText}`);
-        }
+        } else if (response.status === 404) {
+          return null
+        };
         const data = await response.json();
         return data;
       } catch (error) {

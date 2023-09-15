@@ -1,6 +1,7 @@
 "use client"
 import { getUserByUsername } from "@/components/get-user";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -9,12 +10,14 @@ import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { username: string } }) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
+        setIsLoaded(true);
       } catch (error) {
         // Handle errors
         console.error('Error:', error);
@@ -27,7 +30,8 @@ export default function Page({ params }: { params: { username: string } }) {
   const { data: session } = useSession(); // You might need to adjust this based on how you use the session
 
   return (
-    <div className="row justify-content-between mb-5">
+    isLoaded ? (
+      <div className="row justify-content-between mb-5">
       <div className="col-lg-3">
         <div className="user">
         <Button variant={"secondary"} size={"lg"} className="mb-3 px-0 h-48 w-48 rounded-full">
@@ -45,7 +49,7 @@ export default function Page({ params }: { params: { username: string } }) {
               height={200}
             />
           </div> */}
-          <h5>
+          <h5 className="font-bold">
             {user?.name}
           </h5>
           <h6 className="mb-3" style={{ color: "#949494" }}>@{user?.username}</h6>
@@ -148,6 +152,17 @@ export default function Page({ params }: { params: { username: string } }) {
         </div>
       </div> */}
     </div>
-    </div>
+    </div> ) : (
+      <div className="user">
+        <Skeleton className="mb-3 h-48 w-48 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-48" />
+          <Skeleton className="h-4 w-36" />
+        </div>
+        <div className="space-y-2 mt-4">
+          <Skeleton className="h-4 w-48" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+      </div> )
   );
 }
