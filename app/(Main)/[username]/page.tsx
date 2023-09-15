@@ -1,12 +1,23 @@
 "use client"
 import { getUserByUsername } from "@/components/get-user";
+import { Icons } from "@/components/icon";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+function getRegistrationDateDisplay(registrationDate : string) {
+  // Convert the registration date to a JavaScript Date object
+  const regDate = new Date(registrationDate);
+
+  const regMonth = regDate.toLocaleString('default', { month: 'long' });
+  const regYear = regDate.getFullYear();
+  return `${regMonth} ${regYear}`;
+}
 
 export default function Page({ params }: { params: { username: string } }) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
@@ -33,8 +44,8 @@ export default function Page({ params }: { params: { username: string } }) {
     isLoaded ? (
       <div className="row justify-content-between mb-5">
       <div className="col-lg-3">
-        <div className="user">
-        <Button variant={"secondary"} size={"lg"} className="mb-3 px-0 h-48 w-48 rounded-full">
+        <div className="user space-y-4">
+        <Button variant={"secondary"} size={"lg"} className="mb-5 px-0 h-72 w-72 rounded-full">
           <Avatar className="rounded-full">
             <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
             <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0) }</AvatarFallback>
@@ -49,21 +60,14 @@ export default function Page({ params }: { params: { username: string } }) {
               height={200}
             />
           </div> */}
-          <h5 className="font-bold">
-            {user?.name}
-          </h5>
-          <h6 className="mb-3" style={{ color: "#949494" }}>@{user?.username}</h6>
-          <p className="d-flex align-items-center"><i className="fa-regular fa-envelope me-1"></i>{user?.email}</p>
-          <p className="d-flex align-items-center"><i className="far fa-rocket-launch me-1"></i>{user?.joinedText}</p>
-          <div className="userInfo-buttons mb-3">
-            <Button className="btn me-3" data-bs-toggle="modal" data-bs-target="#followersModal" data-userid={user?.user_id}>
-              <b>{user?.followerCount}</b> Followers
-            </Button>
-            <Button><b>{user?.postCount}</b> Articles</Button>
-          </div>
+          <h1 className="space-y-3">
+            <span className="font-bold text-2xl block mb-2">{user?.name}</span>
+            <span className="text-xl font-light text-muted-foreground">@{user?.username}</span>
+          </h1>
+
           {session && (
             session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-              <Button variant={"outline"} size={"lg"} className="mb-3" asChild>
+              <Button variant={"outline"} size={"lg"} className="py-3" asChild>
                 <Link href="edit_profile.php" className="btn btn-outline-success w-100 mb-5">
                 Edit Profile
               </Link>
@@ -72,6 +76,32 @@ export default function Page({ params }: { params: { username: string } }) {
               null
             ) 
           )}
+
+          <div className="userInfo-buttons py-2">
+            <Button variant={"ghost"} className="btn me-3" data-bs-toggle="modal" data-bs-target="#followersModal" data-userid={user?.user_id}>
+              <b>{user?.followerCount}</b> Followers
+            </Button>
+            <Button variant={"ghost"} ><b>{user?.postCount}</b> Articles</Button>
+          </div>
+
+          <ul className="details list-none space-y-3">
+            <li className="flex items-center">
+              <MapPin className="h-5 w-5 mr-1" />
+              {user?.location}
+            </li>
+            <li className="flex items-center">
+              <Mail className="h-5 w-5 mr-1" />
+              {user?.email}
+            </li>
+            <li className="flex items-center">
+              <Icons.gitHub className="h-5 w-5 mr-1" />
+              {user?.githubprofileurl.replace("https://github.com/", "")}
+            </li>
+            <li className="flex items-center">
+              <Rocket className="h-5 w-5 mr-1" />
+              Joined on {getRegistrationDateDisplay(user?.registrationdate)}
+            </li>
+          </ul>
         </div>
         {/* <div className="user-scroll">
           <div className="user-scroll_header">
@@ -153,16 +183,23 @@ export default function Page({ params }: { params: { username: string } }) {
       </div> */}
     </div>
     </div> ) : (
-      <div className="user">
-        <Skeleton className="mb-3 h-48 w-48 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-48" />
-          <Skeleton className="h-4 w-36" />
+      <div className="user space-y-4">
+        <Skeleton className="mb-5 h-72 w-72 rounded-full" />
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-72 mb-2" />
+          <Skeleton className="h-6 w-56" />
         </div>
-        <div className="space-y-2 mt-4">
-          <Skeleton className="h-4 w-48" />
-          <Skeleton className="h-4 w-48" />
-        </div>
+        <div className="flex gap-2 py-2">
+            <Skeleton className="h-9 w-24" />
+            <Skeleton className="h-9 w-24" />
+          </div>
+
+          <ul className="space-y-3">
+            <Skeleton className="h-5 w-72" />
+            <Skeleton className="h-5 w-72" />
+            <Skeleton className="h-5 w-72" />
+            <Skeleton className="h-5 w-72" />
+          </ul>
       </div> )
   );
 }
