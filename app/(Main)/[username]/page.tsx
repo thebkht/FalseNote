@@ -1,8 +1,10 @@
 "use client"
 import { getUserByUsername } from "@/components/get-user";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }: { params: { username: string } }) {
@@ -28,7 +30,13 @@ export default function Page({ params }: { params: { username: string } }) {
     <div className="row justify-content-between mb-5">
       <div className="col-lg-3">
         <div className="user">
-          <div className="profile-photo mb-3">
+        <Button variant={"secondary"} size={"lg"} className="mb-3 px-0 h-48 w-48 rounded-full">
+          <Avatar className="rounded-full">
+            <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
+            <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0) }</AvatarFallback>
+          </Avatar>
+        </Button>
+          {/* <div className="profile-photo mb-3">
             <Image
               src={user?.profilepicture}
               alt={`${user?.name}'s profile photo`}
@@ -36,7 +44,7 @@ export default function Page({ params }: { params: { username: string } }) {
               width={200}
               height={200}
             />
-          </div>
+          </div> */}
           <h5>
             {user?.name}
           </h5>
@@ -49,23 +57,17 @@ export default function Page({ params }: { params: { username: string } }) {
             </Button>
             <Button><b>{user?.postCount}</b> Articles</Button>
           </div>
-          {session ? (
-            session?.user?.name !== user?.name || session?.user?.name !== user?.username ? (
-              user?.isFollowing ? (
-                <Button variant={"outline"} size={"lg"}>
-                  Following
-                </Button>
-              ) : (
-                <Button variant={"outline"} size={"lg"}>
-                  Follow
-                </Button>
-              )
-            ) : (
-              <a href="edit_profile.php" className="btn btn-outline-success w-100 mb-5">
+          {session && (
+            session?.user?.name === user?.name || session?.user?.name === user?.username ? (
+              <Button variant={"outline"} size={"lg"} className="mb-3" asChild>
+                <Link href="edit_profile.php" className="btn btn-outline-success w-100 mb-5">
                 Edit Profile
-              </a>
-            )
-          ) : null}
+              </Link>
+              </Button>
+            ) : (
+              null
+            ) 
+          )}
         </div>
         {/* <div className="user-scroll">
           <div className="user-scroll_header">
