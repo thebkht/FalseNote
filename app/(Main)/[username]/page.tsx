@@ -34,6 +34,7 @@ export default function Page({ params }: { params: { username: string } }) {
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
+        setIsLoaded(true);
       }
     }
 
@@ -42,15 +43,37 @@ export default function Page({ params }: { params: { username: string } }) {
 
   const { data: session } = useSession(); // You might need to adjust this based on how you use the session
 
+  if (!isLoaded) {
+    // Loading skeleton or spinner while fetching data
+    return (
+      <div className="user space-y-4">
+        <Skeleton className="mb-5 h-72 w-72 rounded-full" />
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-72 mb-2" />
+          <Skeleton className="h-6 w-56" />
+        </div>
+        <div className="flex gap-2 py-2">
+            <Skeleton className="h-9 w-24" />
+            <Skeleton className="h-9 w-24" />
+            <Skeleton className="h-9 w-24" />
+          </div>
+
+          <ul className="space-y-3">
+            <Skeleton className="h-5 w-72" />
+            <Skeleton className="h-5 w-72" />
+            <Skeleton className="h-5 w-72" />
+            <Skeleton className="h-5 w-72" />
+          </ul>
+      </div>
+    );
+  }
+
   if (!user) {
-    // User not found, display a custom 404 error page
-    return <div className="h-screen">
-      <NextErrorComponent statusCode={404} />
-    </div>;
+    // User not found
+    return <NextErrorComponent statusCode={404} />;
   }
 
   return (
-    isLoaded ? (
       <div className="row justify-content-between mb-5">
       <div className="col-lg-3">
         <div className="user space-y-4">
@@ -213,27 +236,6 @@ export default function Page({ params }: { params: { username: string } }) {
         </div>
       </div> */}
     </div>
-    </div> ) : (
-      <div className="user space-y-4">
-        <Skeleton className="mb-5 h-72 w-72 rounded-full" />
-        <div className="space-y-3">
-          <Skeleton className="h-8 w-72 mb-2" />
-          <Skeleton className="h-6 w-56" />
-        </div>
-        <div className="flex gap-2 py-2">
-            <Skeleton className="h-9 w-24" />
-            <Skeleton className="h-9 w-24" />
-            <Skeleton className="h-9 w-24" />
-          </div>
-
-          <ul className="space-y-3">
-            <Skeleton className="h-5 w-72" />
-            <Skeleton className="h-5 w-72" />
-            <Skeleton className="h-5 w-72" />
-            <Skeleton className="h-5 w-72" />
-          </ul>
-      </div> )
-
-      
+    </div> 
   );
 }
