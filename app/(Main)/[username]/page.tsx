@@ -11,7 +11,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import NextErrorComponent from "next/error";
-import { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from 'next'
+ 
+type Props = {
+  params: { username: string }
+}
 
 function getRegistrationDateDisplay(registrationDate : string) {
   // Convert the registration date to a JavaScript Date object
@@ -22,7 +26,11 @@ function getRegistrationDateDisplay(registrationDate : string) {
   return `${regMonth} ${regYear}`;
 }
 
-export default function Page({ params }: { params: { username: string } }) {
+export default function Page({ params }: Props) {
+  const metadata : Metadata = {
+    title: `${params.username} | FalseNotes`,
+    description: `Follow their to keep up with their activity on FalseNotes.`,
+  }
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -43,11 +51,6 @@ export default function Page({ params }: { params: { username: string } }) {
   }, [params.username]);
 
   const { data: session } = useSession(); // You might need to adjust this based on how you use the session
-
-  const metadata : Metadata = {
-    title: `${user?.username} | FalseNotes`,
-    description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
-  }
   
   if (!isLoaded) {
     // Loading skeleton or spinner while fetching data
