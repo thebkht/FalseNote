@@ -49,12 +49,12 @@ export default function FeaturedDev() {
                   {
                     item.name === null ? (
                       <div>
-                        <p className="text-sm font-medium leading-none">@{item.username}</p>
+                        <p className="text-sm font-medium leading-none">{item.username}</p>
                       </div>
                     ) : (
                       <div>
                         <p className="text-sm font-medium leading-none">{item.name}</p>
-                        <p className="text-sm text-muted-foreground">@{item.username}</p>
+                        <p className="text-sm text-muted-foreground">{item.username}</p>
                       </div>
                     )
                   }

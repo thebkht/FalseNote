@@ -1,10 +1,11 @@
 "use client"
 import { getUserByUsername } from "@/components/get-user";
 import { Icons } from "@/components/icon";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Mail, MapPin, Rocket } from "lucide-react";
+import { BadgeCheck, Check, Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,10 +61,27 @@ export default function Page({ params }: { params: { username: string } }) {
               height={200}
             />
           </div> */}
-          <h1 className="space-y-3">
-            <span className="font-bold text-2xl block mb-2">{user?.name}</span>
-            <span className="text-xl font-light text-muted-foreground">@{user?.username}</span>
+          <div className="flex items-center">
+            {
+              user?.name === null ? (
+                <h1 className="space-y-3">
+            <span className="font-bold text-2xl block mb-2">{user?.username} {user?.verified && (
+              <Badge className="h-6 w-6 !px-1">
+                <Check className="h-4 w-4" />
+              </Badge>
+            )}</span>
           </h1>
+              ) : (
+                <h1 className="space-y-3">
+            <span className="font-bold text-2xl block mb-2">{user?.name} {user?.verified && (
+              <Badge className="h-6 w-6 !px-1">
+                <Check className="h-4 w-4" />
+              </Badge>
+            )}</span>
+            <span className="text-xl font-light text-muted-foreground">{user?.username}</span>
+          </h1>)
+            }
+          </div>
 
           {session && (
             session?.user?.name === user?.name || session?.user?.name === user?.username ? (

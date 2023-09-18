@@ -16,6 +16,7 @@ export async function GET(request: Request) {
         ProfilePicture VARCHAR(255), -- Store URL or BLOB for binary data
         GitHubProfileURL VARCHAR(255),
         Location VARCHAR(255),
+        verified BOOLEAN DEFAULT false,
         RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
