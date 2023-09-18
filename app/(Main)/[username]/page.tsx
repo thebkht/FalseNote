@@ -96,10 +96,13 @@ export default function Page({ params }: { params: { username: string } }) {
           )}
 
           <div className="userInfo-buttons py-2">
-            <Button variant={"ghost"} className="btn me-3" data-bs-toggle="modal" data-bs-target="#followersModal" data-userid={user?.user_id}>
-              <b>{user?.followerCount}</b> Followers
+            <Button variant={"ghost"}>
+              {user?.followersnum} Followers
             </Button>
-            <Button variant={"ghost"} ><b>{user?.postCount}</b> Articles</Button>
+            <Button variant={"ghost"}>
+              {user?.followingnum} Followers
+            </Button>
+            <Button variant={"ghost"} >{user?.postsnum} Post</Button>
           </div>
 
           <ul className="details list-none space-y-3">
@@ -210,6 +213,7 @@ export default function Page({ params }: { params: { username: string } }) {
           <Skeleton className="h-6 w-56" />
         </div>
         <div className="flex gap-2 py-2">
+            <Skeleton className="h-9 w-24" />
             <Skeleton className="h-9 w-24" />
             <Skeleton className="h-9 w-24" />
           </div>
