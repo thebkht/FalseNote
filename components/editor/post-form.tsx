@@ -4,6 +4,7 @@ import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import ReactMarkdown from "react-markdown"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -26,6 +27,7 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
+import { useState } from "react"
 
 const postFormSchema = z.object({
   title: z
@@ -73,11 +75,24 @@ export function PostForm() {
     toast({
       title: "You submitted the following values:",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <div>
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
+        <div className="mt-4">
+        <ReactMarkdown>{markdownContent}</ReactMarkdown>
+      </div>
+        </div>
       ),
     })
+  }
+
+
+  const [markdownContent, setMarkdownContent] = useState<string>(''); // Define the markdownContent state
+
+  // Update markdownContent when the content field changes
+  function handleContentChange(value: string) {
+    setMarkdownContent(value);
   }
 
   return (
@@ -109,6 +124,10 @@ export function PostForm() {
                   placeholder="Your post goes here"
                   className="w-full min-h-[500px]"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e); // Let React Hook Form handle the value change
+                    handleContentChange(e.target.value); // Update the Markdown content
+                  }}
                 />
               </FormControl>
               {/* <FormDescription>

@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import NextErrorComponent from "next/error";
 
 function getRegistrationDateDisplay(registrationDate : string) {
   // Convert the registration date to a JavaScript Date object
@@ -24,6 +25,7 @@ export default function Page({ params }: { params: { username: string } }) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -31,8 +33,7 @@ export default function Page({ params }: { params: { username: string } }) {
         setUser(userData);
         setIsLoaded(true);
       } catch (error) {
-        // Handle errors
-        console.error('Error:', error);
+        console.error(error);
       }
     }
 
@@ -40,6 +41,13 @@ export default function Page({ params }: { params: { username: string } }) {
   }, [params.username]);
 
   const { data: session } = useSession(); // You might need to adjust this based on how you use the session
+
+  if (!user) {
+    // User not found, display a custom 404 error page
+    return <div className="h-screen">
+      <NextErrorComponent statusCode={404} />
+    </div>;
+  }
 
   return (
     isLoaded ? (
@@ -225,5 +233,7 @@ export default function Page({ params }: { params: { username: string } }) {
             <Skeleton className="h-5 w-72" />
           </ul>
       </div> )
+
+      
   );
 }

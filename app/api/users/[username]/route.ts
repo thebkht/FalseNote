@@ -33,7 +33,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     const postsCount = await sql`
           SELECT COUNT(*) AS postsCount FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid}`;
 
-    result.rows[0].postsnum = postsCount.rows[0]?.postscount;
+      result.rows[0].postsnum = postsCount.rows[0]?.postscount;
 
     const comments = await sql`
           SELECT * FROM Comments WHERE AuthorID= ${result.rows[0]?.userid}`;
@@ -58,6 +58,7 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     return NextResponse.json({ user: result.rows[0] }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+      
+    return NextResponse.json({ error }, { status: 404 });
   }
 }
