@@ -111,9 +111,11 @@ export default function Page({ params }: { params: { username: string } }) {
               <Mail className="h-5 w-5 mr-1" />
               {user?.email}
             </li>}
-            <li className="flex items-center">
+            <li >
+              <Link href={user?.githubprofileurl} className="flex items-center">
               <Icons.gitHub className="h-5 w-5 mr-1" />
               {user?.githubprofileurl.replace("https://github.com/", "")}
+              </Link>
             </li>
             <li className="flex items-center">
               <Rocket className="h-5 w-5 mr-1" />
