@@ -1,4 +1,5 @@
 import type { Metadata, ResolvingMetadata } from 'next'
+import { getUserByUsername } from '@/components/get-user'
 
 type Props = {
      params: { username: string }
@@ -6,16 +7,47 @@ type Props = {
    }
  
 export async function generateMetadata(
-     { params }: Props,
-     parent: ResolvingMetadata
-   ): Promise<Metadata> {    
-     return {
-       title: `${params.username} | FalseNotes`,
-       // openGraph: {
-       //   images: ['/some-specific-page-image.jpg', ...previousImages],
-       // },
-       description: `Follow their to keep up with their activity on FalseNotes.`,
-     }
+     { params }: Props
+   ): Promise<Metadata> {   
+    try{
+      const encodedString = params.username.replace(/ /g, "%20");
+       const response = await fetch(`${process.env.DOMAIN}/api/users/${encodedString}`);
+       if (!response.ok) {
+         throw new Error(`Error fetching user data: ${response.statusText}`);
+       }
+       const data = await response.json();  
+        const user = data.user;
+      return {
+        title: `${user.username} | FalseNotes`,
+        description: `${user?.username} has ${user?.postsnum}. Follow their to keep up with their activity on FalseNotes.`,
+        openGraph: {
+          title: `${user.username} | FalseNotes`,
+          description: `${user?.username} has ${user?.postsnum}. Follow their to keep up with their activity on FalseNotes.`,
+
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: `${user.username} | FalseNotes`,
+          description: `${user?.username} has ${user?.postsnum}. Follow their to keep up with their activity on FalseNotes.`,
+        },
+    } 
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        title: `Not Found | FalseNotes`,
+        description: `The page you were looking for doesn't exist.`,
+        openGraph: {
+          title: `Not Found | FalseNotes`,
+          description: `The page you were looking for doesn't exist.`,
+
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: `Not Found | FalseNotes`,
+          description: `The page you were looking for doesn't exist.`,
+        },
+    } 
+    }
    }
 
 export default function UserLayout(
