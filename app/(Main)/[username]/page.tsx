@@ -35,10 +35,6 @@ function getRegistrationDateDisplay(registrationDate: string) {
 }
 
 export default function Page({ params }: Props) {
-  const metadata: Metadata = {
-    title: `${params.username} | FalseNotes`,
-    description: `Follow their to keep up with their activity on FalseNotes.`,
-  }
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -59,6 +55,7 @@ export default function Page({ params }: Props) {
   }, [params.username]);
 
   const { data: session } = useSession(); // You might need to adjust this based on how you use the session
+
 
   if (!isLoaded) {
     // Loading skeleton or spinner while fetching data
@@ -114,10 +111,15 @@ export default function Page({ params }: Props) {
     );
   }
 
+  if (params.username !== user?.username) {
+    return <NotFound />;
+  }
+
   if (!user) {
     // User not found
     return <NotFound />;
   }
+
 
   return (
     <div className="row grid gap-6"

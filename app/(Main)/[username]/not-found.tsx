@@ -34,12 +34,12 @@ export default function NotFound() {
             <h1 className="next-error-h1" style={h1Style}>
               404
             </h1>
-            <Separator />
+            <Separator orientation="vertical" className="mx-5"/>
             <div style={{ display: "inline-block" }}>
               <h2 style={h2Style}>This page could not be found.</h2>
             </div>
           </div>
-          <Link href="/">Go back home</Link>
+          <Link href="/" className="py-5">Go back home</Link>
         </div>
       </div>
     </main>
