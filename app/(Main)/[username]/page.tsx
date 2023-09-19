@@ -5,12 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { BadgeCheck, Check, Mail, MapPin, Rocket } from "lucide-react";
+import { Check, Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import NextErrorComponent from "next/error";
 import type { Metadata, ResolvingMetadata } from 'next'
 import NotFound from "./not-found";
  

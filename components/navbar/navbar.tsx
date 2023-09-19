@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { use, useEffect, useState } from "react";
+import { Badge } from "../ui/badge";
 
 
 function Navbar() {
@@ -33,8 +34,9 @@ function Navbar() {
         <div className="menu-backdrop h-[60px] border-b w-full">
         </div>
         <div className="menu-container p-3 xl:px-36 2xl:px-64">
-          <Link href="/" className="font-bold">
+          <Link href="/" className="flex items-center">
             <Icons.logo />
+            <Badge className="ml-3 px-1 py-0">Beta</Badge>
           </Link>
   
           <div className="hidden lg:flex items-center gap-16">
