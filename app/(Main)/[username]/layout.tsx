@@ -1,5 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next'
-import { getUserByUsername } from '@/components/get-user'
+import type { Metadata } from 'next'
 
 type Props = {
      params: { username: string }
@@ -19,16 +18,16 @@ export async function generateMetadata(
         const user = data.user;
       return {
         title: `${user.username} | FalseNotes`,
-        description: `${user?.username} has ${user?.postsnum}. Follow their to keep up with their activity on FalseNotes.`,
+        description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
         openGraph: {
           title: `${user.username} | FalseNotes`,
-          description: `${user?.username} has ${user?.postsnum}. Follow their to keep up with their activity on FalseNotes.`,
-
+          description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
+          url: `${process.env.DOMAIN}/${user.username}`,
         },
         twitter: {
           card: 'summary_large_image',
           title: `${user.username} | FalseNotes`,
-          description: `${user?.username} has ${user?.postsnum}. Follow their to keep up with their activity on FalseNotes.`,
+          description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
         },
     } 
     } catch (error) {
