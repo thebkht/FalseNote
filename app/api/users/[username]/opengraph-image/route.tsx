@@ -11,7 +11,13 @@ export async function GET(request: Request,
      { params }: Props
 ) {
      try{
-          const user = await getUserByUsername(params.username);
+          const encodedString = params.username.replace(/ /g, "%20");
+          const response = await fetch(`${process.env.DOMAIN}/api/users/${encodedString}`);
+          if (!response.ok) {
+            throw new Error(`Error fetching user data: ${response.statusText}`);
+          }
+          const data = await response.json();  
+           const user = data.user;
 
           return new ImageResponse(
                ( <div tw="flex flex-col w-full h-full items-center justify-center bg-white">
