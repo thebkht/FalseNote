@@ -23,6 +23,14 @@ export async function generateMetadata(
           title: `${user.username} | FalseNotes`,
           description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
           url: `${process.env.DOMAIN}/${user.username}`,
+          images: [
+            {
+              url: `${process.env.DOMAIN}/api/users/${user.username}/opengraph-image`,
+              width: 1200,
+              height: 630,
+              alt: `${user.username} | FalseNotes`,
+            }
+          ],
         },
         twitter: {
           card: 'summary_large_image',
