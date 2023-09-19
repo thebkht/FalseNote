@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import NextErrorComponent from "next/error";
 import type { Metadata, ResolvingMetadata } from 'next'
+import NotFound from "./not-found";
  
 type Props = {
   params: { username: string }
@@ -79,7 +80,7 @@ export default function Page({ params }: Props) {
 
   if (!user) {
     // User not found
-    return <NextErrorComponent statusCode={404} />;
+    return <NotFound />;
   }
 
   return (
