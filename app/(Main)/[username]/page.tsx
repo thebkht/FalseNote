@@ -11,6 +11,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Metadata, ResolvingMetadata } from 'next'
 import NotFound from "./not-found";
+import PostCard from "@/components/blog/post-card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 type Props = {
   params: { username: string }
@@ -54,7 +63,13 @@ export default function Page({ params }: Props) {
   if (!isLoaded) {
     // Loading skeleton or spinner while fetching data
     return (
-      <div className="user space-y-4">
+      <div className="row grid gap-6"
+      style={
+        {
+          gridTemplateColumns: "auto 0 minmax(0, calc(100% - 18rem - 1.5rem))"
+        }
+      }>
+        <div className="col-span-1 w-72 space-y-4">
         <Skeleton className="mb-5 h-72 w-72 rounded-full" />
         <div className="space-y-3">
           <Skeleton className="h-8 w-72 mb-2" />
@@ -72,6 +87,29 @@ export default function Page({ params }: Props) {
           <Skeleton className="h-5 w-72" />
           <Skeleton className="h-5 w-72" />
         </ul>
+      </div>
+      <div className="col-span-2 items-center text-center">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm space-y-4">
+      <div className="flex flex-col space-y-4 p-6">
+        <Skeleton className="h-72 w-full" />
+
+        <h1><Skeleton className="h-5 w-full pb-6" /></h1>
+        <div className="space-y-3 pt-4">
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-full" />
+        </div>
+      </div>
+      <div className="flex items-center p-6 pt-0">
+                  <div className="stats flex items-center gap-3">
+                    <p className="card-text inline mb-0"><Skeleton className="h-5 w-48" /></p>
+                    <p className="card-text inline mb-0 text-muted"><Skeleton className="h-5 w-10" /></p>
+                    <p className="card-text inline mb-0 text-muted"><Skeleton className="h-5 w-10" /></p>
+                    <p className="card-text inline mb-0 text-muted"><Skeleton className="h-5 w-10" /></p>
+                  </div>
+      </div>
+    </div>
+      </div>
       </div>
     );
   }
@@ -130,32 +168,32 @@ export default function Page({ params }: Props) {
             )
           )}
 
-          <div className="userInfo-buttons py-2">
-            <Button variant={"ghost"}>
+          <div className="py-2 flex gap-2">
+            <Button variant={"secondary"} size={"sm"}>
               {user?.followersnum} Followers
             </Button>
-            <Button variant={"ghost"}>
+            <Button variant={"secondary"} size={"sm"}>
               {user?.followingnum} Followers
             </Button>
-            <Button variant={"ghost"} >{user?.postsnum} Post</Button>
+            <Button variant={"secondary"} size={"sm"} >{user?.postsnum} Post</Button>
           </div>
 
           <ul className="details list-none space-y-3">
-            {user?.location && <li className="flex items-center">
+            {user?.location && <li className="flex items-center font-light">
               <MapPin className="h-5 w-5 mr-1" />
               {user?.location}
             </li>}
-            {user?.email && <li className="flex items-center">
+            {user?.email && <li className="flex items-center font-light">
               <Mail className="h-5 w-5 mr-1" />
               {user?.email}
             </li>}
             <li>
-              <Link href={user?.githubprofileurl} className="flex items-center">
+              <Link href={user?.githubprofileurl} className="flex items-center font-light">
                 <Icons.gitHub className="h-5 w-5 mr-1" />
                 {user?.githubprofileurl.replace("https://github.com/", "")}
               </Link>
             </li>
-            <li className="flex items-center">
+            <li className="flex items-center font-light">
               <Rocket className="h-5 w-5 mr-1" />
               Joined on {getRegistrationDateDisplay(user?.registrationdate)}
             </li>
@@ -165,39 +203,26 @@ export default function Page({ params }: Props) {
 
       </div>
       <div className="col-span-2">
-        <h2>Articles</h2>
+        <h2 className="text-2xl font-bold text-center">Posts</h2>
         <div className="user-articles">
-          <div className="mb-5 mt-4 w-100 m-auto col-6 search-dropdown">
-            <div className="search-input rounded-pill w-100 d-flex align-items-center">
-              <i className="fa-regular fa-magnifying-glass"></i>
-              <input type="text" className="form-control w-100 rounded-pill" id="searchQuery" name="searchQuery" placeholder="Search" autoComplete="off" />
-            </div>
-            <div className="dropdown-menu mt-3 w-100" id="searchResults" aria-labelledby="searchQuery"></div>
-          </div>
           {user?.posts && user.posts.length > 0 ? (
             user.posts.map((article: any) => (
-              <div className="card mb-3 w-100 me-3" key={article.id}>
-                <div className="card-body">
-                  <a href={`view_post.php?post_id=${article.id}`}><h5 className="card-title">{article.title}</h5></a>
-                  <p className="card-text">{article.content.slice(0, 500)}...</p>
-                </div>
-                <div className="card-footer d-flex align-items-center justify-content-between">
-                  {session?.user_id === article.user_id && (
-                    <div className="action-btn">
-                      <a href={`edit_post.php?post_id=${article.id}`} className="btn btn-success">Edit</a>
-                      <a href={`delete_post.php?post_id=${article.id}`} className="btn btn-danger">Delete</a>
-                    </div>
-                  )}
-                  <div className="stats d-flex align-items-center">
-                    <p className="card-text d-inline mb-0 me-3">{new Date(article.created_at).toLocaleString()}</p>
-                    <p className="card-text d-inline mb-0 text-muted me-3"><i className="far fa-eye me-1"></i> {article.views}</p>
-                    <p className="card-text d-inline mb-0 text-muted"><i className="far fa-comments me-1"></i> {article.comments}</p>
-                  </div>
-                </div>
-              </div>
+              <PostCard
+                key={article.id}
+                title={article.title}
+                thumbnail={article.coverimage}
+                content={article.content}
+                author={user?.username || user?.name}
+                date={article.creationdate}
+                views={article.views}
+                comments={article.comments}
+                id={article.id}
+                authorid={user?.id}
+                session={session}
+                likes={article.likes} />
             ))
           ) : (
-            <p>This user has no posts</p>
+            <p className="text-base font-light text-center py-5">This user has no posts</p>
           )}
         </div>
       </div>
