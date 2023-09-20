@@ -28,7 +28,10 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { useState } from "react"
-import ReactQuill from 'react-quill';
+import dynamic from "next/dynamic"
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false, // Set ssr to false to prevent server-side rendering
+});
 import 'react-quill/dist/quill.snow.css';
 
 const postFormSchema = z.object({
@@ -44,7 +47,7 @@ const postFormSchema = z.object({
     .string({
       required_error: "Please select a visibility option.",
     }),
-  content: z.string().max(1200).min(4),
+  content: z.string().min(4),
   topics: z
     .array(
       z.object({
@@ -90,8 +93,6 @@ export function PostForm() {
     })
   }
 
-
-  const [markdownContent, setMarkdownContent] = useState<string>(''); // Define the markdownContent state
 
   // Update markdownContent when the content field changes
   function handleContentChange(value: string) {
