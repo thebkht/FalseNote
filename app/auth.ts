@@ -31,14 +31,11 @@ export const config = {
             console.error("GitHub username is null. Cannot insert user into the database.");
             return false; // Do not continue with the sign-in process
           }
-  
-          // Check if bio is null, and if so, set it to an empty string
-        const sanitizedBio = bio || "";
           // User doesn't exist, add them to the Users table
           try {
             await sql`
               INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
-              VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${sanitizedBio}, ${avatar_url}, ${location});
+              VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${bio}, ${avatar_url}, ${location});
             `;
             console.log(`User '${username}' added to the database.`);
 

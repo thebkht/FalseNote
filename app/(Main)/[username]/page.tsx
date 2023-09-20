@@ -164,7 +164,7 @@ export default function Page({ params }: Props) {
               <Button className="w-full" >Follow</Button>
             )}
 
-            <div className="w-full">{ user?.bio }</div>
+            { user?.bio && ( <div className="w-full">{ user?.bio }</div> ) }
 
           <div className="py-2 flex gap-2">
             <Button variant={"secondary"} size={"sm"} className="!text-sm">

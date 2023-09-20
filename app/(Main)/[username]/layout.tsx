@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { use } from 'react';
 
 type Props = {
      params: { username: string }
@@ -18,10 +19,10 @@ export async function generateMetadata(
         const user = data.user;
       return {
         title: `${user.username} ${user?.name ? `(` + user?.name + `)` : `` } | FalseNotes`,
-        description: user?.bio || `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
+        description: user?.bio === null || user?.bio === "" ? `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.` : user?.bio,
         openGraph: {
           title: `${user.username} ${user?.name ? `(` + user?.name + `)` : `` } | FalseNotes`,
-          description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
+          description: user?.bio === null || user?.bio === "" ? `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.` : user?.bio,
           url: `${process.env.DOMAIN}/${user.username}`,
           images: [
             {
@@ -35,7 +36,7 @@ export async function generateMetadata(
         twitter: {
           card: 'summary_large_image',
           title: `${user.username} ${user?.name ? `(` + user?.name + `)` : `` } | FalseNotes`,
-          description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
+          description: user?.bio === null || user?.bio === "" ? `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.` : user?.bio,
         },
     } 
     } catch (error) {
