@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: 'https://falsenotes.vercel.app',
     images: [
       {
-        url: '../public/og.png',
+        url: '../og.png',
         width: 1200,
         height: 630,
         alt: 'FalseNotes',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
     images: [
       {
-        url: '../public/og.png',
+        url: '../og.png',
         width: 1200,
         height: 630,
         alt: 'FalseNotes',
