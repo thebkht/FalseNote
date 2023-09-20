@@ -1,36 +1,6 @@
-"use client"
-
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import * as z from "zod"
-/* import ReactMarkdown from "react-markdown" */
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { useRef, useState } from "react"
 import { createPlugins, Plate, RenderAfterEditable, withProps, PlateElement, PlateLeaf } from '@udecode/plate-common';
 import { createParagraphPlugin, ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
-import { createHeadingPlugin, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, KEYS_HEADING } from '@udecode/plate-heading';
+import { createHeadingPlugin, ELEMENT_H1, ELEMENT_H2, ELEMENT_H3 } from '@udecode/plate-heading';
 import { createBlockquotePlugin, ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote';
 import { createCodeBlockPlugin, ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE, ELEMENT_CODE_SYNTAX } from '@udecode/plate-code-block';
 import { createHorizontalRulePlugin, ELEMENT_HR } from '@udecode/plate-horizontal-rule';
@@ -91,10 +61,8 @@ import { FloatingToolbar } from '@/components/plate-ui/floating-toolbar';
 import { FloatingToolbarButtons } from '@/components/plate-ui/floating-toolbar-buttons';
 import { withPlaceholders } from '@/components/plate-ui/placeholder';
 import { withDraggables } from '@/components/plate-ui/with-draggables';
-import { PlaygroundFixedToolbarButtons } from "../plate-ui/playground-fixed-toolbar-buttons"
-import { PlaygroundFloatingToolbarButtons } from "../plate-ui/playground-floating-toolbar-buttons"
 
-const plugins = createPlugins(
+export const plugins = createPlugins(
      [
        createParagraphPlugin(),
        createHeadingPlugin(),
@@ -110,7 +78,7 @@ const plugins = createPlugins(
        createCaptionPlugin({
          options: {
            pluginKeys: [
-             ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED
+             // ELEMENT_IMAGE, ELEMENT_MEDIA_EMBED
            ]
          },
        }),
@@ -133,7 +101,7 @@ const plugins = createPlugins(
            props: {
              validTypes: [
                ELEMENT_PARAGRAPH,
-               ELEMENT_H1, ELEMENT_H2, ELEMENT_H3
+               // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3
              ],
            },
          },
@@ -143,7 +111,7 @@ const plugins = createPlugins(
            props: {
              validTypes: [
                ELEMENT_PARAGRAPH,
-               ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_BLOCKQUOTE, ELEMENT_CODE_BLOCK
+               // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_BLOCKQUOTE, ELEMENT_CODE_BLOCK
              ],
            },
          },
@@ -155,7 +123,7 @@ const plugins = createPlugins(
              validNodeValues: [1, 1.2, 1.5, 2, 3],
              validTypes: [
                ELEMENT_PARAGRAPH,
-               ELEMENT_H1, ELEMENT_H2, ELEMENT_H3
+               // ELEMENT_H1, ELEMENT_H2, ELEMENT_H3
              ],
            },
          },
@@ -195,7 +163,7 @@ const plugins = createPlugins(
                query: {
                  start: true,
                  end: true,
-                 allow: KEYS_HEADING,
+                 // allow: KEYS_HEADING,
                },
                relative: true,
                level: 1,
@@ -216,7 +184,7 @@ const plugins = createPlugins(
          options: {
            query: {
              allow: [
-               ELEMENT_IMAGE, ELEMENT_HR
+               // ELEMENT_IMAGE, ELEMENT_HR
              ],
            },
          },
@@ -229,7 +197,7 @@ const plugins = createPlugins(
                hotkey: 'enter',
                query: {
                  allow: [
-                   ELEMENT_CODE_BLOCK, ELEMENT_BLOCKQUOTE, ELEMENT_TD
+                   // ELEMENT_CODE_BLOCK, ELEMENT_BLOCKQUOTE, ELEMENT_TD
                  ],
                },
              },
@@ -279,162 +247,3 @@ const plugins = createPlugins(
        })),
      }
    );
-
-
-const postFormSchema = z.object({
-  title: z
-    .string()
-    .min(2, {
-      message: "Title must be at least 2 characters long.",
-    })
-    .max(100, {
-      message: "Username must not be longer than 100 characters.",
-    }),
-  visibility: z
-    .string({
-      required_error: "Please select a visibility option.",
-    }),
-  content: z.string().min(4),
-  topics: z
-    .array(
-      z.object({
-        value: z.string(),
-      })
-    )
-    .optional(),
-})
-
-type PostFormValues = z.infer<typeof postFormSchema>
-
-// This can come from your database or API.
-const defaultValues: Partial<PostFormValues> = {
-  visibility: "public",
-}
-
-export function PostForm() {
-  const containerRef = useRef(null);
-  const initialValue = [
-    {
-      id: '1',
-      type: ELEMENT_PARAGRAPH,
-      children: [{ text: '' }],
-    },
-  ];
-  const [editorHtml, setEditorHtml] = useState<string>('');
-  const form = useForm<PostFormValues>({
-    resolver: zodResolver(postFormSchema),
-    defaultValues,
-    mode: "onChange",
-  })
-
-  const { fields, append } = useFieldArray({
-    name: "topics",
-    control: form.control,
-  })
-
-  function onSubmit(data: PostFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <div>
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-        <div className="mt-4">
-        {/* <ReactMarkdown>{markdownContent}</ReactMarkdown> */}
-      </div>
-        </div>
-      ),
-    })
-  }
-
-
-  // Update markdownContent when the content field changes
-  function handleContentChange(value: string) {
-    setEditorHtml(value);
-    form.setValue('content', value);
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
-        {/* <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Title of the post" {...field} />
-              </FormControl>
-             <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
-        <DndProvider backend={HTML5Backend}>
-        <Plate plugins={plugins} initialValue={initialValue}>
-          <div
-            ref={containerRef}
-            className={cn(
-              // Block selection
-              '[&_.slate-start-area-left]:!w-[64px] [&_.slate-start-area-right]:!w-[64px] [&_.slate-start-area-top]:!h-4'
-            )}
-          >
-            <FixedToolbar>
-              <PlaygroundFixedToolbarButtons />
-            </FixedToolbar>
-
-            <Input placeholder="Title of the post" />
-            
-            <Editor
-              autoFocus
-              focusRing={false}
-              variant="ghost"
-              size="md"
-              placeholder="Content of the post"
-            />
-
-
-            <FloatingToolbar>
-              <PlaygroundFloatingToolbarButtons />
-            </FloatingToolbar>
-          </div>
-        </Plate>
-    </DndProvider>
-        {/* <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-              <DndProvider backend={HTML5Backend}>
-      <Plate plugins={plugins} >
-        <FixedToolbar>
-          <FixedToolbarButtons />
-        </FixedToolbar>
-        
-        <Editor />
-        
-        <FloatingToolbar>
-          <FloatingToolbarButtons />
-        </FloatingToolbar>
-      </Plate>
-    </DndProvider>
-              </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-  )
-}

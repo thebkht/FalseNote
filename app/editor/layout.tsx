@@ -16,7 +16,7 @@ export default function MainLayout({
     <>
      <EditorNavbar />
             <ScrollArea className='h-screen max-w-screen xl:px-36 2xl:px-64'>
-              <div className='py-24 px-4 md:px-24'>
+              <div className='py-10'>
                 {children}
               </div>
             </ScrollArea>
