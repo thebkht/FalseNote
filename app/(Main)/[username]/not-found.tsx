@@ -2,17 +2,6 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default function NotFound() {
-  const containerStyle = {
-    fontFamily:
-      'system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    height: "calc(100vh - 400px)",
-    justifyContent: "center",
-  };
-
   const h1Style = {
     display: "inline-block",
     fontSize: "24px",
@@ -45,12 +34,12 @@ export default function NotFound() {
             <h1 className="next-error-h1" style={h1Style}>
               404
             </h1>
-            <Separator className="h-10 mr-5 ml-5" orientation="vertical" />
+            <Separator orientation="vertical" className="mx-5"/>
             <div style={{ display: "inline-block" }}>
               <h2 style={h2Style}>This page could not be found.</h2>
             </div>
           </div>
-          <Link href="/">Go back home</Link>
+          <Link href="/" className="py-5">Go back home</Link>
         </div>
       </div>
     </main>
