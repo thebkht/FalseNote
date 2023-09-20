@@ -158,17 +158,13 @@ export default function Page({ params }: Props) {
             }
           </div>
 
-          {session && (
-            session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-              <Button variant={"outline"} size={"lg"} className="py-3" asChild>
-                <Link href="edit_profile.php" className="btn btn-outline-success w-100 mb-5">
-                  Edit Profile
-                </Link>
-              </Button>
+          {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
+              <Button className="w-full">Edit Profile</Button>
             ) : (
-              null
-            )
-          )}
+              <Button className="w-full" >Follow</Button>
+            )}
+
+            <div className="w-full">{ user?.bio }</div>
 
           <div className="py-2 flex gap-2">
             <Button variant={"secondary"} size={"sm"} className="!text-sm">
