@@ -35,7 +35,8 @@ export async function GET(request: Request) {
         Draft BOOLEAN DEFAULT FALSE,
         Views INT DEFAULT 0,
         Likes INT DEFAULT 0,
-        Dislikes INT DEFAULT 0
+        Dislikes INT DEFAULT 0,
+        url VARCHAR(255) UNIQUE NOT NULL
       );
     `;
 

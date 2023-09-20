@@ -28,6 +28,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { useState } from "react"
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const postFormSchema = z.object({
   title: z
@@ -60,6 +62,7 @@ const defaultValues: Partial<PostFormValues> = {
 }
 
 export function PostForm() {
+  const [editorHtml, setEditorHtml] = useState<string>('');
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues,
@@ -92,7 +95,8 @@ export function PostForm() {
 
   // Update markdownContent when the content field changes
   function handleContentChange(value: string) {
-    setMarkdownContent(value);
+    setEditorHtml(value);
+    form.setValue('content', value);
   }
 
   return (
@@ -120,73 +124,27 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea
-                  placeholder="Your post goes here"
-                  className="w-full min-h-[500px]"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e); // Let React Hook Form handle the value change
-                    handleContentChange(e.target.value); // Update the Markdown content
+              <ReactQuill
+                  value={editorHtml}
+                  onChange={handleContentChange}
+                  modules={{
+                    toolbar: [
+                      [{ header: '1' }, { header: '2' }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['link', 'image', 'blockquote', 'code-block'],
+                      [{ 'script': 'sub' }, { 'script': 'super' }],
+                      [{ 'indent': '-1' }, { 'indent': '+1' }],
+                      [{ 'direction': 'rtl' }],
+                      [{ 'align': [] }],
+                      ['clean'],
+                    ],
                   }}
                 />
               </FormControl>
               {/* <FormDescription>
                 You can <span>@mention</span> other users and organizations to
                 link to them.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="grid gap-4 grid-cols-5">
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`topics.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  {/* <FormDescription className={cn(index !== 0 && "sr-only")}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription> */}
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2 col-span-5"
-            onClick={() => append({ value: "" })}
-          >
-            Add Topic
-          </Button>
-        </div>
-        <FormField
-          control={form.control}
-          name="visibility"
-          render={({ field }) => (
-            <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Visibility" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="public">Public</SelectItem>
-                  <SelectItem value="private">Private</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                </SelectContent>
-              </Select>
-              {/* <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
               </FormDescription> */}
               <FormMessage />
             </FormItem>
