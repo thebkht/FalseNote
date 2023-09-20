@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'FalseNotes',
     description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
-    url: 'https://falsenotes.vercel.app',
+    url: process.env.DOMAIN!,
     images: [
       {
         url: '../og.png',
