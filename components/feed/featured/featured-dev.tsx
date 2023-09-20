@@ -57,7 +57,7 @@ export default function FeaturedDev(
                     )
                   }
                 </Link>
-                <p className="text-sm text-muted-foreground hidden md:block w-[410px]">{item?.bio?.length! > 100 ? (
+                <p className="text-sm hidden md:block w-[410px]">{item?.bio?.length! > 100 ? (
             <>{item?.bio?.slice(0, 100)}...</>
           ) : (
             <>{item.bio}</>
