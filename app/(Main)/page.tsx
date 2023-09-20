@@ -5,7 +5,11 @@ import Feed from '@/components/feed/feed'
 import { useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <Feed />
-  )
+  const { status } = useSession();
+
+  if (status !== "authenticated") {
+    return <Landing />
+  } else {
+    return <Feed />
+  }
 }
