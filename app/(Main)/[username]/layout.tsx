@@ -17,8 +17,8 @@ export async function generateMetadata(
        const data = await response.json();  
         const user = data.user;
       return {
-        title: `${user.username} | FalseNotes`,
-        description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
+        title: `${user.username} ${user?.name ? `(` + user?.name + `)` : `` } | FalseNotes`,
+        description: user?.bio || `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,
         openGraph: {
           title: `${user.username} | FalseNotes`,
           description: `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.`,

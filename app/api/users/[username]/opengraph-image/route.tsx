@@ -34,7 +34,7 @@ export async function GET(request: Request,
           </h1>
               ) : (
                 <h1 tw="space-y-3 inline-block">
-            <span tw="font-bold text-[40px] block mb-2">{user?.name}</span>
+            <span tw="font-bold text-[40px] inline-block mb-2">{user?.name}</span>
             <span tw="text-2xl font-light text-muted-foreground">{user?.username}</span>
           </h1>)
             }
