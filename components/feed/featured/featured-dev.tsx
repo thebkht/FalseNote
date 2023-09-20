@@ -3,31 +3,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { featuredItems } from "./items";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import { Key } from "react";
 import { useEffect, useState } from "react";
 import { getFeaturedDevs } from "@/components/get-user";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
-export default function FeaturedDev() {
-  const [featuredDevs, setFeaturedDevs] = useState([]);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userData = await getFeaturedDevs();
-        setFeaturedDevs(userData.users);
-        setIsLoaded(true);
-      } catch (error) {
-        // Handle errors
-        console.error('Error:', error);
-      }
-    }
-
-    fetchData();
-  }, []);
+export default function FeaturedDev(
+  { data: featuredDevs, isloaded: isLoaded }: { data: any; isloaded: boolean; }
+) {
+  
 
   let content = null;
 
@@ -39,8 +26,11 @@ export default function FeaturedDev() {
         </CardHeader>
         <CardContent>
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
-            {featuredDevs.map((item: { userId: Key | null | undefined; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; }) => (
+            {featuredDevs.map((item: {
+              verified: boolean; userId: Key | null | undefined; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; 
+}) => (
               <div className="flex gap-4 w-full items-center justify-between" key={item.userId}>
+                <div className="space-y-3">
                 <Link href={`/${item.username}`} className="flex items-center">
                   <Avatar className="h-10 w-10 mr-4">
                     <AvatarImage src={item.profilepicture} alt={item.username} />
@@ -49,17 +39,30 @@ export default function FeaturedDev() {
                   {
                     item.name === null ? (
                       <div>
-                        <p className="text-sm font-medium leading-none">{item.username}</p>
+                        <p className="text-sm font-medium leading-none">{item.username} {item?.verified && (
+                    <Badge className="h-3 w-3 !px-0">
+                      <Check className="h-2 w-2 mx-auto" />
+                    </Badge>
+                  )}</p>
                       </div>
                     ) : (
                       <div>
-                        <p className="text-sm font-medium leading-none">{item.name}</p>
+                        <p className="text-sm font-medium leading-none">{item.name} {item?.verified && (
+                    <Badge className="h-3 w-3 !px-0">
+                      <Check className="h-2 w-2 mx-auto" />
+                    </Badge>
+                  )}</p>
                         <p className="text-sm text-muted-foreground">{item.username}</p>
                       </div>
                     )
                   }
                 </Link>
-                <p className="text-sm text-muted-foreground hidden md:block">{item.bio}</p>
+                <p className="text-sm text-muted-foreground hidden md:block w-[410px]">{item?.bio?.length! > 100 ? (
+            <>{item?.bio?.slice(0, 100)}...</>
+          ) : (
+            <>{item.bio}</>
+          )}</p>
+                </div>
                 <Button variant="outline" size={"lg"} className="flex-shrink-0">
                   <Plus className="h-4 w-4 mr-2" /> Follow
                 </Button>

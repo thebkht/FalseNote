@@ -18,7 +18,7 @@ export async function generateMetadata(
        const data = await response.json();  
         const user = data.user;
       return {
-        metadataBase: new URL('https://falsenotes.vercel.app'),
+        metadataBase: new URL(`${process.env.DOMAIN}/${user.username}`),
         title: `${user.username} ${user?.name ? `(` + user?.name + `)` : `` } | FalseNotes`,
         description: user?.bio === null || user?.bio === "" ? `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.` : user?.bio,
         openGraph: {

@@ -1,8 +1,27 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FeaturedDev from "./featured/featured-dev";
+import { useEffect, useState } from "react";
+import { getFeaturedDevs } from "../get-user";
 
 export default function Feed() {
+  const [featuredDevs, setFeaturedDevs] = useState([]);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const userData = await getFeaturedDevs();
+        setFeaturedDevs(userData.users);
+        setIsLoaded(true);
+      } catch (error) {
+        // Handle errors
+        console.error('Error:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
      return (
           <>
                <main className="flex min-h-screen flex-col items-center justify-between feed ">
@@ -22,7 +41,7 @@ export default function Feed() {
              </div>
            </div>
          </div>
-         <FeaturedDev />
+         <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
        </div>
       </div>
      </main>

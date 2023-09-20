@@ -15,6 +15,7 @@ export const config = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      
       if (account?.provider === 'github' && user) {
         const { login: username, name, email, bio, html_url: githubProfileURL, avatar_url, location } = profile as any;
   

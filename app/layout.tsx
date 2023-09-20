@@ -10,6 +10,7 @@ import AuthProvider from '@/components/providers/auth-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.DOMAIN!),
   title: 'FalseNotes',
   description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
   openGraph: {
