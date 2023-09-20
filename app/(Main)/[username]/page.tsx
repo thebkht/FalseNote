@@ -140,7 +140,7 @@ export default function Page({ params }: Props) {
             {
               user?.name === null ? (
                 <h1 className="space-y-3">
-                  <span className="font-bold text-2xl block mb-2">{user?.username} {user?.verified && (
+                  <span className="font-bold text-2xl block">{user?.username} {user?.verified && (
                     <Badge className="h-6 w-6 !px-1">
                       <Check className="h-4 w-4" />
                     </Badge>
@@ -148,7 +148,7 @@ export default function Page({ params }: Props) {
                 </h1>
               ) : (
                 <h1 className="space-y-3">
-                  <span className="font-bold text-2xl block mb-2">{user?.name} {user?.verified && (
+                  <span className="font-bold text-2xl block">{user?.name} {user?.verified && (
                     <Badge className="h-6 w-6 !px-1">
                       <Check className="h-4 w-4" />
                     </Badge>
@@ -171,33 +171,47 @@ export default function Page({ params }: Props) {
           )}
 
           <div className="py-2 flex gap-2">
-            <Button variant={"secondary"} size={"sm"}>
+            <Button variant={"secondary"} size={"sm"} className="!text-sm">
               {user?.followersnum} Followers
             </Button>
-            <Button variant={"secondary"} size={"sm"}>
+            <Button variant={"secondary"} size={"sm"} className="!text-sm">
               {user?.followingnum} Followers
             </Button>
-            <Button variant={"secondary"} size={"sm"} >{user?.postsnum} Post</Button>
+            <Button variant={"secondary"} size={"sm"} className="!text-sm" >{user?.postsnum} Post</Button>
           </div>
 
-          <ul className="details list-none space-y-3">
-            {user?.location && <li className="flex items-center font-light">
-              <MapPin className="h-5 w-5 mr-1" />
-              {user?.location}
+          <ul className="details list-none">
+            {user?.location && <li>
+              <Button variant={"link"} size={"sm"} asChild className="p-0 !text-sm hover:!no-underline">
+                <span>
+                <MapPin className="mr-2 h-5 w-5" />
+                {user?.location}
+                </span>
+              </Button>
             </li>}
-            {user?.email && <li className="flex items-center font-light">
-              <Mail className="h-5 w-5 mr-1" />
-              {user?.email}
+            {user?.email && <li>
+              <Button variant={"link"} size={"sm"} asChild className="p-0">
+              <Link href={`mailto:${user?.email}`} target="_blank" className="flex items-center font-light !text-sm">
+                <Mail className="mr-2 h-5 w-5" />
+                {user?.email}
+              </Link>
+              </Button>
             </li>}
             <li>
-              <Link href={user?.githubprofileurl} className="flex items-center font-light">
-                <Icons.gitHub className="h-5 w-5 mr-1" />
+              <Button variant={"link"} size={"sm"} asChild className="p-0" >
+              <Link href={user?.githubprofileurl} target="_blank" className="flex items-center font-light !text-sm">
+                <Icons.gitHub className="mr-2 h-5 w-5" />
                 {user?.githubprofileurl.replace("https://github.com/", "")}
               </Link>
+              </Button>
             </li>
-            <li className="flex items-center font-light">
-              <Rocket className="h-5 w-5 mr-1" />
+            <li>
+              <Button variant={"link"} size={"sm"} asChild className="p-0 !text-sm hover:!no-underline" >
+                <span>
+                <Rocket className="mr-2 h-5 w-5" />
               Joined on {getRegistrationDateDisplay(user?.registrationdate)}
+                </span>
+              </Button>
             </li>
           </ul>
         </div>
