@@ -12,6 +12,34 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'FalseNotes',
   description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
+  openGraph: {
+    title: 'FalseNotes',
+    description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
+    url: 'https://falsenotes.vercel.app',
+    images: [
+      {
+        url: '../public/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'FalseNotes',
+      },
+    ],
+    creators: ['@bkhtdev'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FalseNotes',
+    description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
+    images: [
+      {
+        url: '../public/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'FalseNotes',
+      },
+    ],
+    creator: '@bkhtdev',
+  },
 }
 
 export default async function Rootayout({
