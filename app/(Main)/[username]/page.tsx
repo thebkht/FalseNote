@@ -12,14 +12,6 @@ import { useEffect, useState } from "react";
 import type { Metadata, ResolvingMetadata } from 'next'
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 type Props = {
   params: { username: string }

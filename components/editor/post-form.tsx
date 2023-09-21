@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import {
   Dialog,
@@ -35,6 +35,8 @@ import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ArrowUp } from "lucide-react"
 import { cp } from "fs"
+import { useSession } from "next-auth/react"
+import { getUserByUsername } from "../get-user"
 
 const postFormSchema = z.object({
   title: z
@@ -69,6 +71,21 @@ const defaultValues: Partial<PostFormValues> = {
 }
 
 export function PostForm() {
+  const { data: session } = useSession()
+  const [ user, setUser] = useState<any | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const userData = await getUserByUsername(session?.user?.name!);
+        setUser(userData);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, [session?.user?.name!]);
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues,
@@ -86,14 +103,18 @@ export function PostForm() {
       try {
       const dataForm = new FormData()
       dataForm.set ('file', file)
-      const res =
-      await fetch('/api/upload', {
-        method: 'POST',
-        body: dataForm
-      })
+      // Construct the request body with postId and authorId
+      const requestBody = {
+        postId: form.getValues('url'),
+        userId: user?.id,
+      };
 
-      // handle the error
-      if (!res.ok) throw new Error(await res.text())
+      dataForm.set('body', JSON.stringify(requestBody));
+
+      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.id}`, {
+        method: 'POST',
+        body: dataForm,
+      });
       // get the image url
       const { url } = await res.json()
       // set the cover image url
@@ -223,7 +244,7 @@ export function PostForm() {
                         teletype.in/@bkhtdev/
                       </FormDescription>
                       <FormControl>
-                        <Input placeholder="URL" {...field} />
+                        <Input placeholder="URL" {...field} onChange={(e) => form.setValue('url', e.target.value)} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
