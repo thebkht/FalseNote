@@ -23,6 +23,7 @@ import { getUserByUsername } from "../get-user"
 
 export function UserNav() {
      const [isLoading, setLoading] = useState(true)
+     const { status } = useSession();
      const user = useSession().data?.user as any;
      const [username, setUsername] = useState(null);
 
@@ -37,8 +38,11 @@ export function UserNav() {
       }
     }
 
-    fetchData();
-  }, [user?.name]);
+    if (status !== "authenticated") {
+          fetchData();
+          setLoading(false);
+     }
+  }, [status, user?.name]);
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
@@ -59,7 +63,7 @@ export function UserNav() {
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href={`/${username}`}>
+                    <Link href={username == null ?  `/${username}` : `/`}>
                          <DropdownMenuItem>
                               Profile
                               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
