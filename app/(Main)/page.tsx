@@ -7,12 +7,6 @@ import { use, useEffect } from 'react';
 export default function Home() {
   const { status, update } = useSession();
 
-  useEffect(() => {
-    if (status !== "loading") {
-      update();
-    }
-  }, [status]);
-
   if (status !== "authenticated") {
     return <Landing />
   } else {
