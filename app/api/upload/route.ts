@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
   const domain = process.env.DOMAIN || 'http://localhost:3000'
 
-  const path = join(domain, 'public', 'uploads', file.name)
+  const path = join(domain, '_next', 'static', 'media', 'uploads', file.name)
   await writeFile(path, buffer)
   console.log(`open ${path} to see the uploaded file`)
 
