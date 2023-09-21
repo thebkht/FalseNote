@@ -38,7 +38,7 @@ export function UserNav() {
       }
     }
 
-    if (status !== "authenticated") {
+    if (status === "authenticated") {
           fetchData();
           setLoading(false);
      }
