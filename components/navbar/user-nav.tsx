@@ -63,7 +63,7 @@ export function UserNav() {
                          </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href={username == null ?  `/${username}` : `/`}>
+                    <Link href={username !== null ?  `/${username}` : `/`}>
                          <DropdownMenuItem>
                               Profile
                               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
