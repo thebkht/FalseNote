@@ -21,9 +21,9 @@ export async function POST(req: NextRequest, searchParams: {postId: string, auth
     region: process.env.AWS_REGION,
   });
 
-  if (searchParams.postId || !searchParams.authorId) {
-    return NextResponse.json({ success: false, message: 'postId and authorId are required query parameters' });
-  }
+  // if (searchParams.postId || !searchParams.authorId) {
+  //   return NextResponse.json({ success: false, message: 'postId and authorId are required query parameters' });
+  // }
 
   const s3 = new AWS.S3();
   const s3path = `assets/media/blogs/covers/${searchParams.authorId}/${searchParams.postId}.${file.name.split('.').pop()}`;
