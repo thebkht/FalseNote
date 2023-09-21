@@ -36,6 +36,7 @@
     "@vercel/og": "^0.5.14",
     "@vercel/postgres": "^0.4.1",
     "autoprefixer": "10.4.15",
+    "aws-sdk": "^2.1462.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
