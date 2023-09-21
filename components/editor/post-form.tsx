@@ -73,7 +73,6 @@ export function PostForm() {
     resolver: zodResolver(postFormSchema),
     defaultValues,
     mode: "onChange",
-
   })
 
   const { fields, append } = useFieldArray({
@@ -81,7 +80,7 @@ export function PostForm() {
     control: form.control,
   })
 
-  async function upload() {
+  const upload = async() => {
        if (!file) return
 
       try {
@@ -92,6 +91,7 @@ export function PostForm() {
         method: 'POST',
         body: dataForm
       })
+
       // handle the error
       if (!res.ok) throw new Error(await res.text())
       // get the image url
@@ -104,25 +104,12 @@ export function PostForm() {
       }
   }
 
-  async function onSubmit(data: PostFormValues) {
+  function onSubmit(data: PostFormValues) {
     console.log("Submitting form...")
     // Upload the cover image
-    await upload()
+    upload()
     // Submit the form
     console.log(data)
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <div>
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-          <div className="mt-4">
-            <ReactMarkdown>{markdownContent}</ReactMarkdown>
-          </div>
-        </div>
-      ),
-    })
   }
 
 
@@ -137,7 +124,7 @@ export function PostForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full" id="createPostForm">
         <FormField
           control={form.control}
           name="title"
@@ -301,7 +288,7 @@ export function PostForm() {
                 </div>
               </div>
               <DialogFooter className="mt-4">
-                <Button size={"lg"} className="w-full" type="submit">
+                <Button size={"lg"} className="w-full" type="submit" form="createPostForm">
                   Publish
                 </Button>
               </DialogFooter>
