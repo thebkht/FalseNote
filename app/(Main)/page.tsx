@@ -11,7 +11,7 @@ export default function Home() {
     if (status !== "loading") {
       update();
     }
-  }, [status, update]);
+  }, [status]);
 
   if (status !== "authenticated") {
     return <Landing />
