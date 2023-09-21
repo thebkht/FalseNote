@@ -31,7 +31,7 @@ export async function GET(request: Request) {
         LastUpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         AuthorID INT REFERENCES Users(UserID),
         CoverImage VARCHAR(255), -- Store URL or BLOB for binary data
-        Visibility VARCHAR(255) DEFAULT 'Public', -- Public, Private, or Unlisted
+        Visibility VARCHAR(255) DEFAULT 'Public' NOT NULL, -- Public, Private, or Unlisted
         Draft BOOLEAN DEFAULT FALSE,
         Views INT DEFAULT 0,
         Likes INT DEFAULT 0,

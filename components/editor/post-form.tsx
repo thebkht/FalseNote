@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
@@ -18,16 +17,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import { useState } from "react"
+import React, { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import {
   Dialog,
@@ -38,9 +30,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
-import { AspectRatio } from "../ui/aspect-ratio"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { ArrowUp } from "lucide-react"
+import { cp } from "fs"
 
 const postFormSchema = z.object({
   title: z
@@ -87,7 +81,35 @@ export function PostForm() {
     control: form.control,
   })
 
-  function onSubmit(data: PostFormValues) {
+  async function upload() {
+       if (!file) return
+
+      try {
+      const dataForm = new FormData()
+      dataForm.set ('file', file)
+      const res =
+      await fetch('/api/upload', {
+        method: 'POST',
+        body: dataForm
+      })
+      // handle the error
+      if (!res.ok) throw new Error(await res.text())
+      // get the image url
+      const { url } = await res.json()
+      // set the cover image url
+      form.setValue('coverImage', url)
+      } catch (e: any) {
+      // Handle errors here
+      console.error(e)
+      }
+  }
+
+  async function onSubmit(data: PostFormValues) {
+    console.log("Submitting form...")
+    // Upload the cover image
+    await upload()
+    // Submit the form
+    console.log(data)
     toast({
       title: "You submitted the following values:",
       description: (
@@ -104,22 +126,14 @@ export function PostForm() {
   }
 
 
-  const [markdownContent, setMarkdownContent] = useState<string>(''); // State for Markdown content
-  const [coverImg, setCoverImg] = useState<string>('');
+  const [markdownContent, setMarkdownContent] = useState<string>('');
+  const [file, setFile] = useState<File>(); // State for the uploaded file
 
   function handleContentChange(value: string) {
     setMarkdownContent(value);
     form.setValue('content', value); // Update the form field value
   }
-
-  function handleCoverImgChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file); // Create a URL from the selected file
-      setCoverImg(imageUrl); // Set the URL as the cover image
-      form.setValue('coverImage', imageUrl); // Update the form field value with the URL
-    }
-  }
+  
 
   return (
     <Form {...form}>
@@ -165,7 +179,9 @@ export function PostForm() {
           )}
         />
         <Dialog>
-          <DialogTrigger><Button size={"lg"} className="w-full">Submit</Button></DialogTrigger>
+          
+          <DialogTrigger><Button size={"icon"}><ArrowUp /></Button></DialogTrigger>
+          
           <DialogContent>
             <DialogHeader className="space-y-4">
               <DialogTitle>Post Settings for publishing</DialogTitle>
@@ -236,18 +252,18 @@ export function PostForm() {
                       <FormControl>
                         <>
                         {
-                          coverImg !== '' ?   (
+                          file ?   (
                             <AspectRatio ratio={16 / 9} className="bg-muted">
                               <Image
-                                src={coverImg}
-                                alt="Photo by Drew Beamer"
+                                src={URL.createObjectURL(file)}
+                                alt="Cover Image"
                                 fill
                                 className="rounded-md object-cover"
                               />
                             </AspectRatio>
                           ) : ''
                         }
-                        <Input type="file" {...field} accept="image/*" onChange={handleCoverImgChange} />
+                        <Input type="file" {...field} accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
 
                         </>
                       </FormControl>
