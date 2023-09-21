@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
 const AWS = require('aws-sdk');
 
-export async function POST(req: NextRequest, searchParams: {postId: string, authorId: string}) {
+export async function POST(req: NextRequest) {
   try {
     const data = await req.formData(); 
   const file: File | null = data.get('file') as unknown as File
@@ -21,12 +21,18 @@ export async function POST(req: NextRequest, searchParams: {postId: string, auth
     region: process.env.AWS_REGION,
   });
 
-  // if (searchParams.postId || !searchParams.authorId) {
-  //   return NextResponse.json({ success: false, message: 'postId and authorId are required query parameters' });
-  // }
+  // Extract postId and authorId from searchParams
+  const postId = req.nextUrl.searchParams.get("postId");
+  const authorId = req.nextUrl.searchParams.get("authorId");
+
+  console.log(postId, authorId);
+
+  if (!postId || !authorId) {
+    return NextResponse.json({ success: false, message: 'postId and authorId are required query parameters' });
+  }
 
   const s3 = new AWS.S3();
-  const s3path = `assets/media/blogs/covers/${searchParams.authorId}/${searchParams.postId}.${file.name.split('.').pop()}`;
+  const s3path = `assets/media/blogs/covers/${authorId}/${postId}.${file.name.split('.').pop()}`;
 
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -43,7 +49,7 @@ export async function POST(req: NextRequest, searchParams: {postId: string, auth
     console.log(data);
   });
 
-  return NextResponse.json({ success: true, message: 'File uploaded' })
+  return NextResponse.json({ success: true, message: 'File uploaded', data: { url: s3path }, postId: postId, authorId: authorId })
   } catch (error : any) {
     return NextResponse.json({ success: false, message: error.message })
   }
