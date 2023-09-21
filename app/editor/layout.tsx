@@ -13,13 +13,13 @@ export default function MainLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <div className='bg-popover'>
      <EditorNavbar />
             <ScrollArea className='h-screen max-w-screen xl:px-36 2xl:px-64'>
               <div className='py-10'>
                 {children}
               </div>
             </ScrollArea>
-    </>
+    </div>
   )
 }

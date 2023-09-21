@@ -27,7 +27,7 @@ export async function generateMetadata(
           url: `${process.env.DOMAIN}/${user.username}`,
           images: [
             {
-              url: `${process.env.DOMAIN}/api/users/${user.username}/og`,
+              url: `${process.env.DOMAIN}/api/users/${user.username}/opengraph-image`,
               width: 1200,
               height: 630,
               alt: `${user.username} | FalseNotes`,
