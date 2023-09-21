@@ -2,11 +2,6 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/navbar/navbar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-export const metadata: Metadata = {
-  title: 'FalseNotes',
-  description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
-}
-
 export default function MainLayout({
   children,
 }: {

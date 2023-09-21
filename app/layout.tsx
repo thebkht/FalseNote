@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     url: process.env.DOMAIN!,
     images: [
       {
-        url: '../og.png',
+        url: 'https://s3.ap-northeast-2.amazonaws.com/falsenotes.app/assets/media/og.png',
         width: 1200,
         height: 630,
         alt: 'FalseNotes',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
     images: [
       {
-        url: '../og.png',
+        url: 'https://s3.ap-northeast-2.amazonaws.com/falsenotes.app/assets/media/og.png',
         width: 1200,
         height: 630,
         alt: 'FalseNotes',
