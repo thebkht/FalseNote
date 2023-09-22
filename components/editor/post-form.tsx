@@ -245,7 +245,7 @@ export function PostForm() {
                     <FormItem>
                       <FormLabel>URL-friendly Link</FormLabel>
                       <FormDescription>
-                        {`https://falsenotes.app/${user?.username}/` }
+                        {`falsenotes.app/${user?.username}/` }
                       </FormDescription>
                       <FormControl>
                         <Input placeholder="URL" {...field} onChange={(e) => form.setValue('url', e.target.value)} />

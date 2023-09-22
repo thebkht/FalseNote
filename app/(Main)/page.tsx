@@ -6,7 +6,6 @@ import { use, useEffect } from 'react';
 
 export default function Home() {
   const { status, update } = useSession();
-  console.log(process.cwd())
 
   if (status !== "authenticated") {
     return <Landing />
