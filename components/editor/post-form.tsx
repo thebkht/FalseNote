@@ -316,7 +316,7 @@ export function PostForm() {
                 <Button
                   type="submit"
                   className="ml-auto w-full"
-                  size={"lg"}
+                  size={"lg"} form="createPostForm"
                 >
                   Publish
                 </Button>
