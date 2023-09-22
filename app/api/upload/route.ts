@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     console.log(data);
   });
 
-  return NextResponse.json({ success: true, message: 'File uploaded', data: { url: s3path } })
+  return NextResponse.json({ success: true, message: 'File uploaded', url: s3path })
   } catch (error : any) {
     return NextResponse.json({ success: false, message: error.message })
   }
