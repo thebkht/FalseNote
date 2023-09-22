@@ -73,13 +73,13 @@ const defaultValues: Partial<PostFormValues> = {
 }
 
 export function PostForm() {
-  const { data: session } = useSession()
+  const sessionUser = useSession().data?.user as any;
   const [ user, setUser] = useState<any | null>(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const userData = await getUserByUsername(session?.user?.name!);
+        const userData = await getUserByUsername(sessionUser?.name);
         setUser(userData);
       } catch (error) {
         console.error(error);
@@ -87,7 +87,7 @@ export function PostForm() {
     }
 
     fetchData();
-  }, [session?.user?.name!]);
+  }, [sessionUser?.name!]);
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues,
@@ -113,7 +113,7 @@ export function PostForm() {
 
       dataForm.set('body', JSON.stringify(requestBody));
 
-      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.id || session?.user?.name}`, {
+      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.id || sessionUser?.name}`, {
         method: 'POST',
         body: dataForm,
       });
