@@ -113,7 +113,7 @@ export function PostForm() {
 
       dataForm.set('body', JSON.stringify(requestBody));
 
-      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.id || sessionUser?.name}`, {
+      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.id}`, {
         method: 'POST',
         body: dataForm,
       });
