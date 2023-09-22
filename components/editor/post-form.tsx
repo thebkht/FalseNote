@@ -37,6 +37,8 @@ import { ArrowUp } from "lucide-react"
 import { cp } from "fs"
 import { useSession } from "next-auth/react"
 import { getUserByUsername } from "../get-user"
+import { ScrollArea } from "../ui/scroll-area"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 
 const postFormSchema = z.object({
   title: z
@@ -188,12 +190,14 @@ export function PostForm() {
         />
         <Dialog>
           
-          <DialogTrigger><Button size={"icon"}><ArrowUp /></Button></DialogTrigger>
+          <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full">Post Setting</Button></DialogTrigger>
           
-          <DialogContent>
-            <DialogHeader className="space-y-4">
-              <DialogTitle>Post Settings for publishing</DialogTitle>
-              <div className="mt-10 space-y-4">
+          <DialogContent className="h-full max-h-[600px] !p-0">
+            <ScrollArea className="h-full w-full px-6">
+            <DialogHeader className="py-6">
+              <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pb-4 m-1">
                 <FormField
                   control={form.control}
                   name="visibility"
@@ -308,21 +312,16 @@ export function PostForm() {
                   </Button>
                 </div>
               </div>
-              <DialogFooter className="mt-4">
-                <Button size={"lg"} className="w-full" type="submit" form="createPostForm">
+              <DialogFooter className="pb-6">
+                <Button
+                  type="submit"
+                  className="ml-auto w-full"
+                  size={"lg"}
+                >
                   Publish
                 </Button>
               </DialogFooter>
-            </DialogHeader>
-            {/* {
-      markdownContent && (
-        <DialogDescription>
-      <div className="">
-        <ReactMarkdown>{markdownContent}</ReactMarkdown>
-      </div>
-    </DialogDescription>
-      )
-    } */}
+              </ScrollArea>
           </DialogContent>
         </Dialog>
 
