@@ -127,10 +127,10 @@ export function PostForm() {
       }
   }
 
-  function onSubmit(data: PostFormValues) {
+  async function onSubmit(data: PostFormValues) {
     console.log("Submitting form...")
     // Upload the cover image
-    upload()
+    await upload()
     // Submit the form
     console.log(data)
   }
