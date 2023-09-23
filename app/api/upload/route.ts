@@ -40,19 +40,18 @@ export async function POST(req: NextRequest) {
     Body: buffer,
   };
 
-  let coverUrl;
+  const url = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3path}`;
 
   s3.upload(params, function (err: any, data: any) {
     if (err) {
       console.log('error in callback');
       console.log(err);
     }
-    console.log('success');
-    coverUrl = data.Location;
-    console.log(data);
+    // console.log('success');
+    // console.log(data);
   });
 
-  return NextResponse.json({ success: true, message: 'File uploaded', data: { url: coverUrl } })
+  return NextResponse.json({ success: true, message: 'File uploaded', data: { url } })
   } catch (error : any) {
     return NextResponse.json({ success: false, message: error.message })
   }

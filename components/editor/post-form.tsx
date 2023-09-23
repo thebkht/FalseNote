@@ -53,6 +53,7 @@ const postFormSchema = z.object({
     required_error: "Please select a visibility option",
   }),
   content: z.string().max(1200).min(4),
+  coverImage: z.string().optional(),
   topics: z
     .array(
       z.object({
@@ -61,7 +62,6 @@ const postFormSchema = z.object({
     )
     .optional(),
   url: z.string(),
-  coverImage: z.string().optional(),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
@@ -120,7 +120,7 @@ export function PostForm() {
       // get the image url
       const { result } = await res.json()
       // set the cover image url
-      form.setValue('coverImage', result.data?.url)
+      return result.url;
       } catch (e: any) {
       // Handle errors here
       console.error(e)
@@ -130,25 +130,47 @@ export function PostForm() {
   async function onSubmit(data: PostFormValues) {
     console.log("Submitting form...")
     // Upload the cover image
-    if (file) {
-      await upload()
-    }
+    if (!file) return
 
+      try {
+      const dataForm = new FormData()
+      dataForm.set ('file', file)
+      // Construct the request body with postId and authorId
+      const requestBody = {
+        postId: form.getValues('url'),
+        userId: user?.id,
+      };
+
+      dataForm.set('body', JSON.stringify(requestBody));
+
+      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.username}`, {
+        method: 'POST',
+        body: dataForm,
+      });
+      // get the image url
+      const { data: coverUrl } = await res.json()
+      data.coverImage = coverUrl.url;
+      
+      } catch (e: any) {
+      // Handle errors here
+      console.error(e)
+      }
+    // Get the authorId from the session
     const authorId = user?.userid;
     // Submit the form
-    const res = await fetch("/api/posts/sunmit", {
+    const result = await fetch("/api/posts/submit", {
       method: "POST",
-      body: JSON.stringify(data, authorId),
+      body: JSON.stringify({ ...data, authorId }),
     })
-    const json = await res.json()
-    if (!res.ok) {
+    const json = await result.json()
+    if (!result.ok) {
       toast({
         title: "Error",
         description: json.message,
       })
       return
       }
-    if (res.ok) {
+    if (result.ok) {
       toast({
         title: "Success",
         description: json.message,
@@ -157,10 +179,8 @@ export function PostForm() {
       )
       return
     }
-
-
-    console.log(data)
   }
+
 
 
   const [markdownContent, setMarkdownContent] = useState<string>('');
