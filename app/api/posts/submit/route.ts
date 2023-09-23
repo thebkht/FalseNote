@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
           }
           console.log("Received data:", data);
 
-          const { title, content, coverImage, visibility, topics, url, authorId } = Object.fromEntries(data);
+          const { title, content, coverImage, visibility, topics, url, authorId } = data;
 
           if (!title || !content || !visibility || !topics || !url || !authorId) {
                return new Response("Missing required fields", { status: 400 });
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
           `;
 
           return NextResponse.json({ body: "Post submitted" }, { status: 200 });
-          
+
      } catch (error) {
           console.error("Error:", error);
           return NextResponse.json({body: "Error processing data"},
