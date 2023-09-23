@@ -4,14 +4,31 @@ import { sql } from "@vercel/postgres"
 export async function POST(req: NextRequest) {
      try {
           const data = await req.json();
-          const authorId = req.nextUrl.searchParams.get("authorId");
           if (!data) {
                return new Response("No data provided", { status: 400 });
           }
           console.log("Received data:", data);
-          console.log("Received authorId:", authorId);
 
-          const { title, content, coverImage, visibility, topics, url } = Object.fromEntries(data);
+          const { title, content, coverImage, visibility, topics, url, authorId } = Object.fromEntries(data);
+
+          if (!title || !content || !visibility || !topics || !url || !authorId) {
+               return new Response("Missing required fields", { status: 400 });
+          }
+
+          var isDraft;
+          if (visibility === "Draft") {
+               isDraft = true;
+          } else {
+               isDraft = false;
+          }
+
+          await sql`
+          INSERT INTO BlogPosts (Title, Content, CoverImage, Visibility, Draft, url, AuthorID)
+          VALUES (${title}, ${content}, ${coverImage}, ${visibility}, ${isDraft}, ${url}, ${authorId})
+          `;
+
+          return NextResponse.json({ body: "Post submitted" }, { status: 200 });
+          
      } catch (error) {
           console.error("Error:", error);
           return NextResponse.json({body: "Error processing data"},
