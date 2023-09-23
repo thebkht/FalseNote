@@ -194,7 +194,7 @@ export function PostForm() {
           
           <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full">Post Setting</Button></DialogTrigger>
           
-          <DialogContent className="h-full max-h-[600px] !p-0">
+          <DialogContent className="h-full max-h-[526px] !p-0">
             <ScrollArea className="h-full w-full px-6">
             <DialogHeader className="py-6">
               <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
