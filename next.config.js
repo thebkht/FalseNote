@@ -8,6 +8,12 @@ const nextConfig = {
               port: '',
               pathname: `/**`,
             },
+            {
+              protocol: 'https',
+              hostname: `s3.ap-northeast-2.amazonaws.com`,
+              port: '',
+              pathname: `/falsenotes.app/**`,
+            }
           ],
         },
 }
