@@ -62,13 +62,13 @@ function PostCard(
 {
   return (
     <Card {...props}>
-      <CardHeader className={cn("flex flex-col gap-y-2")}>
+      <CardHeader className={cn("flex flex-col gap-y-4")}>
         {props.thumbnail && (
-          <AspectRatio ratio={16 / 9}>
+          <AspectRatio ratio={16 / 9} className="mb-3">
             <Image
             src={props.thumbnail}
             fill
-            alt="thumbnail"
+            alt={props.title}
             className="rounded-md
             object-cover
             w-full
@@ -77,8 +77,8 @@ function PostCard(
           </AspectRatio>
         )}
 
-        <CardTitle>{props.title}</CardTitle>
-        <CardDescription>
+        <CardTitle className="">{props.title}</CardTitle>
+        <CardDescription className="text-base">
           {props.content.length! > 100 ? (
             <>{props?.content?.slice(0, 100)}...</>
           ) : (

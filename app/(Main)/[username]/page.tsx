@@ -78,7 +78,7 @@ export default function Page({ params }: Props) {
         </ul>
       </div>
       <div className="col-span-2 items-center text-center">
-      <div className="rounded-lg border bg-card text-card-foreground shadow-sm space-y-4">
+      <div className="rounded-lg mx-8 border bg-card text-card-foreground shadow-sm space-y-4">
       <div className="flex flex-col space-y-4 p-6">
         <Skeleton className="h-72 w-full" />
 
@@ -208,7 +208,7 @@ export default function Page({ params }: Props) {
       </div>
       <div className="col-span-2">
         <h2 className="text-2xl font-bold text-center">Posts</h2>
-        <div className="user-articles">
+        <div className="user-articles px-8">
           {user?.posts && user.posts.length > 0 ? (
             user.posts.map((article: any) => (
               <PostCard
