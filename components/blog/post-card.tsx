@@ -36,7 +36,7 @@ function PostCard(
       <CardHeader className={cn("flex flex-col gap-y-2")}>
         {props.thumbnail && (
           <Image
-            src="/no-thumbnail.jpg"
+            src={props.thumbnail}
             width={200}
             height={200}
             alt="thumbnail"
