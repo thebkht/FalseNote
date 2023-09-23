@@ -14,6 +14,35 @@ import { cn } from "@/lib/utils";
 import { Icons } from "../icon";
 import { useSession } from "next-auth/react";
 import { Eye, Heart, MessageCircle } from "lucide-react";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+
+function formatDate(dateString: string | number | Date) {
+  const date = new Date(dateString);
+  const currentYear = new Date().getFullYear();
+  const year = date.getFullYear();
+  
+  let formattedDate = date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
+  if (year !== currentYear) {
+    formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+  }
+
+  return formattedDate;
+}
+
 
 function PostCard(
   props: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -35,7 +64,8 @@ function PostCard(
     <Card {...props}>
       <CardHeader className={cn("flex flex-col gap-y-2")}>
         {props.thumbnail && (
-          <Image
+          <AspectRatio ratio={16 / 9}>
+            <Image
             src={props.thumbnail}
             width={200}
             height={200}
@@ -45,6 +75,7 @@ function PostCard(
             w-full
             "
           />
+          </AspectRatio>
         )}
 
         <CardTitle>{props.title}</CardTitle>
@@ -57,17 +88,11 @@ function PostCard(
         </CardDescription>
       </CardHeader>
       <CardFooter>
-      {props.session?.userid === props.authorid && (
-                    <div className="action-btn">
-                      <a href={`#`} className="btn btn-success">Edit</a>
-                      <a href={`#`} className="btn btn-danger">Delete</a>
-                    </div>
-                  )}
                   <div className="stats flex items-center gap-3">
-                    <p className="card-text inline mb-0">{new Date(props.date).toLocaleString()}</p>
-                    <p className="card-text inline mb-0 text-muted"><Eye className="mr-1" /> {props.views}</p>
-                    <p className="card-text inline mb-0 text-muted"><MessageCircle className="mr-1" /> {props.comments}</p>
-                    <p className="card-text inline mb-0 text-muted"><Heart className="mr-1" /> {props.likes}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground">{formatDate(new Date(props.date).toLocaleString())}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground flex"><MessageCircle className="mr-1" /> {props.comments}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1" /> {props.likes}</p>
                   </div>
       </CardFooter>
     </Card>

@@ -223,7 +223,8 @@ export default function Page({ params }: Props) {
                 id={article.id}
                 authorid={user?.id}
                 session={session}
-                likes={article.likes} />
+                likes={article.likes}
+                className="mt-4" />
             ))
           ) : (
             <p className="text-base font-light text-center py-5">This user has no posts</p>
