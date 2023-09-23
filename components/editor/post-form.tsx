@@ -118,9 +118,9 @@ export function PostForm() {
         body: dataForm,
       });
       // get the image url
-      const { url } = await res.json()
+      const { result } = await res.json()
       // set the cover image url
-      form.setValue('coverImage', url)
+      form.setValue('coverImage', result.data?.url)
       } catch (e: any) {
       // Handle errors here
       console.error(e)

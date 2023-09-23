@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   }
 
   const s3 = new AWS.S3();
-  const s3path = `assets/media/blogs/covers/${authorId}/${postId}.${file.name.split('.').pop()}`;
+  const s3path = `blogs/covers/${authorId}/${postId}.${file.name.split('.').pop()}`;
 
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     console.log(data);
   });
 
-  return NextResponse.json({ success: true, message: 'File uploaded', url: s3path })
+  return NextResponse.json({ success: true, message: 'File uploaded', data: { url: s3path } })
   } catch (error : any) {
     return NextResponse.json({ success: false, message: error.message })
   }
