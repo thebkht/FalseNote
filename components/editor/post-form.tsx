@@ -125,7 +125,7 @@ export function PostForm() {
       // Handle errors here
       console.error(e)
       }
-  }
+  } 
 
   async function onSubmit(data: PostFormValues) {
     console.log("Submitting form...")
@@ -133,7 +133,32 @@ export function PostForm() {
     if (file) {
       await upload()
     }
+
+    const authorId = user?.userid;
     // Submit the form
+    const res = await fetch("/api/posts/sunmit", {
+      method: "POST",
+      body: JSON.stringify(data, authorId),
+    })
+    const json = await res.json()
+    if (!res.ok) {
+      toast({
+        title: "Error",
+        description: json.message,
+      })
+      return
+      }
+    if (res.ok) {
+      toast({
+        title: "Success",
+        description: json.message,
+      }
+      
+      )
+      return
+    }
+
+
     console.log(data)
   }
 

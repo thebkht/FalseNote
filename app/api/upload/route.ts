@@ -40,16 +40,19 @@ export async function POST(req: NextRequest) {
     Body: buffer,
   };
 
+  let coverUrl;
+
   s3.upload(params, function (err: any, data: any) {
     if (err) {
       console.log('error in callback');
       console.log(err);
     }
     console.log('success');
+    coverUrl = data.Location;
     console.log(data);
   });
 
-  return NextResponse.json({ success: true, message: 'File uploaded', data: { url: s3path } })
+  return NextResponse.json({ success: true, message: 'File uploaded', data: { url: coverUrl } })
   } catch (error : any) {
     return NextResponse.json({ success: false, message: error.message })
   }
