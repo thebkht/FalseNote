@@ -67,8 +67,7 @@ function PostCard(
           <AspectRatio ratio={16 / 9}>
             <Image
             src={props.thumbnail}
-            width={200}
-            height={200}
+            fill
             alt="thumbnail"
             className="rounded-md
             object-cover
