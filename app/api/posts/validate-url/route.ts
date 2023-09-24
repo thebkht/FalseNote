@@ -7,17 +7,17 @@ export async function GET(request: NextRequest) {
           const authorId = request.nextUrl.searchParams.get("authorId");
 
           if (!url) {
-               return { status: 400, body: "url is required query parameter" };
+               return new Response("url is required query parameter", { status: 400 });
           }
 
           const isUrlValid = await sql`SELECT * FROM blogposts WHERE url = ${url} AND AuthorId = ${authorId}`;
 
           if (isUrlValid.rowCount > 0) {
-               return NextResponse.json({ status: 400, body: "url is not available" });
+               return new Response("url is not available", { status: 400 });
           } else {
-               return NextResponse.json({ status: 200, body: "url is available" });
+               return new Response("url is available", { status: 200 });
           }
      } catch (error: any) {
-          return NextResponse.json({ status: 500, body: error.message });
+          return new Response(error.message, { status: 500 });
      }
 }
