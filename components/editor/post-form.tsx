@@ -183,7 +183,36 @@ export function PostForm() {
     }
   }
 
+  const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
 
+  async function validateUrl(value: string) {
+    try {
+      // Check if the url is already taken
+    const result = await fetch(`/api/posts/validate-url?url=${value}&autherId=${user?.userid}`, {
+      method: 'GET',
+    });
+    
+    if (!result.ok) {
+      setIsValidUrl(false);
+      return
+    } else {
+      setIsValidUrl(true);
+      return
+    }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // URL-friendly link validation
+  function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setIsValidUrl(null);
+    const value = e.target.value;
+    // Replace spaces with dashes and make lowercase of 2 words only
+    validateUrl(value);
+    // Update the form field value
+    form.setValue('url', value);
+  }
 
   const [markdownContent, setMarkdownContent] = useState<string>('');
   const [file, setFile] = useState<File>(); // State for the uploaded file
@@ -194,12 +223,18 @@ export function PostForm() {
   }
 
   //Set url value from title value
-  function handleTitleChange(value: string) {
+  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
     // Replace spaces with dashes and make lowercase of 2 words only
     if (value.split(' ').length > 1) {
-      form.setValue('url', value.split(' ')[0].toLowerCase() + '-' + value.split(' ')[1].toLowerCase());
+      const url = value.split(' ')[0].toLowerCase() + '-' + value.split(' ')[1].toLowerCase();
+      validateUrl(url);
+      if (isValidUrl) {
+        form.setValue('url', url);
+      }
     } else {
-      form.setValue('url', value.toLowerCase());
+      validateUrl(value.toLowerCase());
+      if (isValidUrl) form.setValue('url', value.toLowerCase());
     }
   }
 
@@ -214,7 +249,7 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title of the post" {...field} onChange={(e) => handleTitleChange(e.target.value) } />
+                <Input placeholder="Title of the post" {...field} onChange={handleTitleChange} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -251,7 +286,7 @@ export function PostForm() {
           )}
         /></TabsContent>
           <TabsContent value="preview" className="rounded-md border border-input bg-background px-3 py-2 text-sm">
-              <ReactMarkdown children={markdownContent} skipHtml={false} />
+              <ReactMarkdown children={markdownContent} skipHtml={false} className="min-h-[500px]" />
           </TabsContent>
         </Tabs>
 
@@ -315,9 +350,18 @@ export function PostForm() {
                         {`falsenotes.app/${user?.username}/`}
                       </FormDescription>
                       <FormControl>
-                        <Input placeholder="URL" {...field} onChange={(e) => form.setValue('url', e.target.value)} />
+                        <Input placeholder="URL" {...field} onChange={handleUrlChange} />
                       </FormControl>
-                      <FormMessage />
+                      {isValidUrl === true && (
+              <FormMessage className="text-green-500">
+                This URL is available.
+              </FormMessage>
+            )}
+            {isValidUrl === false && (
+              <FormMessage className="text-red-500">
+                This URL is already taken. Please choose a different one.
+              </FormMessage>
+            )}
                     </FormItem>
                   )}
                 />
