@@ -188,7 +188,7 @@ export function PostForm() {
   async function validateUrl(value: string) {
     try {
       // Check if the url is already taken
-    const result = await fetch(`/api/posts/validate-url?url=${value}&autherId=${user?.userid}`, {
+    const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${user?.userid}`, {
       method: 'GET',
     });
     
