@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
-/* import ReactMarkdown from "react-markdown" */
+import ReactMarkdown from "react-markdown"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import React, { useEffect, useState } from "react"
-import ReactMarkdown from "react-markdown"
 import {
   Dialog,
   DialogContent,
@@ -39,6 +38,9 @@ import { useSession } from "next-auth/react"
 import { getUserByUsername } from "../get-user"
 import { ScrollArea } from "../ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import TextareaAutosize from 'react-textarea-autosize';
+
 
 const postFormSchema = z.object({
   title: z
@@ -52,7 +54,7 @@ const postFormSchema = z.object({
   visibility: z.enum(["public", "private", "draft"], {
     required_error: "Please select a visibility option",
   }),
-  content: z.string().max(1200).min(4),
+  content: z.string(),
   coverImage: z.string().optional(),
   tags: z
     .array(
@@ -74,7 +76,7 @@ const defaultValues: Partial<PostFormValues> = {
 
 export function PostForm() {
   const sessionUser = useSession().data?.user as any;
-  const [ user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<any | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -99,12 +101,12 @@ export function PostForm() {
     control: form.control,
   })
 
-  const upload = async() => {
-       if (!file) return
+  const upload = async () => {
+    if (!file) return
 
-      try {
+    try {
       const dataForm = new FormData()
-      dataForm.set ('file', file)
+      dataForm.set('file', file)
       // Construct the request body with postId and authorId
       const requestBody = {
         postId: form.getValues('url'),
@@ -121,20 +123,20 @@ export function PostForm() {
       const { result } = await res.json()
       // set the cover image url
       return result.url;
-      } catch (e: any) {
+    } catch (e: any) {
       // Handle errors here
       console.error(e)
-      }
-  } 
+    }
+  }
 
   async function onSubmit(data: PostFormValues) {
     console.log("Submitting form...")
     // Upload the cover image
     if (!file) return
 
-      try {
+    try {
       const dataForm = new FormData()
-      dataForm.set ('file', file)
+      dataForm.set('file', file)
       // Construct the request body with postId and authorId
       const requestBody = {
         postId: form.getValues('url'),
@@ -150,11 +152,11 @@ export function PostForm() {
       // get the image url
       const { data: coverUrl } = await res.json()
       data.coverImage = coverUrl.url;
-      
-      } catch (e: any) {
+
+    } catch (e: any) {
       // Handle errors here
       console.error(e)
-      }
+    }
     // Get the authorId from the session
     const authorId = user?.userid;
     // Submit the form
@@ -169,13 +171,13 @@ export function PostForm() {
         description: json.message,
       })
       return
-      }
+    }
     if (result.ok) {
       toast({
         title: "Success",
         description: json.message,
       }
-      
+
       )
       return
     }
@@ -190,7 +192,18 @@ export function PostForm() {
     setMarkdownContent(value);
     form.setValue('content', value); // Update the form field value
   }
-  
+
+  //Set url value from title value
+  function handleTitleChange(value: string) {
+    // Replace spaces with dashes and make lowercase of 2 words only
+    if (value.split(' ').length > 1) {
+      form.setValue('url', value.split(' ')[0].toLowerCase() + '-' + value.split(' ')[1].toLowerCase());
+    } else {
+      form.setValue('url', value.toLowerCase());
+    }
+  }
+
+
 
   return (
     <Form {...form}>
@@ -201,7 +214,7 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title of the post" {...field} />
+                <Input placeholder="Title of the post" {...field} onChange={(e) => handleTitleChange(e.target.value) } />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -211,20 +224,22 @@ export function PostForm() {
             </FormItem>
           )}
         />
-        <FormField
+        <Tabs defaultValue="editor" className="min-h-[600px]">
+          <TabsList className="mb-2">
+            <TabsTrigger value="editor">Editor</TabsTrigger>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+          </TabsList>
+          <TabsContent value="editor"> <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea
-                  placeholder="Your post goes here"
-                  className="w-full min-h-[500px]"
+                <TextareaAutosize
+                  className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[500px]"
+                  placeholder="Write your post here..."
                   {...field}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    field.onChange(e); // Let React Hook Form handle the value change
-                    handleContentChange(e.target.value); // Update the Markdown content
-                  }}
+                  onChange={(e) => handleContentChange(e.target.value)}
                 />
               </FormControl>
               {/* <FormDescription>
@@ -234,15 +249,20 @@ export function PostForm() {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /></TabsContent>
+          <TabsContent value="preview" className="rounded-md border border-input bg-background px-3 py-2 text-sm">
+              <ReactMarkdown children={markdownContent} skipHtml={false} />
+          </TabsContent>
+        </Tabs>
+
         <Dialog>
-          
+
           <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full">Post Setting</Button></DialogTrigger>
-          
+
           <DialogContent className="h-full max-h-[526px] !p-0">
             <ScrollArea className="h-full w-full px-6">
-            <DialogHeader className="py-6">
-              <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
+              <DialogHeader className="py-6">
+                <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 pb-4 m-1">
                 <FormField
@@ -292,7 +312,7 @@ export function PostForm() {
                     <FormItem>
                       <FormLabel>URL-friendly Link</FormLabel>
                       <FormDescription>
-                        {`falsenotes.app/${user?.username}/` }
+                        {`falsenotes.app/${user?.username}/`}
                       </FormDescription>
                       <FormControl>
                         <Input placeholder="URL" {...field} onChange={(e) => form.setValue('url', e.target.value)} />
@@ -310,19 +330,19 @@ export function PostForm() {
                       <FormLabel>Post Preview</FormLabel>
                       <FormControl>
                         <>
-                        {
-                          file ?   (
-                            <AspectRatio ratio={16 / 9} className="bg-muted">
-                              <Image
-                                src={URL.createObjectURL(file)}
-                                alt="Cover Image"
-                                fill
-                                className="rounded-md object-cover"
-                              />
-                            </AspectRatio>
-                          ) : ''
-                        }
-                        <Input type="file" {...field} accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
+                          {
+                            file ? (
+                              <AspectRatio ratio={16 / 9} className="bg-muted">
+                                <Image
+                                  src={URL.createObjectURL(file)}
+                                  alt="Cover Image"
+                                  fill
+                                  className="rounded-md object-cover"
+                                />
+                              </AspectRatio>
+                            ) : ''
+                          }
+                          <Input type="file" {...field} accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
 
                         </>
                       </FormControl>
@@ -368,7 +388,7 @@ export function PostForm() {
                   Publish
                 </Button>
               </DialogFooter>
-              </ScrollArea>
+            </ScrollArea>
           </DialogContent>
         </Dialog>
 
