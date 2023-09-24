@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
 export async function GET(request: NextRequest) {
@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
           const isUrlValid = await sql`SELECT * FROM blogposts WHERE url = ${url} AND AuthorId = ${authorId}`;
 
           if (isUrlValid.rowCount > 0) {
-               return { status: 400, body: "url is already taken" };
+               return NextResponse.json({ status: 400, body: "url is not available" });
           } else {
-               return { status: 200, body: "url is available" };
+               return NextResponse.json({ status: 200, body: "url is available" });
           }
      } catch (error: any) {
-          return { status: 500, body: error.message };
+          return NextResponse.json({ status: 500, body: error.message });
      }
 }
