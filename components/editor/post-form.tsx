@@ -54,7 +54,7 @@ const postFormSchema = z.object({
   }),
   content: z.string().max(1200).min(4),
   coverImage: z.string().optional(),
-  topics: z
+  tags: z
     .array(
       z.object({
         value: z.string(),
@@ -95,7 +95,7 @@ export function PostForm() {
   })
 
   const { fields, append } = useFieldArray({
-    name: "topics",
+    name: "tags",
     control: form.control,
   })
 
@@ -336,7 +336,7 @@ export function PostForm() {
                     <FormField
                       control={form.control}
                       key={field.id}
-                      name={`topics.${index}.value`}
+                      name={`tags.${index}.value`}
                       render={({ field }) => (
                         <FormItem>
                           {/* <FormDescription className={cn(index !== 0 && "sr-only")}>
@@ -355,7 +355,7 @@ export function PostForm() {
                     className="mt-2 col-span-5"
                     onClick={() => append({ value: "" })}
                   >
-                    Add Topic
+                    Add Tag
                   </Button>
                 </div>
               </div>

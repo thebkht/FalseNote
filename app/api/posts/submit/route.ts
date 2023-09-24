@@ -9,9 +9,9 @@ export async function POST(req: NextRequest) {
           }
           console.log("Received data:", data);
 
-          const { title, content, coverImage, visibility, topics, url, authorId } = data;
+          const { title, content, coverImage, visibility, tags, url, authorId } = data;
 
-          if (!title || !content || !visibility || !topics || !url || !authorId) {
+          if (!title || !content || !visibility || !tags || !url || !authorId) {
                return new Response("Missing required fields", { status: 400 });
           }
 
@@ -27,8 +27,35 @@ export async function POST(req: NextRequest) {
           VALUES (${title}, ${content}, ${coverImage}, ${visibility}, ${isDraft}, ${url}, ${authorId})
           `;
 
-          return NextResponse.json({ body: "Post submitted" }, { status: 200 });
+          const submittedPostId = await sql`
+          SELECT PostID FROM BlogPosts WHERE url = ${url}
+          `;
 
+          const postId = submittedPostId.rows?.[0].postid;
+
+          if (tags) {
+               for (const tag of tags) {
+                    await sql`
+                    INSERT INTO Tags (TagName)
+                    VALUES (${tag})
+                    `;
+               }
+          }
+          
+          if (tags) {
+               for (const tag of tags) {
+                    const tagId = await sql`
+                    SELECT TagID FROM tags WHERE TagName = ${tag}
+                    `;
+                    const tagIdInt = tagId.rows?.[0].tagid;
+                    await sql`
+                    INSERT INTO BlogPostTags (BlogPostID, TagID)
+                    VALUES (${postId}, ${tagIdInt})
+                    `;
+               }
+          }
+
+          return new Response("Post submitted", { status: 200 });
      } catch (error) {
           console.error("Error:", error);
           return NextResponse.json({body: "Error processing data"},
