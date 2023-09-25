@@ -33,6 +33,10 @@ export default function Page({ params }: Props) {
   const { status, data: session } = useSession();
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
 
+  const sessionUser = getSessionUser();
+
+  console.log(sessionUser);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -55,7 +59,7 @@ export default function Page({ params }: Props) {
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
-      const followerId = (await getSessionUser()).userid;
+      const followerId = getSessionUser().userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
       method: "GET",
     });
