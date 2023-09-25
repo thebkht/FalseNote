@@ -20,4 +20,18 @@ const nextConfig = {
 
 module.exports = {
      ...nextConfig,
+     // cashe control
+      async headers() {
+        return [
+          {
+            source: '/:path*',
+            headers: [
+              {
+                key: 'Cache-Control',
+                value: 'no-store, must-revalidate',
+              },
+            ],
+          },
+        ]
+      }
 }

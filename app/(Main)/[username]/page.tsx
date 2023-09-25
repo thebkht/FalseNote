@@ -37,7 +37,7 @@ export default function Page({ params }: Props) {
     async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
-        const sessionData = await getUserByUsername(session?.user?.name!);
+        const sessionData = getUserByUsername(session?.user?.name!);
         setSessionUser(sessionData);
         setUser(userData);
         setIsLoaded(true);
@@ -162,7 +162,19 @@ export default function Page({ params }: Props) {
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
               <Button className="w-full">Edit Profile</Button>
             ) : (
-              <Button className="w-full" onClick={() => handleFollow(user?.userid)} >Follow</Button>
+              <Button className="w-full" onClick={() => {
+                handleFollow(user?.id);
+                //clear the cache
+                
+              }} >
+                {
+                  user?.followers?.find((follower: any) => follower.followerid === sessionUser?.userid) ? (
+                    <>Following</>
+                  ) : (
+                    <>Follow</>
+                  )
+                }
+              </Button>
             )}
 
             { user?.bio && ( <div className="w-full">{ user?.bio }</div> ) }
