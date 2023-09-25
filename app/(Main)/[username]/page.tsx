@@ -39,10 +39,7 @@ export default function Page({ params }: Props) {
     async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
-        const sessionData = getUserByUsername(session?.user?.name as string);
-        setSessionUser(sessionData);
         setUser(userData);
-        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionUser?.userid));
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
@@ -51,9 +48,22 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, session?.user?.name, isFollowing, sessionUser?.userid]);
+  }, [params.username, isFollowing]);
+
+  useEffect(() => {
+    try{
+      const sessionData = getUserByUsername(session?.user?.name as string);
+      setSessionUser(sessionData);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [session?.user?.name]);
 
   console.log(sessionUser);
+
+  useEffect(() => {
+    setIsFollowing(user.followers.find((follower: any) => follower.followerid === sessionUser?.userid))
+  }, [user, sessionUser]);
 
   async function handleFollow(followeeId: string) {
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${sessionUser.userid}`, {
