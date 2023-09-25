@@ -3,16 +3,21 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FeaturedDev from "./featured/featured-dev";
 import { useEffect, useState } from "react";
-import { getFeaturedDevs } from "../get-user";
+import { getFeaturedDevs, getUserByUsername } from "../get-user";
+import { useSession } from "next-auth/react";
 
 export default function Feed() {
   const [featuredDevs, setFeaturedDevs] = useState([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
+  const { data: session } = useSession(); // You might need to adjust this based on how you use the session
 
   useEffect(() => {
     async function fetchData() {
       try {
         const userData = await getFeaturedDevs();
+        const sessionData = await getUserByUsername(session?.user?.name!);
+        setUser(sessionData);
         setFeaturedDevs(userData.users);
         setIsLoaded(true);
       } catch (error) {
@@ -21,8 +26,10 @@ export default function Feed() {
       }
     }
 
+    
+
     fetchData();
-  }, []);
+  }, [session?.user?.name]);
      return (
           <>
                <main className="flex min-h-screen flex-col items-center justify-between feed ">
@@ -42,7 +49,7 @@ export default function Feed() {
              </div>
            </div>
          </div>
-         <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
+         <FeaturedDev data={featuredDevs} isloaded={isLoaded} sessionUser={user} />
        </div>
       </div>
      </main>

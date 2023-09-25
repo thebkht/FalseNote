@@ -77,7 +77,7 @@ export async function GET(request: Request) {
       CREATE TABLE IF NOT EXISTS Follows (
         FollowID SERIAL PRIMARY KEY,
         FollowerID INT REFERENCES Users(UserID),
-        FolloweeID INT REFERENCES Users(UserID),
+        FollowerID INT REFERENCES Users(UserID),
         CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
