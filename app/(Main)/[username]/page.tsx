@@ -44,7 +44,7 @@ export default function Page({ params }: Props) {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
         if (status === "authenticated") {
-          const followerId = sessionUser.userid;
+          const followerId = (await sessionUser).userid;
           setIsFollowing(userData.followers.find((follower: any) => follower.followerid === followerId));
         }
         setIsLoaded(true);
@@ -59,7 +59,7 @@ export default function Page({ params }: Props) {
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
-      const followerId = getSessionUser().userid;
+      const followerId = (await getSessionUser()).userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
       method: "GET",
     });
