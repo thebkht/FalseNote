@@ -44,7 +44,7 @@ export default function Page({ params }: Props) {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
         if (status === "authenticated") {
-          const followerId = (await getSessionUser()).userid;
+          const followerId = sessionUser.userid;
           setIsFollowing(userData.followers.find((follower: any) => follower.followerid === followerId));
         }
         setIsLoaded(true);
