@@ -23,7 +23,7 @@ export default function FeaturedDev(
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
   );
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   
   const handleFollow = async (followeeId: string, index: number) => {
     if (status === "authenticated") {
@@ -113,9 +113,9 @@ export default function FeaturedDev(
                         disabled={isFollowingLoading[index]}
                       >
               {isFollowingLoading[index] ? (
-                  <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
+                  <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing[index] ? "Following" : "Follow"}</>
                 ) : (
-                  <>{isFollowing ? <><Check className="h-4 w-4 mr-2" /> Following</> : <><Plus className="h-4 w-4 mr-2" /> Follow</>}</>
+                  <>{isFollowing[index] ? <><Check className="h-4 w-4 mr-2" /> Following</> : <><Plus className="h-4 w-4 mr-2" /> Follow</>}</>
                 )
               }
             </Button>
