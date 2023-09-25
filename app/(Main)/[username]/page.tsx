@@ -32,17 +32,24 @@ export default function Page({ params }: Props) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [sessionUser, setSessionUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
-  const session = useSession().data?.user as any;
+  const { data: session } = useSession(); // You might need to adjust this based on how you use the session
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    async () => {
+      if (session?.user?.name) {
+        const sessionData = await getUserByUsername(session?.user?.name);
+        setSessionUser(sessionData);
+      }
+    }
+  }, [session?.user?.name]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const sessionData = getUserByUsername(session?.name) as any;
         const userData = await getUserByUsername(params.username);
-        setSessionUser(sessionData.result);
         setUser(userData);
-        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionData?.result.userid))
+        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionUser?.userid))
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
@@ -51,15 +58,15 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, isFollowing, session?.name]);
+  }, [params.username, isFollowing, session?.user?.name, sessionUser?.userid]);
 
 
-  console.log(session?.name);
+  console.log(session?.user?.name);
   console.log(user);
   console.log(sessionUser);
 
   async function handleFollow(followeeId: string) {
-    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${sessionUser.userid}`, {
+    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${sessionUser?.userid }`, {
       method: "GET",
     });
   }
