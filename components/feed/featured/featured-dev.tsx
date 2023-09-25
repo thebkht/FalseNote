@@ -14,8 +14,13 @@ import { Badge } from "@/components/ui/badge";
 export default function FeaturedDev(
   { data: featuredDevs, isloaded: isLoaded, sessionUser }: { data: any; isloaded: boolean; sessionUser: any; }
 ) {
+  featuredDevs.map((item: { userid: any; }) => {
+    console.log(item.userid);
+  })
+
+  console.log(sessionUser?.userid)
   async function handleFollow(followeeId: string) {
-    const followerId = sessionUser?.userId;
+    const followerId = sessionUser?.userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
       method: "POST",
     });
@@ -32,9 +37,9 @@ export default function FeaturedDev(
         <CardContent>
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs.map((item: {
-              verified: boolean; userId: string; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; 
+              verified: boolean; userid: string; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; 
 }) => (
-              <div className="flex gap-4 w-full items-center justify-between" key={item.userId}>
+              <div className="flex gap-4 w-full items-center justify-between" key={item.userid}>
                 <div className="space-y-3">
                 <Link href={`/${item.username}`} className="flex items-center">
                   <Avatar className="h-10 w-10 mr-4">
@@ -68,7 +73,7 @@ export default function FeaturedDev(
             <>{item.bio}</>
           )}</p>
                 </div>
-                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(item.userId)}>
+                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(item.userid)}>
                   <Plus className="h-4 w-4 mr-2" /> Follow
                 </Button>
               </div>
