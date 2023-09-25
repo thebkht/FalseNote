@@ -42,9 +42,7 @@ function Navbar() {
           <div className="hidden lg:flex items-center gap-16">
   
           </div>
-          {
-            session ?
-              <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
                 {items.map((item) => (
                   <>
                     <TooltipProvider>
@@ -65,13 +63,6 @@ function Navbar() {
                   <UserNav />
   
               </div>
-              : <div className="flex items-center gap-4">
-                <ModeToggle />
-              <Button onClick={() => signIn("github")}>
-                  Join
-              </Button>
-              </div>
-          }
         </div>
       </nav>
     );
