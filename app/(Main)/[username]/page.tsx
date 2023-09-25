@@ -32,14 +32,17 @@ export default function Page({ params }: Props) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [sessionUser, setSessionUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
-  const { data: session } = useSession(); // You might need to adjust this based on how you use the session
+  const session = useSession().data?.user as any;
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
+        const sessionData = getUserByUsername(session?.name) as any;
         const userData = await getUserByUsername(params.username);
+        setSessionUser(sessionData);
         setUser(userData);
+        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionData?.userid))
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
@@ -48,22 +51,12 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, isFollowing]);
+  }, [params.username, isFollowing, session?.name]);
 
-  useEffect(() => {
-    try{
-      const sessionData = getUserByUsername(session?.user?.name as string);
-      setSessionUser(sessionData);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [session?.user?.name]);
 
+  console.log(session?.name);
+  console.log(user);
   console.log(sessionUser);
-
-  useEffect(() => {
-    setIsFollowing(user.followers.find((follower: any) => follower.followerid === sessionUser?.userid))
-  }, [user, sessionUser]);
 
   async function handleFollow(followeeId: string) {
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${sessionUser.userid}`, {
