@@ -55,7 +55,7 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, isFollowing, status]);
+  }, [params.username, isFollowing, status, sessionUser]);
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
