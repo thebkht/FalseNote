@@ -161,14 +161,11 @@ export default function Page({ params }: Props) {
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
               <Button variant={"outline"} className="w-full">Edit Profile</Button>
             ) : (
-              sessionUser.following?.include(user?.userid) ? (
-                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(user?.userid)}>
-                  Following
-                </Button>
+              // sessionUser?.following: [31,32] user?.id: 31
+              sessionUser?.following?.includes(user?.id) ? (
+                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.id)}>Unfollow</Button>
               ) : (
-                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(user?.userid)}>
-                  Follow
-                </Button>
+                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.id)}>Follow</Button>
               )
             )}
 
