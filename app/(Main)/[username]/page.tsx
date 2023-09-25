@@ -32,13 +32,13 @@ export default function Page({ params }: Props) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [sessionUser, setSessionUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
-  const { data: session } = useSession(); // You might need to adjust this based on how you use the session
+  const { data: session } = useSession() as any; // You might need to adjust this based on how you use the session
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
 
   useEffect(() => {
     async () => {
+      const sessionData = await getUserByUsername(session?.user?.name);
       if (session?.user?.name) {
-        const sessionData = await getUserByUsername(session?.user?.name);
         setSessionUser(sessionData);
       }
     }
