@@ -71,7 +71,8 @@ type PostFormValues = z.infer<typeof postFormSchema>
 // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
   visibility: "public",
-  url: "",
+  //set defaul value for url tobe generated random 10 characters
+  url: Math.random().toString(36).substring(2, 15),
 }
 
 export function PostForm() {
@@ -100,34 +101,6 @@ export function PostForm() {
     name: "tags",
     control: form.control,
   })
-
-  const upload = async () => {
-    if (!file) return
-
-    try {
-      const dataForm = new FormData()
-      dataForm.set('file', file)
-      // Construct the request body with postId and authorId
-      const requestBody = {
-        postId: form.getValues('url'),
-        userId: user?.id,
-      };
-
-      dataForm.set('body', JSON.stringify(requestBody));
-
-      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.username}`, {
-        method: 'POST',
-        body: dataForm,
-      });
-      // get the image url
-      const { result } = await res.json()
-      // set the cover image url
-      return result.url;
-    } catch (e: any) {
-      // Handle errors here
-      console.error(e)
-    }
-  }
 
   async function onSubmit(data: PostFormValues) {
     console.log("Submitting form...")
@@ -188,17 +161,17 @@ export function PostForm() {
   async function validateUrl(value: string) {
     try {
       // Check if the url is already taken
-    const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${user?.userid}`, {
-      method: 'GET',
-    });
-    
-    if (!result.ok) {
-      setIsValidUrl(false);
-      return
-    } else {
-      setIsValidUrl(true);
-      return
-    }
+      const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${user?.userid}`, {
+        method: 'GET',
+      });
+
+      if (!result.ok) {
+        setIsValidUrl(false);
+        return
+      } else {
+        setIsValidUrl(true);
+        return
+      }
     } catch (error) {
       console.log(error);
     }
@@ -206,7 +179,6 @@ export function PostForm() {
 
   // URL-friendly link validation
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setIsValidUrl(null);
     const value = e.target.value;
     // Replace spaces with dashes and make lowercase of 2 words only
     validateUrl(value);
@@ -231,10 +203,16 @@ export function PostForm() {
       validateUrl(url);
       if (isValidUrl) {
         form.setValue('url', url);
+      } else {
+        setIsValidUrl(null);
       }
     } else {
       validateUrl(value.toLowerCase());
-      if (isValidUrl) form.setValue('url', value.toLowerCase());
+      if (isValidUrl) {
+        form.setValue('url', value.toLowerCase());
+      } else {
+        setIsValidUrl(null);
+      }
     }
   }
 
@@ -265,28 +243,28 @@ export function PostForm() {
             <TabsTrigger value="preview">Preview</TabsTrigger>
           </TabsList>
           <TabsContent value="editor"> <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <TextareaAutosize
-                  className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[500px]"
-                  placeholder="Write your post here..."
-                  {...field}
-                  onChange={(e) => handleContentChange(e.target.value)}
-                />
-              </FormControl>
-              {/* <FormDescription>
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <TextareaAutosize
+                    className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[500px]"
+                    placeholder="Write your post here..."
+                    {...field}
+                    onChange={(e) => handleContentChange(e.target.value)}
+                  />
+                </FormControl>
+                {/* <FormDescription>
                 You can <span>@mention</span> other users and organizations to
                 link to them.
               </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        /></TabsContent>
+                <FormMessage />
+              </FormItem>
+            )}
+          /></TabsContent>
           <TabsContent value="preview" className="rounded-md border border-input bg-background px-3 py-2 text-sm">
-              <ReactMarkdown children={markdownContent} skipHtml={false} className="min-h-[500px]" />
+            <ReactMarkdown children={markdownContent} skipHtml={false} className="min-h-[500px]" />
           </TabsContent>
         </Tabs>
 
@@ -294,7 +272,7 @@ export function PostForm() {
 
           <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full">Post Setting</Button></DialogTrigger>
 
-          <DialogContent className="h-full max-h-[526px] !p-0">
+          <DialogContent className="h-full max-h-[550px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
                 <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
@@ -352,16 +330,17 @@ export function PostForm() {
                       <FormControl>
                         <Input placeholder="URL" {...field} onChange={handleUrlChange} />
                       </FormControl>
-                      {isValidUrl === true && (
-              <FormMessage className="text-green-500">
-                This URL is available.
-              </FormMessage>
-            )}
-            {isValidUrl === false && (
-              <FormMessage className="text-red-500">
-                This URL is already taken. Please choose a different one.
-              </FormMessage>
-            )}
+                      {isValidUrl !== null && (
+                        isValidUrl ? (
+                          <FormMessage className="text-green-500">
+                            This URL is available.
+                          </FormMessage>
+                        ) : (
+                          <FormMessage className="text-red-500">
+                            This URL is unavailable. Please try another one.
+                          </FormMessage>
+                        )
+                      )}
                     </FormItem>
                   )}
                 />
