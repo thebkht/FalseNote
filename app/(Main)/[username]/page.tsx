@@ -30,15 +30,19 @@ function getRegistrationDateDisplay(registrationDate: string) {
 export default function Page({ params }: Props) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const session = useSession().data?.user as any;
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+
 
   useEffect(() => {
     async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
+        if (status === "authenticated") {
+          const followerId = (await SessionUser()).userid;
+          setIsFollowing(userData.followers.find((follower: any) => follower.followerid === followerId));
+        }
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
@@ -47,20 +51,11 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username]);
-
-  const sessionUser = SessionUser();
-  console.log(sessionUser);
+  }, [params.username, isFollowing, status]);
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
-      const encodedString = session.user.name.replace(/ /g, "%20");
-       const response = await fetch(`/api/users/${encodedString}`);
-       if (!response.ok) {
-         throw new Error(`Error fetching user data: ${response.statusText}`);
-       }
-       const data = await response.json();
-       const followerId = data.user;
+      const followerId = (await SessionUser()).userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
       method: "GET",
     });
