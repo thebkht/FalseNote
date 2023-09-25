@@ -40,6 +40,8 @@ import { ScrollArea } from "../ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
+import { Icons } from "../icon"
+import { redirect } from "next/navigation"
 
 
 const postFormSchema = z.object({
@@ -103,7 +105,7 @@ export function PostForm() {
   })
 
   async function onSubmit(data: PostFormValues) {
-    console.log("Submitting form...")
+    setIsPublishing(true);
     // Upload the cover image
     if (!file) return
 
@@ -143,6 +145,7 @@ export function PostForm() {
         title: "Error",
         description: json.message,
       })
+      setIsPublishing(false);
       return
     }
     if (result.ok) {
@@ -150,13 +153,15 @@ export function PostForm() {
         title: "Success",
         description: json.message,
       }
-
       )
+      setIsPublishing(false)
+      redirect(`/${user?.username}/${form.getValues('url')}`)
       return
     }
   }
 
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
+  const [isPublishing, setIsPublishing] = useState<boolean>(false);
 
   async function validateUrl(value: string) {
     try {
@@ -407,8 +412,17 @@ export function PostForm() {
                   type="submit"
                   className="ml-auto w-full"
                   size={"lg"} form="createPostForm"
+                  disabled={isPublishing}
                 >
-                  Publish
+                  {
+                    isPublishing ? (
+                      <>
+                        <Icons.spinner  className="mr-2 h-4 w-4 animate-spin" /> Publishing
+                      </>
+                    ) : (
+                      <>Publish</>
+                    )
+                  }
                 </Button>
               </DialogFooter>
             </ScrollArea>
