@@ -1,3 +1,4 @@
+"use client";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FeaturedDev from "./featured/featured-dev";
