@@ -6,7 +6,7 @@ export async function getSessionUser() {
      const sessionUser = session?.user;
 
      //Get user details from database
-     const user = await fetch("/api/users/" + sessionUser?.name?.replace(/\s/g, ""));
+     const user = await fetch("/api/users/" + sessionUser?.name?.replace(/ /g, ""));
      //Convert user details to JSON and return user object with details from database as a object
      const userJson = await user.json();
      /*userJson returns user: {
