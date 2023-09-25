@@ -70,7 +70,6 @@ export default function Page({ params }: Props) {
     } else {
       return null;
     }
-
   }
 
   if (!isLoaded) {
@@ -175,9 +174,9 @@ export default function Page({ params }: Props) {
           </div>
 
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-            <Button className="w-full">Edit Profile</Button>
+            <Button variant={"outline"} className="w-full">Edit Profile</Button>
           ) : (
-            <Button className="w-full" onClick={() => {
+            <Button variant={"outline"} className="w-full" onClick={() => {
               handleFollow(user?.userid);
             }} disabled={isFollowingLoading} >
               {
@@ -193,13 +192,13 @@ export default function Page({ params }: Props) {
           {user?.bio && (<div className="w-full">{user?.bio}</div>)}
 
           <div className="py-2 flex gap-2">
-            <Button variant={"secondary"} size={"sm"} className="!text-sm">
+            <Button variant={"ghost"} size={"sm"}>
               {user?.followersnum} Followers
             </Button>
-            <Button variant={"secondary"} size={"sm"} className="!text-sm">
+            <Button variant={"ghost"} size={"sm"}>
               {user?.followingnum} Followings
             </Button>
-            <Button variant={"secondary"} size={"sm"} className="!text-sm" >{user?.postsnum} Post</Button>
+            <Button variant={"ghost"} size={"sm"} disabled >{user?.postsnum} Post</Button>
           </div>
 
           <ul className="details list-none">

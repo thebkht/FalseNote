@@ -49,7 +49,7 @@ export default function Feed() {
              </div>
            </div>
          </div>
-         <FeaturedDev data={featuredDevs} isloaded={isLoaded} sessionUser={user} />
+         <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
        </div>
       </div>
      </main>

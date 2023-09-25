@@ -10,15 +10,34 @@ import { getFeaturedDevs } from "@/components/get-user";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { getSessionUser } from "@/components/get-session-user";
+import { useSession } from "next-auth/react";
+import { Icons } from "@/components/icon";
 
 export default function FeaturedDev(
-  { data: featuredDevs, isloaded: isLoaded, sessionUser }: { data: any; isloaded: boolean; sessionUser: any; }
+  { data: featuredDevs, isloaded: isLoaded}: { data: any; isloaded: boolean; }
 ) {
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+  const { data: session, status } = useSession();
+  
   async function handleFollow(followeeId: string) {
-    const followerId = sessionUser?.userid;
-    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-      method: "GET",
-    });
+    if (status === "authenticated") {
+      setIsFollowingLoading(true);
+      try { 
+      const followerId = (await getSessionUser()).userid;
+      await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+        method: "GET",
+      });
+      setIsFollowing(!isFollowing);
+      setIsFollowingLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsFollowingLoading(false);
+      }
+    } else {
+      return null;
+    }
   }
 
   let content = null;
@@ -71,6 +90,17 @@ export default function FeaturedDev(
                 <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(item.userid)}>
                   <Plus className="h-4 w-4 mr-2" /> Follow
                 </Button>
+                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => {
+              handleFollow(item?.userid);
+            }} disabled={isFollowingLoading} >
+              {
+                isFollowingLoading ? (
+                  <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
+                ) : (
+                  <>{isFollowing ? "Following" : "Follow"}</>
+                )
+              }
+            </Button>
               </div>
             ))}
           </div>
