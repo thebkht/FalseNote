@@ -17,28 +17,42 @@ import { Icons } from "@/components/icon";
 export default function FeaturedDev(
   { data: featuredDevs, isloaded: isLoaded}: { data: any; isloaded: boolean; }
 ) {
-  const [isFollowing, setIsFollowing] = useState<boolean>(false);
-  const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+  const [isFollowing, setIsFollowing] = useState<boolean[]>(
+    featuredDevs?.map(() => false) || []
+  );
+  const [isFollowingLoading, setIsFollowingLoading] = useState<boolean[]>(
+    featuredDevs?.map(() => false) || []
+  );
   const { data: session, status } = useSession();
   
-  async function handleFollow(followeeId: string) {
+  const handleFollow = async (followeeId: string, index: number) => {
     if (status === "authenticated") {
-      setIsFollowingLoading(true);
-      try { 
-      const followerId = (await getSessionUser()).userid;
-      await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-        method: "GET",
-      });
-      setIsFollowing(!isFollowing);
-      setIsFollowingLoading(false);
+      // Create a copy of the loading states array
+      const newLoadingStates = [...isFollowingLoading];
+      const newFollowingStates = [...isFollowing];
+      newLoadingStates[index] = true;
+      setIsFollowingLoading(newLoadingStates);
+
+      try {
+        const followerId = (await getSessionUser()).userid;
+        await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+          method: "GET",
+        });
+
+        // Reset the loading state for the clicked button
+        newFollowingStates[index] = true;
+        setIsFollowing(newFollowingStates);
+        newLoadingStates[index] = false;
+        setIsFollowingLoading(newLoadingStates);
       } catch (error) {
         console.error(error);
-        setIsFollowingLoading(false);
+
+        // Reset the loading state for the clicked button on error
+        newLoadingStates[index] = false;
+        setIsFollowingLoading(newLoadingStates);
       }
-    } else {
-      return null;
     }
-  }
+  };
 
   let content = null;
 
@@ -50,9 +64,15 @@ export default function FeaturedDev(
         </CardHeader>
         <CardContent>
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
-            {featuredDevs.map((item: {
-              verified: boolean; userid: string; profilepicture: string | undefined; username: string | undefined; name: string | undefined; bio: string | undefined; 
-}) => (
+            {featuredDevs.map(
+                  (item: {
+                    verified: boolean;
+                    userid: string;
+                    profilepicture: string | undefined;
+                    username: string | undefined;
+                    name: string | undefined;
+                    bio: string | undefined;
+                  }, index: number) => (
               <div className="flex gap-4 w-full items-center justify-between" key={item.userid}>
                 <div className="space-y-3">
                 <Link href={`/${item.username}`} className="flex items-center">
@@ -88,13 +108,14 @@ export default function FeaturedDev(
           )}</p>
                 </div>
                 <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => {
-              handleFollow(item?.userid);
-            }} disabled={isFollowingLoading} >
-              {
-                isFollowingLoading ? (
+                          handleFollow(item?.userid, index);
+                        }}
+                        disabled={isFollowingLoading[index]}
+                      >
+              {isFollowingLoading[index] ? (
                   <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
                 ) : (
-                  <>{isFollowing ? "Following" : "Follow"}</>
+                  <>{isFollowing ? <><Check className="h-4 w-4 mr-2" /> Following</> : <><Plus className="h-4 w-4 mr-2" /> Follow</>}</>
                 )
               }
             </Button>
