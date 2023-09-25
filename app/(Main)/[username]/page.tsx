@@ -33,10 +33,6 @@ export default function Page({ params }: Props) {
   const { status, data: session } = useSession();
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
 
-  const sessionUser = getSessionUser();
-
-  console.log(sessionUser);
-
 
   useEffect(() => {
     async function fetchData() {
@@ -44,7 +40,7 @@ export default function Page({ params }: Props) {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
         if (status === "authenticated") {
-          const followerId = (await sessionUser).userid;
+          const followerId = (await getSessionUser()).userid;
           setIsFollowing(userData.followers.find((follower: any) => follower.followerid === followerId));
         }
         setIsLoaded(true);
@@ -55,7 +51,7 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, isFollowing, status, sessionUser]);
+  }, [params.username, isFollowing, status]);
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
