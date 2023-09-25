@@ -46,7 +46,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     result.rows[0].followers = followers.rows;
 
     const following = await sql`
-          SELECT Followee FROM Follows WHERE FollowerID= ${result.rows[0]?.userid}`;
+          SELECT Followeeid FROM Follows WHERE FollowerID= ${result.rows[0]?.userid}`;
 
     result.rows[0].following = following.rows;
 
