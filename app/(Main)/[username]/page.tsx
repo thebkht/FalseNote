@@ -52,7 +52,7 @@ export default function Page({ params }: Props) {
   async function handleFollow(followeeId: string) {
     const followerId = sessionUser?.userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-      method: "POST",
+      method: "GET",
     });
   }
 
@@ -161,11 +161,23 @@ export default function Page({ params }: Props) {
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
               <Button variant={"outline"} className="w-full">Edit Profile</Button>
             ) : (
-              // sessionUser?.following: [31,32] user?.id: 31
-              sessionUser?.following?.includes(user?.id) ? (
-                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.id)}>Unfollow</Button>
+              /*
+                sessionUser {
+                  following {
+                    { followeeid: 31 },
+                    { followeeid: 32 },
+                }
+
+                user {
+                  userid: 31
+                }
+
+                sessionUser.following.find((followee) => followee.followeeid === user.userid)
+              */
+              sessionUser?.following.find((followee: any) => followee.followeeid === user?.userid) ? (
+                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.userid)}>Following</Button>
               ) : (
-                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.id)}>Follow</Button>
+                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.userid)}>Follow</Button>
               )
             )}
 

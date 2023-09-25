@@ -17,7 +17,7 @@ export default function FeaturedDev(
   async function handleFollow(followeeId: string) {
     const followerId = sessionUser?.userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-      method: "POST",
+      method: "GET",
     });
   }
 

@@ -41,14 +41,14 @@ export async function GET(req: Request, { params }: { params: { username: string
     result.rows[0].comments = comments.rows;
 
     const followers = await sql`
-          SELECT Followerid FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid}`;
+          SELECT * FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid}`;
 
-    result.rows[0].followers = followers.rows.map((item: any) => item.followerid);
+    result.rows[0].followers = followers.rows;
 
     const following = await sql`
-          SELECT Followeeid FROM Follows WHERE FollowerID= ${result.rows[0]?.userid}`;
+          SELECT * FROM Follows WHERE FollowerID= ${result.rows[0]?.userid}`;
 
-    result.rows[0].following = following.rows.map((item: any) => item.followeeid);
+    result.rows[0].following = following.rows;
 
     console.log("Query result:", result)
 
