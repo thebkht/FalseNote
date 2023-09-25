@@ -168,7 +168,7 @@ export default function Page({ params }: Props) {
               <Button className="w-full">Edit Profile</Button>
             ) : (
               <Button className="w-full" onClick={() => {
-                handleFollow(user?.id);
+                handleFollow(user?.userid);
                 setIsFollowing(!isFollowing);
               }} >
                 {
