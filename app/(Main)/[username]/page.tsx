@@ -29,12 +29,15 @@ function getRegistrationDateDisplay(registrationDate: string) {
 export default function Page({ params }: Props) {
   const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
+  const [sessionUser, setSessionUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
+  const { data: session } = useSession(); // You might need to adjust this based on how you use the session
 
   useEffect(() => {
     async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
+        const sessionData = await getUserByUsername(session?.user?.name!);
+        setSessionUser(sessionData);
         setUser(userData);
         setIsLoaded(true);
       } catch (error) {
@@ -44,9 +47,14 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username]);
+  }, [params.username, session?.user?.name]);
 
-  const { data: session } = useSession(); // You might need to adjust this based on how you use the session
+  async function handleFollow(followeeId: string) {
+    const followerId = sessionUser?.userid;
+    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+      method: "POST",
+    });
+  }
 
 
   if (!isLoaded) {
@@ -151,9 +159,17 @@ export default function Page({ params }: Props) {
           </div>
 
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-              <Button className="w-full">Edit Profile</Button>
+              <Button variant={"outline"} className="w-full">Edit Profile</Button>
             ) : (
-              <Button className="w-full" >Follow</Button>
+              sessionUser?.following?.includes(user?.userid) ? (
+                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(user?.userid)}>
+                  Following
+                </Button>
+              ) : (
+                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(user?.userid)}>
+                  Follow
+                </Button>
+              )
             )}
 
             { user?.bio && ( <div className="w-full">{ user?.bio }</div> ) }
@@ -163,7 +179,7 @@ export default function Page({ params }: Props) {
               {user?.followersnum} Followers
             </Button>
             <Button variant={"secondary"} size={"sm"} className="!text-sm">
-              {user?.followingnum} Followers
+              {user?.followingnum} Followings
             </Button>
             <Button variant={"secondary"} size={"sm"} className="!text-sm" >{user?.postsnum} Post</Button>
           </div>

@@ -14,11 +14,6 @@ import { Badge } from "@/components/ui/badge";
 export default function FeaturedDev(
   { data: featuredDevs, isloaded: isLoaded, sessionUser }: { data: any; isloaded: boolean; sessionUser: any; }
 ) {
-  featuredDevs.map((item: { userid: any; }) => {
-    console.log(item.userid);
-  })
-
-  console.log(sessionUser?.userid)
   async function handleFollow(followeeId: string) {
     const followerId = sessionUser?.userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
