@@ -9,10 +9,9 @@ import { Check, Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { Metadata, ResolvingMetadata } from 'next'
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
-import { set } from "react-hook-form";
+import { SessionUser } from "@/components/get-session-user";
 
 type Props = {
   params: { username: string }
@@ -36,7 +35,7 @@ export default function Page({ params }: Props) {
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
 
   useEffect(() => {
-    async () => {
+    async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
@@ -46,7 +45,12 @@ export default function Page({ params }: Props) {
         setIsLoaded(true);
       }
     }
+
+    fetchData();
   }, [params.username]);
+
+  const sessionUser = SessionUser();
+  console.log(sessionUser);
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
@@ -172,7 +176,6 @@ export default function Page({ params }: Props) {
             ) : (
               <Button className="w-full" onClick={() => {
                 handleFollow(user?.userid);
-                setIsFollowing(!isFollowing);
               }} >
                 {
                   isFollowing ? (

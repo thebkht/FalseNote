@@ -6,6 +6,7 @@ import TopLoader from '@/components/providers/top-loader'
 import Navbar from '@/components/navbar/navbar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import AuthProvider from '@/components/providers/auth-provider'
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -55,6 +56,7 @@ export default async function Rootayout({
           <AuthProvider>
           <TopLoader />
           {children}
+          <Analytics />
           </AuthProvider>
         </ThemeProvider>
       </body>
