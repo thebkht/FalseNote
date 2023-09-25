@@ -56,12 +56,17 @@ export default function Page({ params }: Props) {
   async function handleFollow(followeeId: string) {
     if (status === "authenticated") {
       setIsFollowingLoading(true);
+      try { 
       const followerId = (await getSessionUser()).userid;
       await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
         method: "GET",
       });
       setIsFollowing(!isFollowing);
       setIsFollowingLoading(false);
+      } catch (error) {
+        console.error(error);
+        setIsFollowingLoading(false);
+      }
     } else {
       return null;
     }
