@@ -39,7 +39,7 @@ export default function Page({ params }: Props) {
     async function fetchData() {
       try {
         const userData = await getUserByUsername(params.username);
-        const sessionData = getUserByUsername(session?.user?.name!);
+        const sessionData = getUserByUsername(session?.user?.name as string);
         setSessionUser(sessionData);
         setUser(userData);
         setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionUser?.userid));
