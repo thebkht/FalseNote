@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import type { Metadata, ResolvingMetadata } from 'next'
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
+import { set } from "react-hook-form";
 
 type Props = {
   params: { username: string }
@@ -32,6 +33,7 @@ export default function Page({ params }: Props) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [sessionUser, setSessionUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   const { data: session } = useSession(); // You might need to adjust this based on how you use the session
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -40,6 +42,7 @@ export default function Page({ params }: Props) {
         const sessionData = getUserByUsername(session?.user?.name!);
         setSessionUser(sessionData);
         setUser(userData);
+        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionUser?.userid));
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
@@ -48,7 +51,9 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, session?.user?.name]);
+  }, [params.username, session?.user?.name, isFollowing]);
+
+  const username = params.username as string;
 
   async function handleFollow(followeeId: string) {
     const followerId = sessionUser?.userid;
@@ -164,11 +169,10 @@ export default function Page({ params }: Props) {
             ) : (
               <Button className="w-full" onClick={() => {
                 handleFollow(user?.id);
-                //clear the cache
-                
+                setIsFollowing(!isFollowing);
               }} >
                 {
-                  user?.followers?.find((follower: any) => follower.followerid === sessionUser?.userid) ? (
+                  isFollowing ? (
                     <>Following</>
                   ) : (
                     <>Follow</>
