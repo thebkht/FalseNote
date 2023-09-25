@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
-import { SessionUser } from "@/components/get-session-user";
+import { getSessionUser } from "@/components/get-session-user";
 
 type Props = {
   params: { username: string }
@@ -40,7 +40,7 @@ export default function Page({ params }: Props) {
         const userData = await getUserByUsername(params.username);
         setUser(userData);
         if (status === "authenticated") {
-          const followerId = (await SessionUser()).userid;
+          const followerId = (await getSessionUser()).userid;
           setIsFollowing(userData.followers.find((follower: any) => follower.followerid === followerId));
         }
         setIsLoaded(true);
@@ -55,7 +55,7 @@ export default function Page({ params }: Props) {
 
   async function handleFollow(followeeId: string) {
     if(status === "authenticated") {
-      const followerId = (await SessionUser()).userid;
+      const followerId = (await getSessionUser()).userid;
     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
       method: "GET",
     });

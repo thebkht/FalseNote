@@ -1,16 +1,14 @@
-"use client"
-import { useSession } from "next-auth/react"
+import { getSession } from "next-auth/react";
 
+//Get session user using getSession() from next-auth and return user object
+export async function getSessionUser() {
+     const session = await getSession();
+     const sessionUser = session?.user;
 
-export async function SessionUser() {
-     const { data: session } = useSession()
-     try {
-          const user = await session?.user
-          const encodedString = user?.name?.replace(/ /g, "%20");
-          const response = await fetch(`/api/users/${encodedString}`, { method: "GET", })
-          const data = await response.json()
-          return data.user
-     } catch (error: any) {
-          return new Response(error.message, { status: 500 })
-     }
-} 
+     //Get user details from database
+     const user = await fetch("/api/users/" + sessionUser?.name?.replace(/\s/g, ""));
+     const userJson = await user.json();
+
+     //Return user object
+     return userJson.user;
+}
