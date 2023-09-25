@@ -38,7 +38,7 @@ export default function Page({ params }: Props) {
   useEffect(() => {
     async () => {
       const sessionData = await getUserByUsername(session?.user?.name);
-      if (session?.user?.name) {
+      if (session?.user?.name !== null) {
         setSessionUser(sessionData);
       }
     }
