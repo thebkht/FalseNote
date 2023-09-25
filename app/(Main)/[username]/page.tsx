@@ -53,11 +53,10 @@ export default function Page({ params }: Props) {
     fetchData();
   }, [params.username, session?.user?.name, isFollowing, sessionUser?.userid]);
 
-  const username = params.username as string;
+  console.log(sessionUser);
 
   async function handleFollow(followeeId: string) {
-    const followerId = sessionUser?.userid;
-    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${sessionUser.userid}`, {
       method: "GET",
     });
   }
