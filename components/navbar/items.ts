@@ -8,7 +8,7 @@ export const items = [
      },
      {
           title: 'Feed',
-          url: '/',
+          url: '/feed',
           icon: GalleryVerticalEnd
      },
      
