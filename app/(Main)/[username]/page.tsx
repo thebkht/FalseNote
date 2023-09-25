@@ -40,9 +40,9 @@ export default function Page({ params }: Props) {
       try {
         const sessionData = getUserByUsername(session?.name) as any;
         const userData = await getUserByUsername(params.username);
-        setSessionUser(sessionData);
+        setSessionUser(sessionData.result);
         setUser(userData);
-        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionData?.userid))
+        setIsFollowing(userData.followers.find((follower: any) => follower.followerid === sessionData?.result.userid))
         setIsLoaded(true);
       } catch (error) {
         console.error(error);
