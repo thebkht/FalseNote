@@ -22,8 +22,9 @@ function getRegistrationDateDisplay(registrationDate: string) {
   const regDate = new Date(registrationDate);
 
   const regMonth = regDate.toLocaleString('default', { month: 'long' });
+  const regDay = regDate.getDay();
   const regYear = regDate.getFullYear();
-  return `${regMonth} ${regYear}`;
+  return `${regDay} ${regMonth} ${regYear}`;
 }
 
 export default function Page({ params }: Props) {
@@ -159,26 +160,9 @@ export default function Page({ params }: Props) {
           </div>
 
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-              <Button variant={"outline"} className="w-full">Edit Profile</Button>
+              <Button className="w-full">Edit Profile</Button>
             ) : (
-              /*
-                sessionUser {
-                  following {
-                    { followeeid: 31 },
-                    { followeeid: 32 },
-                }
-
-                user {
-                  userid: 31
-                }
-
-                sessionUser.following.find((followee) => followee.followeeid === user.userid)
-              */
-              sessionUser?.following.find((followee: any) => followee.followeeid === user?.userid) ? (
-                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.userid)}>Following</Button>
-              ) : (
-                <Button variant={"outline"} className="w-full" onClick={() => handleFollow(user?.userid)}>Follow</Button>
-              )
+              <Button className="w-full" onClick={() => handleFollow(user?.userid)} >Follow</Button>
             )}
 
             { user?.bio && ( <div className="w-full">{ user?.bio }</div> ) }

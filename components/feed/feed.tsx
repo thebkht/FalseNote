@@ -16,7 +16,7 @@ export default function Feed() {
     async function fetchData() {
       try {
         const userData = await getFeaturedDevs();
-        const sessionData = await getUserByUsername(session?.user?.name!);
+        const sessionData = await getUserByUsername(session?.user?.name as string);
         setUser(sessionData);
         setFeaturedDevs(userData.users);
         setIsLoaded(true);
