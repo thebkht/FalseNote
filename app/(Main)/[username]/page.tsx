@@ -161,7 +161,7 @@ export default function Page({ params }: Props) {
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
               <Button variant={"outline"} className="w-full">Edit Profile</Button>
             ) : (
-              sessionUser.following?.followeeid.include(user?.userid) ? (
+              sessionUser.following?.include(user?.userid) ? (
                 <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => handleFollow(user?.userid)}>
                   Following
                 </Button>
