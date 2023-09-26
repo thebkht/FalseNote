@@ -221,9 +221,9 @@
 }
 
 .markdown-body pre{
-  @apply overflow-x-auto p-4 my-8 rounded-lg bg-secondary text-secondary-foreground;
+  @apply overflow-x-auto p-4 my-8 rounded-md bg-secondary text-secondary-foreground;
 }
 
-.markdown-body pre code{
-  @apply bg-muted py-0.5 px-1 rounded-lg;
+.markdown-body code{
+  @apply py-1 px-2 rounded-sm bg-secondary text-secondary-foreground;
 }

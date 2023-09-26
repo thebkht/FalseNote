@@ -272,7 +272,7 @@ export function PostForm() {
               </FormItem>
             )}
           /></TabsContent>
-          <TabsContent value="preview" className="rounded-md border border-input bg-background px-3 py-2 text-sm">
+          <TabsContent value="preview" className="rounded-md px-5 pb-5 border border-input bg-background py-4 text-sm">
             <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
           </TabsContent>
         </Tabs>
