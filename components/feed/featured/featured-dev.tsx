@@ -107,7 +107,7 @@ export default function FeaturedDev(
             <>{item.bio}</>
           )}</p>
                 </div>
-                <Button variant="outline" size={"lg"} className="flex-shrink-0" onClick={() => {
+                <Button variant="outline" size={"default"} className="flex-shrink-0" onClick={() => {
                           handleFollow(item?.userid, index);
                         }}
                         disabled={isFollowingLoading[index]}

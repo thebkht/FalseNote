@@ -227,3 +227,17 @@
 .markdown-body code{
   @apply py-1 px-2 rounded-sm bg-secondary text-secondary-foreground;
 }
+
+.container-5xl{
+  @apply max-w-5xl mx-auto px-4;
+}
+
+.container-7xl{
+  @apply max-w-7xl mx-auto px-4;
+}
+
+
+.container{
+  @apply mx-auto px-4 ;
+  max-width: calc(100% - 1rem);
+}
