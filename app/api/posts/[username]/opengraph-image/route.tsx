@@ -16,7 +16,7 @@ const formatDate = (dateString: string | number | Date) => {
      return formattedDate
 }
 
-export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
+export async function handler(req: NextRequest, { params }: { params: { username: string } }) {
      try {
           const { username } = params
      const postUrl = req.nextUrl.searchParams.get("url");
@@ -64,3 +64,10 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
           console.error(error);
      }
 }
+
+/*Type error: Route "app/api/posts/[username]/opengraph-image/route.tsx" has an invalid export:
+"Promise<ImageResponse | undefined>" is not a valid GET return type:
+Expected "void | Response | Promise<void | Response>", got "Promise<ImageResponse | undefined>".
+  Expected "Promise<void | Response>", got "Promise<ImageResponse | undefined>".
+    Expected "void | Response", got "ImageResponse | undefined".
+      Expected "void | Response", got "ImageResponse".*/
