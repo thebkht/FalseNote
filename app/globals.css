@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 
 
 @layer base {
@@ -27,7 +27,7 @@
     --ring: 0 0% 3.9%;
     --radius: 0.75rem;
   }
- 
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -50,97 +50,98 @@
     --ring: 0 0% 83.1%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-.menu-backdrop{
+.menu-backdrop {
   @apply bg-background fixed z-10 backdrop-blur-md w-full top-0 left-0;
 }
 
-.menu-backdrop{
+.menu-backdrop {
   background-color: hsl(var(--background) / 0.7);
 }
 
-.menu-container{
+.menu-container {
   @apply fixed z-20 flex items-center justify-between w-full;
 }
 
-.feed{
+.feed {
   @apply flex flex-col items-center justify-start;
 }
 
-.feed__empty{
+.feed__empty {
   @apply flex flex-col items-center justify-start;
 }
 
-.feed__empty_title{
+.feed__empty_title {
   @apply font-bold text-3xl text-center;
 }
 
-.feed__empty_subtitle{
+.feed__empty_subtitle {
   @apply font-normal text-xl text-center mt-2.5;
 }
 
-.feed__empty_search{
+.feed__empty_search {
   @apply mt-5;
 }
 
-.search{
+.search {
   @apply w-full;
 }
 
-.search__container{
-  @apply relative block transition-opacity duration-200 ;
+.search__container {
+  @apply relative block transition-opacity duration-200;
 }
 
-.search__form{
+.search__form {
   @apply flex flex-col items-stretch justify-center;
 }
 
-.input{
+.input {
   @apply rounded-3xl flex items-center justify-start m-0 p-0 border transition duration-200 cursor-text px-2;
 }
 
-.input__icon{
+.input__icon {
   @apply inline-block flex-none m-0;
 }
 
-.search__form_icon{
+.search__form_icon {
   @apply text-secondary transition duration-200;
 }
 
-.icon{
+.icon {
   @apply inline-block align-top w-auto h-full;
 }
 
-.input__field{
+.input__field {
   @apply flex-1 w-full py-2 font-normal text-secondary-foreground bg-transparent border-none outline-none appearance-none min-w-0 text-sm rounded-none resize-none text-left;
 }
 
-.input__field:focus-visible{
-  @apply !ring-0 !ring-offset-0 !ring-offset-transparent !ring-secondary !ring-opacity-100;
+.input__field:focus-visible {
+  @apply  !ring-0 !ring-offset-0 !ring-offset-transparent !ring-secondary !ring-opacity-100;
 }
 
-.feed__empty_featured{
+.feed__empty_featured {
   @apply block w-full mt-9;
 }
 
-.article__container{
+.article__container {
   @apply p-8
 }
 
-.article__header{
-  @apply space-y-8 ;
+.article__header {
+  @apply space-y-8;
 }
 
-.article__title{
+.article__title {
   @apply font-bold text-4xl !font-bold leading-snug
 }
 
@@ -148,15 +149,15 @@
   @apply flex items-center gap-3;
 }
 
-.article__date{
+.article__date {
   @apply text-sm text-muted-foreground;
 }
 
-.article__content{
+.article__content {
   @apply text-lg text-foreground my-8;
 }
 
-.article__content img{
+.article__content img {
   @apply w-full h-auto;
 }
 
@@ -164,80 +165,119 @@
   @apply ;
 } */
 
-.markdown-body p{
+.markdown-body p {
   @apply mb-4 text-base;
 }
 
-.markdown-body h1{
+.markdown-body h1 {
   @apply text-4xl font-bold my-8;
 }
 
-.markdown-body h2{
+.markdown-body h2 {
   @apply text-3xl font-bold my-8 pb-1.5;
 }
 
-.markdown-body h3{
+.markdown-body h3 {
   @apply text-2xl font-bold my-8 pb-1.5;
 }
 
-.markdown-body h4{
+.markdown-body h4 {
   @apply text-xl font-bold my-8 pb-1.5;
 }
 
-.markdown-body h5{
+.markdown-body h5 {
   @apply text-lg font-bold my-8 pb-1.5;
 }
 
-.markdown-body h6{
+.markdown-body h6 {
   @apply text-base font-bold my-8 pb-1.5;
 }
 
-.markdown-body ul{
+.markdown-body ul {
   @apply list-disc list-inside;
 }
 
-.markdown-body ol{
+.markdown-body ol {
   @apply list-decimal list-inside;
 }
 
-.markdown-body li{
+.markdown-body li {
   @apply mb-2;
 }
 
-.markdown-body a{
+.markdown-body a {
   @apply underline;
 }
 
-.markdown-body a:hover{
+.markdown-body a:hover {
   @apply text-foreground;
 }
 
-.markdown-body blockquote{
+.markdown-body blockquote {
   @apply border-l-4 border-primary pl-4 my-8;
 }
 
-.markdown-body blockquote p{
+.markdown-body blockquote p {
   @apply text-base;
 }
 
-.markdown-body pre{
+.markdown-body pre {
   @apply overflow-x-auto p-4 my-8 rounded-md bg-secondary text-secondary-foreground;
 }
 
-.markdown-body code{
+.markdown-body code {
   @apply py-1 px-2 rounded-sm bg-secondary text-secondary-foreground;
 }
 
-.container-5xl{
+.container-5xl {
   @apply max-w-5xl mx-auto px-4;
 }
 
-.container-7xl{
+.container-7xl {
   @apply max-w-7xl mx-auto px-4;
 }
 
 
-.container{
-  @apply mx-auto px-4 ;
+.container {
+  @apply mx-auto px-4;
   max-width: calc(100% - 1rem);
+}
+
+.Layout {
+  @apply grid;
+  --Layout-sidebar-width: 220px;
+  --Layout-gutter: 16px;
+  grid-gap: var(--Layout-gutter);
+  grid-auto-flow: column;
+  grid-template-columns: auto 0 minmax(0, calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)));
+}
+
+@media (min-width: 1012px){
+  .Layout {
+    --Layout-sidebar-width: 296px;
+    }
+}
+@media (min-width: 768px)
+{.Layout {
+--Layout-sidebar-width: 256px;
+}}
+@media (min-width: 544px)
+{.Layout {
+--Layout-sidebar-width: 220px;
+}}
+@media (min-width: 1012px)
+{.Layout {
+--Layout-gutter: 24px;
+}}
+
+@media (max-width: 767.98px)
+{
+  .Layout.Layout--flowRow-until-md {
+grid-auto-flow: row;
+grid-template-columns: 1fr !important;
+}}
+
+.Layout .Layout-sidebar {
+  grid-column: 1;
+  width: var(--Layout-sidebar-width);
 }

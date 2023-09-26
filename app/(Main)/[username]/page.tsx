@@ -151,15 +151,10 @@ export default function Page({ params }: Props) {
 
 
   return (
-    <div className="row grid gap-6"
-      style={
-        {
-          gridTemplateColumns: "auto 0 minmax(0, calc(100% - 18rem - 1.5rem))"
-        }
-      }>
-      <div className="col-span-1 w-72">
+    <div className="Layout Layout--flowRow-until-md" >
+      <div className="Layout-sidebar">
         <div className="user space-y-4">
-          <Button variant={"secondary"} size={"lg"} className="mb-5 px-0 h-72 w-72 rounded-full">
+          <Button variant={"secondary"} size={"lg"} className="mb-5 px-0 w-full h-auto rounded-full">
             <Avatar className="rounded-full">
               <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
               <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
@@ -250,9 +245,7 @@ export default function Page({ params }: Props) {
             </li>
           </ul>
         </div>
-
-
-      </div>
+       </div>
       <div className="col-span-2">
         <h2 className="text-2xl font-bold text-center">Posts</h2>
         <div className="user-articles px-8 space-y-6">
