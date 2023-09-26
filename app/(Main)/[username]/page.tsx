@@ -87,57 +87,14 @@ export default function Page({ params }: Props) {
   if (!isLoaded) {
     // Loading skeleton or spinner while fetching data
     return (
-      <div className="row grid gap-6"
-        style={
-          {
-            gridTemplateColumns: "auto 0 minmax(0, calc(100% - 18rem - 1.5rem))"
-          }
-        }>
-        <div className="col-span-1 w-72 space-y-4">
-          <Skeleton className="mb-5 h-72 w-72 rounded-full" />
-          <div className="space-y-3">
-            <Skeleton className="h-8 w-72 mb-2" />
-            <Skeleton className="h-6 w-56" />
-          </div>
-          <div className="flex gap-2 py-2">
-            <Skeleton className="h-9 w-24" />
-            <Skeleton className="h-9 w-24" />
-            <Skeleton className="h-9 w-24" />
-          </div>
-
-          <ul className="space-y-3">
-            <Skeleton className="h-5 w-72" />
-            <Skeleton className="h-5 w-72" />
-            <Skeleton className="h-5 w-72" />
-            <Skeleton className="h-5 w-72" />
-          </ul>
-        </div>
-        <div className="col-span-2 items-center text-center">
-          <div className="rounded-lg mx-8 border bg-card text-card-foreground shadow-sm space-y-4">
-            <div className="flex flex-col space-y-4 p-6">
-              <AspectRatio ratio={16 / 9} className="w-full">
-                <Skeleton className="rounded-md w-full h-full" />
-              </AspectRatio>
-
-              <h1><Skeleton className="h-5 w-full pb-6" /></h1>
-              <div className="space-y-3 pt-4">
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
-              </div>
-            </div>
-            <div className="flex items-center p-6 pt-0">
-              <div className="stats flex items-center gap-3">
-                <Skeleton className="h-5 w-48" />
-                <Skeleton className="h-5 w-10" />
-                <Skeleton className="h-5 w-10" />
-                <Skeleton className="h-5 w-10" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+      <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
+        {
+          minHeight: "calc(100vh - 192px)"
+        }
+      }>
+         <Icons.spinner className="h-10 animate-spin" />
+       </div>
+    )
   }
 
   if (params.username !== user?.username) {

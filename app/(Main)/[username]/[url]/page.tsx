@@ -15,6 +15,7 @@ import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { getSessionUser } from "@/components/get-session-user"
 import { useSession } from "next-auth/react"
+import { Icons } from "@/components/icon"
 
 //format date ex: if published this year Apr 4, otherwise Apr 4, 2021
 const formatDate = (dateString: string | number | Date) => {
@@ -85,6 +86,17 @@ export default function PostView({ params }: { params: { username: string, url: 
           }
      }
 
+     if (!isLoaded) {
+          return (
+               <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
+                    {
+                      minHeight: "calc(100vh - 192px)"
+                    }
+                  }>
+                     <Icons.spinner className="h-10 animate-spin" />
+                   </div>
+          )
+     }
 
      return (
           <>
