@@ -11,8 +11,19 @@ export async function POST(req: NextRequest) {
 
           const { title, content, coverImage, visibility, tags, url, authorId } = data;
 
-          if (!title || !content || !visibility || !tags || !url || !authorId) {
-               return new Response("Missing required fields", { status: 400 });
+          if (!title) {
+               return new Response("No title provided", { status: 400 });
+          }
+          if (!content) {
+               return new Response("No content provided", { status: 400 });
+          }
+
+          if (!authorId) {
+               return new Response("No author provided", { status: 400 });
+          }
+
+          if (!url) {
+               return new Response("No url provided", { status: 400 });
           }
 
           var isDraft;

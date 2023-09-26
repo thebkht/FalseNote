@@ -57,12 +57,15 @@ function PostCard(
      authorid: string;
      session: any;
      likes: string;
+     url: string;
   }
 ) 
 {
   return (
-    <Card {...props}>
-      <CardHeader className={cn("flex flex-col gap-y-4")}>
+      <Card {...props}>
+      <Link href={props.url}>
+      <CardContent className="py-0">
+      <CardHeader className={cn("px-0 gap-y-4")}>
         {props.thumbnail && (
           <AspectRatio ratio={16 / 9} className="mb-3">
             <Image
@@ -86,7 +89,7 @@ function PostCard(
           )}
         </CardDescription>
       </CardHeader>
-      <CardFooter>
+      <CardFooter className="px-0">
                   <div className="stats flex items-center gap-3">
                     <p className="card-text inline mb-0 text-muted-foreground">{formatDate(new Date(props.date).toLocaleString())}</p>
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
@@ -94,6 +97,8 @@ function PostCard(
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1" /> {props.likes}</p>
                   </div>
       </CardFooter>
+      </CardContent>
+      </Link>
     </Card>
   );
 }

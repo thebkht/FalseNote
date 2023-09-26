@@ -114,10 +114,10 @@ export default function Page({ params }: Props) {
             </div>
             <div className="flex items-center p-6 pt-0">
               <div className="stats flex items-center gap-3">
-                <p className="card-text inline mb-0"><Skeleton className="h-5 w-48" /></p>
-                <p className="card-text inline mb-0 text-muted"><Skeleton className="h-5 w-10" /></p>
-                <p className="card-text inline mb-0 text-muted"><Skeleton className="h-5 w-10" /></p>
-                <p className="card-text inline mb-0 text-muted"><Skeleton className="h-5 w-10" /></p>
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-5 w-10" />
+                <Skeleton className="h-5 w-10" />
+                <Skeleton className="h-5 w-10" />
               </div>
             </div>
           </div>
@@ -244,7 +244,7 @@ export default function Page({ params }: Props) {
         <div className="user-articles px-8">
           {user?.posts && user.posts.length > 0 ? (
             user.posts.map((article: any) => (
-              <PostCard
+                <PostCard
                 key={article.id}
                 title={article.title}
                 thumbnail={article.coverimage}
@@ -257,6 +257,7 @@ export default function Page({ params }: Props) {
                 authorid={user?.id}
                 session={session}
                 likes={article.likes}
+                url={`/${user?.username}/${article.url}`}
                 className="mt-4" />
             ))
           ) : (

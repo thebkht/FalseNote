@@ -26,7 +26,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     result.rows[0].followingnum = followingCount.rows[0]?.followingcount;
 
     const posts = await sql`
-          SELECT * FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid}`;
+          SELECT * FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid} ORDER BY PostID DESC`;
 
     result.rows[0].posts = posts.rows;
 

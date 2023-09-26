@@ -27,6 +27,9 @@ export async function GET(
      if (result.rows.length === 0) {
        return NextResponse.json({ error: 'Post not found' }, { status: 404 });
      }
+
+     result.rows[0].author = author.rows[0];
+
      const comments = await sql`
            SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
      result.rows[0].comments = comments.rows;

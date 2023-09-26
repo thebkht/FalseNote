@@ -41,7 +41,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 
 
 const postFormSchema = z.object({
@@ -80,6 +80,7 @@ const defaultValues: Partial<PostFormValues> = {
 export function PostForm() {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -107,57 +108,52 @@ export function PostForm() {
   async function onSubmit(data: PostFormValues) {
     setIsPublishing(true);
     // Upload the cover image
-    if (!file) return
 
-    try {
-      const dataForm = new FormData()
-      dataForm.set('file', file)
-      // Construct the request body with postId and authorId
-      const requestBody = {
-        postId: form.getValues('url'),
-        userId: user?.id,
-      };
-
-      dataForm.set('body', JSON.stringify(requestBody));
-
-      const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.username}`, {
-        method: 'POST',
-        body: dataForm,
-      });
-      // get the image url
-      const { data: coverUrl } = await res.json()
-      data.coverImage = coverUrl.url;
-
-    } catch (e: any) {
-      // Handle errors here
-      console.error(e)
+    if(file) {
+      try {
+        const dataForm = new FormData()
+        dataForm.set('file', file)
+        // Construct the request body with postId and authorId
+        const requestBody = {
+          postId: form.getValues('url'),
+          userId: user?.id,
+        };
+  
+        dataForm.set('body', JSON.stringify(requestBody));
+  
+        const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.username}`, {
+          method: 'POST',
+          body: dataForm,
+        });
+        // get the image url
+        const { data: coverUrl } = await res.json()
+        data.coverImage = coverUrl.url;
+  
+      } catch (e: any) {
+        // Handle errors here
+        console.error(e)
+      }
     }
     // Get the authorId from the session
     const authorId = user?.userid;
-    // Submit the form
+    try {
+      // Submit the form
     const result = await fetch("/api/posts/submit", {
       method: "POST",
       body: JSON.stringify({ ...data, authorId }),
     })
     const json = await result.json()
-    if (!result.ok) {
-      toast({
-        title: "Error",
-        description: json.message,
-      })
-      setIsPublishing(false);
-      return
-    }
-    if (result.ok) {
-      toast({
-        title: "Success",
-        description: json.message,
-      }
-      )
+    
+    } catch (error) {
+      console.error(error)
       setIsPublishing(false)
-      redirect(`/${user?.username}/${form.getValues('url')}`)
-      return
     }
+    /* console.log(data.url)
+    console.log(user?.username)
+    // If successful, redirect to the post page
+    redirect(`/${user?.username}/${data.url}`) */
+    // If successful, redirect to the post page
+    router.push(`/${user?.username}/${data.url}`);
   }
 
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
@@ -202,6 +198,7 @@ export function PostForm() {
   //Set url value from title value
   function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
+    form.setValue('title', value);
     // Replace spaces with dashes and make lowercase of 2 words only
     if (value.split(' ').length > 1) {
       const url = value.split(' ')[0].toLowerCase() + '-' + value.split(' ')[1].toLowerCase();
@@ -225,7 +222,7 @@ export function PostForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full" id="createPostForm">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full" id="PostForm">
         <FormField
           control={form.control}
           name="title"
@@ -275,9 +272,9 @@ export function PostForm() {
 
         <Dialog>
 
-          <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full">Post Setting</Button></DialogTrigger>
+          <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full" asChild><span>Post Setting</span></Button></DialogTrigger>
 
-          <DialogContent className="h-full max-h-[550px] !p-0">
+          <DialogContent className="h-full max-h-[560px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
                 <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
@@ -411,7 +408,8 @@ export function PostForm() {
                 <Button
                   type="submit"
                   className="ml-auto w-full"
-                  size={"lg"} form="createPostForm"
+                  size={"lg"}
+                  form="PostForm"
                   disabled={isPublishing}
                 >
                   {
