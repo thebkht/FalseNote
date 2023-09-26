@@ -244,7 +244,7 @@ export default function Page({ params }: Props) {
       </div>
       <div className="col-span-2">
         <h2 className="text-2xl font-bold text-center">Posts</h2>
-        <div className="user-articles px-8">
+        <div className="user-articles px-8 space-y-6">
           {user?.posts && user.posts.length > 0 ? (
             user.posts.map((article: any) => (
                 <PostCard

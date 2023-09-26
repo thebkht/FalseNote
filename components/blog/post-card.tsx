@@ -15,7 +15,13 @@ import { Icons } from "../icon";
 import { useSession } from "next-auth/react";
 import { Eye, Heart, MessageCircle } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import ReactMarkdown from "react-markdown";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+
 
 function formatDate(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -63,12 +69,15 @@ function PostCard(
 ) 
 {
   return (
-      <Card {...props}>
+    <ContextMenu>
+  <div className="space-y-6">
+  <ContextMenuTrigger className="">
+    <Card {...props} className="hover:border-primary rounded-lg">
       <Link href={props.url}>
       <CardContent className="py-0">
       <CardHeader className={cn("px-0 gap-y-4")}>
         {props.thumbnail && (
-          <AspectRatio ratio={16 / 9} className="mb-3">
+          <AspectRatio ratio={16 / 9}>
             <Image
             src={props.thumbnail}
             fill
@@ -103,6 +112,13 @@ function PostCard(
       </CardContent>
       </Link>
     </Card>
+    </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Save</ContextMenuItem>
+    <ContextMenuItem>Share</ContextMenuItem>
+  </ContextMenuContent>
+  </div>
+</ContextMenu>
   );
 }
 
