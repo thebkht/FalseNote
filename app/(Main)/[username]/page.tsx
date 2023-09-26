@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Check, Mail, MapPin, Rocket } from "lucide-react";
+import { CalendarDays, Check, Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,13 +19,24 @@ type Props = {
 }
 
 function getRegistrationDateDisplay(registrationDate: string) {
-  // Convert the registration date to a JavaScript Date object
-  const regDate = new Date(registrationDate);
-
-  const regMonth = regDate.toLocaleString('default', { month: 'long' });
-  const regDay = regDate.getDay();
-  const regYear = regDate.getFullYear();
-  return `${regDay} ${regMonth} ${regYear}`;
+  ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
+  const date = new Date(registrationDate)
+  const currentYear = new Date().getFullYear()
+  const year = date.getFullYear()
+  const formattedDate = date.toLocaleDateString("en-US", {
+       month: "short",
+       day: "numeric",
+       hour12: true,
+  })
+  if (year !== currentYear) {
+       return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour12: true,
+       })
+  }
+  return formattedDate
 }
 
 export default function Page({ params }: Props) {
@@ -232,8 +243,8 @@ export default function Page({ params }: Props) {
             <li>
               <Button variant={"link"} size={"sm"} asChild className="p-0 !text-sm hover:!no-underline" >
                 <span>
-                  <Rocket className="mr-2 h-5 w-5" />
-                  Joined on {getRegistrationDateDisplay(user?.registrationdate)}
+                  <CalendarDays className="mr-2 h-5 w-5" />
+                  Joined {getRegistrationDateDisplay(user?.registrationdate)}
                 </span>
               </Button>
             </li>
