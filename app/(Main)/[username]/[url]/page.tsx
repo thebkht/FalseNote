@@ -89,7 +89,7 @@ export default function PostView({ params }: { params: { username: string, url: 
      return (
           <>
                <div className="article">
-                    <div className="article__container">
+                    <div className="xs:p-4 article__container">
                          <div className="article__header">
                               <h1 className="article__title">{post?.title}</h1>
                               <div className="article__meta">

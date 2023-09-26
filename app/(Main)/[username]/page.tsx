@@ -151,10 +151,11 @@ export default function Page({ params }: Props) {
 
 
   return (
-    <div className="Layout Layout--flowRow-until-md" >
-      <div className="Layout-sidebar">
+    <div className="Layout Layout--flowRow-until-md gap-2 lg:gap-6" >
+      <div className="lg:w-[296px] md:w-64 w-full mx-auto">
         <div className="user space-y-4">
-          <Button variant={"secondary"} size={"lg"} className="mb-5 px-0 w-full h-auto rounded-full">
+          <div className="user__header flex md:block items-center">
+          <Button variant={"secondary"} size={"lg"} className="mb-0 md:mb-5 px-0 lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6 mr-3 md:mr-0 rounded-full">
             <Avatar className="rounded-full">
               <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
               <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
@@ -164,22 +165,23 @@ export default function Page({ params }: Props) {
             {
               user?.name === null ? (
                 <h1 className="space-y-3">
-                  <span className="font-bold text-2xl block">{user?.username} {user?.verified && (
-                    <Badge className="h-6 w-6 !px-1">
-                      <Check className="h-4 w-4" />
+                  <span className="font-bold text-xl md:text-2xl block">{user?.username} {user?.verified && (
+                    <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
+                      <Check className="w-3 md:h-4 h-3 md:w-4" />
                     </Badge>
                   )}</span>
                 </h1>
               ) : (
-                <h1 className="space-y-3">
-                  <span className="font-bold text-2xl block">{user?.name} {user?.verified && (
-                    <Badge className="h-6 w-6 !px-1">
-                      <Check className="h-4 w-4" />
+                <h1 className="md:space-y-3">
+                  <span className="font-bold text-xl md:text-2xl block">{user?.name} {user?.verified && (
+                    <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
+                      <Check className="w-3 md:h-4 h-3 md:w-4" />
                     </Badge>
                   )}</span>
-                  <span className="text-xl font-light text-muted-foreground">{user?.username}</span>
+                  <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
                 </h1>)
             }
+          </div>
           </div>
 
           {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
@@ -200,7 +202,7 @@ export default function Page({ params }: Props) {
 
           {user?.bio && (<div className="w-full">{user?.bio}</div>)}
 
-          <div className="py-2 flex gap-2">
+          <div className="py-2 flex gap-2 justify-around md:justify-between w-full">
             <Button variant={"ghost"} size={"sm"}>
               {user?.followersnum} Followers
             </Button>
@@ -245,10 +247,11 @@ export default function Page({ params }: Props) {
             </li>
           </ul>
         </div>
-       </div>
-      <div className="col-span-2">
-        <h2 className="text-2xl font-bold text-center">Posts</h2>
-        <div className="user-articles px-8 space-y-6">
+
+
+      </div>
+      <div className="row-span-2 md:col-span-2">
+        <div className="user-articles py-4 md:px-8 space-y-6">
           {user?.posts && user.posts.length > 0 ? (
             user.posts.map((article: any) => (
                 <PostCard

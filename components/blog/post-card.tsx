@@ -70,12 +70,12 @@ function PostCard(
 {
   return (
     <ContextMenu>
-  <div className="space-y-6">
+  <div className="space-y-3 md:space-y-6">
   <ContextMenuTrigger className="">
     <Card {...props} className="hover:border-primary rounded-lg">
       <Link href={props.url}>
-      <CardContent className="py-0">
-      <CardHeader className={cn("px-0 gap-y-4")}>
+      <CardContent className="px-4 md:px-6 py-0">
+      <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
         {props.thumbnail && (
           <AspectRatio ratio={16 / 9}>
             <Image

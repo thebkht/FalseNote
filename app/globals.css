@@ -245,8 +245,8 @@
 
 .Layout {
   @apply grid;
-  --Layout-sidebar-width: 220px;
-  --Layout-gutter: 16px;
+  --Layout-sidebar-width: 18rem;
+  --Layout-gutter: 1.5rem;
   grid-gap: var(--Layout-gutter);
   grid-auto-flow: column;
   grid-template-columns: auto 0 minmax(0, calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)));
@@ -264,6 +264,7 @@
 @media (min-width: 544px)
 {.Layout {
 --Layout-sidebar-width: 220px;
+--Layout-gutter: 0;
 }}
 @media (min-width: 1012px)
 {.Layout {
@@ -279,5 +280,4 @@ grid-template-columns: 1fr !important;
 
 .Layout .Layout-sidebar {
   grid-column: 1;
-  width: var(--Layout-sidebar-width);
 }
