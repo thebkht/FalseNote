@@ -13,8 +13,10 @@ export default function Feed() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userData = await getFeaturedDevs();
-        setFeaturedDevs(userData.users);
+        const userData = await fetch(`/api/users/top`, {
+          method: "GET",
+          }).then((res) => res.json());
+        setFeaturedDevs(userData);
         setIsLoaded(true);
       } catch (error) {
         // Handle errors

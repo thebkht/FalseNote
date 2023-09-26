@@ -76,7 +76,7 @@ export default function FeaturedDev(
               <div className="flex gap-4 w-full items-center justify-between" key={item.userid}>
                 <div className="space-y-3">
                 <Link href={`/${item.username}`} className="flex items-center">
-                  <Avatar className="h-10 w-10 mr-2 md:mr-4">
+                  <Avatar className="h-10 w-10 mr-2 md:mr-3">
                     <AvatarImage src={item.profilepicture} alt={item.username} />
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                   </Avatar>
