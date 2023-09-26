@@ -15,8 +15,7 @@ const formatDate = (dateString: string | number | Date) => {
      })
      return formattedDate
 }
-
-export async function handler(req: NextRequest, { params }: { params: { username: string } }) {
+export async function middleware(req: NextRequest, { params }: { params: { username: string } }) {
      try {
           const { username } = params
      const postUrl = req.nextUrl.searchParams.get("url");
