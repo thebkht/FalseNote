@@ -131,3 +131,99 @@
 .feed__empty_featured{
   @apply block w-full mt-9;
 }
+
+.article__container{
+  @apply p-8
+}
+
+.article__header{
+  @apply space-y-8 ;
+}
+
+.article__title{
+  @apply font-bold text-4xl !font-bold leading-snug
+}
+
+.article__meta {
+  @apply flex items-center gap-2;
+}
+
+.article__date{
+  @apply text-sm text-muted-foreground;
+}
+
+.article__content{
+  @apply text-lg text-foreground my-8;
+}
+
+.article__content img{
+  @apply w-full h-auto;
+}
+
+/* .markdown-body{
+  @apply ;
+} */
+
+.markdown-body p{
+  @apply mb-4 text-base;
+}
+
+.markdown-body h1{
+  @apply text-4xl font-bold my-8;
+}
+
+.markdown-body h2{
+  @apply text-3xl font-bold my-8 pb-1.5;
+}
+
+.markdown-body h3{
+  @apply text-2xl font-bold my-8 pb-1.5;
+}
+
+.markdown-body h4{
+  @apply text-xl font-bold my-8 pb-1.5;
+}
+
+.markdown-body h5{
+  @apply text-lg font-bold my-8 pb-1.5;
+}
+
+.markdown-body h6{
+  @apply text-base font-bold my-8 pb-1.5;
+}
+
+.markdown-body ul{
+  @apply list-disc list-inside;
+}
+
+.markdown-body ol{
+  @apply list-decimal list-inside;
+}
+
+.markdown-body li{
+  @apply mb-2;
+}
+
+.markdown-body a{
+  @apply underline;
+}
+
+.markdown-body a:hover{
+  @apply text-foreground;
+}
+
+.markdown-body blockquote{
+  @apply border-l-4 border-primary pl-4 my-8;
+}
+
+.markdown-body blockquote p{
+  @apply text-base;
+}
+
+.markdown-body pre{
+  @apply overflow-x-auto p-4 my-8 rounded-lg bg-secondary text-secondary-foreground;
+}
+
+.markdown-body pre code{
+  @apply bg-muted py-0.5 px-1 rounded-lg;
+}

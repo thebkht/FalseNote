@@ -42,6 +42,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
 import { redirect, useRouter } from "next/navigation"
+import { remark } from "remark";
+import html from "remark-html";
 
 
 const postFormSchema = z.object({
@@ -66,6 +68,7 @@ const postFormSchema = z.object({
     )
     .optional(),
   url: z.string(),
+  description: z.string().max(280).optional(),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
@@ -190,9 +193,13 @@ export function PostForm() {
   const [markdownContent, setMarkdownContent] = useState<string>('');
   const [file, setFile] = useState<File>(); // State for the uploaded file
 
-  function handleContentChange(value: string) {
-    setMarkdownContent(value);
+  async function handleContentChange(value: string) {
     form.setValue('content', value); // Update the form field value
+
+    // Use remark to convert markdown into HTML string
+    const processedContent = await remark().use(html).process(value);
+    const contentHtml = processedContent.toString();
+    setMarkdownContent(contentHtml);
   }
 
   //Set url value from title value
@@ -266,7 +273,7 @@ export function PostForm() {
             )}
           /></TabsContent>
           <TabsContent value="preview" className="rounded-md border border-input bg-background px-3 py-2 text-sm">
-            <ReactMarkdown children={markdownContent} skipHtml={false} className="min-h-[500px]" />
+            <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
           </TabsContent>
         </Tabs>
 
@@ -274,7 +281,7 @@ export function PostForm() {
 
           <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full" asChild><span>Post Setting</span></Button></DialogTrigger>
 
-          <DialogContent className="h-full max-h-[560px] !p-0">
+          <DialogContent className="h-full max-h-[550px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
                 <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
@@ -376,6 +383,19 @@ export function PostForm() {
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Post Description</FormLabel>
+                      <FormControl>
+                        <TextareaAutosize {...field} className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]" rows={1}/>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <div className="grid gap-4 grid-cols-5">
                   {fields.map((field, index) => (
                     <FormField

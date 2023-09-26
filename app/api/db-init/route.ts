@@ -26,6 +26,7 @@ export async function GET(request: Request) {
       CREATE TABLE IF NOT EXISTS BlogPosts (
         PostID SERIAL PRIMARY KEY,
         Title VARCHAR(255) NOT NULL,
+        Description VARCHAR(280),
         Content TEXT, -- For longer text content or markdown
         CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         LastUpdatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

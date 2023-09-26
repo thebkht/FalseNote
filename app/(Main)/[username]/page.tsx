@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
 import { getSessionUser } from "@/components/get-session-user";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 type Props = {
   params: { username: string }
@@ -103,7 +104,9 @@ export default function Page({ params }: Props) {
         <div className="col-span-2 items-center text-center">
           <div className="rounded-lg mx-8 border bg-card text-card-foreground shadow-sm space-y-4">
             <div className="flex flex-col space-y-4 p-6">
-              <Skeleton className="h-72 w-full" />
+              <AspectRatio ratio={16 / 9} className="w-full">
+                <Skeleton className="rounded-md w-full h-full" />
+              </AspectRatio>
 
               <h1><Skeleton className="h-5 w-full pb-6" /></h1>
               <div className="space-y-3 pt-4">
@@ -248,7 +251,7 @@ export default function Page({ params }: Props) {
                 key={article.id}
                 title={article.title}
                 thumbnail={article.coverimage}
-                content={article.content}
+                content={article.description}
                 author={user?.username || user?.name}
                 date={article.creationdate}
                 views={article.views}

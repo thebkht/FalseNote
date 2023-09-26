@@ -27,7 +27,7 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     const posts = await sql`
           SELECT * FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid} ORDER BY PostID DESC`;
-
+    
     result.rows[0].posts = posts.rows;
 
     const postsCount = await sql`

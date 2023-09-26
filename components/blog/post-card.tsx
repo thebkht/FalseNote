@@ -15,6 +15,7 @@ import { Icons } from "../icon";
 import { useSession } from "next-auth/react";
 import { Eye, Heart, MessageCircle } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+import ReactMarkdown from "react-markdown";
 
 function formatDate(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -22,7 +23,7 @@ function formatDate(dateString: string | number | Date) {
   const year = date.getFullYear();
   
   let formattedDate = date.toLocaleDateString('en-US', {
-    month: 'long',
+    month: 'short',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
@@ -32,7 +33,7 @@ function formatDate(dateString: string | number | Date) {
   if (year !== currentYear) {
     formattedDate = date.toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
@@ -82,10 +83,12 @@ function PostCard(
 
         <CardTitle className="">{props.title}</CardTitle>
         <CardDescription className="text-base">
-          {props.content.length! > 100 ? (
-            <>{props?.content?.slice(0, 100)}...</>
-          ) : (
-            <>{props.content}</>
+          {props.content && (
+            props.content.length! > 200 ? (
+              <>{props?.content?.slice(0, 200)}...</>
+            ) : (
+              <>{props.content}</>
+            )
           )}
         </CardDescription>
       </CardHeader>
