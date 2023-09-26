@@ -36,7 +36,7 @@ function Navbar() {
         <div className="menu-container p-3 xl:px-36 2xl:px-64">
           <Link href="/feed" className="flex items-center">
             <Icons.logo />
-            <Badge className="ml-3 px-1 py-0">Beta</Badge>
+            <Badge className="ml-2 md:ml-3 px-1 py-0">Beta</Badge>
           </Link>
   
           <div className="flex items-center gap-2 md:gap-4">
