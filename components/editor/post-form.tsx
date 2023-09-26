@@ -236,7 +236,7 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title of the post" {...field} onChange={handleTitleChange} />
+                <Input placeholder="Title of the post" className="border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0" {...field} onChange={handleTitleChange} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -246,7 +246,7 @@ export function PostForm() {
             </FormItem>
           )}
         />
-        <Tabs defaultValue="editor" className="min-h-[600px]">
+        <Tabs defaultValue="editor" className="min-h-[800px]">
           <TabsList className="mb-2">
             <TabsTrigger value="editor">Editor</TabsTrigger>
             <TabsTrigger value="preview">Preview</TabsTrigger>
@@ -258,7 +258,7 @@ export function PostForm() {
               <FormItem>
                 <FormControl>
                   <TextareaAutosize
-                    className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[500px]"
+                    className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
                     placeholder="Write your post here..."
                     {...field}
                     onChange={(e) => handleContentChange(e.target.value)}
@@ -272,14 +272,14 @@ export function PostForm() {
               </FormItem>
             )}
           /></TabsContent>
-          <TabsContent value="preview" className="rounded-md px-5 pb-5 border border-input bg-background py-4 text-sm">
+          <TabsContent value="preview" className="px-5 pb-5 bg-background py-4 text-sm">
             <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
           </TabsContent>
         </Tabs>
 
         <Dialog>
 
-          <DialogTrigger><Button size={"lg"} variant={"secondary"} className="w-full" asChild><span>Post Setting</span></Button></DialogTrigger>
+          <DialogTrigger className="w-full"><Button size={"lg"} variant={"secondary"} className="w-full" asChild><span>Post Setting</span></Button></DialogTrigger>
 
           <DialogContent className="h-full max-h-[550px] !p-0">
             <ScrollArea className="h-full w-full px-6">

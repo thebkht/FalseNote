@@ -23,6 +23,18 @@ export async function GET(
        SELECT * FROM users WHERE Username = ${username}
      `;
     const authorID = author.rows[0]?.userid;
+    //Get author's posts
+    const authorPosts = await sql`
+        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID}
+      `;
+    author.rows[0].posts = authorPosts.rows;
+
+    // Get author's followers
+    const followers = await sql`
+        SELECT * FROM Follows WHERE FolloweeID = ${authorID}
+      `;
+    author.rows[0].followers = followers.rows;
+
     const result = await sql`
        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url = ${postUrl}
      `;

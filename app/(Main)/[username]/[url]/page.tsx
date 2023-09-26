@@ -13,6 +13,8 @@ import {
 import { CalendarDays, Check } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
+import { getSessionUser } from "@/components/get-session-user"
+import { useSession } from "next-auth/react"
 
 //format date ex: if published this year Apr 4, otherwise Apr 4, 2021
 const formatDate = (dateString: string | number | Date) => {
@@ -40,6 +42,10 @@ const formatDate = (dateString: string | number | Date) => {
 export default function PostView({ params }: { params: { username: string, url: string } }) {
      const [post, setPost] = useState<any>(null)
      const [isLoaded, setIsLoaded] = useState<boolean>(false)
+     const [isFollowing, setIsFollowing] = useState<boolean | null>(null)
+     const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false)
+     const [sessionUser, setSessionUser] = useState<any>(null)
+     const { status } = useSession()
 
      useEffect(() => {
           async function fetchData() {
@@ -48,6 +54,10 @@ export default function PostView({ params }: { params: { username: string, url: 
                          method: "GET",
                     })
                     const post = await postData.json()
+                    if (status === "authenticated") {
+                         const followerId = (await getSessionUser()).userid;
+                         setIsFollowing(post?.author?.followers.find((follower: any) => follower.followerid === followerId));
+                    }
                     setPost(post)
                     setIsLoaded(true)
                } catch (error) {
@@ -56,7 +66,25 @@ export default function PostView({ params }: { params: { username: string, url: 
                }
           }
           fetchData()
-     }, [params.url, params.username])
+     }, [params.url, params.username, isFollowing, status])
+
+     async function handleFollow(followeeId: string) {
+          if (status === "authenticated") {
+               setIsFollowingLoading(true);
+               try {
+                    const followerId = (await getSessionUser()).userid;
+                    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+                         method: "GET",
+                    });
+                    setIsFollowing(!isFollowing);
+               } catch (error) {
+                    console.error(error);
+               }
+          } else {
+               return null;
+          }
+     }
+
 
      return (
           <>
@@ -99,12 +127,23 @@ export default function PostView({ params }: { params: { username: string, url: 
                                    </HoverCard>
 
                                    <div className="flex flex-col">
-                                        <span className="article__author-name">{post?.author?.name || post?.author?.username} {
-                                             post?.author?.verified && 
-                                             (
-                                                  <Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>
-                                             )
-                                        }</span>
+                                        <span className="article__author-name">{post?.author?.name || post?.author?.username}
+                                             {post?.author?.verified &&
+                                                  (
+                                                       <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
+                                                  )}
+
+                                             <Button
+                                                  variant={"link"}
+                                                  size={"default"}
+                                                  className="py-0 h-6 px-3"
+                                                  onClick={(e) => handleFollow(post?.authorId)}
+                                             >
+                                                  {isFollowing ? (<>Followind</>) : <>Follow</>}
+                                             </Button>
+
+
+                                        </span>
                                         <span className="article__date">{post?.creationdate && formatDate(post?.creationdate)}</span>
                                    </div>
                               </div>
