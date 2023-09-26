@@ -3,7 +3,7 @@ import { PostForm } from '@/components/editor/post-form'
 export default function Editor() {
   return (
     
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 editor">
+    <main className="flex min-h-screen flex-col items-center justify-between px-6 py-14 lg:p-20 editor">
      <PostForm />
     </main>
   )

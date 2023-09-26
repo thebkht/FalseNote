@@ -38,7 +38,7 @@ function LandingNavbar() {
             <Icons.logo />
             <Badge className="ml-3 px-1 py-0">Beta</Badge>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
                 <ModeToggle />
               <Button onClick={() => signIn("github")}>
                   Join

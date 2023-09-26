@@ -127,7 +127,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                                    </HoverCard>
 
                                    <div className="flex flex-col">
-                                        <span className="article__author-name">{post?.author?.name || post?.author?.username}
+                                        <span className="article__author-name md:text-base text-sm">{post?.author?.name || post?.author?.username}
                                              {post?.author?.verified &&
                                                   (
                                                        <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>

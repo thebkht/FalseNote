@@ -134,7 +134,7 @@
 }
 
 .article__container {
-  @apply p-8
+  @apply  p-0 md:p-4
 }
 
 .article__header {
@@ -142,19 +142,19 @@
 }
 
 .article__title {
-  @apply font-bold text-4xl !font-bold leading-snug
+  @apply font-bold text-3xl md:text-4xl !font-bold md:leading-snug
 }
 
 .article__meta {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-2 md:gap-3;
 }
 
 .article__date {
-  @apply text-sm text-muted-foreground;
+  @apply text-xs md:text-sm text-muted-foreground;
 }
 
 .article__content {
-  @apply text-lg text-foreground my-8;
+  @apply text-lg text-foreground my-4 md:my-8;
 }
 
 .article__content img {
@@ -166,27 +166,27 @@
 } */
 
 .markdown-body p {
-  @apply mb-4 text-base;
+  @apply mb-4 text-sm md:text-base;
 }
 
 .markdown-body h1 {
-  @apply text-4xl font-bold my-8;
+  @apply text-3xl md:text-4xl font-bold my-8;
 }
 
 .markdown-body h2 {
-  @apply text-3xl font-bold my-8 pb-1.5;
+  @apply text-2xl md:text-3xl font-bold my-8 pb-1.5;
 }
 
 .markdown-body h3 {
-  @apply text-2xl font-bold my-8 pb-1.5;
+  @apply text-xl md:text-2xl font-bold my-8 pb-1.5;
 }
 
 .markdown-body h4 {
-  @apply text-xl font-bold my-8 pb-1.5;
+  @apply text-lg md:text-xl font-bold my-8 pb-1.5;
 }
 
 .markdown-body h5 {
-  @apply text-lg font-bold my-8 pb-1.5;
+  @apply text-base md:text-lg font-bold my-8 pb-1.5;
 }
 
 .markdown-body h6 {
