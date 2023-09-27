@@ -225,7 +225,9 @@ export function PostForm() {
     }
   }
 
-
+  function handleDescriptionChange(value: string) {
+    form.setValue('description', value);
+  }
 
   return (
     <Form {...form}>
@@ -391,7 +393,7 @@ export function PostForm() {
                       <FormLabel>Post Description</FormLabel>
                       <FormControl>
                         <TextareaAutosize {...field} className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]" rows={1}
-                        onChange={field.onChange}/>
+                        onChange={(e) => handleDescriptionChange(e.target.value)}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
