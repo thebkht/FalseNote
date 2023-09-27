@@ -225,8 +225,9 @@ export function PostForm() {
     }
   }
 
-  function handleDescriptionChange(value: string) {
-    form.setValue('description', value);
+  function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    console.log(e.target.value);
+    form.setValue('description', e.target.value);
   }
 
   return (
@@ -248,7 +249,7 @@ export function PostForm() {
             </FormItem>
           )}
         />
-        <Tabs defaultValue="editor" className="min-h-[800px]">
+        <Tabs defaultValue="editor" className="min-h-[500px]">
           <TabsList className="mb-2">
             <TabsTrigger value="editor">Editor</TabsTrigger>
             <TabsTrigger value="preview">Preview</TabsTrigger>
@@ -393,7 +394,7 @@ export function PostForm() {
                       <FormLabel>Post Description</FormLabel>
                       <FormControl>
                         <TextareaAutosize {...field} className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]" rows={1}
-                        onChange={(e) => handleDescriptionChange(e.target.value)}/>
+                        onChange={handleDescriptionChange}/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
