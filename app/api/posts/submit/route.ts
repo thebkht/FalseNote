@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
           }
           console.log("Received data:", data);
 
-          const { title, content, coverImage, visibility, tags, url, authorId } = data;
+          const { title, content, coverImage, visibility, tags, url, authorId, description } = data;
 
           if (!title) {
                return new Response("No title provided", { status: 400 });
@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
           }
 
           await sql`
-          INSERT INTO BlogPosts (Title, Content, CoverImage, Visibility, Draft, url, AuthorID)
-          VALUES (${title}, ${content}, ${coverImage}, ${visibility}, ${isDraft}, ${url}, ${authorId})
+          INSERT INTO BlogPosts (Title, Content, CoverImage, Visibility, Draft, url, AuthorID, Description)
+          VALUES (${title}, ${content}, ${coverImage}, ${visibility}, ${isDraft}, ${url}, ${authorId}, ${description})
           `;
 
           const submittedPostId = await sql`

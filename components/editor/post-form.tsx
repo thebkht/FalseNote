@@ -226,7 +226,6 @@ export function PostForm() {
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    console.log(e.target.value);
     form.setValue('description', e.target.value);
   }
 
