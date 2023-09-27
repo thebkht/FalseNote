@@ -27,7 +27,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { rows: author } = await sql`
     SELECT *
     FROM Users
-    WHERE id IN (
+    WHERE userid IN (
       SELECT authorid
       FROM BlogPosts
       WHERE authorid IN (
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   feed.forEach((post: any) => {
     author.forEach((user: any) => {
-      if (post.authorid === user.id) {
+      if (post.authorid === user.userid) {
         post.author = user
       }
     })
