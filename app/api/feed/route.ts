@@ -2,7 +2,8 @@ import { sql } from '@vercel/postgres'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const user_id = req.nextUrl.searchParams.get('user')
+  try {
+     const user_id = req.nextUrl.searchParams.get('user')
   let page = parseInt(req.nextUrl.searchParams.get('page') || '0', 10)
   let limit = 10
 
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     SELECT *
     FROM BlogPosts
     WHERE authorid IN (
-      SELECT following_id
+      SELECT followeeid
       FROM Follows
       WHERE followerid = ${user_id}
     )
@@ -30,7 +31,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       SELECT authorid
       FROM BlogPosts
       WHERE authorid IN (
-        SELECT following_id
+        SELECT followeeid
         FROM Follows
         WHERE followerid = ${user_id}
       )
@@ -53,4 +54,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
   `
 
   return NextResponse.json({ feed, popular })
+  }
+     catch (error) {
+     console.error(error)
+     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
+     }
 }
