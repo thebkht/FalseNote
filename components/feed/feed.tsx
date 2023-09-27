@@ -3,10 +3,9 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import FeaturedDev from "./featured/featured-dev";
 import { useEffect, useState } from "react";
-import { getFeaturedDevs, getUserByUsername } from "../get-user";
 import { useSession } from "next-auth/react";
 
-export default function Feed() {
+export default function EmptyFeed() {
   const [featuredDevs, setFeaturedDevs] = useState([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 

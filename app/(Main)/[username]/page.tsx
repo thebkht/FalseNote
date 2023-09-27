@@ -13,6 +13,7 @@ import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
 import { getSessionUser } from "@/components/get-session-user";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 type Props = {
   params: { username: string }
@@ -160,12 +161,29 @@ export default function Page({ params }: Props) {
           {user?.bio && (<div className="w-full">{user?.bio}</div>)}
 
           <div className="py-2 flex gap-2 justify-around md:justify-between w-full">
-            <Button variant={"ghost"} size={"sm"}>
-              {user?.followersnum} Followers
-            </Button>
-            <Button variant={"ghost"} size={"sm"}>
-              {user?.followingnum} Followings
-            </Button>
+            
+            <Dialog>
+  <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
+              <span>{user?.followersnum} Followers</span>
+            </Button></DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Followers</DialogTitle>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+            <Dialog>
+  <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
+              <span>{user?.followingnum} Followings</span>
+            </Button></DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Followings</DialogTitle>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+
+            
             <Button variant={"ghost"} size={"sm"} disabled >{user?.postsnum} Post</Button>
           </div>
 

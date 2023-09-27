@@ -43,6 +43,17 @@ export async function GET(req: Request, { params }: { params: { username: string
     const followers = await sql`
           SELECT * FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid}`;
 
+    //Execute a query to fetch the all details of the user's followers
+    const followerDetails = await sql`
+          SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid})`;
+
+    //Add the follower details to the followers array
+    followers.rows.map((follower: any, index: number) => {
+      follower.user = followerDetails.rows[index];
+    });
+
+    
+
     result.rows[0].followers = followers.rows;
 
     const following = await sql`

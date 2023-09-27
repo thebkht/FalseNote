@@ -198,7 +198,7 @@
 }
 
 .markdown-body ol {
-  @apply list-decimal list-inside;
+  @apply list-decimal ml-6 my-4;
 }
 
 .markdown-body li {
