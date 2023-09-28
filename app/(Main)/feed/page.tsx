@@ -33,10 +33,11 @@ async function fetchFeed() {
           //append to feed array if page is not 0 (first page) 
           setFeed(prevFeed => [...prevFeed, ...data.feed] as any)
      }
+     console.log(feed)
      setLoading(false)
 }
 
-    console.log(feed)
+    
 
     fetchFeed()
   }, [page])
