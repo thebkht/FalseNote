@@ -292,3 +292,7 @@ grid-template-columns: 1fr !important;
   /*grid-auto-rows: 1.25rem;*/
   grid-gap: 1.25rem;
 }
+
+.feed__list_loadmore{
+  @apply flex items-center justify-center w-full py-4;
+}

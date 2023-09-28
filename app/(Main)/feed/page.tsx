@@ -7,6 +7,8 @@ import FeedPostCard from '@/components/blog/feed-post-card'
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { set } from 'react-hook-form';
+import { Icons } from '@/components/icon';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -24,6 +26,7 @@ async function fetchFeed() {
        return
      }
      const user = (await sessionUser).userid
+     setLoading(true)
      const response = await fetch(`/api/feed?user=${user}&page=${page}`)
      const data = await response.json()
      if (page === 0) {
@@ -67,7 +70,7 @@ async function fetchFeed() {
            </div>
          </div>
          {
-          loading && feed.length === 0 && ( <EmptyFeed /> )
+          feed.length === 0 && ( <EmptyFeed /> )
          }
          
           <div className="feed__list">
@@ -89,7 +92,18 @@ async function fetchFeed() {
 
           </div>
           <div ref={sentinelRef} />
-      {status === "authenticated" && <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>}
+          {loading && (
+            <div className="feed__list_loading">
+              <div className="feed__list_loading_spinner">
+                <Icons.spinner className="feed__list_loading_spinner_icon animate-spin" />
+              </div>
+            </div>
+          )}
+          {!loading && feed.length > 0 && (
+            <div className="feed__list_loadmore">
+              <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>
+            </div>
+          )}
        </div>
         </div>
      </main>
