@@ -27,12 +27,7 @@ async function fetchFeed() {
      setLoading(true)
      const response = await fetch(`/api/feed?user=${user}&page=${page}`)
      const data = await response.json()
-     if (page === 0) {
-          setFeed(data.feed)
-      } else {
-          //append to feed array if page is not 0 (first page) 
-          setFeed(prevFeed => [...prevFeed, ...data.feed] as any)
-     }
+     setFeed(prevFeed => [...prevFeed, ...data.feed] as any)
      console.log(feed)
      setLoading(false)
 }
