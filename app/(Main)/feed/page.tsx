@@ -34,28 +34,7 @@ async function fetchFeed() {
 }
 
     fetchFeed()
-  }, [page, status])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && !loading) {
-          setPage(prevPage => prevPage + 1)
-        }
-      },
-      { rootMargin: '0px 0px 100% 0px' }
-    )
-
-    if (sentinelRef.current) {
-      observer.observe(sentinelRef.current)
-    }
-
-    return () => {
-      if (sentinelRef.current) {
-        observer.unobserve(sentinelRef.current)
-      }
-    }
-  }, [loading])
+  }, [page, sessionUser, status])
 
   function handleLoadMore() {
     setPage(prevPage => prevPage + 1)
