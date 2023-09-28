@@ -30,7 +30,7 @@ async function fetchFeed() {
      const response = await fetch(`/api/feed?user=${user}&page=${page}`)
      const data = await response.json()
      if (page === 0) {
-          setFeed(data.feed as never[])
+          setFeed(data.feed as any[])
       } else {
           setFeed((prevFeed: any) => [...prevFeed, ...data.feed] as any[])
      }
