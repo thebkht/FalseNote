@@ -30,7 +30,8 @@ async function fetchFeed() {
      if (page === 0) {
           setFeed(data.feed)
       } else {
-          setFeed(prevFeed => [...prevFeed, ...data.feed] as never[])
+          //add to feed array instead of replacing it with new data 
+          setFeed(prevFeed => [...prevFeed, ...data.feed] as any)
      }
      setLoading(false)
 }
