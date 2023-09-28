@@ -6,6 +6,7 @@ import { useState, useEffect, useRef, Key } from 'react'
 import FeedPostCard from '@/components/blog/feed-post-card'
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -84,11 +85,13 @@ async function fetchFeed() {
                 comments={post.comments}
                 views={post.views} authorid={post.author.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
       ))}
+
+
           </div>
-        </div>
-      <div ref={sentinelRef} />
-      {status === "authenticated" && !loading && <button onClick={handleLoadMore}>Load more</button>}
+          <div ref={sentinelRef} />
+      {status === "authenticated" && <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>}
        </div>
+        </div>
      </main>
       
     </>

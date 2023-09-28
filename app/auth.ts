@@ -11,7 +11,10 @@ import { NextResponse } from "next/server"
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
-    GitHub({ clientId: process.env.GITHUB_CLIENT_ID, clientSecret: process.env.GITHUB_CLIENT_SECRET }),
+    GitHub({ 
+      clientId: process.env.GITHUB_CLIENT_ID, 
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -98,11 +101,11 @@ export const config = {
   
 } satisfies NextAuthConfig
 
-// Helper function to get session without passing config every time
-// https://next-auth.js.org/configuration/nextjs#getserversession
-export function auth(...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []) {
-  return getServerSession(...args, config)
-}
+// // Helper function to get session without passing config every time
+// // https://next-auth.js.org/configuration/nextjs#getserversession
+// export function auth(...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []) {
+//   return getServerSession(...args, config)
+// }
 
 // We recommend doing your own environment variable validation
 declare global {
