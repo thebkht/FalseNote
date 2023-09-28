@@ -4,6 +4,8 @@ import { getSessionUser } from '@/components/get-session-user';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react'
 import FeedPostCard from '@/components/blog/feed-post-card'
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -90,7 +92,32 @@ async function fetchFeed() {
 
   return (
     <>
-      {visibleFeed.map(post => (
+    <main className="flex min-h-screen flex-col items-center justify-between feed ">
+      <div className="feed__content">
+         <div className="feed__content_title">My Feed</div>
+         {
+               feed.length > 0 ? (
+               <div className="feed__content_subtitle">Showing {startIndex + 1} to {endIndex} of {feed.length} posts.</div>
+               ) : (
+               <div className="feed__content_subtitle">There either has been no new posts, or you don&apos;t follow anyone.</div>
+               )
+         }
+         <div className="search feed__content_search max-w-[500px]">
+           <div className="search-container">
+             <div className="search__form">
+             <div className="input">
+               <div className="input__icon">
+                 <Search className='search__form_icon' />
+               </div>
+               <Input placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
+             </div>
+             </div>
+           </div>
+         </div>
+         {
+          visibleFeed.length === 0 && ( <EmptyFeed /> )
+         }
+         {visibleFeed.map(post => (
         <FeedPostCard
                 key={post.postid}
                 id={post.postid}
@@ -105,6 +132,9 @@ async function fetchFeed() {
       ))}
       <div ref={sentinelRef} />
       {loading && <p>Loading...</p>}
+       </div>
+     </main>
+      
     </>
   )
 }

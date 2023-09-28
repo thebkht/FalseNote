@@ -173,18 +173,11 @@ export default function FeedPostCard(
 
                   <CardTitle className="">{props.title}</CardTitle>
                   <CardDescription className="text-base">
-                    {props.content && (
-                      props.content.length! > 200 ? (
-                        <>{props?.content?.slice(0, 200)}...</>
-                      ) : (
-                        <>{props.content}</>
-                      )
-                    )}
+                    {props.content && ( props.content + "..." )}
                   </CardDescription>
                 </CardHeader>
                 <CardFooter className="px-0">
-                  <div className="stats flex items-center gap-3">
-                    <p className="card-text inline mb-0 text-muted-foreground">{formatDate(new Date(props.date).toLocaleString())}</p>
+                  <div className="stats flex items-center justify-around gap-3">
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
                     <p className="card-text inline mb-0 text-muted-foreground flex"><MessageCircle className="mr-1" /> {props.comments}</p>
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1" /> {props.likes}</p>
