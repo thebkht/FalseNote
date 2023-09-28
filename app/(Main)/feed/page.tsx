@@ -92,10 +92,10 @@ async function fetchFeed() {
          
           <div className="feed__list">
           <div className="feed__list_item">
-          {feed.map((post: { postid: Key | null | undefined; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
+          {feed.map((post: { postid: string; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
         <FeedPostCard
                 key={post.postid}
-                id={post.postid}
+                id={post.postid as string}
                 title={post.title}
                 content={post.description}
                 date={post.creationdate}
