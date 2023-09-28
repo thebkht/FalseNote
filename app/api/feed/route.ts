@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   let page = parseInt(req.nextUrl.searchParams.get('page') || '0', 10)
   let limit = 10
 
-  if (page > 0) {
+  if (page >= 0) {
     limit = 5
   }
 
