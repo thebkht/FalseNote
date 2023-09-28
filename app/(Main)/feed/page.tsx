@@ -25,14 +25,29 @@ async function fetchFeed() {
      }
      const user = (await sessionUser).userid
      setLoading(true)
-     const response = await fetch(`/api/feed?user=${user}&page=${page}`)
-     const data = await response.json()
-     setFeed(prevFeed => [...prevFeed, ...data.feed] as any)
-     console.log(feed)
-     setLoading(false)
-}
+     try {
+      const response = await fetch(`/api/feed?user=${user}&page=${page}`);
+      if (!response.ok) {
+        throw new Error(`Fetch failed with status: ${response.status}`);
+      }
 
-    
+      const data = await response.json();
+
+      if (page === 0) {
+        setFeed(data.feed);
+      } else {
+        setFeed((prevFeed) => [...prevFeed, ...data.feed] as []);
+      }
+
+      // This may not show the updated feed immediately due to React's batching
+      console.log(feed);
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching feed:', error);
+      setLoading(false);
+    }
+  }   
 
     fetchFeed()
   }, [page])
