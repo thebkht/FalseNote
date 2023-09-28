@@ -109,7 +109,10 @@ async function fetchFeed() {
          {
           visibleFeed.length === 0 && ( <EmptyFeed /> )
          }
-         {visibleFeed.map(post => (
+         
+          (<div className="feed__list">
+          <div className="feed__list_item">
+          {visibleFeed.map(post => (
         <FeedPostCard
                 key={post.postid}
                 id={post.postid}
@@ -122,6 +125,8 @@ async function fetchFeed() {
                 comments={post.comments}
                 views={post.views} authorid={post.author.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
       ))}
+          </div>
+        </div>)
       <div ref={sentinelRef} />
       {status === "authenticated" && loading && <p>Loading...</p>}
        </div>

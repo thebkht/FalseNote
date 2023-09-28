@@ -281,3 +281,14 @@ grid-template-columns: 1fr !important;
 .Layout .Layout-sidebar {
   grid-column: 1;
 }
+
+.feed__list{
+  @apply my-8;
+}
+
+.feed__list_item{
+  @apply grid items-start;
+  grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+  grid-auto-rows: 1.25rem;
+  grid-gap: 1.25rem;
+}

@@ -118,10 +118,7 @@ export default function FeedPostCard(
   }
 ) {
   return (
-    <ContextMenu>
-      <div className="space-y-3 md:space-y-6">
-        <ContextMenuTrigger className="">
-          <Card {...props} className="hover:border-primary rounded-lg">
+  <Card {...props} className="hover:border-primary rounded-lg feedArticleCard">
             <Link href={props.url}>
               <CardContent className="px-4 md:px-6 py-0">
                 <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
@@ -186,13 +183,6 @@ export default function FeedPostCard(
               </CardContent>
             </Link>
           </Card>
-        </ContextMenuTrigger>
-        <ContextMenuContent>
-          <ContextMenuItem>Save</ContextMenuItem>
-          <ContextMenuItem>Share</ContextMenuItem>
-        </ContextMenuContent>
-      </div>
-    </ContextMenu>
   );
 }
 
