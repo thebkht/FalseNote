@@ -82,14 +82,6 @@ async function fetchFeed() {
 
   const visibleFeed = feed.slice(startIndex, endIndex) as any[]
 
-  if (status === 'unauthenticated') {
-    return <EmptyFeed />
-  }
-
-  if (feed.length === 0) {
-     return <EmptyFeed />
-  }
-
   return (
     <>
     <main className="flex min-h-screen flex-col items-center justify-between feed ">
@@ -131,7 +123,7 @@ async function fetchFeed() {
                 views={post.views} authorid={post.author.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
       ))}
       <div ref={sentinelRef} />
-      {loading && <p>Loading...</p>}
+      {status === "authenticated" && loading && <p>Loading...</p>}
        </div>
      </main>
       

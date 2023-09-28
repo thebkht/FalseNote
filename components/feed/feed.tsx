@@ -28,8 +28,8 @@ export default function EmptyFeed() {
     fetchData();
   }, []);
      return (
-          <>
+          <div className="feed__content_featured">
          <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
-          </>
+          </div>
      )
 }

@@ -77,19 +77,19 @@
   @apply flex flex-col items-center justify-start;
 }
 
-.feed__empty {
+.feed__content {
   @apply flex flex-col items-center justify-start;
 }
 
-.feed__empty_title {
+.feed__content_title {
   @apply font-bold text-3xl text-center;
 }
 
-.feed__empty_subtitle {
+.feed__content_subtitle {
   @apply font-normal text-xl text-center mt-2.5;
 }
 
-.feed__empty_search {
+.feed__content_search {
   @apply mt-5;
 }
 
@@ -129,7 +129,7 @@
   @apply  !ring-0 !ring-offset-0 !ring-offset-transparent !ring-secondary !ring-opacity-100;
 }
 
-.feed__empty_featured {
+.feed__content_featured {
   @apply block w-full mt-9;
 }
 

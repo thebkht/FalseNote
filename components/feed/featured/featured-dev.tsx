@@ -58,12 +58,12 @@ export default function FeaturedDev(
 
   if (Array.isArray(featuredDevs)) {
     isLoaded ? content = (
-      <Card className="feed__empty_featured_card">
+      <Card className="feed__content_featured_card">
         <CardHeader>
-          <CardTitle className="feed__empty_featured_card_title">Featured Devs</CardTitle>
+          <CardTitle className="feed__content_featured_card_title">Featured Devs</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
+          <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs.map(
                   (item: {
                     verified: boolean;
