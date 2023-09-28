@@ -19,7 +19,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
       FROM Follows
       WHERE followerid = ${user_id}
     )
-    AND creationdate >= NOW() - INTERVAL '1 DAY'
     ORDER BY creationdate DESC
     LIMIT ${limit} OFFSET ${page * 10}
   `

@@ -1,14 +1,16 @@
 "use client";
+import EmptyFeed from '@/components/feed/feed';
 import { getSessionUser } from '@/components/get-session-user';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react'
+import FeedPostCard from '@/components/blog/feed-post-card'
 
 export default function Feed() {
-  const { status } = useSession()
+  const { status, data: session } = useSession()
   const sessionUser = getSessionUser()
   const [feed, setFeed] = useState([])
   const [page, setPage] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [startIndex, setStartIndex] = useState(0)
   const [endIndex, setEndIndex] = useState(10)
   const sentinelRef = useRef(null)
@@ -18,11 +20,14 @@ async function fetchFeed() {
      if (status === 'unauthenticated') {
        return
      }
-     setLoading(true)
      const user = (await sessionUser).userid
      const response = await fetch(`/api/feed?user=${user}&page=${page}`)
      const data = await response.json()
-     setFeed(prevFeed => [...prevFeed, ...data.feed] as never[])
+     if (page === 0) {
+          setFeed(data.feed as never[])
+      } else {
+          setFeed(prevFeed => [...prevFeed, ...data.feed] as never[])
+     }
      setLoading(false)
 }
 
@@ -73,19 +78,33 @@ async function fetchFeed() {
     }
   }, [feed])
 
-  const visibleFeed = feed.slice(startIndex, endIndex) as never[]
+  const visibleFeed = feed.slice(startIndex, endIndex) as any[]
+
+  if (status === 'unauthenticated') {
+    return <EmptyFeed />
+  }
+
+  if (feed.length === 0) {
+     return <EmptyFeed />
+  }
 
   return (
-    <div>
+    <>
       {visibleFeed.map(post => (
-        <div key={post.postid}>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-          <p>Author: {post.author.name}</p>
-        </div>
+        <FeedPostCard
+                key={post.postid}
+                id={post.postid}
+                title={post.title}
+                content={post.content}
+                date={post.date}
+                author={post.author}
+                thumbnail={post.thumbnail}
+                likes={post.likes}
+                comments={post.comments}
+                views={post.views} authorid={post.author.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
       ))}
       <div ref={sentinelRef} />
       {loading && <p>Loading...</p>}
-    </div>
+    </>
   )
 }
