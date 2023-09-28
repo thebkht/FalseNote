@@ -38,7 +38,7 @@ async function fetchFeed() {
 }
 
     fetchFeed()
-  }, [page, sessionUser, status])
+  }, [page])
 
   function handleLoadMore() {
     setPage(prevPage => prevPage + 1)
