@@ -95,10 +95,10 @@ async function fetchFeed() {
                 key={post.postid}
                 id={post.postid}
                 title={post.title}
-                content={post.content}
-                date={post.date}
+                content={post.description}
+                date={post.creationdate}
                 author={post.author}
-                thumbnail={post.thumbnail}
+                thumbnail={post.coverimage}
                 likes={post.likes}
                 comments={post.comments}
                 views={post.views} authorid={post.author.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
