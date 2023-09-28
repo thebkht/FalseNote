@@ -87,7 +87,7 @@ async function fetchFeed() {
           </div>
         </div>
       <div ref={sentinelRef} />
-      {status === "authenticated" && loading && <button onClick={handleLoadMore}>Load more</button>}
+      {status === "authenticated" && !loading && <button onClick={handleLoadMore}>Load more</button>}
        </div>
      </main>
       
