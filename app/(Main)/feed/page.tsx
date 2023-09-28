@@ -2,7 +2,7 @@
 import EmptyFeed from '@/components/feed/feed';
 import { getSessionUser } from '@/components/get-session-user';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Key } from 'react'
 import FeedPostCard from '@/components/blog/feed-post-card'
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 export default function Feed() {
   const { status, data: session } = useSession()
   const sessionUser = getSessionUser()
-  const [feed, setFeed] = useState([])
+  const [feed, setFeed] = useState([] as any)
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
   const [startIndex, setStartIndex] = useState(0)
@@ -28,13 +28,13 @@ async function fetchFeed() {
      if (page === 0) {
           setFeed(data.feed as never[])
       } else {
-          setFeed(prevFeed => [...prevFeed, ...data.feed] as never[])
+          setFeed((prevFeed: any) => [...prevFeed, ...data.feed] as any[])
      }
      setLoading(false)
 }
 
     fetchFeed()
-  }, [page, sessionUser, status])
+  }, [page, status])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -57,30 +57,10 @@ async function fetchFeed() {
     }
   }, [loading])
 
-  useEffect(() => {
-    function handleScroll() {
-      const scrollTop = window.scrollY
-      const windowHeight = window.innerHeight
-      const scrollHeight = document.body.scrollHeight
+  function handleLoadMore() {
+    setPage(prevPage => prevPage + 1)
+  }
 
-      const visibleStartIndex = Math.floor(scrollTop / 100)
-      const visibleEndIndex = Math.min(
-        feed.length,
-        visibleStartIndex + Math.ceil(windowHeight / 100)
-      )
-
-      setStartIndex(visibleStartIndex)
-      setEndIndex(visibleEndIndex)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [feed])
-
-  const visibleFeed = feed.slice(startIndex, endIndex) as any[]
 
   return (
     <>
@@ -107,12 +87,12 @@ async function fetchFeed() {
            </div>
          </div>
          {
-          visibleFeed.length === 0 && ( <EmptyFeed /> )
+          loading && feed.length === 0 && ( <EmptyFeed /> )
          }
          
           <div className="feed__list">
           <div className="feed__list_item">
-          {visibleFeed.map(post => (
+          {feed.map((post: { postid: Key | null | undefined; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
         <FeedPostCard
                 key={post.postid}
                 id={post.postid}
@@ -128,7 +108,7 @@ async function fetchFeed() {
           </div>
         </div>
       <div ref={sentinelRef} />
-      {status === "authenticated" && loading && <p>Loading...</p>}
+      {status === "authenticated" && loading && <button onClick={handleLoadMore}>Load more</button>}
        </div>
      </main>
       
