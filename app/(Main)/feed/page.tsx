@@ -92,14 +92,7 @@ async function fetchFeed() {
 
           </div>
           <div ref={sentinelRef} />
-          {loading && (
-            <div className="feed__list_loading">
-              <div className="feed__list_loading_spinner">
-                <Icons.spinner className="feed__list_loading_spinner_icon animate-spin" />
-              </div>
-            </div>
-          )}
-          {!loading && feed.length > 0 && (
+          {feed.length > 0 && (
             <div className="feed__list_loadmore">
               <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>
             </div>
