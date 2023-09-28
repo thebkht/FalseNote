@@ -13,11 +13,9 @@ import { Icons } from '@/components/icon';
 export default function Feed() {
   const { status, data: session } = useSession()
   const sessionUser = getSessionUser()
-  const [feed, setFeed] = useState([] as any)
+  const [feed, setFeed] = useState([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [startIndex, setStartIndex] = useState(0)
-  const [endIndex, setEndIndex] = useState(10)
   const sentinelRef = useRef(null)
 
   useEffect(() => {
@@ -30,9 +28,9 @@ async function fetchFeed() {
      const response = await fetch(`/api/feed?user=${user}&page=${page}`)
      const data = await response.json()
      if (page === 0) {
-          setFeed(data.feed as any[])
+          setFeed(data.feed)
       } else {
-          setFeed((prevFeed: any) => [...prevFeed, ...data.feed] as any[])
+          setFeed(prevFeed => [...prevFeed, ...data.feed] as never[])
      }
      setLoading(false)
 }
@@ -44,15 +42,13 @@ async function fetchFeed() {
     setPage(prevPage => prevPage + 1)
   }
 
-
   return (
     <>
     <main className="flex min-h-screen flex-col items-center justify-between feed ">
       <div className="feed__content">
          <div className="feed__content_title">My Feed</div>
          {
-               feed.length > 0 ? (
-               <div className="feed__content_subtitle">Showing {startIndex + 1} to {endIndex} of {feed.length} posts.</div>
+               feed.length > 0 ? ( null
                ) : (
                <div className="feed__content_subtitle">There either has been no new posts, or you don&apos;t follow anyone.</div>
                )
