@@ -173,7 +173,7 @@ export default function FeedPostCard(
                     {props.content && ( props.content + "..." )}
                   </CardDescription>
                 </CardHeader>
-                <CardFooter className="px-0">
+                <CardFooter className="px-0 justify-center">
                   <div className="stats flex items-center justify-around gap-3">
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
                     <p className="card-text inline mb-0 text-muted-foreground flex"><MessageCircle className="mr-1" /> {props.comments}</p>

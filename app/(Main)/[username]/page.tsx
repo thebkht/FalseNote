@@ -53,7 +53,7 @@ export default function Page({ params }: Props) {
         setUser(userData);
         if (status === "authenticated") {
           const followerId = (await getSessionUser()).userid;
-          setIsFollowing(userData.followers.find((follower: any) => follower.followerid === followerId));
+          setIsFollowing(userData.followers.find((follower: any) => follower.userid === followerId));
         }
         setIsLoaded(true);
       } catch (error) {
@@ -311,7 +311,7 @@ export default function Page({ params }: Props) {
                 author={user?.username || user?.name}
                 date={article.creationdate}
                 views={article.views}
-                comments={article.comments}
+                comments={article.comments || '0'}
                 id={article.id}
                 authorid={user?.id}
                 session={session}

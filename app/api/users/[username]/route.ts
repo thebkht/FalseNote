@@ -30,7 +30,17 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     //execute a query to fetch the number of comments of the posts
     const postComments = await sql`
-          SELECT COUNT(*) AS commentsCount FROM Comments WHERE BlogPostID IN (SELECT PostID FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid})`;
+    SELECT BlogPostID, COUNT(*) AS commentsCount
+    FROM Comments
+    WHERE BlogPostID IN (
+        SELECT PostID
+        FROM BlogPosts
+        WHERE AuthorID = ${result.rows[0]?.userid}
+    )
+    GROUP BY BlogPostID;
+    `;
+
+    console.log("posts comments", postComments);
           
     posts.rows.forEach((post: any) => {
       postComments.rows.forEach((comment: any) => {
