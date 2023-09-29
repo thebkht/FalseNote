@@ -248,10 +248,10 @@ export function PostForm() {
             </FormItem>
           )}
         />
-        <Tabs defaultValue="editor" className="min-h-[500px]">
-          <TabsList className="mb-2">
-            <TabsTrigger value="editor">Editor</TabsTrigger>
-            <TabsTrigger value="preview">Preview</TabsTrigger>
+        <Tabs defaultValue="editor" className="min-h-[250px]">
+          <TabsList className="mb-2 w-full md:w-auto">
+            <TabsTrigger value="editor"  className="w-full md:w-auto">Editor</TabsTrigger>
+            <TabsTrigger value="preview" className="w-full md:w-auto">Preview</TabsTrigger>
           </TabsList>
           <TabsContent value="editor"> <FormField
             control={form.control}
