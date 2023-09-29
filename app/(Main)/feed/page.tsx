@@ -15,6 +15,7 @@ export default function Feed() {
   const sessionUser = getSessionUser()
   const [feed, setFeed] = useState<any | null>([])
   const [page, setPage] = useState(0)
+  const [fetching, setFetching] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const sentinelRef = useRef(null)
 
@@ -24,21 +25,17 @@ async function fetchFeed() {
        return
      }
      const user = (await sessionUser).userid
-     setLoading(true)
      try {
+      setFetching(true);
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
+      setFetching(false);
 
       const data = await response.json();
 
       setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
-      
-
-      // This may not show the updated feed immediately due to React's batching
-      console.log(feed);
-
       setLoading(false);
     } catch (error) {
       console.error('Error fetching feed:', error);
@@ -50,6 +47,7 @@ async function fetchFeed() {
   }, [page])
 
   function handleLoadMore() {
+    setLoading(true)
     setPage(prevPage => prevPage + 1)
   }
 
@@ -57,9 +55,16 @@ async function fetchFeed() {
     <>
     <main className="flex min-h-screen flex-col items-center justify-between feed ">
       <div className="feed__content">
+        { fetching ? (<div className="w-full max-h-screen flex justify-center items-center bg-background" style={
+        {
+          minHeight: "calc(100vh - 192px)"
+        }
+      }>
+         <Icons.spinner className="h-10 animate-spin" />
+       </div>) : null}
          <div className="feed__content_title">My Feed</div>
          {
-               feed.length > 0 ? ( null
+               !fetching && feed.length > 0 ? ( null
                ) : (
                <div className="feed__content_subtitle">There either has been no new posts, or you don&apos;t follow anyone.</div>
                )
@@ -77,7 +82,7 @@ async function fetchFeed() {
            </div>
          </div>
          {
-          feed.length === 0 && ( <EmptyFeed /> )
+          !fetching && feed.length === 0 && ( <EmptyFeed /> )
          }
          
           <div className="feed__list">
