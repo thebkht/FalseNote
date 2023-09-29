@@ -127,7 +127,7 @@ export default function Page({ params }: Props) {
                       <Check className="w-3 md:h-4 h-3 md:w-4" />
                     </Badge>
                   )} { user?.falsemember && (
-                    <Icons.logoIcon className="h-5 md:h-6 w-5 md:w-6 inline" />
+                    <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
                   ) }</span>
                 </h1>
               ) : (
@@ -137,7 +137,7 @@ export default function Page({ params }: Props) {
                       <Check className="w-3 md:h-4 h-3 md:w-4" />
                     </Badge>
                   )} { user?.falsemember && (
-                    <Icons.logoIcon className="h-5 md:h-6 w-5 md:w-6 inline" />
+                    <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
                   ) }</span>
                   <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
                 </h1>)
