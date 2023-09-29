@@ -149,7 +149,7 @@ export default function FeedPostCard(
                         )
                       }
                     </Link>
-                    <span className="text-muted-foregorund">
+                    <span className="!text-muted-foreground">
                       {dateFormat(props.date)}
                     </span>
                   </div>

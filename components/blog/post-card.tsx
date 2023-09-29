@@ -101,9 +101,10 @@ function PostCard(
           )}
         </CardDescription>
       </CardHeader>
-      <CardFooter className="px-0">
+      <CardFooter className="px-0 justify-between">
+        <p className="card-text inline mb-0 text-muted-foreground">{formatDate(new Date(props.date).toLocaleString())}</p>
                   <div className="stats flex items-center gap-3">
-                    <p className="card-text inline mb-0 text-muted-foreground">{formatDate(new Date(props.date).toLocaleString())}</p>
+                    
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
                     <p className="card-text inline mb-0 text-muted-foreground flex"><MessageCircle className="mr-1" /> {props.comments}</p>
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1" /> {props.likes}</p>
