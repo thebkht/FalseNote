@@ -23,6 +23,30 @@ export async function GET(req: NextRequest, res: NextResponse) {
     LIMIT ${limit} OFFSET ${page * 5}
   `
 
+  //execute a query to fetch the number of comments of the posts
+  const postComments = await sql`
+  SELECT BlogPostID, COUNT(*) AS commentsCount
+  FROM Comments
+  WHERE BlogPostID IN (
+      SELECT PostID
+      FROM BlogPosts
+      WHERE AuthorID = ${user_id}
+  )
+  GROUP BY BlogPostID;
+  `;
+
+  console.log("posts comments", postComments);
+        
+  feed.forEach((post: any) => {
+    postComments.rows.forEach((comment: any) => {
+      if (post.postid === comment.blogpostid) {
+        post.comments = comment.commentscount;
+      }
+    }
+    )
+  }
+  )
+
   const { rows: author } = await sql`
     SELECT *
     FROM Users

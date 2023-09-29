@@ -101,7 +101,7 @@ async function fetchFeed() {
                 author={post.author}
                 thumbnail={post.coverimage}
                 likes={post.likes}
-                comments={post.comments}
+                comments={post.comments || "0"}
                 views={post.views} authorid={post.author.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
       ))}
 
