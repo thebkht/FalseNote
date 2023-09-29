@@ -122,20 +122,24 @@ export default function Page({ params }: Props) {
           <div className="flex items-center">
             {
               user?.name === null ? (
-                <h1 className="space-y-3">
+                <h1 className="space-y-3 w-full">
                   <span className="font-bold text-xl md:text-2xl block">{user?.username} {user?.verified && (
                     <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
                       <Check className="w-3 md:h-4 h-3 md:w-4" />
                     </Badge>
-                  )}</span>
+                  )} { user?.falsemember && (
+                    <Icons.logoIcon className="h-5 md:h-6 w-5 md:w-6 inline" />
+                  ) }</span>
                 </h1>
               ) : (
-                <h1 className="md:space-y-3">
+                <h1 className="md:space-y-3 w-full">
                   <span className="font-bold text-xl md:text-2xl block">{user?.name} {user?.verified && (
                     <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
                       <Check className="w-3 md:h-4 h-3 md:w-4" />
                     </Badge>
-                  )}</span>
+                  )} { user?.falsemember && (
+                    <Icons.logoIcon className="h-5 md:h-6 w-5 md:w-6 inline" />
+                  ) }</span>
                   <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
                 </h1>)
             }
