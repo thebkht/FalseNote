@@ -15,7 +15,7 @@ export default function Feed() {
   const sessionUser = getSessionUser()
   const [feed, setFeed] = useState<any | null>([])
   const [page, setPage] = useState(0)
-  const [fetching, setFetching] = useState<boolean | null>(null)
+  const [fetching, setFetching] = useState<boolean>(true)
   const [loading, setLoading] = useState(true)
   const sentinelRef = useRef(null)
 
@@ -51,17 +51,22 @@ async function fetchFeed() {
     setPage(prevPage => prevPage + 1)
   }
 
-  return (
-    <>
-    <main className="flex min-h-screen flex-col items-center justify-between feed ">
-      <div className="feed__content">
-        { fetching ? (<div className="w-full max-h-screen flex justify-center items-center bg-background" style={
+  if (fetching) {
+    return (
+      <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
         {
           minHeight: "calc(100vh - 192px)"
         }
       }>
          <Icons.spinner className="h-10 animate-spin" />
-       </div>) : null}
+       </div>
+    )
+  }
+
+  return (
+    <>
+    <main className="flex min-h-screen flex-col items-center justify-between feed ">
+      <div className="feed__content">
          <div className="feed__content_title">My Feed</div>
          {
                !fetching && feed.length > 0 ? ( null
