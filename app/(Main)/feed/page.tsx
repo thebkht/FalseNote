@@ -33,7 +33,7 @@ async function fetchFeed() {
 
       const data = await response.json();
 
-      setFeed([...feed, ...(data.feed)] as []);
+      setFeed([...feed, ...(data.feed)]);
       
 
       // This may not show the updated feed immediately due to React's batching
