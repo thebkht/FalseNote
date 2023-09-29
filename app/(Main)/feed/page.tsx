@@ -7,7 +7,6 @@ import FeedPostCard from '@/components/blog/feed-post-card'
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { set } from 'react-hook-form';
 import { Icons } from '@/components/icon';
 
 export default function Feed() {
@@ -26,7 +25,7 @@ async function fetchFeed() {
      }
      const user = (await sessionUser).userid
      try {
-      setFetching(true);
+      if (page === 0) setFetching(true);
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
