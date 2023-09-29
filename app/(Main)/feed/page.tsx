@@ -33,11 +33,8 @@ async function fetchFeed() {
 
       const data = await response.json();
 
-      if (page === 0) {
-        setFeed(data.feed);
-      } else {
-        setFeed((prevFeed) => [...prevFeed, ...data.feed] as []);
-      }
+      setFeed([...feed, data.feed] as []);
+      
 
       // This may not show the updated feed immediately due to React's batching
       console.log(feed);
