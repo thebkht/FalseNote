@@ -24,7 +24,7 @@ module.exports = {
       async headers() {
         return [
           {
-            source: '/:feed*',
+            source: '/feed*',
             headers: [
               {
                 key: 'Cache-Control',
