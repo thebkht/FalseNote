@@ -19,19 +19,5 @@ const nextConfig = {
 }
 
 module.exports = {
-     ...nextConfig,
-     // cashe control
-      async headers() {
-        return [
-          {
-            source: '/((?!feed).*)',
-            headers: [
-              {
-                key: 'Cache-Control',
-                value: 'no-store',
-              },
-            ],
-          },
-        ]
-      }
+     ...nextConfig
 }
