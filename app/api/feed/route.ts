@@ -20,7 +20,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       WHERE followerid = ${user_id}
     )
     ORDER BY creationdate DESC
-    LIMIT ${limit} OFFSET ${page}
+    LIMIT ${limit} OFFSET ${page * 5}
   `
 
   const { rows: author } = await sql`
