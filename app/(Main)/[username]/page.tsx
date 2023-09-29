@@ -4,7 +4,7 @@ import { Icons } from "@/components/icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarDays, Check, Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
 import { getSessionUser } from "@/components/get-session-user";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 type Props = {
@@ -112,8 +111,8 @@ export default function Page({ params }: Props) {
       <div className="lg:w-[296px] md:w-64 w-full mx-auto">
         <div className="user space-y-4">
           <div className="user__header flex md:block items-center">
-          <Button variant={"secondary"} size={"lg"} className="mb-0 md:mb-5 px-0 lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6 mr-3 md:mr-0 rounded-full">
-            <Avatar className="rounded-full">
+          <Button variant={"secondary"} size={"lg"} className="mb-0 md:mb-5 px-0 mr-3 md:mr-0 rounded-full" asChild>
+            <Avatar className="rounded-full lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6">
               <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
               <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -173,6 +172,42 @@ export default function Page({ params }: Props) {
     <DialogHeader>
       <DialogTitle>Followers</DialogTitle>
     </DialogHeader>
+    <div className="space-y-4">
+      {user?.followers.map((follower: any) => (
+        <div className="flex gap-4 w-full items-center justify-between" key={follower.userid}>
+        <div className="space-y-3">
+        <Link href={`/${follower.username}`} className="flex items-center">
+          <Avatar className="h-10 w-10 mr-2 md:mr-3">
+            <AvatarImage src={follower.profilepicture} alt={follower.username} />
+            <AvatarFallback>{follower.name?.charAt(0) || follower.username?.charAt(0)}</AvatarFallback>
+          </Avatar>
+          {
+            follower.name === null ? (
+              <div>
+                <p className="text-sm font-medium leading-none">{follower.username} {follower?.verified && (
+            <Badge className="h-3 w-3 !px-0">
+              <Check className="h-2 w-2 mx-auto" />
+            </Badge>
+          )}</p>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm font-medium leading-none">{follower.name} {follower?.verified && (
+            <Badge className="h-3 w-3 !px-0">
+              <Check className="h-2 w-2 mx-auto" />
+            </Badge>
+          )}</p>
+                <p className="text-sm text-muted-foreground">{follower.username}</p>
+              </div>
+            )
+          }
+        </Link>
+        </div>
+        
+      </div>
+      ))
+            }
+    </div>
   </DialogContent>
 </Dialog>
             <Dialog>
@@ -183,6 +218,42 @@ export default function Page({ params }: Props) {
     <DialogHeader>
       <DialogTitle>Followings</DialogTitle>
     </DialogHeader>
+    <div className="space-y-4">
+      {user?.following.map((following: any) => (
+        <div className="flex gap-4 w-full items-center justify-between" key={following.userid}>
+        <div className="space-y-3">
+        <Link href={`/${following.username}`} className="flex items-center">
+          <Avatar className="h-10 w-10 mr-2 md:mr-3">
+            <AvatarImage src={following.profilepicture} alt={following.username} />
+            <AvatarFallback>{following.name?.charAt(0) || following.username?.charAt(0)}</AvatarFallback>
+          </Avatar>
+          {
+            following.name === null ? (
+              <div>
+                <p className="text-sm font-medium leading-none">{following.username} {following?.verified && (
+            <Badge className="h-3 w-3 !px-0">
+              <Check className="h-2 w-2 mx-auto" />
+            </Badge>
+          )}</p>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm font-medium leading-none">{following.name} {following?.verified && (
+            <Badge className="h-3 w-3 !px-0">
+              <Check className="h-2 w-2 mx-auto" />
+            </Badge>
+          )}</p>
+                <p className="text-sm text-muted-foreground">{following.username}</p>
+              </div>
+            )
+          }
+        </Link>
+        </div>
+        
+      </div>
+      ))
+            }
+    </div>
   </DialogContent>
 </Dialog>
 

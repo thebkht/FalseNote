@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge"
 import { getSessionUser } from "@/components/get-session-user"
 import { useSession } from "next-auth/react"
 import { Icons } from "@/components/icon"
+import { Separator } from "@/components/ui/separator"
 
 //format date ex: if published this year Apr 4, otherwise Apr 4, 2021
 const formatDate = (dateString: string | number | Date) => {
@@ -160,9 +161,13 @@ export default function PostView({ params }: { params: { username: string, url: 
                               </div>
                          </div>
 
+                         <Separator className="mt-8" />
+
                          <div className="article__content">
                               <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" />
                          </div>
+
+                         <Separator className="my-8" />
                     </div>
                </div>
           </>

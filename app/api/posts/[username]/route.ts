@@ -54,6 +54,10 @@ export async function GET(
     const comments = await sql`
            SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
     result.rows[0].comments = comments.rows;
+
+    const commentsNum = await sql`
+            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
+    result.rows[0].commentsNum = commentsNum.rows[0].count;
     const tags = await sql`
                SELECT * FROM BlogPostTags WHERE BlogPostID= ${result.rows[0]?.postid}`;
     tags.rows.map(async (tagConnection: any, index: number) => {

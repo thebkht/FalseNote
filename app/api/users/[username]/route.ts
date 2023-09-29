@@ -27,7 +27,22 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     const posts = await sql`
           SELECT * FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid} ORDER BY PostID DESC`;
-    
+
+    //execute a query to fetch the number of comments of the posts
+    const postComments = await sql`
+          SELECT COUNT(*) AS commentsCount FROM Comments WHERE BlogPostID IN (SELECT PostID FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid})`;
+          
+    posts.rows.forEach((post: any) => {
+      postComments.rows.forEach((comment: any) => {
+        if (post.postid === comment.blogpostid) {
+          post.comments = comment.commentscount;
+        }
+      }
+      )
+    }
+    )
+
+
     result.rows[0].posts = posts.rows;
 
     const postsCount = await sql`
@@ -40,24 +55,15 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     result.rows[0].comments = comments.rows;
 
-    const followers = await sql`
-          SELECT * FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid}`;
-
     //Execute a query to fetch the all details of the user's followers
-    const followerDetails = await sql`
-          SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid})`;
+    const follower = await sql`
+          SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid})`;    
 
-    //Add the follower details to the followers array
-    followers.rows.map((follower: any, index: number) => {
-      follower.user = followerDetails.rows[index];
-    });
+    result.rows[0].followers = follower.rows;
 
-    
-
-    result.rows[0].followers = followers.rows;
-
+    //Execute a query to fetch the all details of the user's following
     const following = await sql`
-          SELECT * FROM Follows WHERE FollowerID= ${result.rows[0]?.userid}`;
+          SELECT * FROM users WHERE UserID IN (SELECT FolloweeID FROM Follows WHERE FollowerID= ${result.rows[0]?.userid})`;
 
     result.rows[0].following = following.rows;
 
