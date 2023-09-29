@@ -122,7 +122,7 @@ export default function FeedPostCard(
             <Link href={props.url}>
               <CardContent className="px-4 md:px-6 py-0">
                 <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-start justify-between">
                     <Link href={`/${props.author.username}`} className="flex items-center">
                       <Avatar className="h-10 w-10 mr-2 md:mr-3">
                         <AvatarImage src={props.author.profilepicture} alt={props.author.username} />
