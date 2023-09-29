@@ -77,7 +77,6 @@ export default function PostView({ params }: { params: { username: string, url: 
                     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
                     });
-                    setIsFollowing(!isFollowing);
                } catch (error) {
                     console.error(error);
                }
@@ -151,7 +150,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                   className="py-0 h-6 px-3"
                                                   onClick={(e) => handleFollow(post?.authorId)}
                                              >
-                                                  {isFollowing ? (<>Followind</>) : <>Follow</>}
+                                                  {isFollowing ? (<>Following</>) : <>Follow</>}
                                              </Button>
 
 

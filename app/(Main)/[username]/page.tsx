@@ -74,7 +74,6 @@ export default function Page({ params }: Props) {
       await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
         method: "GET",
       });
-      setIsFollowing(!isFollowing);
       setIsFollowingLoading(false);
       } catch (error) {
         console.error(error);
