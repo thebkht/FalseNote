@@ -24,11 +24,11 @@ module.exports = {
       async headers() {
         return [
           {
-            source: '/:path*',
+            source: '/:feed*',
             headers: [
               {
                 key: 'Cache-Control',
-                value: 'no-store, must-revalidate',
+                value: 'no-store',
               },
             ],
           },
