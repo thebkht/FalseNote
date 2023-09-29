@@ -13,7 +13,7 @@ import { Icons } from '@/components/icon';
 export default function Feed() {
   const { status, data: session } = useSession()
   const sessionUser = getSessionUser()
-  const [feed, setFeed] = useState([])
+  const [feed, setFeed] = useState<any | null>([])
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
   const sentinelRef = useRef(null)
