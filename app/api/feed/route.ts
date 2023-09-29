@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   WHERE BlogPostID IN (
       SELECT PostID
       FROM BlogPosts
-      WHERE AuthorID = ${user_id}
+      WHERE AuthorID = ${user_id} AND Visibility = 'Public'
   )
   GROUP BY BlogPostID;
   `;
