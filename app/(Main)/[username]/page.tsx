@@ -303,7 +303,8 @@ export default function Page({ params }: Props) {
         <div className="user-articles py-4 md:px-8 space-y-6">
           {user?.posts && user.posts.length > 0 ? (
             user.posts.map((article: any) => (
-                <PostCard
+                article.visibility === "public" &&
+                  (<PostCard
                 key={article.id}
                 title={article.title}
                 thumbnail={article.coverimage}
@@ -317,7 +318,7 @@ export default function Page({ params }: Props) {
                 session={session}
                 likes={article.likes}
                 url={`/${user?.username}/${article.url}`}
-                className="mt-4" />
+                className="mt-4" />)
             ))
           ) : (
             <p className="text-base font-light text-center py-5">This user has no posts</p>

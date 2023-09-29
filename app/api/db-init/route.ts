@@ -17,6 +17,7 @@ export async function GET(request: Request) {
         GitHubProfileURL VARCHAR(255),
         Location VARCHAR(255),
         verified BOOLEAN DEFAULT false,
+        falsemember BOOLEAN DEFAULT false,
         RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `;
