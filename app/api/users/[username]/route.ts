@@ -15,16 +15,6 @@ export async function GET(req: Request, { params }: { params: { username: string
       SELECT * FROM users WHERE Name = ${username} OR Username = ${username}
     `;
 
-    const followerCount = await sql`
-          SELECT COUNT(*) AS followerCount FROM Follows WHERE FolloweeID= ${result.rows[0]?.userid}`;
-    
-    const followingCount = await sql`
-          SELECT COUNT(*) AS followingCount FROM Follows WHERE FollowerID= ${result.rows[0]?.userid}`;
-
-    
-    result.rows[0].followersnum = followerCount.rows[0]?.followercount;
-    result.rows[0].followingnum = followingCount.rows[0]?.followingcount;
-
     const posts = await sql`
           SELECT * FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid} ORDER BY PostID DESC`;
 
@@ -54,11 +44,6 @@ export async function GET(req: Request, { params }: { params: { username: string
 
 
     result.rows[0].posts = posts.rows;
-
-    const postsCount = await sql`
-          SELECT COUNT(*) AS postsCount FROM BlogPosts WHERE AuthorID= ${result.rows[0]?.userid}`;
-
-      result.rows[0].postsnum = postsCount.rows[0]?.postscount;
 
     const comments = await sql`
           SELECT * FROM Comments WHERE AuthorID= ${result.rows[0]?.userid}`;

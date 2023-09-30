@@ -24,19 +24,35 @@ function getRegistrationDateDisplay(registrationDate: string) {
   const currentYear = new Date().getFullYear()
   const year = date.getFullYear()
   const formattedDate = date.toLocaleDateString("en-US", {
-       month: "short",
-       day: "numeric",
-       hour12: true,
+    month: "short",
+    day: "numeric",
+    hour12: true,
   })
   if (year !== currentYear) {
-       return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour12: true,
-       })
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour12: true,
+    })
   }
   return formattedDate
+}
+
+function formatNumberWithSuffix(num: number): string {
+  //if number as 
+  //format number with suffix ex: 1.5K, 2.3M, 4.5B
+  //if number is 0 or NaN return 0
+  if (isNaN(num) || num === 0) {
+    return "0";
+  } else{
+    const suffixes = ["", "K", "M", "B", "T"];
+    const magnitude = Math.floor(Math.log10(num) / 3);
+    const divisor = Math.pow(10, magnitude * 3);
+    const suffix = suffixes[magnitude];
+    const roundedNum = Math.round(num / divisor * 10) / 10;
+    return `${roundedNum}${suffix}`;
+  }
 }
 
 export default function Page({ params }: Props) {
@@ -166,7 +182,7 @@ export default function Page({ params }: Props) {
             
             <Dialog>
   <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
-              <span>{user?.followersnum} Followers</span>
+              <span>{formatNumberWithSuffix(user?.followers.length)} Followers</span>
             </Button></DialogTrigger>
   <DialogContent>
     <DialogHeader>
@@ -212,7 +228,7 @@ export default function Page({ params }: Props) {
 </Dialog>
             <Dialog>
   <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
-              <span>{user?.followingnum} Followings</span>
+              <span>{formatNumberWithSuffix(user?.following.length)} Followings</span>
             </Button></DialogTrigger>
   <DialogContent>
     <DialogHeader>
@@ -258,7 +274,7 @@ export default function Page({ params }: Props) {
 </Dialog>
 
             
-            <Button variant={"ghost"} size={"sm"} disabled >{user?.postsnum} Post</Button>
+            <Button variant={"ghost"} size={"sm"} disabled >{formatNumberWithSuffix(user?.posts.length)} Post</Button>
           </div>
 
           <ul className="details list-none">
@@ -311,12 +327,12 @@ export default function Page({ params }: Props) {
                 content={article.description}
                 author={user?.username || user?.name}
                 date={article.creationdate}
-                views={article.views}
-                comments={article.comments || '0'}
+                views={formatNumberWithSuffix(article.views)}
+                comments={formatNumberWithSuffix(article.commentsnum || 0)}
                 id={article.id}
                 authorid={user?.id}
                 session={session}
-                likes={article.likes}
+                likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
                 className="mt-4" />)
             ))
