@@ -6,9 +6,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
      const user_id = req.nextUrl.searchParams.get('user')
   let page = parseInt(req.nextUrl.searchParams.get('page') || '0', 10)
   let limit = 10
+  let offset = 0
 
-  if (page >= 0) {
+  if (page > 0) {
     limit = 5
+    offset = (page + 1) * limit 
   }
 
   const { rows: feed } = await sql`
