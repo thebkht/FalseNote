@@ -137,29 +137,26 @@ export function PostForm() {
         console.error(e)
       }
     }
-
-    console.log(data);
-     
     // Get the authorId from the session
     const authorId = user?.userid;
-    // try {
-    //   // Submit the form
-    // const result = await fetch("/api/posts/submit", {
-    //   method: "POST",
-    //   body: JSON.stringify({ ...data, authorId }),
-    // })
-    // const json = await result.json()
+    try {
+      // Submit the form
+    const result = await fetch("/api/posts/submit", {
+      method: "POST",
+      body: JSON.stringify({ ...data, authorId }),
+    })
+    const json = await result.json()
     
-    // } catch (error) {
-    //   console.error(error)
-    //   setIsPublishing(false)
-    // }
+    } catch (error) {
+      console.error(error)
+      setIsPublishing(false)
+    }
     /* console.log(data.url)
     console.log(user?.username)
     // If successful, redirect to the post page
     redirect(`/${user?.username}/${data.url}`) */
     // If successful, redirect to the post page
-    // router.push(`/${user?.username}/${data.url}`);
+    router.push(`/${user?.username}/${data.url}`);
   }
 
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
