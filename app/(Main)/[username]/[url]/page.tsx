@@ -126,6 +126,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                <div className="article">
                     <div className="xs:p-4 article__container">
                          <div className="article__header">
+                         
                               <h1 className="article__title">{post?.title}</h1>
                               <div className="article__meta">
                                    <HoverCard>
@@ -196,6 +197,20 @@ export default function PostView({ params }: { params: { username: string, url: 
                          </div>
 
                          <Separator className="my-8" />
+
+                         {
+                                   post?.tags && (
+                                        <div className="article__tags">
+                                             {post?.tags.map((tag: any) => (
+                                                  <Link href={`/tag/${tag.tagname}`} key={tag.tagid}>
+                                                       <Badge variant={"secondary"} className="h-6 w-auto !px-2 !py-0.5 mr-2 cursor-pointer font-normal">
+                                                            #{tag.tagname}
+                                                       </Badge>
+                                                  </Link>
+                                             ))}
+                                        </div>
+                                   )
+                              }
                     </div>
                </div>
           </>

@@ -59,15 +59,8 @@ export async function GET(
             SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
     result.rows[0].commentsNum = commentsNum.rows[0].count;
     const tags = await sql`
-               SELECT * FROM BlogPostTags WHERE BlogPostID= ${result.rows[0]?.postid}`;
-    tags.rows.map(async (tagConnection: any, index: number) => {
-      const tag = await sql`
-                         SELECT * FROM Tags WHERE TagID= ${tagConnection.tagid}`;
-      tags.rows[index].tag = tag.rows[0];
-    });
-    result.rows[0].tags = tags.rows.map(
-      (tagConnection: any) => tagConnection.tag
-    );
+               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result.rows[0]?.postid})`;
+    result.rows[0].tags = tags.rows;
 
     console.log("Query result:", result);
     // Return the user as JSON with status 200

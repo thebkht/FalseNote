@@ -46,10 +46,17 @@ export async function POST(req: NextRequest) {
 
           if (tags) {
                for (const tag of tags) {
-                    await sql`
-                    INSERT INTO Tags (TagName)
-                    VALUES (${tag.value})
+                    // Check if tag exists
+                    const tagExists = await sql`
+                    SELECT * FROM tags WHERE TagName = ${tag.value}
                     `;
+                    if (tagExists.rows.length === 0) {
+                         // Insert tag into tags table
+                         await sql`
+                         INSERT INTO tags (TagName)
+                         VALUES (${tag.value})
+                         `;
+                    }
 
 const tagId = await sql`
                     SELECT TagID FROM tags WHERE TagName = ${tag.value}
