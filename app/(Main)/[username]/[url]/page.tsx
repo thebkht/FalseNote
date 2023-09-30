@@ -197,9 +197,11 @@ export default function PostView({ params }: { params: { username: string, url: 
                          <div className="article__content">
                               {
                                    post?.coverimage && (
-                                        <AspectRatio ratio={16 / 9} className="article__cover-image">
+                                        <div className="article__cover-image">
+                                             <AspectRatio ratio={16 / 9} className="article__cover-image">
                                              <Image src={post?.coverimage} alt={post?.title} layout="fill" objectFit="cover" />
                                         </AspectRatio>
+                                        </div>
                                    )
                               }
                               <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" />

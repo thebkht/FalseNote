@@ -166,7 +166,7 @@
 }
 
 .article__content .article__cover-image {
-  @apply w-full h-auto mb-8;
+  @apply w-full h-auto mb-8 px-4;
 }
 
 .article__content .article__cover-image img{
