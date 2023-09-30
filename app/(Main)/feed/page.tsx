@@ -37,7 +37,7 @@ async function fetchFeed() {
         throw new Error(`Fetch failed with status: ${nextFeed.status}`);
       }
 
-      const isEnd = (await nextFeed.json()).feed.length === 0;
+      setIsEnd((await nextFeed.json()).feed.length === 0);
       setFetching(false);
 
       const data = await response.json();
