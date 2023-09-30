@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       WHERE followerid = ${user_id}
     )
     ORDER BY creationdate DESC
-    LIMIT ${limit} OFFSET ${page * limit}
+    LIMIT ${limit} OFFSET ${offset}
   `
 
   //execute a query to fetch the number of comments of the posts
