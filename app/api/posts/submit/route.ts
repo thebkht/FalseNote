@@ -44,18 +44,14 @@ export async function POST(req: NextRequest) {
 
           const postId = submittedPostId.rows?.[0].postid;
 
-          if (tags) {
-               for (const tag of tags) {
+          if (tags.value) {
+               for (const tag of tags.value) {
                     await sql`
                     INSERT INTO Tags (TagName)
                     VALUES (${tag})
                     `;
-               }
-          }
-          
-          if (tags) {
-               for (const tag of tags) {
-                    const tagId = await sql`
+
+const tagId = await sql`
                     SELECT TagID FROM tags WHERE TagName = ${tag}
                     `;
                     const tagIdInt = tagId.rows?.[0].tagid;
@@ -65,6 +61,8 @@ export async function POST(req: NextRequest) {
                     `;
                }
           }
+          
+  
 
           return new Response("Post submitted", { status: 200 });
      } catch (error) {
