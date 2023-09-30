@@ -18,7 +18,6 @@ import { useSession } from "next-auth/react"
 import { Icons } from "@/components/icon"
 import { Separator } from "@/components/ui/separator"
 import { useRouter } from "next/router"
-import { sql } from "@vercel/postgres";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -55,7 +54,9 @@ export default function PostView({ params }: { params: { username: string, url: 
           const updatedValue = cookieValue + 1
           const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000) // 1 day from now
           document.cookie = `${cookieName}=${updatedValue}; expires=${expirationDate.toUTCString()}; path=/`
-          await sql`UPDATE blogposts SET views = views + 1 WHERE authorid = ${post?.authorId} AND url = ${post?.url}`
+          await fetch(`/api/posts/${params.username}/views/?url=${params.url}`, {
+               method: "POST",
+          })
      }
 
      const sessionUser = getSessionUser() as any
