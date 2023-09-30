@@ -17,10 +17,10 @@ import { getSessionUser } from "@/components/get-session-user"
 import { useSession } from "next-auth/react"
 import { Icons } from "@/components/icon"
 import { Separator } from "@/components/ui/separator"
+import { useRouter } from "next/router"
+import { sql } from "@vercel/postgres";
 
-//format date ex: if published this year Apr 4, otherwise Apr 4, 2021
 const formatDate = (dateString: string | number | Date) => {
-     //format date ex: if published this year Apr 4, otherwise Apr 4, 2021
      const date = new Date(dateString)
      const currentYear = new Date().getFullYear()
      const year = date.getFullYear()
@@ -46,8 +46,19 @@ export default function PostView({ params }: { params: { username: string, url: 
      const [isLoaded, setIsLoaded] = useState<boolean>(false)
      const [isFollowing, setIsFollowing] = useState<boolean | null>(null)
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false)
-     const [sessionUser, setSessionUser] = useState<any>(null)
+     //const [sessionUser, setSessionUser] = useState<any>(null)
      const { status } = useSession()
+
+     async function incrementPostViews() {
+          const cookieName = `post_views_${params.username}_${params.url}`
+          const cookieValue = parseInt(getCookie(cookieName) ?? '') || 0
+          const updatedValue = cookieValue + 1
+          const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000) // 1 day from now
+          document.cookie = `${cookieName}=${updatedValue}; expires=${expirationDate.toUTCString()}; path=/`
+          await sql`UPDATE blogposts SET views = views + 1 WHERE authorid = ${post?.authorId} AND url = ${post?.url}`
+     }
+
+     const sessionUser = getSessionUser() as any
 
      useEffect(() => {
           async function fetchData() {
@@ -62,6 +73,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                     }
                     setPost(post)
                     setIsLoaded(true)
+                    incrementPostViews()
                } catch (error) {
                     console.error(error)
                     setIsLoaded(true)
@@ -84,6 +96,7 @@ export default function PostView({ params }: { params: { username: string, url: 
           } else {
                return null;
           }
+
      }
 
      if (!isLoaded) {
@@ -145,14 +158,19 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                        <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
                                                   )}
 
-                                             <Button
-                                                  variant={"link"}
-                                                  size={"default"}
-                                                  className="py-0 h-6 px-3"
-                                                  onClick={(e) => handleFollow(post?.authorId)}
-                                             >
-                                                  {isFollowing ? (<>Following</>) : <>Follow</>}
-                                             </Button>
+                                             {
+                                                  status === "authenticated" && sessionUser?.userid !== post?.author?.userid &&
+                                                  (
+                                                       <Button
+                                                            variant="link"
+                                                            className="py-0 h-6 px-3"
+                                                            onClick={() => handleFollow(post?.authorId)}
+                                                            disabled={isFollowingLoading}
+                                                       >
+                                                            {isFollowing ? "Unfollow" : "Follow"}
+                                                       </Button>
+                                                  )
+                                             }
 
 
                                         </span>
@@ -173,3 +191,14 @@ export default function PostView({ params }: { params: { username: string, url: 
           </>
      )
 }
+
+function getCookie(name: string) {
+     const cookies = document.cookie.split(";")
+     for (const cookie of cookies) {
+       const [cookieName, cookieValue] = cookie.split("=")
+       if (cookieName.trim() === name) {
+         return cookieValue
+       }
+     }
+     return null
+   }
