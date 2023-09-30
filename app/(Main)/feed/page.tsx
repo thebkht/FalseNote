@@ -16,6 +16,7 @@ export default function Feed() {
   const [page, setPage] = useState(0)
   const [fetching, setFetching] = useState<boolean>(true)
   const [loading, setLoading] = useState(true)
+  const [isEnd, setIsEnd] = useState(false)
   const sentinelRef = useRef(null)
 
   useEffect(() => {
@@ -26,10 +27,17 @@ async function fetchFeed() {
      const user = (await sessionUser).userid
      try {
       if (page === 0) setFetching(true);
+      let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
+      const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`)
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
+      if (!nextFeed.ok) {
+        throw new Error(`Fetch failed with status: ${nextFeed.status}`);
+      }
+
+      const isEnd = (await nextFeed.json()).feed.length === 0;
       setFetching(false);
 
       const data = await response.json();
@@ -108,10 +116,16 @@ async function fetchFeed() {
 
           </div>
           <div ref={sentinelRef} />
-          {feed.length > 0 && (
+          {!isEnd && feed.length > 0 && (
             <div className="feed__list_loadmore">
               <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>
             </div>
+          )}
+
+          {isEnd && feed.length > 0 && (
+            <div className="feed__list_loadmore">
+              <Button variant={"secondary"} size={"lg"} disabled={true}>No more posts</Button>
+              </div>
           )}
        </div>
         </div>

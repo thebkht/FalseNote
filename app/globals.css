@@ -78,7 +78,7 @@
 }
 
 .feed__content {
-  @apply flex flex-col items-center justify-start;
+  @apply flex flex-col items-center justify-start w-full;
 }
 
 .feed__content_title {
@@ -283,7 +283,7 @@ grid-template-columns: 1fr !important;
 }
 
 .feed__list{
-  @apply my-8;
+  @apply my-8 w-full;
 }
 
 .feed__list_item{
