@@ -45,21 +45,24 @@ export default function PostView({ params }: { params: { username: string, url: 
      const [isLoaded, setIsLoaded] = useState<boolean>(false)
      const [isFollowing, setIsFollowing] = useState<boolean | null>(null)
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false)
-     //const [sessionUser, setSessionUser] = useState<any>(null)
+     const [sessionUser, setSessionUser] = useState<any>(null)
      const { status } = useSession()
 
      async function incrementPostViews() {
-          const cookieName = `post_views_${params.username}_${params.url}`
-          const cookieValue = parseInt(getCookie(cookieName) ?? '') || 0
-          const updatedValue = cookieValue + 1
-          const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000) // 1 day from now
-          document.cookie = `${cookieName}=${updatedValue}; expires=${expirationDate.toUTCString()}; path=/`
+          const cookieName = `post_views_${params.username}_${params.url}`;
+          const hasViewed = getCookie(cookieName);
+
+          if (!hasViewed) {
+          // Make an API request to increment the view count
           await fetch(`/api/posts/${params.username}/views/?url=${params.url}`, {
                method: "POST",
-          })
-     }
+          });
 
-     const sessionUser = getSessionUser() as any
+          // Set a cookie to indicate that the post has been viewed
+          const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day from now
+          document.cookie = `${cookieName}=true; expires=${expirationDate.toUTCString()}; path=/`;
+          }
+     }
 
      useEffect(() => {
           async function fetchData() {
@@ -70,6 +73,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                     const post = await postData.json()
                     if (status === "authenticated") {
                          const followerId = (await getSessionUser()).userid;
+                         setSessionUser(await getSessionUser())
                          setIsFollowing(post?.author?.followers.find((follower: any) => follower.followerid === followerId));
                     }
                     setPost(post)
