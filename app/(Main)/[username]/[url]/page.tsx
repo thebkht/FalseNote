@@ -74,7 +74,6 @@ export default function PostView({ params }: { params: { username: string, url: 
                     }
                     setPost(post)
                     setIsLoaded(true)
-                    incrementPostViews()
                } catch (error) {
                     console.error(error)
                     setIsLoaded(true)
@@ -82,6 +81,12 @@ export default function PostView({ params }: { params: { username: string, url: 
           }
           fetchData()
      }, [params.url, params.username, isFollowing, status])
+
+     useEffect(() => {
+          if (post) {
+               incrementPostViews()
+          }
+     }, [post])
 
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
