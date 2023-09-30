@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
           const postId = submittedPostId.rows?.[0].postid;
 
-          if (tags.value) {
+          if (tags) {
                for (const tag of tags.value) {
                     await sql`
                     INSERT INTO Tags (TagName)
