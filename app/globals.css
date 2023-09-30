@@ -165,6 +165,14 @@
   @apply w-full h-auto;
 }
 
+.article__content .article__cover-image {
+  @apply w-full h-auto mb-8;
+}
+
+.article__content .article__cover-image img{
+  @apply rounded-md ;
+}
+
 /* .markdown-body{
   @apply ;
 } */

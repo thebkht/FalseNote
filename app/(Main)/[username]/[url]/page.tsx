@@ -18,6 +18,8 @@ import { useSession } from "next-auth/react"
 import { Icons } from "@/components/icon"
 import { Separator } from "@/components/ui/separator"
 import { useRouter } from "next/router"
+import Image from "next/image"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -193,6 +195,13 @@ export default function PostView({ params }: { params: { username: string, url: 
                          <Separator className="mt-8" />
 
                          <div className="article__content">
+                              {
+                                   post?.coverimage && (
+                                        <AspectRatio ratio={16 / 9} className="article__cover-image">
+                                             <Image src={post?.coverimage} alt={post?.title} layout="fill" objectFit="cover" />
+                                        </AspectRatio>
+                                   )
+                              }
                               <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" />
                          </div>
 
