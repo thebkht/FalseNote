@@ -1,5 +1,5 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Badge, Eye, Heart, MessageCircle } from "lucide-react";
 import { ImageResponse } from "next/server";
 
 export const runtime = 'edge';
@@ -69,7 +69,7 @@ export async function GET(req: Request, { params }: { params: { username: string
               </div>
               <div tw="flex flex-col">
               <span tw="text-2xl font-bold">{post?.author?.username} </span>
-              <div tw="text-xl text-mute-foreground mb-2">{formatDate(post.creationdate)}</div>
+              <div tw="text-lg text-mute-foreground mb-2">{formatDate(post.creationdate)}</div>
               </div>
                       </div>   
           </div>
