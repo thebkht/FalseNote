@@ -1,16 +1,34 @@
 import { Icons } from "@/components/icon";
 import Image from "next/image";
-import { ImageResponse } from "next/server";
+import type { PageConfig } from 'next';
+import { ImageResponse, NextRequest } from "next/server";
 import { Inter } from 'next/font/google'
 
-export const runtime = 'edge';
 interface Props {
   params: { username: string }
 }
 
-export async function GET(request: Request,
+const regularFont = fetch(
+  new URL('/public/assets/Inter-Regular.ttf', import.meta.url)
+).then((res) => res.arrayBuffer());
+
+const boldFont = fetch(
+  new URL('/public/assets/Inter-Bold.ttf', import.meta.url)
+).then((res) => res.arrayBuffer());
+
+const lightFont = fetch(
+  new URL('/public/assets/Inter-Light.ttf', import.meta.url)
+).then((res) => res.arrayBuffer());
+
+export default async function handler(request: NextRequest,
   { params }: Props
-) {
+): Promise<ImageResponse> {
+  const [regular, bold, light] = await Promise.all([
+    regularFont,
+    boldFont,
+    lightFont,
+  ]);
+
   try {
     const encodedString = params.username.replace(/ /g, "%20");
     const response = await fetch(`${process.env.DOMAIN}/api/users/${encodedString}`);
@@ -57,6 +75,23 @@ export async function GET(request: Request,
       {
         width: 1200,
         height: 630,
+        fonts: [
+          {
+            name: 'Inter',
+            data: regular,
+            weight: 400,
+          },
+          {
+            name: 'Inter',
+            data: bold,
+            weight: 700,
+          },
+          {
+            name: 'Inter',
+            data: light,
+            weight: 300,
+          },
+        ],
       },
     );
   }
@@ -67,3 +102,7 @@ export async function GET(request: Request,
     });
   }
 }
+
+export const config: PageConfig = {
+  runtime: 'edge'
+};
