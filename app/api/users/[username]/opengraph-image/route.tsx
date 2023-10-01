@@ -8,6 +8,8 @@ interface Props {
   params: { username: string }
 }
 
+export const runtime = "edge"
+
 const regularFont = fetch(
   new URL('/public/assets/Inter-Regular.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
@@ -102,7 +104,3 @@ export default async function handler(request: NextRequest,
     });
   }
 }
-
-export const config: PageConfig = {
-  runtime: 'edge'
-};
