@@ -65,11 +65,11 @@ export async function GET(req: Request, { params }: { params: { username: string
 </span>
           <div tw="flex space-x-4 items-center">
               <div tw="flex w-20 h-20 my-6 mr-4 rounded-full">
-              <img tw="rounded-full" alt="" src={post.author.profilepicture} />
+              <img alt="" src={post.author.profilepicture} />
               </div>
               <div tw="flex flex-col">
               <span tw="text-2xl font-bold">{post?.author?.username} </span>
-              <div tw="text-lg text-mute-foreground mb-2">{formatDate(post.creationdate)}</div>
+              <div tw="text-xl text-mute-foreground mb-2">{formatDate(post.creationdate)}</div>
               </div>
                       </div>   
           </div>
