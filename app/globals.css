@@ -162,7 +162,7 @@
 }
 
 .article__content img {
-  @apply w-full h-auto;
+  @apply w-full h-auto mx-4 rounded-md;
 }
 
 .article__content .article__cover-image {
