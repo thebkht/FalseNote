@@ -22,7 +22,7 @@ const lightFont = fetch(
   new URL('/public/assets/Inter-Light.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
-export default async function GET(request: NextRequest,
+export async function GET(request: NextRequest,
   { params }: Props
 ): Promise<ImageResponse> {
   const [regular, bold, light] = await Promise.all([

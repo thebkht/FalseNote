@@ -121,12 +121,6 @@ async function fetchFeed() {
               <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>
             </div>
           )}
-
-          {isEnd && feed.length > 0 && (
-            <div className="feed__list_loadmore">
-              <Button variant={"secondary"} size={"lg"} disabled={true}>No more posts</Button>
-              </div>
-          )}
        </div>
         </div>
      </main>
