@@ -10,10 +10,6 @@ interface Props {
 
 export const runtime = "edge"
 
-const regularFont = fetch(
-  new URL('/public/assets/Inter-Regular.ttf', import.meta.url)
-).then((res) => res.arrayBuffer());
-
 const boldFont = fetch(
   new URL('/public/assets/Inter-Bold.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
@@ -25,8 +21,7 @@ const lightFont = fetch(
 export async function GET(request: NextRequest,
   { params }: Props
 ): Promise<ImageResponse> {
-  const [regular, bold, light] = await Promise.all([
-    regularFont,
+  const [bold, light] = await Promise.all([
     boldFont,
     lightFont,
   ]);
@@ -78,11 +73,6 @@ export async function GET(request: NextRequest,
         width: 1200,
         height: 630,
         fonts: [
-          {
-            name: 'Inter',
-            data: regular,
-            weight: 400,
-          },
           {
             name: 'Inter',
             data: bold,
