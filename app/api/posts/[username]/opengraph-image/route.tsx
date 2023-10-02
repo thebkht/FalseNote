@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/server";
 
-export const runtime = 'edge';
+//export const runtime = 'edge';
 
 const regularFont = fetch(
   new URL('/public/assets/Inter-Regular.woff2', import.meta.url)
