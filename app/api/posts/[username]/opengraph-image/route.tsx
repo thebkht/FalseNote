@@ -2,14 +2,6 @@ import { ImageResponse } from "next/server";
 
 export const runtime = 'edge';
 
-const regularFont = fetch(
-  new URL('/public/assets/Inter-Regular.ttf', import.meta.url)
-).then((res) => res.arrayBuffer());
-
-const boldFont = fetch(
-  new URL('/public/assets/Inter-Bold.ttf', import.meta.url)
-).then((res) => res.arrayBuffer());
-
 
 const formatDate = (dateString: string | number | Date) => {
      //format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -23,10 +15,6 @@ const formatDate = (dateString: string | number | Date) => {
      return formattedDate
 }
 export async function GET(req: Request, { params }: { params: { username: string } }) {
-  const [regular, bold] = await Promise.all([
-    regularFont,
-    boldFont,
-  ]);
      try {
           const { username } = params
      const url = new URL(req.url);
@@ -62,19 +50,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     ),
       {
         width: 1200,
-        height: 630,
-        fonts: [
-          {
-            name: 'Inter',
-            data: regular,
-            weight: 400,
-          },
-          {
-            name: 'Inter',
-            data: bold,
-            weight: 700,
-          },
-        ],
+        height: 630,Fix
       },
   );
      } catch (error) {
