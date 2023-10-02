@@ -3,11 +3,11 @@ import { ImageResponse } from "next/server";
 export const runtime = 'edge';
 
 const regularFont = fetch(
-  new URL('/public/assets/Inter-Regular.otf', import.meta.url)
+  new URL('/public/assets/PolySans Neutral.otf', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
 const boldFont = fetch(
-  new URL('/public/assets/Inter-Bold.otf', import.meta.url)
+  new URL('/public/assets/PolySans Bulky.otf', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
 const formatDate = (dateString: string | number | Date) => {
