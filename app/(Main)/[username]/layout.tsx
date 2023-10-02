@@ -27,15 +27,13 @@ export async function generateMetadata(
           url: `${process.env.DOMAIN}/${user.username}`,
           images: [
             {
-              url: `${process.env.DOMAIN}/api/users/${user.username}/opengraph-image`,
-              width: 1200,
-              height: 630,
+              url: user?.profilepicture,
               alt: `${user.username} | FalseNotes`,
             }
           ],
         },
         twitter: {
-          card: 'summary_large_image',
+          card: 'summary',
           title: `${user.username} ${user?.name ? `(` + user?.name + `)` : `` } | FalseNotes`,
           description: user?.bio === null || user?.bio === "" ? `${user?.username} has ${user?.postsnum} posts. Follow their to keep up with their activity on FalseNotes.` : user?.bio,
         },
