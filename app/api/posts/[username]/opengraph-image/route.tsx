@@ -10,10 +10,6 @@ const boldFont = fetch(
   new URL('/public/assets/Inter-Bold.woff2', import.meta.url)
 ).then((res) => res.arrayBuffer());
 
-const lightFont = fetch(
-  new URL('/public/assets/Inter-Light.woff2', import.meta.url)
-).then((res) => res.arrayBuffer());
-
 const formatDate = (dateString: string | number | Date) => {
      //format date ex: if published this year Apr 4, otherwise Apr 4, 2021
      const date = new Date(dateString)
@@ -26,10 +22,9 @@ const formatDate = (dateString: string | number | Date) => {
      return formattedDate
 }
 export async function GET(req: Request, { params }: { params: { username: string } }) {
-  const [regular, bold, light] = await Promise.all([
+  const [regular, bold] = await Promise.all([
     regularFont,
     boldFont,
-    lightFont,
   ]);
      try {
           const { username } = params
@@ -86,11 +81,6 @@ export async function GET(req: Request, { params }: { params: { username: string
             name: 'Inter',
             data: bold,
             weight: 700,
-          },
-          {
-            name: 'Inter',
-            data: light,
-            weight: 300,
           },
         ],
       },
