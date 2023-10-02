@@ -50,7 +50,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     ),
       {
         width: 1200,
-        height: 630,Fix
+        height: 630,
       },
   );
      } catch (error) {
