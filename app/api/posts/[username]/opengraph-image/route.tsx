@@ -55,12 +55,8 @@ export async function GET(req: Request, { params }: { params: { username: string
             )
           )}
 </span>
-          <div tw="flex items-center">
-          <img tw="rounded-full w-20 h-20 my-6 mr-4" alt="" src={post.author.profilepicture} />
-              <div tw="flex flex-col">
-              <span tw="text-2xl font-bold">{post?.author?.username} </span>
-              <div tw="text-xl text-mute-foreground">{formatDate(post.creationdate)}</div>
-              </div>
+          <div tw="flex items-center my-4">
+          <div tw="flex items-center "><span tw="text-2xl mr-2">{post?.author?.username}</span> <span tw="text-xl font-normal text-mute-foreground">posted on {formatDate(post.creationdate)}</span></div>
                       </div>   
           </div>
     ),
