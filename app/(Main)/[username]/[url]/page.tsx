@@ -21,7 +21,7 @@ import { useRouter } from "next/router"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 
-export const formatDate = (dateString: string | number | Date) => {
+const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
      const currentYear = new Date().getFullYear()
      const year = date.getFullYear()
