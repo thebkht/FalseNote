@@ -168,7 +168,22 @@ export function PostForm() {
     if (form.getValues('coverImage')) {
       setCover(form.getValues('coverImage') || '');
     }
-    file ? setCover(URL.createObjectURL(file)) : setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`)
+    if (file) {
+      // Create a local URL for this image
+      setCover(URL.createObjectURL(file));
+    }
+
+    // If the user changes the cover image, update the cover state
+    if (form.getValues('title')) {
+      setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`)
+    } else {
+      setCover('');
+    }
+    if (form.getValues('description')) {
+      setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`)
+    } else {
+      setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${null}`)
+    }
   }, [file, form.getValues('coverImage'), form.getValues('title'), form.getValues('description')])
 
   async function validateUrl(value: string) {
