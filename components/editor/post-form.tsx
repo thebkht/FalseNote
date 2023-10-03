@@ -372,18 +372,14 @@ export function PostForm() {
                       <FormLabel>Post Preview</FormLabel>
                       <FormControl>
                         <>
-                          {
-                            file ? (
-                              <AspectRatio ratio={16 / 9} className="bg-muted">
+                        <AspectRatio ratio={16 / 9} className="bg-muted">
                                 <Image
-                                  src={file ? URL.createObjectURL(file) : `/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`}
+                                  src={file ? URL.createObjectURL(file) : `${process.env.DOMAIN}/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`}
                                   alt="Cover Image"
                                   fill
                                   className="rounded-md object-cover"
                                 />
                               </AspectRatio>
-                            ) : ''
-                          }
                           <Input type="file" {...field} accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
 
                         </>
