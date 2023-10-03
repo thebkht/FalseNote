@@ -13,6 +13,26 @@ import { getSessionUser } from "@/components/get-session-user";
 import { useSession } from "next-auth/react";
 import { Icons } from "@/components/icon";
 
+const formatDate = (dateString: string | number | Date) => {
+  const date = new Date(dateString)
+  const currentYear = new Date().getFullYear()
+  const year = date.getFullYear()
+  const formattedDate = date.toLocaleDateString("en-US", {
+       month: "short",
+       day: "numeric",
+       hour12: true,
+  })
+  if (year !== currentYear) {
+       return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour12: true,
+       })
+  }
+  return formattedDate
+}
+
 export default function PopularPosts(
   { data: popularPosts, isloaded: isLoaded}: { data: any; isloaded: boolean; }
 ) {
@@ -65,10 +85,11 @@ export default function PopularPosts(
           <ol className="flex flex-col items-start justify-between space-y-4">
             {popularPosts.map(
                   (item: any, index: number) => (
-              <li key={item.postid}>
-                <Link href={`/${item.author.username}/${item.url}`} className="flex items-center">
+              <li key={item.postid} className="text-sm">
+                <Link href={`/${item.author.username}/${item.url}`}>
                   {item.title}
                 </Link>
+                <div className="popular__post-details"><span>{item.author.username}</span><span>{formatDate(item.creationdate)}</span></div>
               </li>
 
             ))}

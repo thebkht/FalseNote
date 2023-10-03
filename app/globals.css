@@ -306,3 +306,12 @@ grid-template-columns: 1fr !important;
 .feed__list_loadmore{
   @apply flex items-center justify-center w-full py-4;
 }
+
+.popular__post-details::after{
+  content: "·";
+  @apply text-muted-foreground inline-block px-2 ;
+}
+
+.popular__post-details:last-child::after{
+  content: "";
+}
