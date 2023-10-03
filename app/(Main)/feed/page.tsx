@@ -27,7 +27,6 @@ async function fetchFeed() {
     
      const user = (await sessionUser).userid
      try {
-      if (page === 0) setFetching(true);
       let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`)
