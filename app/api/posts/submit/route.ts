@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
                if (title !== postData.title || content !== postData.content || coverImage !== postData.coverimage || visibility !== postData.visibility || isDraft !== postData.draft || url !== postData.url || description !== postData.description) {
                     await sql`
                     UPDATE BlogPosts
-                    SET Title = ${title}, Content = ${content}, CoverImage = ${coverImage}, Visibility = ${visibility}, Draft = ${isDraft}, url = ${url}, Description = ${description}
+                    SET Title = ${title}, Content = ${content}, CoverImage = ${coverImage}, Visibility = ${visibility}, Draft = ${isDraft}, url = ${url}, Description = ${description}, Lastupdateddate = NOW()
                     WHERE PostID = ${postid}
                     `;
 
