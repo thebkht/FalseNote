@@ -20,7 +20,7 @@ export default function EmptyFeed() {
           const userData = await fetch(`/api/users/top?user=${userid}`, {
             method: "GET",
             }).then((res) => res.json());
-          setFeaturedDevs(userData);
+          setFeaturedDevs(userData.users);
           setIsLoaded(true);
         } catch (error) {
           // Handle errors
