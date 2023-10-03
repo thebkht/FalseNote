@@ -181,6 +181,14 @@ export function PostForm() {
     }
   }
 
+  async function postPreview() {
+    if(file) {
+      return URL.createObjectURL(file);
+    } else {
+      return `/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`;
+    }
+  }
+
   // URL-friendly link validation
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -368,7 +376,7 @@ export function PostForm() {
                             file ? (
                               <AspectRatio ratio={16 / 9} className="bg-muted">
                                 <Image
-                                  src={URL.createObjectURL(file)}
+                                  src={file ? URL.createObjectURL(file) : `/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`}
                                   alt="Cover Image"
                                   fill
                                   className="rounded-md object-cover"
