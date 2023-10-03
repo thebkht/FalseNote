@@ -90,7 +90,7 @@ export function PostEditorForm(props: {  url: string }) {
         setPost(data);
       } catch (error) {
         console.error(error);
-        router.push('/404');
+        //router.push('/404');
       }
     }
 
