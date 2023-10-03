@@ -15,8 +15,8 @@ export async function GET(request: NextRequest) {
       SELECT followeeid
       FROM Follows
       WHERE followerid = ${userid}
-    ) AND userid != ${userid}
-    ORDER BY IN (SELECT COUNT(*) FROM Follows WHERE followeeid = Users.userid) DESC
+    ) AND userid <> ${userid}
+    ORDER BY (SELECT COUNT(*) FROM Follows WHERE followeeid = Users.userid) DESC
     LIMIT 5
   `;
     // return the result
