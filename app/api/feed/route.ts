@@ -78,6 +78,25 @@ export async function GET(req: NextRequest, res: NextResponse) {
     LIMIT 10
   `
 
+  const { rows: popularAuthor } = await sql`
+    SELECT *
+    FROM Users
+    WHERE userid IN (
+      SELECT authorid
+      FROM BlogPosts
+      ORDER BY likes DESC
+      LIMIT 10
+    )
+  `
+
+  popular.forEach((post: any) => {
+    popularAuthor.forEach((user: any) => {
+      if (post.authorid === user.userid) {
+        post.author = user
+      }
+    })
+  })
+
   return NextResponse.json({ feed, popular })
   }
      catch (error) {
