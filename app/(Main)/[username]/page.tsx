@@ -127,12 +127,10 @@ export default function Page({ params }: Props) {
       <div className="lg:w-[296px] md:w-64 w-full mx-auto">
         <div className="user space-y-4">
           <div className="user__header flex md:block items-center">
-          <div className="mb-0 md:mb-5 px-0 mr-3 md:mr-0 rounded-full">
-            <Avatar className="rounded-full lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6">
+          <Avatar className="rounded-full mr-3 lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6">
               <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
               <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
-          </div>
           <div className="flex items-center">
             {
               user?.name === null ? (
