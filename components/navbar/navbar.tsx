@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip"
 import { use, useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
+import SearchBar from "../searchbar";
 
 
 function Navbar() {
@@ -40,6 +41,7 @@ function Navbar() {
           </Link>
   
           <div className="flex items-center gap-2 md:gap-4">
+            <SearchBar />
                 {items.map((item) => (
                   <>
                     <TooltipProvider>

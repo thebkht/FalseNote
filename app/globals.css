@@ -77,7 +77,10 @@
 }
 
 .feed__content {
-  @apply grid grid-cols-6 w-full gap-6
+  @apply grid w-full gap-6
+  grid-gap: 1.5rem;
+  grid-auto-flow: column;
+  grid-template-columns: auto 0 minmax(0, calc(100% - 350px - 1.5rem))
 }
 
 .feed__content_title {
@@ -130,7 +133,8 @@
 }
 
 .feed__popular {
-  @apply hidden mt-9 col-span-2 space-y-6 lg:block;
+  @apply hidden space-y-6 lg:block;
+  width: 350px;
 }
 
 .article__container {
@@ -292,10 +296,6 @@ grid-template-columns: 1fr !important;
 
 .Layout .Layout-sidebar {
   grid-column: 1;
-}
-
-.feed__list{
-  @apply my-8 lg:col-span-4 col-span-6;
 }
 
 .feed__list_item{
