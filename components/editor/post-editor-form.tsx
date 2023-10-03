@@ -49,7 +49,7 @@ import { getSessionUser } from "../get-session-user"
 export function PostEditorForm(props: {  url: string }) {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null);
-  const [post, setPost] = useState<any | null>(null); // State for the post object
+  const [post, setPost] = useState<any>(null); // State for the post object
   const router = useRouter();
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export function PostEditorForm(props: {  url: string }) {
   })
   
   type PostFormValues = z.infer<typeof postFormSchema>
-
+  console.log(post)
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
   title: post?.title,
