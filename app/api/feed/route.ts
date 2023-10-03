@@ -74,7 +74,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { rows: popular } = await sql`
     SELECT *
     FROM BlogPosts
-    ORDER BY likes DESC
+    ORDER BY views DESC
     LIMIT 10
   `
 
