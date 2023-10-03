@@ -99,13 +99,12 @@ export function PostEditorForm(props: {  url: string }) {
   console.log(post)
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
-  title: post?.title,
-  content: post?.content,
-  visibility: post?.visibility,
-  coverImage: post?.coverImage,
-  url: post?.url,
-  description: post?.description,
-  tags: post?.tags,
+  title: post.title,
+  content: post.content,
+  visibility: post.visibility,
+  coverImage: post.coverimage,
+  url: post.url,
+  description: post.description,
 }
   
   const form = useForm<PostFormValues>({
