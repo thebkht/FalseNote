@@ -187,7 +187,7 @@ export default function PostView({ params }: { params: { username: string, url: 
 
 
                                         </span>
-                                        <span className="article__date">{post?.creationdate && formatDate(post?.creationdate)}</span>
+                                        <span className="article__date">{post?.lastupdateddate == post?.creationdate ? formatDate(post?.creationdate) : (formatDate(post?.creationdate) + " · Updated on " + formatDate(post?.lastupdateddate))}</span>
                                    </div>
                               </div>
                          </div>
