@@ -8,6 +8,7 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icon';
+import { set } from 'react-hook-form';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -30,7 +31,6 @@ async function fetchFeed() {
       let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`)
-      setFetching(false);
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
@@ -45,6 +45,7 @@ async function fetchFeed() {
 
       setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
       setPopularPosts(data.popular);
+      setFetching(false);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching feed:', error);
@@ -68,12 +69,6 @@ async function fetchFeed() {
     <main className="flex min-h-screen flex-col items-center justify-between feed ">
       <div className="feed__content">         
           <div className="feed__list">
-         {
-               !fetching && (feed.length > 0 ? ( null
-               ) : (
-               <div className="feed__content_subtitle">There either has been no new posts, or you don&apos;t follow anyone.</div>
-               ))
-         }
          {
             fetching && ( <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
                <Icons.spinner className="h-10 animate-spin" /> Loading...
