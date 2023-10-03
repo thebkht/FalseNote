@@ -49,12 +49,13 @@ async function fetchFeed() {
     } catch (error) {
       console.error('Error fetching feed:', error);
       setLoading(false);
+      setFetching(false);
     }
   }  
+    setFetching(false)
   } 
 
     fetchFeed()
-    setFetching(false)
   }, [page])
 
   function handleLoadMore() {
@@ -72,6 +73,17 @@ async function fetchFeed() {
             fetching && ( <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
                <Icons.spinner className="h-10 animate-spin" /> Loading...
              </div> )
+         }
+
+         {
+          !fetching && feed.length === 0 && (
+            <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <h1 className="text-2xl font-bold">No posts yet</h1>
+                <p className="text-gray-500">When you follow someone, their posts will show up here.</p>
+              </div>
+            </div>
+          )
          }
          
           <div className="feed__list_item">
