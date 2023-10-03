@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import React, { useEffect, useState } from "react"
+import React, { use, useEffect, useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -161,6 +161,15 @@ export function PostForm() {
 
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
+  const [cover, setCover] = useState<string>('');
+  const [file, setFile] = useState<File>(); // State for the uploaded file
+
+  useEffect(() => {
+    if (form.getValues('coverImage')) {
+      setCover(form.getValues('coverImage') || '');
+    }
+    file ? setCover(URL.createObjectURL(file)) : setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`)
+  }, [file, form.getValues('coverImage'), form.getValues('title'), form.getValues('description')])
 
   async function validateUrl(value: string) {
     try {
@@ -181,14 +190,6 @@ export function PostForm() {
     }
   }
 
-  async function postPreview() {
-    if(file) {
-      return URL.createObjectURL(file);
-    } else {
-      return `/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`;
-    }
-  }
-
   // URL-friendly link validation
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -199,7 +200,7 @@ export function PostForm() {
   }
 
   const [markdownContent, setMarkdownContent] = useState<string>('');
-  const [file, setFile] = useState<File>(); // State for the uploaded file
+  
 
   async function handleContentChange(value: string) {
     form.setValue('content', value); // Update the form field value
@@ -372,14 +373,18 @@ export function PostForm() {
                       <FormLabel>Post Preview</FormLabel>
                       <FormControl>
                         <>
-                        <AspectRatio ratio={16 / 9} className="bg-muted">
+                        {
+                          cover !== '' && (
+                            <AspectRatio ratio={16 / 9} className="bg-muted">
                                 <Image
-                                  src={file ? URL.createObjectURL(file) : `${process.env.DOMAIN}/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`}
+                                  src={cover}
                                   alt="Cover Image"
                                   fill
                                   className="rounded-md object-cover"
                                 />
                               </AspectRatio>
+                          )
+                        }
                           <Input type="file" {...field} accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
 
                         </>

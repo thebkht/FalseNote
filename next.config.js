@@ -13,6 +13,12 @@ const nextConfig = {
               hostname: `s3.ap-northeast-2.amazonaws.com`,
               port: '',
               pathname: `/falsenotes.app/**`,
+            },
+            {
+              protocol: 'https',
+              hostname: `falsenotes.vercel.app`,
+              port: '',
+              pathname: `/**`,
             }
           ],
         },
