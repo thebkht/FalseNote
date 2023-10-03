@@ -374,7 +374,7 @@ const defaultValues: Partial<PostFormValues> = {
                           cover !== '' && (
                             <AspectRatio ratio={16 / 9} className="bg-muted">
                                 <Image
-                                  src={cover}
+                                  src={file ? URL.createObjectURL(file) as string : form.getValues('coverImage') as string}
                                   alt="Cover Image"
                                   fill
                                   className="rounded-md object-cover"
