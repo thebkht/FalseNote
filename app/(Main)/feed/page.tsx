@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icon';
 import { set } from 'react-hook-form';
+import PopularPosts from '@/components/feed/popular-posts';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -23,7 +24,8 @@ export default function Feed() {
 
   useEffect(() => {
 async function fetchFeed() {
-  const user = (await sessionUser).userid
+  if (status !== "unauthenticated") {
+    const user = (await sessionUser).userid
      try {
       let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
@@ -49,7 +51,10 @@ async function fetchFeed() {
       setLoading(false);
       setFetching(false);
     }
+  } else {
+    setFetching(false)
   }
+}
 
     fetchFeed()
   }, [page])
@@ -121,6 +126,7 @@ async function fetchFeed() {
              </div>
            </div>
          </div>
+        <PopularPosts data={popularPosts} isloaded={!fetching} />
          <EmptyFeed />
           </div>
         </div>
