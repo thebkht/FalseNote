@@ -118,7 +118,7 @@ function PostCard(
   <ContextMenuContent>
     {props.session && props.session.userid === props.authorid ? (
       <ContextMenuItem>
-      <Link href={`/editor/${props.url}`}>
+      <Link href={`/editor/${props.posturl}`}>
         Edit
       </Link>
       </ContextMenuItem>) : (  null )}

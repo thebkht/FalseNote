@@ -87,13 +87,12 @@ export function PostEditorForm(props: {  post: any }) {
   })
   
   type PostFormValues = z.infer<typeof postFormSchema>
-  console.log(props.post)
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
   title: props.post?.title,
   content: props.post?.content,
   visibility: props.post?.visibility,
-  coverImage: props.post?.coverimage as string,
+  coverImage: props.post?.coverimage || '',
   url: props.post?.url,
   description: props.post?.description,
 }
@@ -371,10 +370,10 @@ const defaultValues: Partial<PostFormValues> = {
                       <FormControl>
                         <>
                         {
-                          cover !== '' && (
+                          cover && (
                             <AspectRatio ratio={16 / 9} className="bg-muted">
                                 <Image
-                                  src={file ? URL.createObjectURL(file) as string : form.getValues('coverImage') as string}
+                                  src={file ? URL.createObjectURL(file) as string : field.value as string}
                                   alt="Cover Image"
                                   fill
                                   className="rounded-md object-cover"
@@ -382,7 +381,7 @@ const defaultValues: Partial<PostFormValues> = {
                               </AspectRatio>
                           )
                         }
-                          <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
+                          <Input type="file" accept="image/*"  onChange={(e) => setFile(e.target.files?.[0])} />
 
                         </>
                       </FormControl>
