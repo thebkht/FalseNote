@@ -341,7 +341,7 @@ export default function Page({ params }: Props) {
                 views={formatNumberWithSuffix(article.views)}
                 comments={formatNumberWithSuffix(article.commentsnum || 0)}
                 id={article.id}
-                authorid={article.authorid}
+                authorid={user?.userid}
                 session={sessionUser}
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
