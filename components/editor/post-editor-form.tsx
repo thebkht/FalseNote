@@ -46,10 +46,9 @@ import { remark } from "remark";
 import html from "remark-html";
 import { getSessionUser } from "../get-session-user"
 
-export function PostEditorForm(props: {  url: string }) {
+export function PostEditorForm(props: {  post: any }) {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null);
-  const [post, setPost] = useState<any>(null); // State for the post object
   const router = useRouter();
 
   useEffect(() => {
@@ -57,14 +56,8 @@ export function PostEditorForm(props: {  url: string }) {
       try {
         const sessionUser = (await getSessionUser());
         setUser(sessionUser);
-        const postData = await fetch(`/api/posts/${sessionUser.username}?url=${props.url}`, {
-          method: "GET",
-     })
-     const post = await postData.json()
-        setPost(post);
       } catch (error) {
         console.error(error);
-        router.push('/404');
       }
     }
 
@@ -96,15 +89,15 @@ export function PostEditorForm(props: {  url: string }) {
   })
   
   type PostFormValues = z.infer<typeof postFormSchema>
-  console.log(post)
+  console.log(props.post)
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
-  title: post.title,
-  content: post.content,
-  visibility: post.visibility,
-  coverImage: post.coverimage,
-  url: post.url,
-  description: post.description,
+  title: props.post?.title,
+  content: props.post?.content,
+  visibility: props.post?.visibility,
+  coverImage: props.post?.coverimage,
+  url: props.post?.url,
+  description: props.post?.description,
 }
   
   const form = useForm<PostFormValues>({
