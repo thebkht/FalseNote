@@ -61,6 +61,7 @@ export default function Page({ params }: Props) {
   const { status, data: session } = useSession();
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+  const [sessionUser, setSessionUser] = useState<any | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -69,6 +70,7 @@ export default function Page({ params }: Props) {
         setUser(userData);
         if (status === "authenticated") {
           const followerId = (await getSessionUser()).userid;
+          setSessionUser(await getSessionUser());
           setIsFollowing(userData.followers.find((follower: any) => follower.userid === followerId));
         }
         setIsLoaded(true);
@@ -339,8 +341,8 @@ export default function Page({ params }: Props) {
                 views={formatNumberWithSuffix(article.views)}
                 comments={formatNumberWithSuffix(article.commentsnum || 0)}
                 id={article.id}
-                authorid={user?.id}
-                session={session}
+                authorid={article.authorid}
+                session={sessionUser}
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
                 className="mt-4" />)

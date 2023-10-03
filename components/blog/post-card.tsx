@@ -115,6 +115,12 @@ function PostCard(
     </Card>
     </ContextMenuTrigger>
   <ContextMenuContent>
+    {props.session && props.session.userid === props.authorid ? (
+      <ContextMenuItem>
+      <Link href={`/editor/${props.url}`}>
+        Edit
+      </Link>
+      </ContextMenuItem>) : (  null )}
     <ContextMenuItem>Save</ContextMenuItem>
     <ContextMenuItem>Share</ContextMenuItem>
   </ContextMenuContent>
