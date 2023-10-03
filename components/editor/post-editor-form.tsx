@@ -85,12 +85,12 @@ export function PostEditorForm(props: {  url: string }) {
       try {
         const sessionUser = (await getSessionUser());
         setUser(sessionUser);
-        const post = await fetch(`/api/posts/${sessionUser?.username}/${props.url}`)
+        const post = await fetch(`/api/posts/${sessionUser?.username}?url=${props.url}`)
         const data = await post.json();
         setPost(data);
       } catch (error) {
         console.error(error);
-        //router.push('/404');
+        router.push('/404');
       }
     }
 
