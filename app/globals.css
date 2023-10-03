@@ -77,9 +77,10 @@
 }
 
 .feed__content {
-  @apply grid w-full gap-6
-  grid-gap: 1.5rem;
-  grid-auto-flow: column;
+  @apply grid w-full gap-6 grid-flow-col
+}
+
+.feed__content{
   grid-template-columns: auto 0 minmax(0, calc(100% - 350px - 1.5rem))
 }
 
