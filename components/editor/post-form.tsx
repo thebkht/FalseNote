@@ -274,7 +274,7 @@ export function PostForm() {
               </FormItem>
             )}
           /></TabsContent>
-          <TabsContent value="preview" className="px-5 pb-5 bg-background py-4 text-sm">
+          <TabsContent value="preview" className="px-5 pb-5 bg-background py-4 text-sm rounded-md">
             <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
           </TabsContent>
         </Tabs>
@@ -283,7 +283,7 @@ export function PostForm() {
 
           <DialogTrigger className="w-full"><Button size={"lg"} variant={"secondary"} className="w-full" asChild><span>Post Setting</span></Button></DialogTrigger>
 
-          <DialogContent className="h-full max-h-[405px] md:max-h-[550px] !p-0">
+          <DialogContent className="h-full max-h-[405px] md:max-h-[548px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
                 <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>

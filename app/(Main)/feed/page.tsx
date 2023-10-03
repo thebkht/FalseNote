@@ -17,19 +17,20 @@ export default function Feed() {
   const [fetching, setFetching] = useState<boolean>(true)
   const [loading, setLoading] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
+  const [popularPosts, setPopularPosts] = useState<any | null>([])
   const sentinelRef = useRef(null)
 
   useEffect(() => {
 async function fetchFeed() {
-     if (status === 'unauthenticated') {
-       return
-     }
+     if (status === 'authenticated') {
+    
      const user = (await sessionUser).userid
      try {
       if (page === 0) setFetching(true);
       let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`)
+      setFetching(false);
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
@@ -38,19 +39,22 @@ async function fetchFeed() {
       }
 
       setIsEnd((await nextFeed.json()).feed.length === 0);
-      setFetching(false);
+      
 
       const data = await response.json();
 
       setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
+      setPopularPosts(data.popular);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching feed:', error);
       setLoading(false);
     }
-  }   
+  }  
+  } 
 
     fetchFeed()
+    setFetching(false)
   }, [page])
 
   function handleLoadMore() {
@@ -58,46 +62,26 @@ async function fetchFeed() {
     setPage(prevPage => prevPage + 1)
   }
 
-  if (fetching) {
-    return (
-      <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
-        {
-          minHeight: "calc(100vh - 192px)"
-        }
-      }>
-         <Icons.spinner className="h-10 animate-spin" />
-       </div>
-    )
-  }
 
   return (
     <>
     <main className="flex min-h-screen flex-col items-center justify-between feed ">
-      <div className="feed__content">
-         <div className="feed__content_title">My Feed</div>
+      <div className="feed__content">         
+          <div className="feed__list">
          {
-               !fetching && feed.length > 0 ? ( null
+               fetching && feed.length > 0 ? ( null
                ) : (
                <div className="feed__content_subtitle">There either has been no new posts, or you don&apos;t follow anyone.</div>
                )
          }
-         <div className="search feed__content_search max-w-[500px]">
-           <div className="search-container">
-             <div className="search__form">
-             <div className="input">
-               <div className="input__icon">
-                 <Search className='search__form_icon' />
-               </div>
-               <Input placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
-             </div>
-             </div>
-           </div>
-         </div>
+         {
+            fetching && ( <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
+               <Icons.spinner className="h-10 animate-spin" /> Loading...
+             </div> )
+         }
          {
           !fetching && feed.length === 0 && ( <EmptyFeed /> )
          }
-         
-          <div className="feed__list">
           <div className="feed__list_item">
           {feed.map((post: { postid: string; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
         <FeedPostCard
@@ -115,13 +99,29 @@ async function fetchFeed() {
 
 
           </div>
+
           <div ref={sentinelRef} />
           {!isEnd && feed.length > 0 && (
             <div className="feed__list_loadmore">
               <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>
             </div>
           )}
-       </div>
+          </div>
+          {/* Popular posts, blogs, and tags */}
+          <div className="feed__popular">
+          <div className="search feed__content_search max-w-[500px]">
+           <div className="search-container">
+             <div className="search__form">
+             <div className="input">
+               <div className="input__icon">
+                 <Search className='search__form_icon' />
+               </div>
+               <Input placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
+             </div>
+             </div>
+           </div>
+         </div>
+          </div>
         </div>
      </main>
       
