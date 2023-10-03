@@ -74,7 +74,7 @@ const postFormSchema = z.object({
 
 type PostFormValues = z.infer<typeof postFormSchema>
 
-export function PostForm(props: {  url: string }) {
+export function PostEditorForm(props: {  url: string }) {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null);
   const [post, setPost] = useState<any | null>(null); // State for the post object
