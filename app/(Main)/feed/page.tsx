@@ -23,9 +23,7 @@ export default function Feed() {
 
   useEffect(() => {
 async function fetchFeed() {
-     if (status === 'authenticated') {
-    
-     const user = (await sessionUser).userid
+  const user = (await sessionUser).userid
      try {
       let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
@@ -51,9 +49,7 @@ async function fetchFeed() {
       setLoading(false);
       setFetching(false);
     }
-  }  
-    setFetching(false)
-  } 
+  }
 
     fetchFeed()
   }, [page])
