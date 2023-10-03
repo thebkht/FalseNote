@@ -82,7 +82,7 @@
 }
 
 .feed__content {
-  @apply flex items-start justify-between w-full;
+  @apply grid grid-cols-6 w-full gap-6
 }
 
 .feed__content_title {
@@ -138,8 +138,7 @@
 }
 
 .feed__popular {
-  @apply block mt-9;
-  max-width: 350px;
+  @apply block mt-9 col-span-2;
 }
 
 .article__container {
@@ -304,8 +303,7 @@ grid-template-columns: 1fr !important;
 }
 
 .feed__list{
-  @apply my-8;
-  max-width: 600px;
+  @apply my-8 md:col-span-4 col-span-6;
 }
 
 .feed__list_item{

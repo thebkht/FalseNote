@@ -69,10 +69,10 @@ async function fetchFeed() {
       <div className="feed__content">         
           <div className="feed__list">
          {
-               fetching && feed.length > 0 ? ( null
+               !fetching && (feed.length > 0 ? ( null
                ) : (
                <div className="feed__content_subtitle">There either has been no new posts, or you don&apos;t follow anyone.</div>
-               )
+               ))
          }
          {
             fetching && ( <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
