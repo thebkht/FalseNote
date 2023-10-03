@@ -34,7 +34,7 @@ function Navbar() {
       <nav className="menu">
         <div className="menu-backdrop h-[60px] border-b w-screen md:w-full">
         </div>
-        <div className="menu-container p-3 xl:px-36 2xl:px-64">
+        <div className="menu-container p-2 xl:px-36 2xl:px-64">
           <Link href="/feed" className="flex items-center">
             <Icons.logo />
             <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
