@@ -307,11 +307,11 @@ grid-template-columns: 1fr !important;
   @apply flex items-center justify-center w-full py-4;
 }
 
-.popular__post-details::after{
+.popular__post-details span::after{
   content: "·";
   @apply text-muted-foreground inline-block px-2 ;
 }
 
-.popular__post-details:last-child::after{
+.popular__post-details span:last-child::after{
   content: "";
 }
