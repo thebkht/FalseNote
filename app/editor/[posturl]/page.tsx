@@ -15,7 +15,7 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
       try {
         const sessionUser = (await getSessionUser());
         setUser(sessionUser);
-        const postData = await fetch(`/api/posts/${sessionUser.username}?url=${params.posturl}`, {
+        const postData = await fetch(`/api/posts/${sessionUser.username}/${params.posturl}`, {
           method: "GET",
      })
      const post = await postData.json()

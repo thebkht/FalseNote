@@ -140,13 +140,11 @@ const defaultValues: Partial<PostFormValues> = {
         console.error(e)
       }
     }
-    // Get the authorId from the session
-    const authorId = user?.userid;
     try {
       // Submit the form
-    await fetch("/api/posts/submit", {
+    await fetch(`/api/posts/submit?postId=${props.post?.postid}`, {
       method: "POST",
-      body: JSON.stringify({ ...data, authorId }),
+      body: JSON.stringify({ ...data }),
     })
     
     } catch (error) {

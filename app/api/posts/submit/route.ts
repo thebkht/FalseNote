@@ -10,7 +10,84 @@ export async function POST(req: NextRequest) {
           }
           console.log("Received data:", data);
 
-          const { title, content, coverImage, visibility, tags, url, authorId, description } = data;
+          //if req url is /api/posts/submit then add new post to database
+          //if req url is /api/posts/submit?postid then update post in database
+          const postid = req.nextUrl.searchParams.get("postid");
+
+          if (postid) {
+               //first check if post exists in database
+               //check is there any changes to the post
+               //if there are changes then update the post
+               //if there are no changes then do nothing
+               const post = await sql`
+               SELECT * FROM BlogPosts WHERE PostID = ${postid}
+               `;
+               const postData = post.rows?.[0];
+               if (!postData) {
+                    return new Response("Post does not exist", { status: 400 });
+               }
+               const { title, content, coverImage, visibility, tags, url, description } = data;
+               if (!title) {
+                    return new Response("No title provided", { status: 400 });
+               }
+               if (!content) {
+                    return new Response("No content provided", { status: 400 });
+               }
+               if (!url) {
+                    return new Response("No url provided", { status: 400 });
+               }
+               var isDraft;
+               if (visibility === "Draft") {
+                    isDraft = true;
+               } else {
+                    isDraft = false;
+               }
+               if (title !== postData.title || content !== postData.content || coverImage !== postData.coverimage || visibility !== postData.visibility || isDraft !== postData.draft || url !== postData.url || description !== postData.description) {
+                    await sql`
+                    UPDATE BlogPosts
+                    SET Title = ${title}, Content = ${content}, CoverImage = ${coverImage}, Visibility = ${visibility}, Draft = ${isDraft}, url = ${url}, Description = ${description}
+                    WHERE PostID = ${postid}
+                    `;
+
+                    //update tags
+                    //first delete all tags associated with the post
+                    await sql`
+                    DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
+                    `;
+                    //then add new tags
+                    if (tags) {
+                         for (const tag of tags) {
+                              // Check if tag exists
+                              const tagExists = await sql`
+                              SELECT * FROM tags WHERE TagName = ${tag.value}
+                              `;
+                              if (tagExists.rows.length === 0) {
+                                   // Insert tag into tags table
+                                   await sql`
+                                   INSERT INTO tags (TagName)
+                                   VALUES (${tag.value})
+                                   `;
+                              }
+                              const tagId = await sql`
+                              SELECT TagID FROM tags WHERE TagName = ${tag.value}
+                              `;
+                              const tagIdInt = tagId.rows?.[0].tagid;
+                              await sql`
+                              INSERT INTO BlogPostTags (BlogPostID, TagID)
+                              VALUES (${postid}, ${tagIdInt})
+                              `;
+                         }
+                    }
+               }
+
+               const user = await sql`
+               SELECT username FROM Users WHERE UserID = ${postData.authorid}
+               `;
+               const username = user.rows?.[0];
+               redirect(`/${username}/${url}`);
+          }
+          else {
+               const { title, content, coverImage, visibility, tags, url, authorId, description } = data;
 
           if (!title) {
                return new Response("No title provided", { status: 400 });
@@ -75,9 +152,10 @@ const tagId = await sql`
                     `;
                }
           }
-          
-  
           redirect(`/${username}/${url}`);
+          }
+
+          
           
      } catch (error) {
           console.error("Error:", error);
