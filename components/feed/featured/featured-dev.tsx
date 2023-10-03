@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { featuredItems } from "./items";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
-import { Check, Plus } from "lucide-react";
+import { CalendarDays, Check, Plus } from "lucide-react";
 import { Key } from "react";
 import { useEffect, useState } from "react";
 import { getFeaturedDevs } from "@/components/get-user";
@@ -13,6 +13,27 @@ import { Badge } from "@/components/ui/badge";
 import { getSessionUser } from "@/components/get-session-user";
 import { useSession } from "next-auth/react";
 import { Icons } from "@/components/icon";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
+
+const formatDate = (dateString: string | number | Date) => {
+  const date = new Date(dateString)
+  const currentYear = new Date().getFullYear()
+  const year = date.getFullYear()
+  const formattedDate = date.toLocaleDateString("en-US", {
+       month: "short",
+       day: "numeric",
+       hour12: true,
+  })
+  if (year !== currentYear) {
+       return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour12: true,
+       })
+  }
+  return formattedDate
+}
 
 export default function FeaturedDev(
   { data: featuredDevs, isloaded: isLoaded}: { data: any; isloaded: boolean; }
@@ -66,6 +87,7 @@ export default function FeaturedDev(
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs.map(
                   (item: {
+                    registrationdate: any;
                     verified: boolean;
                     userid: string;
                     profilepicture: string | undefined;
@@ -75,7 +97,9 @@ export default function FeaturedDev(
                   }, index: number) => (
               <div className="flex gap-4 w-full items-center justify-between" key={item.userid}>
                 <div className="space-y-3">
-                <Link href={`/${item.username}`} className="flex items-center">
+                <HoverCard>
+                  <HoverCardTrigger>
+                  <Link href={`/${item.username}`} className="flex items-center">
                   <Avatar className="h-10 w-10 mr-2 md:mr-3">
                     <AvatarImage src={item.profilepicture} alt={item.username} />
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
@@ -101,6 +125,28 @@ export default function FeaturedDev(
                     )
                   }
                 </Link>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="">
+                                             <div className="flex space-x-4">
+                                                  <Avatar className="h-14 w-14">
+                                                       <AvatarImage src={item.profilepicture} alt={item.name} />
+                                                       <AvatarFallback>{item.name ? item.name.charAt(0) : item.username?.charAt(0)}</AvatarFallback>
+                                                  </Avatar>
+                                                  <div className="space-y-1">
+                                                       <h4 className="text-sm font-semibold">{item.name || item.username} {item.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
+                                                       <p className="text-sm">
+                                                            {item.bio}
+                                                       </p>
+                                                       <div className="flex items-center pt-2">
+                                                            <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
+                                                            <span className="text-xs text-muted-foreground">
+                                                                 Joined {formatDate(item.registrationdate)}
+                                                            </span>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                        </HoverCardContent>
+                </HoverCard>
                 </div>
                 <Button variant="secondary" className="flex-shrink-0 h-8 text-sm" onClick={() => {
                           handleFollow(item?.userid, index);

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../icon";
 import { useSession } from "next-auth/react";
-import { Check, Eye, Heart, MessageCircle } from "lucide-react";
+import { CalendarDays, Check, Eye, Heart, MessageCircle } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import {
   ContextMenu,
@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/context-menu"
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 
 function formatDate(dateString: string | number | Date) {
@@ -123,7 +124,9 @@ export default function FeedPostCard(
               <CardContent className="px-4 md:px-6 py-0">
                 <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
                   <div className="flex items-start justify-between">
-                    <Link href={`/${props.author.username}`} className="flex items-center">
+                    <HoverCard>
+                      <HoverCardTrigger>
+                      <Link href={`/${props.author.username}`} className="flex items-center">
                       <Avatar className="h-10 w-10 mr-2 md:mr-3">
                         <AvatarImage src={props.author.profilepicture} alt={props.author.username} />
                         <AvatarFallback>{props.author.name?.charAt(0) || props.author.username?.charAt(0)}</AvatarFallback>
@@ -149,6 +152,29 @@ export default function FeedPostCard(
                         )
                       }
                     </Link>
+                      </HoverCardTrigger>
+                      <HoverCardContent>
+                      <div className="flex space-x-4">
+                                                  <Avatar className="h-14 w-14">
+                                                       <AvatarImage src={props.author.profilepicture} alt={props.author.name} />
+                                                       <AvatarFallback>{props.author.name ? props.author.name.charAt(0) : props.author.username?.charAt(0)}</AvatarFallback>
+                                                  </Avatar>
+                                                  <div className="space-y-1">
+                                                       <h4 className="text-sm font-semibold">{props.author.name || props.author.username} {props.author.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
+                                                       <p className="text-sm">
+                                                            {props.author.bio}
+                                                       </p>
+                                                       <div className="flex items-center pt-2">
+                                                            <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
+                                                            <span className="text-xs text-muted-foreground">
+                                                                 Joined {formatDate(props.author.registrationdate)}
+                                                            </span>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                    
                     <span className="!text-muted-foreground">
                       {dateFormat(props.date)}
                     </span>
