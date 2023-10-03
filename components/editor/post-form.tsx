@@ -238,7 +238,7 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title of the post" className="border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0" {...field} onChange={handleTitleChange} />
+                <Input placeholder="Title of the post" className="border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 bg-popover" {...field} onChange={handleTitleChange} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -260,7 +260,7 @@ export function PostForm() {
               <FormItem>
                 <FormControl>
                   <TextareaAutosize
-                    className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
+                    className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
                     placeholder="Write your post here..."
                     {...field}
                     onChange={(e) => handleContentChange(e.target.value)}
@@ -274,16 +274,16 @@ export function PostForm() {
               </FormItem>
             )}
           /></TabsContent>
-          <TabsContent value="preview" className="px-5 pb-5 bg-background py-4 text-sm rounded-md">
+          <TabsContent value="preview" className="px-5 pb-5 bg-popover py-4 text-sm rounded-md">
             <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
           </TabsContent>
         </Tabs>
 
         <Dialog>
 
-          <DialogTrigger className="w-full"><Button size={"lg"} variant={"secondary"} className="w-full" asChild><span>Post Setting</span></Button></DialogTrigger>
+          <DialogTrigger className="!mt-0 absolute right-3 top-0 z-50 p-3 xl:right-36 2xl:right-64"><Button size={"icon"} variant={"secondary"} asChild><div className="h-6 w-6"><ArrowUp /></div></Button></DialogTrigger>
 
-          <DialogContent className="h-full max-h-[405px] md:max-h-[548px] !p-0">
+          <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
                 <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
@@ -427,7 +427,8 @@ export function PostForm() {
                   </Button>
                 </div>
               </div>
-              <DialogFooter className="pb-6">
+              </ScrollArea>
+              <DialogFooter className="p-6 border-t">
                 <Button
                   type="submit"
                   className="ml-auto w-full"
@@ -446,7 +447,7 @@ export function PostForm() {
                   }
                 </Button>
               </DialogFooter>
-            </ScrollArea>
+            
           </DialogContent>
         </Dialog>
 

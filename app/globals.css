@@ -118,7 +118,7 @@
 }
 
 .input__field {
-  @apply flex-1 w-full py-2 font-normal text-secondary-foreground bg-transparent border-none outline-none appearance-none min-w-0 text-sm rounded-none resize-none text-left;
+  @apply flex-1 w-full py-2 font-normal bg-transparent border-none outline-none appearance-none min-w-0 text-sm rounded-none resize-none text-left;
 }
 
 .input__field:focus-visible {

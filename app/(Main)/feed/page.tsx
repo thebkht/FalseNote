@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icon';
 import { set } from 'react-hook-form';
 import PopularPosts from '@/components/feed/popular-posts';
+import { redirect, useRouter } from 'next/navigation';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -21,6 +22,7 @@ export default function Feed() {
   const [isEnd, setIsEnd] = useState(false)
   const [popularPosts, setPopularPosts] = useState<any | null>([])
   const sentinelRef = useRef(null)
+  const route = useRouter()
 
   useEffect(() => {
 async function fetchFeed() {
@@ -53,6 +55,7 @@ async function fetchFeed() {
     }
   } else {
     setFetching(false)
+    route.push('/')
   }
 }
 

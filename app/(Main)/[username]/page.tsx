@@ -221,7 +221,12 @@ export default function Page({ params }: Props) {
         </div>
         
       </div>
-      ))
+      )) 
+            }
+            {
+              user?.followers.length === 0 && (
+                <p className="text-sm text-muted-foreground">No followers</p>
+              )
             }
     </div>
   </DialogContent>
@@ -269,6 +274,12 @@ export default function Page({ params }: Props) {
       </div>
       ))
             }
+
+      {
+        user?.following.length === 0 && (
+          <p className="text-sm text-muted-foreground">No followings</p>
+        )
+      }
     </div>
   </DialogContent>
 </Dialog>
