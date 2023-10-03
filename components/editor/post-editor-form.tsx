@@ -114,6 +114,8 @@ const defaultValues: Partial<PostFormValues> = {
     mode: "onChange",
   })
 
+  console.log(form)
+
   const { fields, append } = useFieldArray({
     name: "tags",
     control: form.control,
