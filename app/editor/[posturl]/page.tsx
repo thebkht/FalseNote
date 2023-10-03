@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 export default function PostEditor({ params }: { params: { posturl: string } }) {
   const [user, setUser] = useState<any | null>(null);
   const [post, setPost] = useState<any>(null); // State for the post object
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -19,6 +20,7 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
      })
      const post = await postData.json()
         setPost(post);
+        setLoading(false);
       } catch (error) {
         console.error(error);
         redirect("/404");
@@ -30,7 +32,7 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
   return (
     
     <main className="flex min-h-screen flex-col items-center justify-between px-6 py-14 lg:p-20 editor">
-     <PostEditorForm post={post} />
+     {!loading && <PostEditorForm post={post} />}
     </main>
   )
 }
