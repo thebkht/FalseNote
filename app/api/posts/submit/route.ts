@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
           //if req url is /api/posts/submit then add new post to database
           //if req url is /api/posts/submit?postid then update post in database
-          const postid = req.nextUrl.searchParams.get("postid");
+          const postid = req.nextUrl.searchParams.get("postId");
 
           if (postid) {
                //first check if post exists in database
