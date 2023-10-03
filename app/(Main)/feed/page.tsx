@@ -79,9 +79,7 @@ async function fetchFeed() {
                <Icons.spinner className="h-10 animate-spin" /> Loading...
              </div> )
          }
-         {
-          !fetching && feed.length === 0 && ( <EmptyFeed /> )
-         }
+         
           <div className="feed__list_item">
           {feed.map((post: { postid: string; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
         <FeedPostCard
@@ -121,6 +119,7 @@ async function fetchFeed() {
              </div>
            </div>
          </div>
+         <EmptyFeed />
           </div>
         </div>
      </main>

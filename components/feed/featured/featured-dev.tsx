@@ -59,10 +59,10 @@ export default function FeaturedDev(
   if (Array.isArray(featuredDevs)) {
     isLoaded ? content = (
       <Card className="feed__content_featured_card">
-        <CardHeader>
-          <CardTitle className="feed__content_featured_card_title">Featured Devs</CardTitle>
+        <CardHeader className="p-4">
+          <CardTitle className="feed__content_featured_card_title text-xl">Featured Devs</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4 pt-0">
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs.map(
                   (item: {
@@ -101,13 +101,8 @@ export default function FeaturedDev(
                     )
                   }
                 </Link>
-                <p className="text-sm hidden md:block w-[410px]">{item?.bio?.length! > 100 ? (
-            <>{item?.bio?.slice(0, 100)}...</>
-          ) : (
-            <>{item.bio}</>
-          )}</p>
                 </div>
-                <Button variant="outline" size={"default"} className="flex-shrink-0" onClick={() => {
+                <Button variant="secondary" className="flex-shrink-0 h-8 text-sm" onClick={() => {
                           handleFollow(item?.userid, index);
                         }}
                         disabled={isFollowingLoading[index]}
@@ -115,7 +110,7 @@ export default function FeaturedDev(
               {isFollowingLoading[index] ? (
                   <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing[index] ? "Following" : "Follow"}</>
                 ) : (
-                  <>{isFollowing[index] ? <><Check className="h-4 w-4 mr-2" /> Following</> : <><Plus className="h-4 w-4 mr-2" /> Follow</>}</>
+                  <>{isFollowing[index] ? <>Following</> : <>Follow</>}</>
                 )
               }
             </Button>

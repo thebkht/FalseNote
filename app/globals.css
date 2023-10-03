@@ -2,23 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-    --card: 180 14% 97%;
+    --card: 0 0% 98%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 204 88% 53%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 210 25% 8%;
+    --secondary-foreground: 0 0% 100%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%;
@@ -34,14 +29,14 @@
   .dark {
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 0.75%;
+    --card: 220 12% 9.8%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 0.75%;
     --popover-foreground: 0 0% 98%;
     --primary: 204 88% 53%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 210 25% 8%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
     --accent: 240 3.7% 15.9%;
@@ -49,7 +44,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 12% 9.8%;
-    --input: 240 3.7% 15.9%;
+    --input: 214 9.9% 13.9%;
     --ring: 240 4.9% 83.9%;
   }
 }
@@ -93,9 +88,6 @@
   @apply font-normal mt-2.5;
 }
 
-.feed__content_search {
-  @apply mt-5;
-}
 
 .search {
   @apply w-full;
@@ -134,11 +126,11 @@
 }
 
 .feed__content_featured {
-  @apply block w-full mt-9;
+  @apply block w-full;
 }
 
 .feed__popular {
-  @apply block mt-9 col-span-2;
+  @apply block mt-9 col-span-2 space-y-6;
 }
 
 .article__container {
