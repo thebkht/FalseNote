@@ -46,34 +46,6 @@ import { remark } from "remark";
 import html from "remark-html";
 import { getSessionUser } from "../get-session-user"
 
-
-const postFormSchema = z.object({
-  title: z
-    .string()
-    .min(2, {
-      message: "Title must be at least 2 characters long.",
-    })
-    .max(100, {
-      message: "Username must not be longer than 100 characters.",
-    }),
-  visibility: z.enum(["public", "private", "draft"], {
-    required_error: "Please select a visibility option",
-  }),
-  content: z.string(),
-  coverImage: z.string().optional(),
-  tags: z
-    .array(
-      z.object({
-        value: z.string(),
-      })
-    )
-    .optional(),
-  url: z.string(),
-  description: z.string().max(280).optional(),
-})
-
-type PostFormValues = z.infer<typeof postFormSchema>
-
 export function PostEditorForm(props: {  url: string }) {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null);
@@ -96,6 +68,32 @@ export function PostEditorForm(props: {  url: string }) {
 
     fetchData();
   }, [sessionUser?.name!]);
+  const postFormSchema = z.object({
+    title: z
+      .string()
+      .min(2, {
+        message: "Title must be at least 2 characters long.",
+      })
+      .max(100, {
+        message: "Username must not be longer than 100 characters.",
+      }),
+    visibility: z.enum(["public", "private", "draft"], {
+      required_error: "Please select a visibility option",
+    }),
+    content: z.string(),
+    coverImage: z.string().optional(),
+    tags: z
+      .array(
+        z.object({
+          value: z.string(),
+        })
+      )
+      .optional(),
+    url: z.string(),
+    description: z.string().max(280).optional(),
+  })
+  
+  type PostFormValues = z.infer<typeof postFormSchema>
 
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
@@ -107,7 +105,7 @@ const defaultValues: Partial<PostFormValues> = {
   description: post?.description,
   tags: post?.tags,
 }
-
+  
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues,
