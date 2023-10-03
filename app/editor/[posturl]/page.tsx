@@ -1,14 +1,14 @@
 "use client"
 import { PostEditorForm } from '@/components/editor/post-editor-form'
 import { getSessionUser } from '@/components/get-session-user';
-import { redirect } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function PostEditor({ params }: { params: { posturl: string } }) {
   const [user, setUser] = useState<any | null>(null);
   const [post, setPost] = useState<any>(null); // State for the post object
   const [loading, setLoading] = useState<boolean>(true);
+  const route = useRouter()
 
   useEffect(() => {
     async function fetchData() {
@@ -23,7 +23,7 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
         setLoading(false);
       } catch (error) {
         console.error(error);
-        redirect("/404");
+        route.push('/404')
       }
     }
 

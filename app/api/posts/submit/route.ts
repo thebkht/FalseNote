@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres"
+import { redirect } from "next/navigation";
 
 export async function POST(req: NextRequest) {
      try {
@@ -42,6 +43,12 @@ export async function POST(req: NextRequest) {
           SELECT PostID FROM BlogPosts WHERE url = ${url}
           `;
 
+          const user = await sql`
+          SELECT username FROM Users WHERE UserID = ${authorId}
+          `;
+
+          const username = user.rows?.[0];
+
           const postId = submittedPostId.rows?.[0].postid;
 
           if (tags) {
@@ -70,8 +77,8 @@ const tagId = await sql`
           }
           
   
-
-          return new Response("Post submitted", { status: 200 });
+          redirect(`/${username}/${url}`);
+          
      } catch (error) {
           console.error("Error:", error);
           return NextResponse.json({body: "Error processing data"},

@@ -41,7 +41,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
-import { redirect, useRouter } from "next/navigation"
 import { remark } from "remark";
 import html from "remark-html";
 import { getSessionUser } from "../get-session-user"
@@ -49,7 +48,6 @@ import { getSessionUser } from "../get-session-user"
 export function PostEditorForm(props: {  post: any }) {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -95,7 +93,7 @@ const defaultValues: Partial<PostFormValues> = {
   title: props.post?.title,
   content: props.post?.content,
   visibility: props.post?.visibility,
-  coverImage: props.post?.coverimage,
+  coverImage: props.post?.coverimage as string,
   url: props.post?.url,
   description: props.post?.description,
 }
@@ -146,22 +144,15 @@ const defaultValues: Partial<PostFormValues> = {
     const authorId = user?.userid;
     try {
       // Submit the form
-    const result = await fetch("/api/posts/submit", {
+    await fetch("/api/posts/submit", {
       method: "POST",
       body: JSON.stringify({ ...data, authorId }),
     })
-    const json = await result.json()
     
     } catch (error) {
       console.error(error)
       setIsPublishing(false)
     }
-    /* console.log(data.url)
-    console.log(user?.username)
-    // If successful, redirect to the post page
-    redirect(`/${user?.username}/${data.url}`) */
-    // If successful, redirect to the post page
-    router.push(`/${user?.username}/${data.url}`);
   }
 
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
@@ -171,25 +162,13 @@ const defaultValues: Partial<PostFormValues> = {
 
   useEffect(() => {
     if (form.getValues('coverImage')) {
-      setCover(form.getValues('coverImage') || '');
+      setCover(form.getValues('coverImage') as string);
     }
     if (file) {
       // Create a local URL for this image
       setCover(URL.createObjectURL(file));
     }
-
-    // If the user changes the cover image, update the cover state
-    if (form.getValues('title')) {
-      setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`)
-    } else {
-      setCover('');
-    }
-    if (form.getValues('description')) {
-      setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${form.getValues('description')}`)
-    } else {
-      setCover(`https://falsenotes.vercel.app/api/posts/thumbnail?author=${user?.userid}&title=${form.getValues('title')}&description=${null}`)
-    }
-  }, [file, form.getValues('coverImage'), form.getValues('title'), form.getValues('description')])
+  }, [file, form.getValues('coverImage')])
 
   async function validateUrl(value: string) {
     try {
@@ -405,7 +384,7 @@ const defaultValues: Partial<PostFormValues> = {
                               </AspectRatio>
                           )
                         }
-                          <Input type="file" {...field} accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
+                          <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
 
                         </>
                       </FormControl>
