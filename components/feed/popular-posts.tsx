@@ -86,10 +86,10 @@ export default function PopularPosts(
             {popularPosts.map(
                   (item: any, index: number) => (
               <li key={item.postid} className="text-sm">
-                <Link href={`/${item.author.username}/${item.url}`}>
+                <Link href={`/${item.author.username}/${item.url}`} className="text-base font-medium">
                   {item.title}
                 </Link>
-                <div className="popular__post-details"><span>{item.author.username}</span><span>{formatDate(item.creationdate)}</span></div>
+                <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.creationdate)}</span></div>
               </li>
 
             ))}

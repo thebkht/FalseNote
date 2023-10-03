@@ -309,7 +309,7 @@ grid-template-columns: 1fr !important;
 
 .popular__post-details span::after{
   content: "·";
-  @apply text-muted-foreground inline-block px-2 ;
+  @apply text-muted-foreground inline-block px-1 ;
 }
 
 .popular__post-details span:last-child::after{
