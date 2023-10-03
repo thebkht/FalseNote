@@ -345,6 +345,7 @@ export default function Page({ params }: Props) {
                 session={sessionUser}
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
+                posturl={article.url}
                 className="mt-4" />)
             ))
           ) : (

@@ -65,6 +65,7 @@ function PostCard(
      session: any;
      likes: string;
      url: string;
+     posturl: string;
   }
 ) 
 {
