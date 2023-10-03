@@ -44,10 +44,12 @@ import { Icons } from "../icon"
 import { remark } from "remark";
 import html from "remark-html";
 import { getSessionUser } from "../get-session-user"
+import { useRouter } from "next/navigation"
 
 export function PostEditorForm(props: {  post: any }) {
   const sessionUser = useSession().data?.user as any;
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<any | null>(null)
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -85,6 +87,7 @@ export function PostEditorForm(props: {  post: any }) {
     url: z.string(),
     description: z.string().max(280).optional(),
   })
+
   
   type PostFormValues = z.infer<typeof postFormSchema>
   // This can come from your database or API.
@@ -145,7 +148,7 @@ const defaultValues: Partial<PostFormValues> = {
       method: "POST",
       body: JSON.stringify({ ...data }),
     })
-    
+    router.push(`/${user?.username}/${form.getValues('url')}`)
     } catch (error) {
       console.error(error)
       setIsPublishing(false)

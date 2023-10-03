@@ -79,12 +79,6 @@ export async function POST(req: NextRequest) {
                          }
                     }
                }
-
-               const user = await sql`
-               SELECT username FROM Users WHERE UserID = ${postData.authorid}
-               `;
-               const username = user.rows?.[0];
-               redirect(`/${username}/${url}`);
           }
           else {
                const { title, content, coverImage, visibility, tags, url, authorId, description } = data;
@@ -152,7 +146,6 @@ const tagId = await sql`
                     `;
                }
           }
-          redirect(`/${username}/${url}`);
           }
 
           

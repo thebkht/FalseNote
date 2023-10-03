@@ -145,7 +145,7 @@ export function PostForm() {
       method: "POST",
       body: JSON.stringify({ ...data, authorId }),
     })
-    
+    router.push(`/${user?.username}/${form.getValues('url')}`)
     } catch (error) {
       console.error(error)
       setIsPublishing(false)
