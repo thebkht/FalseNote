@@ -1,3 +1,4 @@
+"use client"
 import { PostEditorForm } from '@/components/editor/post-editor-form'
 import { getSessionUser } from '@/components/get-session-user';
 import { useRouter } from 'next/router';
