@@ -34,8 +34,11 @@ async function fetchFeed() {
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
+      const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`).then((res) => res.json());
       const data = await response.json();
-
+      if (nextFeed.feed.length === 0) {
+        setIsEnd(true);
+      }
       setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
       setPopularPosts(data.popular);
       setFetching(false);
