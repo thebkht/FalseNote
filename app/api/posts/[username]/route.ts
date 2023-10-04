@@ -55,6 +55,15 @@ export async function GET(
            SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
     result.rows[0].comments = comments.rows;
 
+    const commentsAuthors = await sql`
+            SELECT * FROM Users WHERE UserID IN (SELECT AuthorID FROM Comments WHERE BlogPostID = ${result.rows[0]?.postid})`;
+    
+    comments.rows.forEach((comment) => {
+      const author = commentsAuthors.rows.find((author) => author.userid === comment.authorid);
+      comment.author = author;
+    }
+    );
+
     const commentsNum = await sql`
             SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
     result.rows[0].commentsNum = commentsNum.rows[0].count;

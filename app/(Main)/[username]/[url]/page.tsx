@@ -4,7 +4,7 @@
 "use client"
 import { AvatarFallback, Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import React, { useEffect, useState } from "react"
+import React, { use, useEffect, useState } from "react"
 import {
      HoverCard,
      HoverCardContent,
@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import CommentForm from "@/components/blog/comments/comment-form"
 import LoginDialog from "@/components/login-dialog"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -54,6 +55,8 @@ export default function PostView({ params }: { params: { username: string, url: 
      const [isFollowing, setIsFollowing] = useState<boolean | null>(null)
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false)
      const [sessionUser, setSessionUser] = useState<any>(null)
+     const [comment, setComment] = useState<any>(null)
+     const [submitted, setSubmitted] = useState<boolean>(false)
      const { status } = useSession()
      const router = useRouter()
 
@@ -100,6 +103,23 @@ export default function PostView({ params }: { params: { username: string, url: 
                incrementPostViews()
           }
      }, [post])
+
+     useEffect(() => {
+          async function fetchData() {
+               try {
+                    const postData = await fetch(`/api/posts/${params.username}?url=${params.url}`, {
+                         method: "GET",
+                    })
+                    const post = await postData.json()
+                    setComment(post?.comments)
+                    setIsLoaded(true)
+               } catch (error) {
+                    console.error(error)
+                    setIsLoaded(true)
+               }
+          }
+          fetchData()
+     }, [submitted])
 
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
@@ -247,8 +267,39 @@ export default function PostView({ params }: { params: { username: string, url: 
                          {/* Comments */}
                          <div className="article__comments">
                               <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
-                              <CommentForm session={sessionUser} post={post.postid} status={status} />
+                              {/* commentform prop that inticades comment posted or not */}
+                              <CommentForm session={sessionUser} post={post.postid} status={status} submitted={submitted} />
+                              <div className="article__comments-list">
+                                   {
+                                        post?.comments?.map((comment: any) => (
+                                             <div className="article__comments-item flex gap-3 space-y-3" key={comment.commentid}>
+                                                  <div className="article__comments-item-avatar mt-3">
+                                                       <Avatar className="h-10 w-10">
+                                                            <AvatarImage src={comment.author.profilepicture} alt={comment.author.name} />
+                                                            <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
+                                                       </Avatar>
+                                                  </div>
+                                                  <Card className="article__comments-item-card w-full bg-background">
+                                                       <CardHeader className="w-full text-sm flex-row items-center p-4">
+                                                       <Link href={`/${comment.author.username}`} className="inline-block">
+                                                                 <span className="article__comments-item-author">{comment.author.name || comment.author.username}</span>
+                                                            </Link>
+                                                            <span className="mx-1.5 !mt-0"> · </span>
+                                                            <span className="article__comments-item-date text-muted-foreground !mt-0">{formatDate(comment.creationdate)}</span>
+                                                       </CardHeader>
+                                                       <CardContent className="p-4 pt-0">
+                                                       
+                                                       <div className="article__comments-item-body text-sm">
+                                                            <div dangerouslySetInnerHTML={{ __html: comment.content }} className="markdown-body" />
+                                                       </div>
+                                                       </CardContent>
+                                                  </Card>
+                                                  
+                                             </div>
+                                        ))
+                                   }
                          </div>
+                    </div>
 
                          
                          {/* <div>More From {post.author?.username}</div>

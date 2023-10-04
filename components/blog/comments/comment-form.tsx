@@ -20,9 +20,8 @@ import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import LoginDialog from "@/components/login-dialog";
 
-export default function CommentForm(props: {session: any, status: any, post: any}){
+export default function CommentForm(props: {session: any, status: any, post: any, submitted: boolean}){
      const [commenting, setCommenting] = useState<boolean>(false)
-     const [comment, setComment] = useState<string>("")
      const [posting, setPosting] = useState<boolean>(false)
      const router = useRouter();
      const commentFormSchema = z.object({
@@ -57,6 +56,7 @@ export default function CommentForm(props: {session: any, status: any, post: any
                 setPosting(false);
           }
           setCommenting(false);
+          props.submitted = true as boolean;
         }
         
 
@@ -64,12 +64,6 @@ export default function CommentForm(props: {session: any, status: any, post: any
           if(props.status === "authenticated"){
                setCommenting(true);
           }
-     }
-
-     function handleSubmit(e: React.ChangeEvent<HTMLTextAreaElement>) {
-          const commentContent = e.target.value;
-          console.log(commentContent);
-          setComment(commentContent);
      }
      return (
           
@@ -85,12 +79,12 @@ export default function CommentForm(props: {session: any, status: any, post: any
             <div className="article__comments-form-avatar mt-2">
                {
                 props.status === "authenticated" ? (
-                  <Avatar className="h-14 w-14">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage src={props.session?.profilepicture} alt={props.session?.name} />
                     <AvatarFallback>{props.session?.name ? props.session?.name.charAt(0) : props.session?.username.charAt(0)}</AvatarFallback>
                </Avatar>
                 ) : (
-                  <Avatar className="h-14 w-14">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage src="https://avatars.githubusercontent.com/u/144859178?v=4" />
                     <AvatarFallback>F</AvatarFallback>
                </Avatar>)
