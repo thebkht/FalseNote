@@ -14,6 +14,7 @@ import PostCard from "@/components/blog/post-card";
 import { getSessionUser } from "@/components/get-session-user";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
+import LoginDialog from "@/components/login-dialog";
 
 type Props = {
   params: { username: string }
@@ -145,21 +146,29 @@ export default function Page({ params }: Props) {
           </div>
           </div>
 
-          {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-            <Button variant={"outline"} className="w-full">Edit Profile</Button>
-          ) : (
-            <Button variant={"secondary"} className="w-full" onClick={() => {
-              handleFollow(user?.userid);
-            }} disabled={isFollowingLoading} >
-              {
-                isFollowingLoading ? (
-                  <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
-                ) : (
-                  <>{isFollowing ? "Following" : "Follow"}</>
-                )
-              }
-            </Button>
-          )}
+          {
+            status === "authenticated"? (
+              session?.user?.name === user?.name || session?.user?.name === user?.username ? (
+                <Button variant={"outline"} className="w-full">Edit Profile</Button>
+              ) : (
+                <Button variant={"secondary"} className="w-full" onClick={() => {
+                  handleFollow(user?.userid);
+                }} disabled={isFollowingLoading} >
+                  {
+                    isFollowingLoading ? (
+                      <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
+                    ) : (
+                      <>{isFollowing ? "Following" : "Follow"}</>
+                    )
+                  }
+                </Button>
+              )
+            ) : (
+              <LoginDialog className="w-full">
+                <Button variant={"secondary"} className="w-full">Follow</Button>
+              </LoginDialog>
+            )
+          }
 
           {user?.bio && (<div className="w-full">{user?.bio}</div>)}
 

@@ -25,6 +25,7 @@ import { formatNumberWithSuffix } from "@/components/format-numbers"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import CommentForm from "@/components/blog/comments/comment-form"
+import LoginDialog from "@/components/login-dialog"
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -178,7 +179,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                   )}
 
                                              {
-                                                  status === "authenticated" && sessionUser?.userid !== post?.author?.userid &&
+                                                  status === "authenticated" ? sessionUser?.userid !== post?.author?.userid &&
                                                   (
                                                        <Button
                                                             variant="link"
@@ -188,8 +189,20 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                        >
                                                             {isFollowing ? "Following" : "Follow"}
                                                        </Button>
+                                                  ) : (
+                                                       <LoginDialog className="py-0 h-6 px-3">
+                                                            <Button
+                                                                 variant="link"
+                                                                 className="py-0 h-6 px-3"
+                                                                 onClick={() => handleFollow(post?.authorId)}
+                                                                 disabled={isFollowingLoading}
+                                                            >
+                                                                 {isFollowing ? "Following" : "Follow"}
+                                                            </Button>
+                                                       </LoginDialog>
                                                   )
-                                             }
+                                                  }
+                                             
 
 
                                         </span>
@@ -234,7 +247,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                          {/* Comments */}
                          <div className="article__comments">
                               <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
-                              <CommentForm />
+                              <CommentForm session={sessionUser} post={post.postid} status={status} />
                          </div>
 
                          
