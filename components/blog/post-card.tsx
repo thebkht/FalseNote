@@ -60,7 +60,6 @@ function PostCard(
      likes: string;
      url: string;
      posturl: string;
-     onDelete: () => void;
   }
 ) 
 {
