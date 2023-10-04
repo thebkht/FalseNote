@@ -70,7 +70,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     SELECT *
     FROM BlogPosts
     ORDER BY views DESC
-    LIMIT 10
+    LIMIT 5
   `
 
   const { rows: popularAuthor } = await sql`
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       SELECT authorid
       FROM BlogPosts
       ORDER BY likes DESC
-      LIMIT 10
+      LIMIT 5
     )
   `
 
