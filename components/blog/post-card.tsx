@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -21,6 +21,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
+import { getSessionUser } from "../get-session-user";
 
 
 function formatDate(dateString: string | number | Date) {
@@ -75,6 +76,20 @@ function PostCard(
     });
   }
 
+  const [sessionUser, setSessionUser] = React.useState<any | null>(null);
+  const { status } = useSession();
+
+  useEffect(() => {
+    async function fetchData() {
+      if (status === "authenticated") {
+        const sessionUser = (await getSessionUser());
+        setSessionUser(sessionUser);
+      }
+    }
+
+    fetchData();
+  }, [status]);
+
   return (
     <ContextMenu>
   <div className="space-y-3 md:space-y-6">
@@ -122,17 +137,15 @@ function PostCard(
     </Card>
     </ContextMenuTrigger>
   <ContextMenuContent>
-    {Number(props.authorid) === Number(props.session?.userid) ? (
+    {Number(props.authorid) === Number(sessionUser?.userid) ? (
       <ContextMenuItem>
       <Link href={`/editor/${props.posturl}`}>
         Edit
       </Link>
       </ContextMenuItem>) : (  null )}
-    {Number(props.authorid) === Number(props.session?.userid) ? (
-      <ContextMenuItem>
-      <Button onClick={handleDelete} asChild>
-        <span>Delete</span>
-      </Button>
+    {Number(props.authorid) === Number(sessionUser?.userid) ? (
+      <ContextMenuItem onClick={handleDelete}>
+        Delete
       </ContextMenuItem>) : (  null )}
     <ContextMenuItem>Save</ContextMenuItem>
     <ContextMenuItem>Share</ContextMenuItem>
