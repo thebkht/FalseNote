@@ -131,7 +131,6 @@ export default function FeedPostCard(
                         <AvatarImage src={props.author.profilepicture} alt={props.author.username} />
                         <AvatarFallback>{props.author.name?.charAt(0) || props.author.username?.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <UserHoverCard user={props.author} >
                       {
                         props.author.name === null ? (
                           <div>
@@ -152,7 +151,6 @@ export default function FeedPostCard(
                           </div>
                         )
                       }
-                      </UserHoverCard>
                     </Link>
                     </UserHoverCard>
                     
