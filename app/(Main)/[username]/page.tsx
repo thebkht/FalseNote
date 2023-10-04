@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarDays, Check, Mail, MapPin, Rocket } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
 import { getSessionUser } from "@/components/get-session-user";
@@ -48,6 +48,8 @@ export default function Page({ params }: Props) {
   const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
   const [sessionUser, setSessionUser] = useState<any | null>(null);
+  const [deleted, setDeleted] = useState<boolean>(false);
+  const [posts, setPosts] = useState<any | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -68,6 +70,26 @@ export default function Page({ params }: Props) {
 
     fetchData();
   }, [params.username, isFollowingLoading]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const postData = await fetch(`/api/${user?.username}`, {
+          method: "GET",
+        });
+        if (!postData.ok) {
+          throw new Error(postData.statusText);
+        }
+        const data = await postData.json();
+        setPosts(data.posts);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, [user?.username, deleted]);
+
 
   async function handleFollow(followeeId: string) {
     if (status === "authenticated") {
@@ -323,7 +345,7 @@ export default function Page({ params }: Props) {
       <div className="row-span-2 md:col-span-2">
         <div className="user-articles py-4 md:px-8 space-y-6">
           {user?.posts && user.posts.length > 0 ? (
-            user.posts.map((article: any) => (
+            posts.map((article: any) => (
                 article.visibility === "public" &&
                   (<PostCard
                 key={article.postid}
@@ -340,6 +362,7 @@ export default function Page({ params }: Props) {
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
                 posturl={article.url}
+                deleted={deleted}
                 className="mt-4" />)
             ))
           ) : (

@@ -55,7 +55,7 @@ export default function PostView({ params }: { params: { username: string, url: 
      const [isFollowing, setIsFollowing] = useState<boolean | null>(null)
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false)
      const [sessionUser, setSessionUser] = useState<any>(null)
-     const [comment, setComment] = useState<any>(null)
+     const [comments, setComments] = useState<any>(null)
      const [submitted, setSubmitted] = useState<boolean>(false)
      const { status } = useSession()
      const router = useRouter()
@@ -111,7 +111,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                          method: "GET",
                     })
                     const post = await postData.json()
-                    setComment(post?.comments)
+                    setComments(post?.comments)
                     setIsLoaded(true)
                } catch (error) {
                     console.error(error)
@@ -271,7 +271,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                               <CommentForm session={sessionUser} post={post?.postid} status={status} submitted={submitted} />
                               <div className="article__comments-list">
                                    {
-                                        post?.comments?.map((comment: any) => (
+                                        comments?.map((comment: any) => (
                                              <div className="article__comments-item flex gap-3 space-y-3" key={comment.commentid}>
                                                   <div className="article__comments-item-avatar mt-3">
                                                        <Avatar className="h-10 w-10">
