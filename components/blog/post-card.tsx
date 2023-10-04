@@ -103,7 +103,7 @@ function PostCard(
         </CardDescription>
       </CardHeader>
       <CardFooter className="px-0 justify-between">
-        <p className="card-text inline mb-0 text-muted-foreground">{formatDate(new Date(props.date).toLocaleString())}</p>
+        <p className="card-text inline mb-0 text-muted-foreground">{formatDate(props.date)}</p>
                   <div className="stats flex items-center gap-3">
                     
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
