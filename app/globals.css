@@ -330,7 +330,7 @@ grid-template-columns: 1fr !important;
 }
 
 .feed__popular-list li::before{
-  @apply .absolute rounded-full text-center text-sm h-6 w-6;
+  @apply absolute rounded-full text-center text-sm h-6 w-6;
   content: counter(counter);
   left: -4px;
 }
