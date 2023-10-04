@@ -376,13 +376,13 @@ export default function Page({ params }: Props) {
                 className="mt-4" />
                       </ContextMenuTrigger>
                     <ContextMenuContent>
-                      {user?.userid === sessionUser?.userid ? (
+                      {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
                         <ContextMenuItem>
                         <Link href={`/editor/${article.url}`}>
                           Edit
                         </Link>
                         </ContextMenuItem>) : (  null )}
-                      {user?.userid === sessionUser?.userid ? (
+                      {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
                         <ContextMenuItem onClick={() => handleDelete(article.url)}>
                           Delete
                         </ContextMenuItem>) : (  null )}
