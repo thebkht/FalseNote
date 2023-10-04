@@ -268,7 +268,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                          <div className="article__comments">
                               <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
                               {/* commentform prop that inticades comment posted or not */}
-                              <CommentForm session={sessionUser} post={post.postid} status={status} submitted={submitted} />
+                              <CommentForm session={sessionUser} post={post?.postid} status={status} submitted={submitted} />
                               <div className="article__comments-list">
                                    {
                                         post?.comments?.map((comment: any) => (
