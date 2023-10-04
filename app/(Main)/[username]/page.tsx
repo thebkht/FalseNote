@@ -92,8 +92,11 @@ export default function Page({ params }: Props) {
     fetchData();
   }, [deleted]);
 
-  function handleDelete(posturl: string) {
-    fetch(`/api/posts/${sessionUser.username}/${posturl}`, {
+  async function handleDelete(posturl: string) {
+    console.log(posturl);
+    console.log(user?.username);
+    console.log("deleting")
+    await fetch(`/api/posts/${user?.username}/${posturl}`, {
       method: "DELETE",
     });
     setDeleted(true);
