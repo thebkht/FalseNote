@@ -93,9 +93,6 @@ export default function Page({ params }: Props) {
   }, [deleted]);
 
   async function handleDelete(posturl: string) {
-    console.log(posturl);
-    console.log(user?.username);
-    console.log("deleting")
     await fetch(`/api/posts/${user?.username}/${posturl}`, {
       method: "DELETE",
     });
