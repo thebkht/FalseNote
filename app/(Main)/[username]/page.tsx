@@ -72,8 +72,21 @@ export default function Page({ params }: Props) {
 
     fetchData();
   }, [params.username, isFollowingLoading, deleted]);
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const userData = await getUserByUsername(params.username);
+        setPosts(userData.posts);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
+    fetchData();
+  }, [deleted]);
 
+  
 
   async function handleFollow(followeeId: string) {
     if (status === "authenticated") {
@@ -328,8 +341,8 @@ export default function Page({ params }: Props) {
       </div>
       <div className="row-span-2 md:col-span-2">
         <div className="user-articles py-4 md:px-8 space-y-6">
-          {user?.posts && user?.posts.length > 0 ? (
-            user?.posts?.map((article: any) => (
+          {posts?.length > 0 ? (
+            posts?.map((article: any) => (
                 article.visibility === "public" &&
                   (<PostCard
                 key={article.postid}
