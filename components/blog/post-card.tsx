@@ -67,7 +67,7 @@ function PostCard(
      likes: string;
      url: string;
      posturl: string;
-     deleted: boolean;
+     onDelete: () => void;
   }
 ) 
 {
@@ -75,7 +75,7 @@ function PostCard(
     fetch(`/api/posts/${props.session.username}/${props.posturl}`, {
       method: "DELETE",
     });
-    props.deleted = true as boolean;
+    props.onDelete();
   }
 
   const [sessionUser, setSessionUser] = React.useState<any | null>(null);

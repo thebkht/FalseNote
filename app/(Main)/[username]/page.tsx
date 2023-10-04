@@ -86,7 +86,9 @@ export default function Page({ params }: Props) {
     fetchData();
   }, [deleted]);
 
-  
+  function handlePostDelete() {
+    setDeleted(true);
+  }
 
   async function handleFollow(followeeId: string) {
     if (status === "authenticated") {
@@ -359,7 +361,7 @@ export default function Page({ params }: Props) {
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
                 posturl={article.url}
-                deleted={deleted}
+                onDelete={handlePostDelete}
                 className="mt-4" />)
             ))
           ) : (
