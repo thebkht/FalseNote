@@ -328,8 +328,8 @@ export default function Page({ params }: Props) {
       </div>
       <div className="row-span-2 md:col-span-2">
         <div className="user-articles py-4 md:px-8 space-y-6">
-          {posts && posts.length > 0 ? (
-            posts?.map((article: any) => (
+          {user?.posts && user?.posts.length > 0 ? (
+            user?.posts?.map((article: any) => (
                 article.visibility === "public" &&
                   (<PostCard
                 key={article.postid}
