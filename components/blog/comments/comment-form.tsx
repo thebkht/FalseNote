@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import {
@@ -23,6 +23,7 @@ import LoginDialog from "@/components/login-dialog";
 export default function CommentForm(props: {session: any, status: any, post: any}){
      const [commenting, setCommenting] = useState<boolean>(false)
      const [comment, setComment] = useState<string>("")
+     const [posting, setPosting] = useState<boolean>(false)
      const router = useRouter();
      const commentFormSchema = z.object({
           content: z.string().min(1, "Please enter some content."),
@@ -40,10 +41,28 @@ export default function CommentForm(props: {session: any, status: any, post: any
           mode: "onChange",
         })
 
-        function onSubmit(values: z.infer<typeof commentFormSchema>) {
+        async function onSubmit(values: z.infer<typeof commentFormSchema>) {
           // Do something with the form values.
           // ✅ This will be type-safe and validated.
-          console.log(values)
+          setPosting(true);
+          try{
+                await fetch("/api/comments/create", {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({
+                          content: values.content,
+                          post: props.post,
+                          author: props.session?.userid,
+                      })
+                  })
+                  setPosting(false);
+          } catch (error) {
+                console.log(error);
+                setPosting(false);
+          }
+          setCommenting(false);
         }
         
 
@@ -105,7 +124,9 @@ export default function CommentForm(props: {session: any, status: any, post: any
            </FormItem>
          )}
        />
-       <Button type="submit" size={"lg"} className={`mt-2 ${commenting ? "block" : "hidden"}`}>Submit</Button>
+       <Button type="submit" size={"lg"} className={`mt-2 ${commenting ? "block" : "hidden"}`} disabled={posting}>{
+              posting ? "Posting..." : "Post"
+       }</Button>
        </div>
      </form>
    </Form>

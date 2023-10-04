@@ -119,7 +119,7 @@ export default function Page({ params }: Props) {
               <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
               <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
-          <div className="flex items-center">
+          <div className="flex items-center py-4">
             {
               user?.name === null ? (
                 <h1 className="space-y-3 w-full">
