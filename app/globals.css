@@ -330,7 +330,7 @@ grid-template-columns: 1fr !important;
 }
 
 .feed__popular-list li::before{
-  @apply absolute text-center mt-0.5 py-1 px-2.5 text-2xl font-bold text-muted-foreground;
+  @apply absolute text-center py-1 px-2.5 text-2xl font-bold text-muted-foreground;
   content: counter(counter);
   left: -10px;
 }
