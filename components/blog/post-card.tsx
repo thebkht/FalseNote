@@ -69,6 +69,12 @@ function PostCard(
   }
 ) 
 {
+  function handleDelete() {
+    fetch(`/api/posts/${props.session.username}/${props.posturl}`, {
+      method: "DELETE",
+    });
+  }
+
   return (
     <ContextMenu>
   <div className="space-y-3 md:space-y-6">
@@ -121,6 +127,12 @@ function PostCard(
       <Link href={`/editor/${props.posturl}`}>
         Edit
       </Link>
+      </ContextMenuItem>) : (  null )}
+    {Number(props.authorid) === Number(props.session?.userid) ? (
+      <ContextMenuItem>
+      <Button onClick={handleDelete} asChild>
+        <span>Delete</span>
+      </Button>
       </ContextMenuItem>) : (  null )}
     <ContextMenuItem>Save</ContextMenuItem>
     <ContextMenuItem>Share</ContextMenuItem>

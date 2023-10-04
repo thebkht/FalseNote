@@ -18,6 +18,13 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
         const postData = await fetch(`/api/posts/${sessionUser.username}/${params.posturl}`, {
           method: "GET",
      })
+     if (!postData.ok) {
+          throw new Error(postData.statusText);
+        }
+
+    if (postData.status === 404) {
+          route.push('/404')
+        }
      const post = await postData.json()
         setPost(post);
         setLoading(false);
