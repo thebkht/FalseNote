@@ -320,6 +320,17 @@ grid-template-columns: 1fr !important;
   content: "";
 }
 
+.feed__popular-list{
+  counter-reset: counter;
+}
+
+.feed__popular-list li{
+  @apply relative pl-7;
+  counter-increment: counter;
+}
+
 .feed__popular-list li::before{
-  @apply block w-full h-px bg-border;
+  @apply .absolute rounded-full text-center text-sm h-6 w-6;
+  content: counter(counter);
+  left: -4px;
 }
