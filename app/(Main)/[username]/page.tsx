@@ -15,6 +15,7 @@ import { getSessionUser } from "@/components/get-session-user";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import LoginDialog from "@/components/login-dialog";
+import { useRouter } from "next/navigation";
 
 type Props = {
   params: { username: string }
@@ -50,6 +51,7 @@ export default function Page({ params }: Props) {
   const [sessionUser, setSessionUser] = useState<any | null>(null);
   const [deleted, setDeleted] = useState<boolean>(false);
   const [posts, setPosts] = useState<any | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -123,12 +125,12 @@ export default function Page({ params }: Props) {
   }
 
   if (params.username !== user?.username) {
-    return <NotFound />;
+    router.push(`/404`);
   }
 
   if (!user) {
     // User not found
-    return <NotFound />;
+    router.push(`/404`);
   }
 
 
