@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import LoginDialog from "@/components/login-dialog";
+import UserHoverCard from "@/components/user-hover-card";
 
 export default function CommentForm(props: {session: any, status: any, post: any, submitted: boolean}){
      const [commenting, setCommenting] = useState<boolean>(false)
@@ -80,10 +81,12 @@ export default function CommentForm(props: {session: any, status: any, post: any
             <div className="article__comments-form-avatar mt-2">
                {
                 props.status === "authenticated" ? (
-                  <Avatar className="h-10 w-10">
+                  <UserHoverCard user={props.session} >
+                    <Avatar className="h-10 w-10">
                     <AvatarImage src={props.session?.profilepicture} alt={props.session?.name} />
                     <AvatarFallback>{props.session?.name ? props.session?.name.charAt(0) : props.session?.username.charAt(0)}</AvatarFallback>
                </Avatar>
+                </UserHoverCard>
                 ) : (
                   <Avatar className="h-10 w-10">
                     <AvatarImage src="https://avatars.githubusercontent.com/u/144859178?v=4" />

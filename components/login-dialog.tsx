@@ -11,7 +11,7 @@ export default function LoginDialog({ className, children, ...props }: React.Com
                <DialogTrigger className={cn(className)}>
                     {children}
                </DialogTrigger>
-               <DialogContent>
+               <DialogContent className="md:w-auto">
                     <DialogHeader>
                          <DialogTitle>Sign up to continue</DialogTitle>
                          <DialogDescription className="mb-4">

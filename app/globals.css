@@ -217,6 +217,10 @@
   @apply mb-2;
 }
 
+.markdown-body li p {
+  @apply inline;
+}
+
 .markdown-body a {
   @apply underline;
 }
@@ -234,11 +238,11 @@
 }
 
 .markdown-body pre {
-  @apply overflow-x-auto p-4 my-8 rounded-md bg-secondary text-secondary-foreground;
+  @apply overflow-x-auto p-2 my-4 rounded-sm bg-muted text-muted-foreground;
 }
 
 .markdown-body code {
-  @apply py-1 px-2 rounded-sm bg-secondary text-secondary-foreground;
+  @apply py-1 px-1 rounded-sm bg-muted text-muted-foreground;
 }
 
 .container-5xl {

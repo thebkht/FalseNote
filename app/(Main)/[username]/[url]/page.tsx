@@ -10,7 +10,7 @@ import {
      HoverCardContent,
      HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { CalendarDays, Check } from "lucide-react"
+import { CalendarDays, Check, User } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { getSessionUser } from "@/components/get-session-user"
@@ -27,6 +27,7 @@ import { Textarea } from "@/components/ui/textarea"
 import CommentForm from "@/components/blog/comments/comment-form"
 import LoginDialog from "@/components/login-dialog"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import UserHoverCard from "@/components/user-hover-card"
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -158,9 +159,8 @@ export default function PostView({ params }: { params: { username: string, url: 
                          
                               <h1 className="article__title">{post?.title}</h1>
                               <div className="article__meta">
-                                   <HoverCard>
-                                        <HoverCardTrigger asChild>
-                                             <Button variant="link" className="px-0" asChild>
+                                   <UserHoverCard user={post?.author} >
+                                   <Button variant="link" className="px-0" asChild>
                                                   <Link href={`/${post?.author?.username}`}>
                                                        <Avatar className="article__author-avatar">
                                                             <AvatarImage src={post?.author?.profilepicture} alt={post?.author?.name} />
@@ -168,49 +168,33 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                        </Avatar>
                                                   </Link>
                                              </Button>
-                                        </HoverCardTrigger>
-                                        <HoverCardContent className="">
-                                             <div className="flex space-x-4">
-                                                  <Avatar className="h-14 w-14">
-                                                       <AvatarImage src={post?.author?.profilepicture} alt={post?.author?.name} />
-                                                       <AvatarFallback>{post?.author?.name ? post?.author?.name.charAt(0) : post?.author?.username.charAt(0)}</AvatarFallback>
-                                                  </Avatar>
-                                                  <div className="space-y-1">
-                                                       <h4 className="text-sm font-semibold">{post?.author?.name || post?.author?.username} {post?.author?.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
-                                                       <p className="text-sm">
-                                                            {post?.author?.bio}
-                                                       </p>
-                                                       <div className="flex items-center pt-2">
-                                                            <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
-                                                            <span className="text-xs text-muted-foreground">
-                                                                 Joined {formatDate(post?.author?.registrationdate)}
-                                                            </span>
-                                                       </div>
-                                                  </div>
-                                             </div>
-                                        </HoverCardContent>
-                                   </HoverCard>
+                                   </UserHoverCard>
 
                                    <div className="flex flex-col">
-                                        <span className="article__author-name md:text-base text-sm">{post?.author?.name || post?.author?.username}
+                                        <span className="article__author-name md:text-base text-sm">
+                                             <UserHoverCard user={post?.author} >
+                                             <Link href={`/${post?.author?.username}`}>
+                                             {post?.author?.name || post?.author?.username}
                                              {post?.author?.verified &&
                                                   (
                                                        <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
                                                   )}
+                                             </Link>
+                                             </UserHoverCard>
 
                                              {
                                                   status === "authenticated" ? sessionUser?.userid !== post?.author?.userid &&
                                                   (
                                                        <Button
                                                             variant="link"
-                                                            className="py-0 h-6 px-3"
+                                                            className="py-0 h-6 px-0"
                                                             onClick={() => handleFollow(post?.authorId)}
                                                             disabled={isFollowingLoading}
                                                        >
                                                             {isFollowing ? "Following" : "Follow"}
                                                        </Button>
                                                   ) : (
-                                                       <LoginDialog className="py-0 h-6 px-3">
+                                                       <LoginDialog className="py-0 h-6 px-0">
                                                             <Button
                                                                  variant="link"
                                                                  className="py-0 h-6 px-3"
@@ -274,10 +258,14 @@ export default function PostView({ params }: { params: { username: string, url: 
                                         post?.comments?.map((comment: any) => (
                                              <div className="article__comments-item flex gap-3 space-y-3" key={comment.commentid}>
                                                   <div className="article__comments-item-avatar mt-3">
-                                                       <Avatar className="h-10 w-10">
-                                                            <AvatarImage src={comment.author.profilepicture} alt={comment.author.name} />
-                                                            <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
-                                                       </Avatar>
+                                                       <UserHoverCard user={comment.author} >
+                                                            <Link href={`/${comment.author.username}`} className="inline-block">
+                                                                 <Avatar className="h-10 w-10">
+                                                                      <AvatarImage src={comment.author.profilepicture} alt={comment.author.name} />
+                                                                      <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
+                                                                 </Avatar>
+                                                            </Link>
+                                                       </UserHoverCard>
                                                   </div>
                                                   <Card className="article__comments-item-card w-full bg-background">
                                                        <CardHeader className="w-full text-sm flex-row items-center p-4">

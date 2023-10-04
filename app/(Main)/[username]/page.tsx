@@ -22,6 +22,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
+import UserHoverCard from "@/components/user-hover-card";
 
 type Props = {
   params: { username: string }
@@ -216,6 +217,7 @@ export default function Page({ params }: Props) {
       {user?.followers.map((follower: any) => (
         <div className="flex gap-4 w-full items-center justify-between" key={follower.userid}>
         <div className="space-y-3">
+        <UserHoverCard user={follower} >
         <Link href={`/${follower.username}`} className="flex items-center">
           <Avatar className="h-10 w-10 mr-2 md:mr-3">
             <AvatarImage src={follower.profilepicture} alt={follower.username} />
@@ -242,6 +244,7 @@ export default function Page({ params }: Props) {
             )
           }
         </Link>
+        </UserHoverCard>
         </div>
         
       </div>
@@ -267,6 +270,7 @@ export default function Page({ params }: Props) {
       {user?.following.map((following: any) => (
         <div className="flex gap-4 w-full items-center justify-between" key={following.userid}>
         <div className="space-y-3">
+        <UserHoverCard user={following} >
         <Link href={`/${following.username}`} className="flex items-center">
           <Avatar className="h-10 w-10 mr-2 md:mr-3">
             <AvatarImage src={following.profilepicture} alt={following.username} />
@@ -293,6 +297,7 @@ export default function Page({ params }: Props) {
             )
           }
         </Link>
+        </UserHoverCard>
         </div>
         
       </div>
