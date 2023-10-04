@@ -41,21 +41,15 @@ export default function CommentForm(props: {session: any, status: any, post: any
           mode: "onChange",
         })
 
-        async function onSubmit(values: z.infer<typeof commentFormSchema>) {
+        async function onSubmit(data: commentFormValues) {
           // Do something with the form values.
           // ✅ This will be type-safe and validated.
           setPosting(true);
           try{
+                const author = props.session.userid;
                 await fetch("/api/comments/create", {
-                      method: "POST",
-                      headers: {
-                          "Content-Type": "application/json"
-                      },
-                      body: JSON.stringify({
-                          content: values.content,
-                          post: props.post,
-                          author: props.session?.userid,
-                      })
+                  method: "POST",
+                  body: JSON.stringify({ ...data, author, post: props.post }),
                   })
                   setPosting(false);
           } catch (error) {

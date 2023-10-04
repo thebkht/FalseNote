@@ -1,22 +1,18 @@
 import { sql } from "@vercel/postgres";
 import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-    return;
-  }
+export async function POST(req: NextRequest, res: NextResponse) {
+     try {
+          const data = await req.json();
+          if (!data) {
+               return new Response("No data provided", { status: 400 });
+          }
+          console.log("Received data:", data);
 
-  try {
-    const { post, content, author } = req.body;
+          const { post, content, author } = data;
 
-    // Check if the required properties are present
-    if (!post || !content || !author) {
-      return res.status(400).json({ error: "Missing required data fields" });
-    }
-
-    const query = await sql`
+    await sql`
       INSERT INTO comments (blogpostid, content, authorid)
       VALUES (${post}, ${content}, ${author})
       RETURNING *
@@ -26,6 +22,6 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    NextResponse.json({ error: "Internal server error" }, { status: 500});
   }
 }
