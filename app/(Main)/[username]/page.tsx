@@ -309,7 +309,7 @@ export default function Page({ params }: Props) {
 </Dialog>
 
             
-            <Button variant={"ghost"} size={"sm"} disabled >{formatNumberWithSuffix(user?.posts.length)} Post</Button>
+            <Button variant={"ghost"} size={"sm"} disabled >{formatNumberWithSuffix(user?.posts?.length)} Post</Button>
           </div>
 
           <ul className="details list-none">
@@ -366,7 +366,7 @@ export default function Page({ params }: Props) {
                 author={user?.username || user?.name}
                 date={article.creationdate}
                 views={formatNumberWithSuffix(article.views)}
-                comments={formatNumberWithSuffix(article.commentsnum || 0)}
+                comments={formatNumberWithSuffix(article.comments || 0)}
                 id={article.id}
                 authorid={user?.userid}
                 session={sessionUser}

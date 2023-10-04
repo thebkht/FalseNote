@@ -42,13 +42,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     }
     )
 
-
     result.rows[0].posts = posts.rows;
-
-    const comments = await sql`
-          SELECT * FROM Comments WHERE AuthorID= ${result.rows[0]?.userid}`;
-
-    result.rows[0].comments = comments.rows;
 
     //Execute a query to fetch the all details of the user's followers
     const follower = await sql`
