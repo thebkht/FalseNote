@@ -1,7 +1,13 @@
 import { sql } from "@vercel/postgres";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", ["POST"]);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return;
+  }
+
   try {
     const { post, content, author } = req.body;
 
@@ -23,5 +29,3 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
-export const allowedMethods = ["POST"];
