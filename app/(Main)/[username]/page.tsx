@@ -22,7 +22,6 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { getSessionUser } from "../get-session-user";
 
 type Props = {
   params: { username: string }
