@@ -15,13 +15,6 @@ import { Icons } from "../icon";
 import { useSession } from "next-auth/react";
 import { Eye, Heart, MessageCircle } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu"
-import { getSessionUser } from "../get-session-user";
 
 
 function formatDate(dateString: string | number | Date) {
@@ -71,31 +64,8 @@ function PostCard(
   }
 ) 
 {
-  function handleDelete() {
-    fetch(`/api/posts/${props.session.username}/${props.posturl}`, {
-      method: "DELETE",
-    });
-    props.onDelete();
-  }
-
-  const [sessionUser, setSessionUser] = React.useState<any | null>(null);
-  const { status } = useSession();
-
-  useEffect(() => {
-    async function fetchData() {
-      if (status === "authenticated") {
-        const sessionUser = (await getSessionUser());
-        setSessionUser(sessionUser);
-      }
-    }
-
-    fetchData();
-  }, [status]);
 
   return (
-    <ContextMenu>
-  <div className="space-y-3 md:space-y-6">
-  <ContextMenuTrigger className="">
     <Card {...props} className="rounded-lg bg-background hover:bg-card">
       <Link href={props.url}>
       <CardContent className="px-4 md:px-6 py-0">
@@ -137,23 +107,6 @@ function PostCard(
       </CardContent>
       </Link>
     </Card>
-    </ContextMenuTrigger>
-  <ContextMenuContent>
-    {Number(props.authorid) === Number(sessionUser?.userid) ? (
-      <ContextMenuItem>
-      <Link href={`/editor/${props.posturl}`}>
-        Edit
-      </Link>
-      </ContextMenuItem>) : (  null )}
-    {Number(props.authorid) === Number(sessionUser?.userid) ? (
-      <ContextMenuItem onClick={handleDelete}>
-        Delete
-      </ContextMenuItem>) : (  null )}
-    <ContextMenuItem>Save</ContextMenuItem>
-    <ContextMenuItem>Share</ContextMenuItem>
-  </ContextMenuContent>
-  </div>
-</ContextMenu>
   );
 }
 

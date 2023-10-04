@@ -16,6 +16,13 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import LoginDialog from "@/components/login-dialog";
 import { useRouter } from "next/navigation";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import { getSessionUser } from "../get-session-user";
 
 type Props = {
   params: { username: string }
@@ -86,7 +93,10 @@ export default function Page({ params }: Props) {
     fetchData();
   }, [deleted]);
 
-  function handlePostDelete() {
+  function handleDelete(posturl: string) {
+    fetch(`/api/posts/${sessionUser.username}/${posturl}`, {
+      method: "DELETE",
+    });
     setDeleted(true);
   }
 
@@ -346,8 +356,11 @@ export default function Page({ params }: Props) {
           {posts?.length > 0 ? (
             posts?.map((article: any) => (
                 article.visibility === "public" &&
-                  (<PostCard
-                key={article.postid}
+                  (
+                    <ContextMenu key={article.postid}>
+                    <div className="space-y-3 md:space-y-6">
+                    <ContextMenuTrigger className="">
+                    <PostCard
                 title={article.title}
                 thumbnail={article.coverimage}
                 content={article.description}
@@ -362,7 +375,24 @@ export default function Page({ params }: Props) {
                 url={`/${user?.username}/${article.url}`}
                 posturl={article.url}
                 onDelete={handlePostDelete}
-                className="mt-4" />)
+                className="mt-4" />
+                      </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      {user?.userid === sessionUser?.userid ? (
+                        <ContextMenuItem>
+                        <Link href={`/editor/${article.url}`}>
+                          Edit
+                        </Link>
+                        </ContextMenuItem>) : (  null )}
+                      {user?.userid === sessionUser?.userid ? (
+                        <ContextMenuItem onClick={() => handleDelete(article.url)}>
+                          Delete
+                        </ContextMenuItem>) : (  null )}
+                      <ContextMenuItem>Save</ContextMenuItem>
+                      <ContextMenuItem>Share</ContextMenuItem>
+                    </ContextMenuContent>
+                    </div>
+                  </ContextMenu>)
             ))
           ) : (
             <p className="text-base font-light text-center py-5">This user has no posts</p>
