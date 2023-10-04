@@ -71,26 +71,8 @@ export default function Page({ params }: Props) {
     }
 
     fetchData();
-  }, [params.username, isFollowingLoading]);
+  }, [params.username, isFollowingLoading, deleted]);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const postData = await fetch(`/api/${user?.username}`, {
-          method: "GET",
-        });
-        if (!postData.ok) {
-          throw new Error(postData.statusText);
-        }
-        const data = await postData.json();
-        setPosts(data.posts);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchData();
-  }, [user?.username, deleted]);
 
 
   async function handleFollow(followeeId: string) {
