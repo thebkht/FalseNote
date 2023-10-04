@@ -27,14 +27,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   //execute a query to fetch the number of comments of the posts
   const postComments = await sql`
-  SELECT BlogPostID, COUNT(*) AS commentsCount
-  FROM Comments
-  WHERE BlogPostID IN (
-      SELECT PostID
-      FROM BlogPosts
-      WHERE AuthorID = ${user_id} AND Visibility = 'Public'
-  )
-  GROUP BY BlogPostID;
+    SELECT blogpostid, COUNT(*) AS commentscount
+    FROM Comments
+    GROUP BY blogpostid
   `;
 
   console.log("posts comments", postComments);
