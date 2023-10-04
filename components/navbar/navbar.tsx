@@ -41,7 +41,6 @@ function Navbar() {
           </Link>
   
           <div className="flex items-center gap-2 md:gap-4">
-            <SearchBar />
                 {items.map((item) => (
                   <>
                     <TooltipProvider>
@@ -58,6 +57,7 @@ function Navbar() {
                   </TooltipProvider>
                   </>
                 ))}
+                <SearchBar />
                 <ModeToggle />
                   <UserNav />
   
