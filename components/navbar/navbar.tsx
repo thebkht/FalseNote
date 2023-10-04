@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { items } from "./items";
 import Link from "next/link";
-import { MenuIcon, SearchIcon } from "lucide-react";
+import { MenuIcon, Plus, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { UserNav } from "./user-nav";
 import { Icons } from "@/components/icon";
@@ -41,22 +41,18 @@ function Navbar() {
           </Link>
   
           <div className="flex items-center gap-2 md:gap-4">
-                {items.map((item) => (
-                  <>
-                    <TooltipProvider>
+                  <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
-                        <Button key={item.title} variant={"ghost"} size={"icon"} asChild>
-                          <Link href={item.url}><item.icon className="h-[1.2rem] w-[1.2rem]" /></Link>
+                        <Button key={"New Post"} variant={"ghost"} size={"icon"} asChild>
+                          <Link href={"/editor"}><Plus className="h-[1.2rem] w-[1.2rem]" /></Link>
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{item.title}</p>
+                        <p>New Post</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  </>
-                ))}
                 <SearchBar />
                 <ModeToggle />
                   <UserNav />

@@ -4,7 +4,7 @@
 "use client"
 import { AvatarFallback, Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
      HoverCard,
      HoverCardContent,
@@ -17,9 +17,14 @@ import { getSessionUser } from "@/components/get-session-user"
 import { useSession } from "next-auth/react"
 import { Icons } from "@/components/icon"
 import { Separator } from "@/components/ui/separator"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import PostCard from "@/components/blog/post-card"
+import { formatNumberWithSuffix } from "@/components/format-numbers"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import CommentForm from "@/components/blog/comments/comment-form"
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -49,6 +54,7 @@ export default function PostView({ params }: { params: { username: string, url: 
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false)
      const [sessionUser, setSessionUser] = useState<any>(null)
      const { status } = useSession()
+     const router = useRouter()
 
      async function incrementPostViews() {
           const cookieName = `post_views_${params.username}_${params.url}`;
@@ -180,7 +186,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                             onClick={() => handleFollow(post?.authorId)}
                                                             disabled={isFollowingLoading}
                                                        >
-                                                            {isFollowing ? "Unfollow" : "Follow"}
+                                                            {isFollowing ? "Following" : "Follow"}
                                                        </Button>
                                                   )
                                              }
@@ -222,6 +228,41 @@ export default function PostView({ params }: { params: { username: string, url: 
                                         </div>
                                    )
                               }
+
+                         <Separator className="my-8" />
+
+                         {/* Comments */}
+                         <div className="article__comments">
+                              <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
+                              <CommentForm />
+                         </div>
+
+                         
+                         {/* <div>More From {post.author?.username}</div>
+                         <div className="grid grid-cols-3 gap-4">
+                              {
+                                   post?.author?.posts?.map((post: any) => (
+                                        post?.visibility === "public" && (
+                                             <PostCard
+                                             key={post.postid}
+                                             title={post.title}
+                                             thumbnail={post.coverimage}
+                                             content={post.description}
+                                             author={post.author?.username || post.author?.name}
+                                             date={post.creationdate}
+                                             views={formatNumberWithSuffix(post.views)}
+                                             comments={formatNumberWithSuffix(post.commentsnum || 0)}
+                                             id={post.id}
+                                             authorid={post.author?.userid}
+                                             session={sessionUser}
+                                             likes={formatNumberWithSuffix(post.likes || 0)}
+                                             url={`/${post.author?.username}/${post.url}`}
+                                             posturl={post.url}
+                                             className="mt-4" />
+                                        )
+                                   ))
+                              }
+                         </div> */}
                     </div>
                </div>
           </>
