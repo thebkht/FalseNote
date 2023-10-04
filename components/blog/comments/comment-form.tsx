@@ -56,6 +56,7 @@ export default function CommentForm(props: {session: any, status: any, post: any
                 setPosting(false);
           }
           setCommenting(false);
+          form.reset();
           props.submitted = true as boolean;
         }
         
