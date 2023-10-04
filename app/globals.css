@@ -319,3 +319,7 @@ grid-template-columns: 1fr !important;
 .popular__post-details span:last-child::after{
   content: "";
 }
+
+.feed__popular-list::before{
+  @apply block w-full h-px bg-border;
+}

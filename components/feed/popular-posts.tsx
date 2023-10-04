@@ -82,7 +82,7 @@ export default function PopularPosts(
           <CardTitle className="feed__content_featured_card_title text-xl">Trending Now</CardTitle>
         </CardHeader>
         <CardContent className="p-4 pt-0">
-          <ol className="flex flex-col items-start justify-between space-y-4">
+          <ol className="flex flex-col items-start justify-between space-y-4 list-decimal feed__popular-list">
             {popularPosts.map(
                   (item: any, index: number) => (
               <li key={item.postid} className="text-sm">
