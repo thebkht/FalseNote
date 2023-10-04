@@ -31,17 +31,9 @@ async function fetchFeed() {
      try {
       let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
-      const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`)
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
-      if (!nextFeed.ok) {
-        throw new Error(`Fetch failed with status: ${nextFeed.status}`);
-      }
-
-      setIsEnd((await nextFeed.json()).feed.length === 0);
-      
-
       const data = await response.json();
 
       setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
@@ -62,10 +54,26 @@ async function fetchFeed() {
     fetchFeed()
   }, [page])
 
-  function handleLoadMore() {
-    setLoading(true)
-    setPage(prevPage => prevPage + 1)
-  }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && !loading) {
+          setPage(prevPage => prevPage + 1)
+        }
+      },
+      { rootMargin: '0px 0px 100% 0px' }
+    )
+
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current)
+    }
+
+    return () => {
+      if (sentinelRef.current) {
+        observer.unobserve(sentinelRef.current)
+      }
+    }
+  }, [loading])
 
 
   return (
@@ -111,7 +119,8 @@ async function fetchFeed() {
           <div ref={sentinelRef} />
           {!isEnd && feed.length > 0 && (
             <div className="feed__list_loadmore">
-              <Button onClick={handleLoadMore} variant={"secondary"} size={"lg"} disabled={loading}>Load more</Button>
+              <div ref={sentinelRef} />
+              <Icons.spinner className="h-10 animate-spin" /> Loading...
             </div>
           )}
           </div>
