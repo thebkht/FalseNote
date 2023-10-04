@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function POST(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { post, content, author } = req.body;
 
