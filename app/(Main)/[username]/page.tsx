@@ -373,7 +373,6 @@ export default function Page({ params }: Props) {
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}
                 posturl={article.url}
-                onDelete={handlePostDelete}
                 className="mt-4" />
                       </ContextMenuTrigger>
                     <ContextMenuContent>
