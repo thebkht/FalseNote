@@ -21,6 +21,8 @@ export default function Feed() {
   const [loading, setLoading] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
   const [popularPosts, setPopularPosts] = useState<any | null>([])
+  const [startIndex, setStartIndex] = useState(0)
+  const [endIndex, setEndIndex] = useState(10)
   const sentinelRef = useRef(null)
   const route = useRouter()
 
@@ -78,6 +80,30 @@ async function fetchFeed() {
     }
   }, [loading])
 
+  useEffect(() => {
+    function handleScroll() {
+      const scrollTop = window.scrollY
+      const windowHeight = window.innerHeight
+      const scrollHeight = document.body.scrollHeight
+
+      const visibleStartIndex = Math.floor(scrollTop / 100)
+      const visibleEndIndex = Math.min(
+        feed.length,
+        visibleStartIndex + Math.ceil(windowHeight / 100)
+      )
+
+      setStartIndex(visibleStartIndex)
+      setEndIndex(visibleEndIndex)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [feed])
+
+  const visibleFeed = feed.slice(startIndex, endIndex)
 
   return (
     <>
@@ -91,7 +117,7 @@ async function fetchFeed() {
          }
 
          {
-          !fetching && feed.length === 0 && (
+          !fetching && visibleFeed.length === 0 && (
             <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
               <div className="flex flex-col items-center justify-center space-y-4">
                 <h1 className="text-2xl font-bold">No posts yet</h1>
@@ -102,7 +128,7 @@ async function fetchFeed() {
          }
          
           <div className="feed__list_item">
-          {feed.map((post: { postid: string; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
+          {visibleFeed.map((post: { postid: string; title: string; description: string; creationdate: string; author: { userid: string; username: any; }; coverimage: string | undefined; likes: string; comments: string; views: string; url: any; }) => (
         <FeedPostCard
                 key={post.postid}
                 id={post.postid as string}
@@ -120,7 +146,7 @@ async function fetchFeed() {
           </div>
 
           <div ref={sentinelRef} />
-          {!isEnd && feed.length > 0 && (
+          {!isEnd && visibleFeed.length > 0 && (
             <div className="feed__list_loadmore">
               <div ref={sentinelRef} />
               <Icons.spinner className="h-10 animate-spin" /> Loading...
