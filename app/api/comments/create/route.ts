@@ -26,7 +26,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     `;
 
     // Send a notification to the author of the post
-    const notification = await fetch("/api/notifications/", {
+    const notification = await fetch(`${process.env.DOMAIN}/api/notifications/`, {
       method: "POST",
       body: JSON.stringify({
         type: "comment",
