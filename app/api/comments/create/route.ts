@@ -38,6 +38,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
+    console.log("Notification response:", notification);
+
+    if (!notification.ok) {
+      // Handle fetch error if needed
+      return new Response("Failed to send notification", { status: 500 });
+    }
+
     return new Response("Comment created", { status: 201 });
   } catch (error) {
     console.error(error);
