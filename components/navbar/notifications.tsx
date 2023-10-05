@@ -10,6 +10,7 @@ import { Button } from "../ui/button"
 import { Bell } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
+import { ScrollArea } from "../ui/scroll-area"
 
 function dateFormat(dateString: string | number | Date) {
      const date = new Date(dateString)
@@ -72,9 +73,10 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                          )
                     }
                </Button></DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" forceMount>
+                    <DropdownMenuContent align="end" forceMount className="!max-h-[500px]">
                          <DropdownMenuLabel className="text-base">Notifications</DropdownMenuLabel>
                          <DropdownMenuSeparator />
+                         <ScrollArea className="h-full">
                          {notifications && notifications.map((notification: any) => (
                               <DropdownMenuItem key={notification.notificationid}>
                                    <div className="flex w-full gap-3">
@@ -104,6 +106,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                                                   </div>
                                                   </DropdownMenuItem>
                                                   )}
+                                                  </ScrollArea>
                     </DropdownMenuContent>
                </DropdownMenu>
 

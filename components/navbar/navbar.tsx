@@ -44,23 +44,13 @@ function Navbar() {
           method: "GET",
         });
         const not = await notificationsData.json();
-        if (notifications.length > 0) {
-          not.data.forEach((notification: any) => {
-            if (!notifications.some((n: any) => n.notificationid === notification.notificationid)) {
-              setNotifications((...prev: any) => [...prev, ...not.data]);
-            }
-          })
-        } else {
-          setNotifications(not.data);
-        }
+        setNotifications(not.data);
       } catch (error) {
         console.error(error);
       }
     }
     getNotifications();
-    //sort notifications by date
-    setNotifications((prev: any) => prev.sort((a: any, b: any) => new Date(b.createdat).getTime() - new Date(a.createdat).getTime()));
-  })
+      })
 
   if (isLoaded) {
     return (
