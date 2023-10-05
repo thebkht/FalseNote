@@ -17,8 +17,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                          </Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                         {
-                              notifications?.map((notification: any) => {
+                         {notifications && notifications?.map((notification: any) => {
                                    <div className="flex items-center justify-between px-4 py-2 text-sm text-muted-foreground">
                                              <div className="flex items-center space-x-2">
                                                   <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">

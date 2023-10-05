@@ -41,8 +41,7 @@ export async function GET(request: NextRequest) {
                 const data = await sql`
                      SELECT * FROM notifications WHERE userid = ${user_id}
                 `;
-                const { rows: notifications } = data;
-                return NextResponse.json({notifications});
+                return NextResponse.json(data.rows);
            } catch (error: any) {
                 console.error("Failed to fetch notifications:", error);
                 return NextResponse.json({
