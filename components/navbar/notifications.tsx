@@ -9,6 +9,7 @@ import {
 import { Button } from "../ui/button"
 import { Bell } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Badge } from "../ui/badge"
 
 function dateFormat(dateString: string | number | Date) {
      const date = new Date(dateString)
@@ -65,13 +66,18 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                <DropdownMenu>
                     <DropdownMenuTrigger><Button variant={"ghost"} size={"icon"}>
                     <Bell className="w-[1.25rem] h-[1.25rem]" />
+                    {
+                         notifications.find((notification: any) => notification.readat === null) && (
+                              <Badge className="ml-2 md:ml-3 p-0 h-2 w-2" variant={"secondary"} />
+                         )
+                    }
                </Button></DropdownMenuTrigger>
-                    <DropdownMenuContent className="max-w-96" align="end" forceMount>
+                    <DropdownMenuContent className="!max-w-80" align="end" forceMount>
                          <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                          <DropdownMenuSeparator />
                          {notifications && notifications.map((notification: any) => (
                               <DropdownMenuItem key={notification.notificationid}>
-                                   <div className="flex items-center justify-between w-full gap-3">
+                                   <div className="flex w-full gap-3">
                                    {
                                                   notification.sender && (
                                                        <Avatar>
@@ -80,8 +86,8 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                                                        </Avatar>
                                                   )
                                              }
-                                        <div className="flex flex-col gap-y-2">
-                                                  <span className="text-sm font-medium w-52">{notification.message}</span>
+                                        <div className="flex flex-col gap-y-2 pr-2">
+                                                  <span className="text-sm font-semibold">{notification.message}</span>
                                                   <span className="text-xs text-muted-foreground">{dateFormat(notification.createdat)}</span>
                                              </div>
                                    </div>
