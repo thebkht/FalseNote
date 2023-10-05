@@ -84,15 +84,17 @@ export async function GET(request: Request) {
       );
     `;
 
-    // Create the Notifications table
     await sql`
       CREATE TABLE IF NOT EXISTS Notifications (
         NotificationID SERIAL PRIMARY KEY,
-        Content TEXT,
-        CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        Type VARCHAR(255),
+        Message VARCHAR(255),
+        CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        ReadAt TIMESTAMP,
         UserID INT REFERENCES Users(UserID)
       );
     `;
+    
 
     // Create the UserSettings table
     await sql`

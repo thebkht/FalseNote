@@ -21,10 +21,13 @@ import { useRouter } from "next/navigation";
 import { get } from "http";
 import { getSessionUser } from "../get-session-user";
 import { Command } from "@/components/ui/command"
+import { Notifications } from "./notifications";
+import { tr } from "date-fns/locale";
 
 function Navbar() {
   const { data: session, status } = useSession();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<any | null>(null);
   const user = session?.user;
   const router = useRouter();
   useEffect(() => {
@@ -33,10 +36,26 @@ function Navbar() {
     }
   }, [status]);
 
-  async function getSession(){
-    const session = await getSessionUser()
-    return session
-  }
+  useEffect(() => {
+    async function getNotifications(){
+      const sessionUser = await getSessionUser();
+      try {
+        const notificationsData = await fetch("/api/notifications", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: sessionUser.userid,
+          }),
+        });
+        const notifications = await notificationsData.json();
+        setNotifications(notifications);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [])
 
   if (isLoaded) {
     return (
@@ -58,11 +77,31 @@ function Navbar() {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>New Post</p>
+                        New Post
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                <SearchBar />
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <SearchBar />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Search
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Notifications notifications={notifications} />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Notifications
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                
                 <ModeToggle />
                   <UserNav />
   
