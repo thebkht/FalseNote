@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
 
 // GET /api/notifications
 export async function GET(request: NextRequest) {
-           const user_id = request.json();
+     // request url: /api/notifications body: json.stringify({ user_id: 1 })
+
+          const user_id = request.nextUrl.searchParams.get("user_id")
+           console.log("Received user_id:", user_id);
       
            if (!user_id) {
                 return NextResponse.json({
