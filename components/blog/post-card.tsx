@@ -60,16 +60,18 @@ function PostCard(
      likes: string;
      url: string;
      posturl: string;
-  }
+     className?: string
+  },
+  
 ) 
 {
 
   return (
-    <Card {...props} className="rounded-lg bg-background hover:bg-card">
+    <Card {...props} className={cn("rounded-lg bg-background hover:bg-card", props.className)}>
       <Link href={props.url}>
-      <CardContent className="px-4 md:px-6 py-0 flex flex-col justify-between h-full">
+      <CardContent className="px-4 md:px-6 py-0">
       <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
-        {props.thumbnail && (
+        {props.thumbnail ? (
           <AspectRatio ratio={16 / 9}>
             <Image
             src={props.thumbnail}
@@ -80,6 +82,10 @@ function PostCard(
             w-full
             "
           />
+          </AspectRatio>
+        ) : (
+          <AspectRatio ratio={16 / 9}>
+            <Icons.noThumbnail className="w-full h-full rounded-md" />
           </AspectRatio>
         )}
 

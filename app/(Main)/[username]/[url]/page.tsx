@@ -291,11 +291,15 @@ export default function PostView({ params }: { params: { username: string, url: 
                          </div>
                     </div>
 
-                         {
+                         
+                    </div>
+               </div>
+
+               {
                               post?.author?.posts && (
-                                   <>
+                                   <div className="">
                                         <div className="text-2xl font-bold mb-4">More From {post.author?.username}</div>
-                         <div className="grid grid-cols-2 gap-4">
+                         <div className="grid md:grid-cols-2 gap-4">
                               {
                                    post?.author?.posts?.map((p: any) => (
                                         post?.visibility === "public" && (
@@ -313,16 +317,13 @@ export default function PostView({ params }: { params: { username: string, url: 
                                              session={sessionUser}
                                              likes={formatNumberWithSuffix(p.likes || 0)}
                                              url={`/${post.author?.username}/${p.url}`}
-                                             posturl={p.url}
-                                             className="mt-4" />
+                                             posturl={p.url} className="bg-transparent !border-none hover:bg-transparent"/>
                                         )
                                    ))
                               }
                          </div>
-                                   </>)
+                                   </div>)
                          }
-                    </div>
-               </div>
           </>
      )
 }
