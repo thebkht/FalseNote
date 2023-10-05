@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
                      SELECT * FROM notifications WHERE userid = ${await user_id}
                 `;
       
-                return NextResponse.json(notifications);
+                return NextResponse.json(notifications[0]);
            } catch (error: any) {
                 console.error("Failed to fetch notifications:", error);
                 return NextResponse.json({
