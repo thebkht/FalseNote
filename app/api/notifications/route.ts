@@ -2,7 +2,12 @@ import { sql } from "@vercel/postgres"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-     const { type, message, user_id } = await request.json()
+     const data = await request.json()
+     if (!data) {
+          return NextResponse.json({ status: 400, message: "No data provided" })
+     }
+     console.log("Received data:", data)
+     const { type, message, user_id } = data
      const created_at = new Date().toISOString()
      const read_at = null
      try {
