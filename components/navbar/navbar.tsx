@@ -7,7 +7,7 @@ import { MenuIcon, Plus, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { UserNav } from "./user-nav";
 import { Icons } from "@/components/icon";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import {
   Tooltip,
   TooltipContent,
@@ -17,18 +17,47 @@ import {
 import { use, useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import SearchBar from "../searchbar";
-
+import { useRouter } from "next/navigation";
+import { get } from "http";
+import { getSessionUser } from "../get-session-user";
+import { Command } from "@/components/ui/command"
 
 function Navbar() {
   const { data: session, status } = useSession();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const user = session?.user;
+  const router = useRouter();
   useEffect(() => {
     if (status !== "loading") {
       setIsLoaded(true);
     }
   }, [status]);
+
+  async function getSession(){
+    const session = await getSessionUser()
+    return session
+  }
   
+  useEffect(() => {
+    const user = getSession() as any
+    const down = (e: KeyboardEvent) => {
+      //shift+ctrl+p
+      if (e.shiftKey && e.ctrlKey && e.key === "p") {
+        e.preventDefault()
+        console.log("Profile shortcut triggered")
+        router.push(`${user?.username}/`)
+      }
+      //shift+ctrl+q => logout
+      if (e.shiftKey && e.ctrlKey && e.key === "q") {
+        e.preventDefault()
+        console.log("Log out shortcut triggered")
+        signOut()
+      }
+    }
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
+  }, [])
+
   if (isLoaded) {
     return (
       <nav className="menu">

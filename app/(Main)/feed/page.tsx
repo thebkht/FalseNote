@@ -58,9 +58,6 @@ async function fetchFeed() {
     fetchFeed()
   }, [page])
 
-
-  console.log('Feed:', feed)
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
