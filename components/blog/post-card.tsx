@@ -67,7 +67,7 @@ function PostCard(
   return (
     <Card {...props} className="rounded-lg bg-background hover:bg-card">
       <Link href={props.url}>
-      <CardContent className="px-4 md:px-6 py-0">
+      <CardContent className="px-4 md:px-6 py-0 flex flex-col justify-between h-full">
       <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
         {props.thumbnail && (
           <AspectRatio ratio={16 / 9}>
@@ -86,8 +86,8 @@ function PostCard(
         <CardTitle className="">{props.title}</CardTitle>
         <CardDescription className="text-base">
           {props.content && (
-            props.content.length! > 200 ? (
-              <>{props?.content?.slice(0, 200)}...</>
+            props.content.length! > 150 ? (
+              <>{props?.content?.slice(0, 150)}...</>
             ) : (
               <>{props.content}</>
             )

@@ -89,8 +89,10 @@ export default function PostView({ params }: { params: { username: string, url: 
                          setSessionUser(await getSessionUser())
                          setIsFollowing(post?.author?.followers.find((follower: any) => follower.followerid === followerId));
                     }
+                    postData.status === 404 && router.push("/404")
                     setPost(post)
                     setIsLoaded(true)
+
                } catch (error) {
                     console.error(error)
                     setIsLoaded(true)
@@ -139,7 +141,7 @@ export default function PostView({ params }: { params: { username: string, url: 
 
      }
 
-     if (!isLoaded) {
+     if (!isLoaded || !post) {
           return (
                <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
                     {
@@ -249,7 +251,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                          <Separator className="my-8" />
 
                          {/* Comments */}
-                         <div className="article__comments">
+                         <div className="article__comments my-8">
                               <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
                               {/* commentform prop that inticades comment posted or not */}
                               <CommentForm session={sessionUser} post={post?.postid} status={status} submitted={submitted} />
@@ -289,32 +291,36 @@ export default function PostView({ params }: { params: { username: string, url: 
                          </div>
                     </div>
 
-                         
-                         {/* <div>More From {post.author?.username}</div>
-                         <div className="grid grid-cols-3 gap-4">
+                         {
+                              post?.author?.posts && (
+                                   <>
+                                        <div className="text-2xl font-bold mb-4">More From {post.author?.username}</div>
+                         <div className="grid grid-cols-2 gap-4">
                               {
-                                   post?.author?.posts?.map((post: any) => (
+                                   post?.author?.posts?.map((p: any) => (
                                         post?.visibility === "public" && (
                                              <PostCard
-                                             key={post.postid}
-                                             title={post.title}
-                                             thumbnail={post.coverimage}
-                                             content={post.description}
+                                             key={p.postid}
+                                             title={p.title}
+                                             thumbnail={p.coverimage}
+                                             content={p.description}
                                              author={post.author?.username || post.author?.name}
-                                             date={post.creationdate}
-                                             views={formatNumberWithSuffix(post.views)}
-                                             comments={formatNumberWithSuffix(post.commentsnum || 0)}
-                                             id={post.id}
+                                             date={p.creationdate}
+                                             views={formatNumberWithSuffix(p.views)}
+                                             comments={formatNumberWithSuffix(p.comments || 0)}
+                                             id={p.id}
                                              authorid={post.author?.userid}
                                              session={sessionUser}
-                                             likes={formatNumberWithSuffix(post.likes || 0)}
-                                             url={`/${post.author?.username}/${post.url}`}
-                                             posturl={post.url}
+                                             likes={formatNumberWithSuffix(p.likes || 0)}
+                                             url={`/${post.author?.username}/${p.url}`}
+                                             posturl={p.url}
                                              className="mt-4" />
                                         )
                                    ))
                               }
-                         </div> */}
+                         </div>
+                                   </>)
+                         }
                     </div>
                </div>
           </>

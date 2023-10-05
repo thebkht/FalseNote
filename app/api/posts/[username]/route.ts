@@ -25,9 +25,22 @@ export async function GET(
     const authorID = author.rows[0]?.userid;
     //Get author's posts
     const authorPosts = await sql`
-        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID}
+        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url != ${postUrl} ORDER BY PostID DESC
       `;
     author.rows[0].posts = authorPosts.rows;
+
+    const authorPostsComments = await sql`
+        SELECT * FROM Comments WHERE BlogPostID IN (SELECT PostID FROM BlogPosts WHERE AuthorID = ${authorID} AND Url != ${postUrl})
+      `;
+
+      console.log(authorPostsComments.rows);
+    authorPosts.rows.forEach((post) => {
+      const comments = authorPostsComments.rows.filter(
+        (comment) => comment.blogpostid === post.postid
+      );
+      post.comments = comments.length;
+    }
+    );
 
     // Get author's followers
     const followers = await sql`
@@ -39,6 +52,9 @@ export async function GET(
        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url = ${postUrl}
      `;
 
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
     // Use remark to convert markdown into HTML string
     const processedContent = await remark().use(html).process(result.rows[0].content);
     const contentHtml = processedContent.toString();
