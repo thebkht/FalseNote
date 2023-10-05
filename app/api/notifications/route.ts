@@ -38,11 +38,11 @@ export async function GET(request: NextRequest) {
            }
       
            try {
-                const { rows: notifications } = await sql`
-                     SELECT * FROM notifications WHERE userid = ${await user_id}
+                const data = await sql`
+                     SELECT * FROM notifications WHERE userid = ${user_id}
                 `;
-      
-                return NextResponse.json(notifications[0]);
+                const { rows: notifications } = data;
+                return NextResponse.json({notifications});
            } catch (error: any) {
                 console.error("Failed to fetch notifications:", error);
                 return NextResponse.json({
