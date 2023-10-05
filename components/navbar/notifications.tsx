@@ -70,7 +70,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                          <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                          <DropdownMenuSeparator />
                          {notifications && notifications.map((notification: any) => (
-                              <DropdownMenuItem key={notification.id}>
+                              <DropdownMenuItem key={notification.notificationid}>
                                    <div className="flex items-center justify-between w-full gap-3">
                                    {
                                                   notification.sender && (

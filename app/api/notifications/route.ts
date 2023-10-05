@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
                 });
            }
                 const data = await sql`
-                     SELECT * FROM notifications WHERE userid = ${user_id}
+                     SELECT * FROM notifications WHERE userid = ${user_id} ORDER BY createdat DESC
                 `;
                 
                 const sender = await sql`

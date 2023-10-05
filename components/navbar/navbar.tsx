@@ -43,13 +43,23 @@ function Navbar() {
         const notificationsData = await fetch(`/api/notifications?user_id=${sessionUser.userid}`, {
           method: "GET",
         });
-        const notifications = await notificationsData.json();
-        setNotifications((...prev: any) => [...prev, ...notifications.data]);
+        const not = await notificationsData.json();
+        if (notifications.length > 0) {
+          not.data.forEach((notification: any) => {
+            if (!notifications.some((n: any) => n.notificationid === notification.notificationid)) {
+              setNotifications((...prev: any) => [...prev, ...not.data]);
+            }
+          })
+        } else {
+          setNotifications(not.data);
+        }
       } catch (error) {
         console.error(error);
       }
     }
     getNotifications();
+    //sort notifications by date
+    setNotifications((prev: any) => prev.sort((a: any, b: any) => new Date(b.createdat).getTime() - new Date(a.createdat).getTime()));
   })
 
   if (isLoaded) {
