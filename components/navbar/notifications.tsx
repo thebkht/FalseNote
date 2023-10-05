@@ -73,7 +73,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                     }
                </Button></DropdownMenuTrigger>
                     <DropdownMenuContent align="end" forceMount>
-                         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                         <DropdownMenuLabel className="text-base">Notifications</DropdownMenuLabel>
                          <DropdownMenuSeparator />
                          {notifications && notifications.map((notification: any) => (
                               <DropdownMenuItem key={notification.notificationid}>
@@ -87,7 +87,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                                                   )
                                              }
                                         <div className="flex flex-col gap-y-2 pr-2 w-80">
-                                                  <span className="text-sm font-semibold">{notification.message}</span>
+                                                  <span className="text-sm font-medium">{notification.message}</span>
                                                   <span className="text-xs text-muted-foreground">{dateFormat(notification.createdat)}</span>
                                              </div>
                                    </div>
