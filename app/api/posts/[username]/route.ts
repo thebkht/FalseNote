@@ -82,3 +82,60 @@ export async function GET(
     );
   }
 }
+
+
+export async function DELETE(req: NextRequest, { params }: { params: { username: string } }){
+  const username = params.username;
+  const postid = req.nextUrl.searchParams.get("postid");
+
+  if (username === undefined || username === null) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  if (postid === undefined || postid === null) {
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  try {
+    const author = await sql`
+       SELECT * FROM users WHERE Username = ${username}
+     `;
+    const authorID = author.rows[0]?.userid;
+
+    //check if the post belongs to the user
+    const result = await sql`
+       SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND PostID = ${postid}
+     `;
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    //check if the post has comments and tags
+    const comments = await sql`
+       SELECT * FROM Comments WHERE BlogPostID = ${postid}
+     `;
+    const tags = await sql`
+       SELECT * FROM BlogPostTags WHERE BlogPostID = ${postid}
+     `;
+    if (comments.rows.length !== 0) {
+      await sql`
+        DELETE FROM Comments WHERE BlogPostID = ${postid}
+      `;
+    }
+    if (tags.rows.length !== 0) {
+      await sql`
+        DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
+      `;
+    }
+    await sql`
+       DELETE FROM BlogPosts WHERE PostID = ${postid}
+     `;
+    return NextResponse.json({ message: "Post deleted" }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
+}

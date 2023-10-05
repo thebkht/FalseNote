@@ -94,7 +94,7 @@ export default function Page({ params }: Props) {
   }, [deleted]);
 
   async function handleDelete(posturl: string) {
-    await fetch(`/api/posts/${user?.username}/${posturl}`, {
+    await fetch(`/api/posts/${user?.username}?postid=${posturl}`, {
       method: "DELETE",
     });
     setDeleted(true);
@@ -388,7 +388,7 @@ export default function Page({ params }: Props) {
                         </Link>
                         </ContextMenuItem>) : (  null )}
                       {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
-                        <ContextMenuItem onClick={() => handleDelete(article.url)}>
+                        <ContextMenuItem onClick={() => handleDelete(article.postid)}>
                           Delete
                         </ContextMenuItem>) : (  null )}
                       <ContextMenuItem>Save</ContextMenuItem>
