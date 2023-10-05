@@ -187,7 +187,7 @@ export default function PostView({ params }: { params: { username: string, url: 
                                                   (
                                                        <Button
                                                             variant="link"
-                                                            className="py-0 h-6 px-0"
+                                                            className="py-0 h-6 px-1.5"
                                                             onClick={() => handleFollow(post?.authorId)}
                                                             disabled={isFollowingLoading}
                                                        >
