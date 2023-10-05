@@ -11,26 +11,39 @@ export async function POST(request: NextRequest) {
                VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
           `
           // Execute the query here
-          NextResponse.json({ status: 201, message: "Notification created" })
+          return NextResponse.json({ status: 201, message: "Notification created" })
      } catch (error) {
           console.log("Failed to create notification:", error)
-          NextResponse.json({ status: 500, message: `Failed to create notification: ${error}` })
+          return NextResponse.json({ status: 500, message: `Failed to create notification: ${error}` })
      }
 }
 
 // GET /api/notifications
 export async function GET(request: NextRequest) {
-     const { user_id } = await request.json()
-     try {
-          const {rows: notifications} = await sql`
-               SELECT * FROM notifications WHERE userid = ${user_id}
-          `
-          return NextResponse.json(notifications)
-     } catch (error) {
-          console.log("Failed to fetch notifications:", error)
-          return NextResponse.json({ status: 500, message: `Failed to fetch notifications: ${error}` })
-     }
-}
+           const user_id = request.json();
+      
+           if (!user_id) {
+                return NextResponse.json({
+                     status: 400,
+                     message: "Missing user_id query parameter",
+                });
+           }
+      
+           try {
+                const { rows: notifications } = await sql`
+                     SELECT * FROM notifications WHERE userid = ${await user_id}
+                `;
+      
+                return NextResponse.json(notifications);
+           } catch (error: any) {
+                console.error("Failed to fetch notifications:", error);
+                return NextResponse.json({
+                     status: 500,
+                     message: `Failed to fetch notifications: ${error.message}`,
+                });
+           }
+      }
+   
 
 // PUT /api/notifications?id
 export async function PUT(request: NextRequest) {
