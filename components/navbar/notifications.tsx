@@ -34,7 +34,8 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                                                   <p className="text-xs text-muted-foreground">{element.date}</p>
                                              </div>
                                         </div>
-                              });
+
+                              })
                          }
                     </PopoverContent>
                </Popover>
