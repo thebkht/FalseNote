@@ -68,7 +68,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                     <Bell className="w-[1.25rem] h-[1.25rem]" />
                     {
                          notifications.find((notification: any) => notification.readat === null) && (
-                              <Badge className="ml-2 md:ml-3 p-0 h-3 w-3 absolute mb-3 border-[3px] border-solid border-foreground" />
+                              <Badge className="ml-2 md:ml-3 p-0 h-3 w-3 absolute mb-3 border-[3px] border-solid border-secondary-foreground" />
                          )
                     }
                </Button></DropdownMenuTrigger>
