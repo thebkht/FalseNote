@@ -19,10 +19,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     `;
 
     const { rows: authorDetails } = await sql`
-      SELECT * FROM users WHERE id = ${author}
+      SELECT * FROM users WHERE userid = ${author}
     `;
     const { rows: postDetails } = await sql`
-      SELECT * FROM blogposts WHERE id = ${post}
+      SELECT * FROM blogposts WHERE postid = ${post}
     `;
 
     // Send a notification to the author of the post
