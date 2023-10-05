@@ -126,15 +126,15 @@ export default function FeedPostCard(
                 <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
                   <div className="flex items-start justify-between">
                   <UserHoverCard user={props.author} >
-                  <Link href={`/${props.author.username}`} className="flex items-center">
+                  <Link href={`/${props.author?.username}`} className="flex items-center">
                       <Avatar className="h-10 w-10 mr-2 md:mr-3">
-                        <AvatarImage src={props.author.profilepicture} alt={props.author.username} />
-                        <AvatarFallback>{props.author.name?.charAt(0) || props.author.username?.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={props.author?.profilepicture} alt={props.author?.username} />
+                        <AvatarFallback>{props.author?.name?.charAt(0) || props.author?.username?.charAt(0)}</AvatarFallback>
                       </Avatar>
                       {
-                        props.author.name === null ? (
+                        props.author?.name === null ? (
                           <div>
-                            <p className="text-sm font-medium leading-none">{props.author.username} {props.author?.verified && (
+                            <p className="text-sm font-medium leading-none">{props.author?.username} {props.author?.verified && (
                               <Badge className="h-3 w-3 !px-0">
                                 <Check className="h-2 w-2 mx-auto" />
                               </Badge>
@@ -142,12 +142,12 @@ export default function FeedPostCard(
                           </div>
                         ) : (
                           <div>
-                            <p className="text-sm font-medium leading-none">{props.author.name} {props.author?.verified && (
+                            <p className="text-sm font-medium leading-none">{props.author?.name} {props.author?.verified && (
                               <Badge className="h-3 w-3 !px-0">
                                 <Check className="h-2 w-2 mx-auto" />
                               </Badge>
                             )}</p>
-                            <p className="text-sm text-muted-foreground">{props.author.username}</p>
+                            <p className="text-sm text-muted-foreground">{props.author?.username}</p>
                           </div>
                         )
                       }
