@@ -40,8 +40,8 @@ function LandingNavbar() {
           </Link>
           <div className="flex items-center gap-2 md:gap-4">
                 <ModeToggle />
-              <Button onClick={() => signIn("github")}>
-                  Join
+              <Button asChild>
+                  <Link href={"/signin"}>Join</Link>
               </Button>
               </div>
         </div>

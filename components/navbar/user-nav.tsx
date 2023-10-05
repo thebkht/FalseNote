@@ -75,12 +75,15 @@ export function UserNav() {
                               Settings
                               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                          </DropdownMenuItem>
-
-                         <DropdownMenuItem onClick={() => signOut()}>
+                         <Link href="/signout">
+                         <DropdownMenuItem>
+                              
+                              
+                              
                               Log out
                               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                          </DropdownMenuItem>
-
+                         </Link>
                     </DropdownMenuGroup>
                </DropdownMenuContent>
           </DropdownMenu>

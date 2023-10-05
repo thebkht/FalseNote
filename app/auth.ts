@@ -6,6 +6,7 @@ import { Profile } from "next-auth"
 
 
 import GitHub from "next-auth/providers/github"
+import { redirect } from "next/navigation"
 import { NextResponse } from "next/server"
 
 export const config = {
@@ -69,8 +70,7 @@ export const config = {
           }
         }
       }
-  
-      return true; // Continue with the sign-in process
+      return true; // Continue sign-in process
     },
     // async session({session}) {
     //   const sessionUserName = session.user?.name;

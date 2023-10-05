@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/auth/user-auth-form"
 import { Icons } from "@/components/icon"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -16,6 +16,41 @@ export const metadata: Metadata = {
 export default async function SigninPage() {
   return (
     <>
+      <div className="container relative h-screen w-screen">
+        <div className="lg:p-8 h-screen w-full">
+        <Link href="/" className="absolute w-full left-0 top-8">
+            <Icons.logo className="!h-10" style={{margin: "auto"}} />
+          </Link>
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[320px] h-full">
+            <div className="flex flex-col space-y-2 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight">
+                Create an account
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Sign up with your GitHub account to continue.
+              </p>
+            </div>
+            <UserAuthForm />
+            <p className="px-8 text-center text-sm text-muted-foreground">
+              By clicking continue, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
       <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
           href="/signin"
@@ -52,7 +87,7 @@ export default async function SigninPage() {
                 Enter your email below to create your account
               </p>
             </div>
-            <UserAuthForm />
+            
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link

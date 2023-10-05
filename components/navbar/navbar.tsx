@@ -37,26 +37,6 @@ function Navbar() {
     const session = await getSessionUser()
     return session
   }
-  
-  useEffect(() => {
-    const user = getSession() as any
-    const down = (e: KeyboardEvent) => {
-      //shift+ctrl+p
-      if (e.shiftKey && e.ctrlKey && e.key === "p") {
-        e.preventDefault()
-        console.log("Profile shortcut triggered")
-        router.push(`${user?.username}/`)
-      }
-      //shift+ctrl+q => logout
-      if (e.shiftKey && e.ctrlKey && e.key === "q") {
-        e.preventDefault()
-        console.log("Log out shortcut triggered")
-        signOut()
-      }
-    }
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [])
 
   if (isLoaded) {
     return (
