@@ -71,10 +71,12 @@ export function UserNav() {
                     </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                         <DropdownMenuItem>
-                              Settings
-                              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                         </DropdownMenuItem>
+                         <Link href="/settings/profile">
+                              <DropdownMenuItem>
+                                   Settings
+                                   <DropdownMenuShortcut>⇧⌘,</DropdownMenuShortcut>
+                              </DropdownMenuItem>
+                         </Link>
                          <Link href="/signout">
                          <DropdownMenuItem>
                               
