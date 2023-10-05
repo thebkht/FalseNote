@@ -33,6 +33,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
         message: `${authorDetails[0].name} commented on your post "${postDetails[0].title}": ${content}`,
         user_id: postDetails[0].authorid,
       }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     return new Response("Comment created", { status: 201 });
