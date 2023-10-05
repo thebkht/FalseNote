@@ -2,7 +2,8 @@ import { sql } from "@vercel/postgres"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
-     const data = await request.json()
+     try {
+          const data = await request.json()
      if (!data) {
           return NextResponse.json({ status: 400, message: "No data provided" })
      }
@@ -10,7 +11,6 @@ export async function POST(request: NextRequest) {
      const { type, message, user_id } = data
      const created_at = new Date().toISOString()
      const read_at = null
-     try {
           await sql`
                INSERT INTO notifications (type, message, userid, createdat, readat)
                VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
