@@ -17,23 +17,24 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                          </Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                         {notifications && notifications?.map((notification: any) => {
+                         {
+                              notifications && notifications.array.forEach((element: {
+                                   date: string, message: string 
+}) => {
                                    <div className="flex items-center justify-between px-4 py-2 text-sm text-muted-foreground">
-                                             <div className="flex items-center space-x-2">
-                                                  <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">
-                                                       <Bell className="w-4 h-4" />
-                                                  </div>
-                                                  <div>
-                                                       <p className="text-xs text-muted-foreground">{notification.message}</p>
+                                        <div className="flex items-center space-x-2">
+                                             <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">
+                                                  <Bell className="w-4 h-4" />
+                                             </div>
+                                             <div>
+                                                  <p className="text-xs text-muted-foreground">{element.message}</p>
                                                   </div>
                                              </div>
                                              <div>
-                                                  <p className="text-xs text-muted-foreground">{notification.date}</p>
+                                                  <p className="text-xs text-muted-foreground">{element.date}</p>
                                              </div>
                                         </div>
-                              }
-                              )
-
+                              });
                          }
                     </PopoverContent>
                </Popover>
