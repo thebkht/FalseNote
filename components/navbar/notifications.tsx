@@ -18,7 +18,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                     </PopoverTrigger>
                     <PopoverContent>
                          {
-                              notifications && notifications.array.forEach((element: {
+                              notifications && notifications.forEach((element: {
                                    date: string, message: string 
 }) => {
                                    <div className="flex items-center justify-between px-4 py-2 text-sm text-muted-foreground">
