@@ -1,44 +1,49 @@
 import {
-     Popover,
-     PopoverContent,
-     PopoverTrigger,
-} from "@/components/ui/popover"
+     DropdownMenu,
+     DropdownMenuContent,
+     DropdownMenuItem,
+     DropdownMenuLabel,
+     DropdownMenuSeparator,
+     DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Button } from "../ui/button"
 import { Bell } from "lucide-react"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 
-export function Notifications({ notifications, className, ...props }: React.ComponentPropsWithoutRef<typeof Popover> & { className?: string, notifications: any }) {
+export function Notifications({ notifications, className, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { className?: string, notifications: any }) {
      return (
           <>
-               <Popover>
-                    <PopoverTrigger>
-                         <Button variant={"ghost"} size={"icon"}>
-                              <Bell className="w-[1.25rem] h-[1.25rem]" />
-                         </Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                         {
-                              notifications && notifications.forEach((element: {
-                                   date: string, message: string 
-}) => {
-                                   <div className="flex items-center justify-between px-4 py-2 text-sm text-muted-foreground">
-                                        <div className="flex items-center space-x-2">
-                                             <div className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full">
-                                                  <Bell className="w-4 h-4" />
-                                             </div>
-                                             <div>
-                                                  <p className="text-xs text-muted-foreground">{element.message}</p>
-                                                  </div>
-                                             </div>
-                                             <div>
-                                                  <p className="text-xs text-muted-foreground">{element.date}</p>
+               <DropdownMenu>
+                    <DropdownMenuTrigger><Button variant={"ghost"} size={"icon"}>
+                    <Bell className="w-[1.25rem] h-[1.25rem]" />
+               </Button></DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                         <DropdownMenuSeparator />
+                         {notifications.map((notification: any) => (
+                              <DropdownMenuItem key={notification.id}>
+                                   <div className="flex items-center justify-between w-full">
+                                        <div className="flex items-center gap-3">
+                                             {
+                                                  notification.sender && (
+                                                       <Avatar>
+                                                            <AvatarImage src={notification.sender.profilepicture} alt={notification.sender.username} />
+                                                            <AvatarFallback>{notification.sender.username.charAt(0)}</AvatarFallback>
+                                                       </Avatar>
+                                                  )
+                                             }
+                                             <div className="flex flex-col">
+                                                  <span className="text-sm text-muted-foreground">{notification.message}</span>
                                              </div>
                                         </div>
+                                        <span className="text-xs text-muted-foreground">{notification.createdat}</span>
+                                   </div>
+                              </DropdownMenuItem>
+                         ))}
+                    </DropdownMenuContent>
+               </DropdownMenu>
 
-                              })
-                         }
-                    </PopoverContent>
-               </Popover>
 
           </>
      )

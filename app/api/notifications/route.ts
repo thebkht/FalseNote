@@ -26,8 +26,9 @@ export async function POST(request: NextRequest) {
 // GET /api/notifications
 export async function GET(request: NextRequest) {
      // request url: /api/notifications body: json.stringify({ user_id: 1 })
-
-          const user_id = request.nextUrl.searchParams.get("user_id")
+      
+           try {
+               const user_id = request.nextUrl.searchParams.get("user_id")
            console.log("Received user_id:", user_id);
       
            if (!user_id) {
@@ -36,12 +37,27 @@ export async function GET(request: NextRequest) {
                      message: "Missing user_id query parameter",
                 });
            }
-      
-           try {
                 const data = await sql`
                      SELECT * FROM notifications WHERE userid = ${user_id}
                 `;
-                return NextResponse.json(data.rows);
+                
+                const sender = await sql`
+                         SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = ${user_id})
+                    `
+                    data.rows.forEach((notification: any) => {
+                         sender.rows.forEach((user: any) => {
+                              if (notification.sender_id === user.userid) {
+                                   notification.sender = user
+                              }
+                         }
+                         )
+                    }
+                    )
+
+                    return NextResponse.json({
+                         status: 200,
+                         data: data.rows,
+                    });
            } catch (error: any) {
                 console.error("Failed to fetch notifications:", error);
                 return NextResponse.json({

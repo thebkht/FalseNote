@@ -30,10 +30,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const type = "comment";
     const created_at = new Date().toISOString()
     const read_at = null
+    const sender_id = authorDetails[0].userid;
 
     await sql`
-      INSERT INTO notifications (type, message, userid, createdat, readat)
-      VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
+      INSERT INTO notifications (type, message, userid, createdat, readat, sender_id)
+      VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at}, ${sender_id})
     `;
 
     // const notification = await fetch(`localhost:3000/api/notifications`, {

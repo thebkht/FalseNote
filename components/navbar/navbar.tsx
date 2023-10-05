@@ -27,7 +27,7 @@ import { tr } from "date-fns/locale";
 function Navbar() {
   const { data: session, status } = useSession();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<any | null>(null);
+  const [notifications, setNotifications] = useState<any>([]);
   const user = session?.user;
   const router = useRouter();
   useEffect(() => {
@@ -44,13 +44,13 @@ function Navbar() {
           method: "GET",
         });
         const notifications = await notificationsData.json();
-        setNotifications(notifications);
+        setNotifications((...prev: any) => [...prev, ...notifications.data]);
       } catch (error) {
         console.error(error);
       }
     }
     getNotifications();
-  }, [])
+  })
 
   if (isLoaded) {
     return (
