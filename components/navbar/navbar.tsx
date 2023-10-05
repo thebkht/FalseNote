@@ -40,14 +40,8 @@ function Navbar() {
     async function getNotifications(){
       const sessionUser = await getSessionUser();
       try {
-        const notificationsData = await fetch("/api/notifications", {
+        const notificationsData = await fetch(`/api/notifications?user_id=${sessionUser.userid}`, {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: sessionUser.userid,
-          }),
         });
         const notifications = await notificationsData.json();
         setNotifications(notifications);
