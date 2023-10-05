@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       method: "POST",
       body: JSON.stringify({
         type: "comment",
-        message: `${authorDetails[0].name} commented on your post "${postDetails[0].title}": ${content}`,
+        message: `${authorDetails[0].username} commented on your post "${postDetails[0].title}": ${content}`,
         user_id: postDetails[0].authorid,
       }),
       headers: {
