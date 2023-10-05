@@ -92,6 +92,7 @@ export async function GET(request: Request) {
         CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         ReadAt TIMESTAMP,
         UserID INT REFERENCES Users(UserID)
+        Sender_id INT NOT NULL 
       );
     `;
     
