@@ -69,7 +69,7 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                     <DropdownMenuContent className="max-w-96" align="end" forceMount>
                          <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                          <DropdownMenuSeparator />
-                         {notifications.map((notification: any) => (
+                         {notifications && notifications.map((notification: any) => (
                               <DropdownMenuItem key={notification.id}>
                                    <div className="flex items-center justify-between w-full gap-3">
                                    {
@@ -81,14 +81,23 @@ export function Notifications({ notifications, className, ...props }: React.Comp
                                                   )
                                              }
                                         <div className="flex flex-col gap-y-2">
-                                                  <span className="text-sm">{
-                                                       notification.message.lenght > 50 ? notification.message.substring(0, 50) + "..." : notification.message
-                                                  }</span>
+                                                  <span className="text-sm font-medium w-52">{notification.message}</span>
                                                   <span className="text-xs text-muted-foreground">{dateFormat(notification.createdat)}</span>
                                              </div>
                                    </div>
                               </DropdownMenuItem>
                          ))}
+                         {notifications && notifications.length === 0 && (
+                              <DropdownMenuItem>
+                                   <div className="flex items-center justify-between w-full gap-3">
+                                        <div className="flex flex-col gap-y-2">
+                                                  
+                                                  <span className="text-sm">No notifications</span>
+                                                  
+                                                  </div>
+                                                  </div>
+                                                  </DropdownMenuItem>
+                                                  )}
                     </DropdownMenuContent>
                </DropdownMenu>
 
