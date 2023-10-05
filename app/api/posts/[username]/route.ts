@@ -25,7 +25,7 @@ export async function GET(
     const authorID = author.rows[0]?.userid;
     //Get author's posts
     const authorPosts = await sql`
-        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url != ${postUrl} ORDER BY PostID DESC
+        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url != ${postUrl} ORDER BY PostID DESC LIMIT 4
       `;
     author.rows[0].posts = authorPosts.rows;
 
