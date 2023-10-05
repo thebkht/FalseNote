@@ -55,6 +55,7 @@ function Navbar() {
         console.error(error);
       }
     }
+    getNotifications();
   }, [])
 
   if (isLoaded) {
