@@ -44,6 +44,7 @@ import { Icons } from "../icon"
 import { redirect, useRouter } from "next/navigation"
 import { remark } from "remark";
 import html from "remark-html";
+import { ToastAction } from "../ui/toast"
 
 
 const postFormSchema = z.object({
@@ -141,9 +142,22 @@ export function PostForm() {
     const authorId = user?.userid;
     try {
       // Submit the form
-    await fetch("/api/posts/submit", {
+    const result = await fetch("/api/posts/submit", {
       method: "POST",
       body: JSON.stringify({ ...data, authorId }),
+    })
+    setOpen(false);
+    if (!result.ok) {
+      setIsPublishing(false)
+      toast({
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Try again</ToastAction>
+      })
+      return
+    }
+    toast({
+      description: "Post Published!",
     })
     router.push(`/${user?.username}/${form.getValues('url')}`)
     } catch (error) {
@@ -208,6 +222,7 @@ export function PostForm() {
   }
 
   const [markdownContent, setMarkdownContent] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
   
 
   async function handleContentChange(value: string) {
@@ -244,6 +259,10 @@ export function PostForm() {
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     form.setValue('description', e.target.value);
+  }
+
+  function openDialog() {
+    setOpen(true);
   }
 
   return (
@@ -296,10 +315,35 @@ export function PostForm() {
           </TabsContent>
         </Tabs>
 
-        <Dialog>
+        <Button size={"icon"} variant={"secondary"} onClick={
+            () => {
+              console.log(form.getValues('content'));
+              console.log(form.getValues('title'));
+              if(form.getValues('title') === undefined) {
+                toast({
+                  description: "Please enter a title for your post!",
+                  variant: "destructive",
+                })
+              }
+              if (form.getValues('content') === undefined) {
+                toast({
+                  description: "Please enter a content for your post!",
+                  variant: "destructive",
+                })
+              }
+              if (form.getValues('content') == undefined && form.getValues('title') == undefined) {
+                toast({
+                  description: "Please enter a title and content for your post!",
+                  variant: "destructive",
+                })
+              }
+              if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
+                openDialog();
+              }
+            }
+          } className="!mt-3.5 absolute right-3 top-0 z-50 xl:right-36 2xl:right-64"><ArrowUp className="h-[1.2rem] w-[1.2rem]"/></Button>
 
-          <DialogTrigger className="!mt-0 absolute right-3 top-0 z-50 p-3 xl:right-36 2xl:right-64"><Button size={"icon"} variant={"secondary"} asChild><div className="h-6 w-6"><ArrowUp /></div></Button></DialogTrigger>
-
+        <Dialog onOpenChange={setOpen} open={open}>
           <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
