@@ -50,7 +50,7 @@ function Navbar() {
       }
     }
     getNotifications();
-      })
+      }, [session])
 
   if (isLoaded) {
     return (
