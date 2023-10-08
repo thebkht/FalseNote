@@ -266,6 +266,7 @@ export function PostForm() {
   }
 
   return (
+<>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full" id="PostForm">
         <FormField
@@ -314,34 +315,6 @@ export function PostForm() {
             <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
           </TabsContent>
         </Tabs>
-
-        <Button size={"icon"} variant={"secondary"} onClick={
-            () => {
-              console.log(form.getValues('content'));
-              console.log(form.getValues('title'));
-              if(form.getValues('title') === undefined) {
-                toast({
-                  description: "Please enter a title for your post!",
-                  variant: "destructive",
-                })
-              }
-              if (form.getValues('content') === undefined) {
-                toast({
-                  description: "Please enter a content for your post!",
-                  variant: "destructive",
-                })
-              }
-              if (form.getValues('content') == undefined && form.getValues('title') == undefined) {
-                toast({
-                  description: "Please enter a title and content for your post!",
-                  variant: "destructive",
-                })
-              }
-              if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
-                openDialog();
-              }
-            }
-          } className="!mt-3.5 absolute right-3 top-0 z-50 xl:right-36 2xl:right-64"><ArrowUp className="h-[1.2rem] w-[1.2rem]"/></Button>
 
         <Dialog onOpenChange={setOpen} open={open}>
           <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
@@ -514,5 +487,33 @@ export function PostForm() {
 
       </form>
     </Form>
+<Button size={"icon"} variant={"secondary"} onClick={
+            () => {
+              console.log(form.getValues('content'));
+              console.log(form.getValues('title'));
+              if(form.getValues('title') === undefined) {
+                toast({
+                  description: "Please enter a title for your post!",
+                  variant: "destructive",
+                })
+              }
+              if (form.getValues('content') === undefined) {
+                toast({
+                  description: "Please enter a content for your post!",
+                  variant: "destructive",
+                })
+              }
+              if (form.getValues('content') == undefined && form.getValues('title') == undefined) {
+                toast({
+                  description: "Please enter a title and content for your post!",
+                  variant: "destructive",
+                })
+              }
+              if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
+                openDialog();
+              }
+            }
+          } className="!mt-3.5 absolute right-3 top-0 z-50 xl:right-36 2xl:right-64"><ArrowUp className="h-[1.2rem] w-[1.2rem]"/></Button>
+   </>
   )
 }
