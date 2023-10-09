@@ -39,19 +39,19 @@ export const config = {
           // User doesn't exist, add them to the Users table
           try {
             await sql`
-              INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Image, Location)
+              INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
               VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${bio}, ${avatar_url}, ${location});
             `;
             console.log(`User '${username}' added to the database.`);
 
             const sessionUser = await sql`
-              SELECT id FROM users
+              SELECT Userid FROM users
               WHERE Username = ${username};
             `;
 
             console.log("Session User:", sessionUser.rows[0]);
 
-            const userId = sessionUser.rows[0].id;
+            const userId = sessionUser.rows[0].userid;
             console.log("User ID:", userId);
 
             const userSettingsExists = await sql`
