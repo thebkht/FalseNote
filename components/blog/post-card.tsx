@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import {
   Card,
@@ -72,7 +73,7 @@ function PostCard(
       <CardContent className="px-4 md:px-6 py-0">
       <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
         {props.thumbnail ? (
-          <AspectRatio ratio={16 / 9}>
+          <AspectRatio ratio={3 / 4}>
             <Image
             src={props.thumbnail}
             fill
@@ -84,7 +85,7 @@ function PostCard(
           />
           </AspectRatio>
         ) : (
-          <AspectRatio ratio={16 / 9}>
+          <AspectRatio ratio={3 / 4}>
             <Icons.noThumbnail className="w-full h-full rounded-md" />
           </AspectRatio>
         )}

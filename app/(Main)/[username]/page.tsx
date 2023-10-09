@@ -1,21 +1,13 @@
-"use client"
-import { getUserByUsername } from "@/components/get-user";
 import { Icons } from "@/components/icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CalendarDays, Check, Mail, MapPin, Rocket } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
-import NotFound from "./not-found";
 import PostCard from "@/components/blog/post-card";
-import { getSessionUser } from "@/components/get-session-user";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import LoginDialog from "@/components/login-dialog";
-import { useRouter } from "next/navigation";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -23,6 +15,9 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
 import UserHoverCard from "@/components/user-hover-card";
+import { getSession } from "next-auth/react";
+import { getSessionUser } from "@/components/get-session-user";
+import { redirect, useRouter } from "next/navigation";
 
 type Props = {
   params: { username: string }
@@ -49,49 +44,64 @@ function getRegistrationDateDisplay(registrationDate: string) {
   return formattedDate
 }
 
-export default function Page({ params }: Props) {
-  const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const { status, data: session } = useSession();
-  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
-  const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
-  const [sessionUser, setSessionUser] = useState<any | null>(null);
-  const [deleted, setDeleted] = useState<boolean>(false);
-  const [posts, setPosts] = useState<any | null>(null);
-  const router = useRouter();
+export default async function Page({ params }: {
+   params: {
+      username: string
+   }
+ }) {
+  const user = await fetch(`/api/users/${params.username}`, {
+    method: "GET",
+  }).then((res) => res.json());
+  const session = await getSession();
+  if (user.status === 404) {
+    redirect("/404");
+  }
+  const posts = user.posts;
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userData = await getUserByUsername(params.username);
-        setUser(userData);
-        if (status === "authenticated") {
-          const followerId = (await getSessionUser()).userid;
-          setSessionUser(await getSessionUser());
-          setIsFollowing(userData.followers.find((follower: any) => follower.userid === followerId));
-        }
-        setIsLoaded(true);
-      } catch (error) {
-        console.error(error);
-        setIsLoaded(true);
-      }
-    }
+  const sessionUserName = await getSessionUser();
+  console.log(sessionUserName);
+  // const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
+  // const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  // const { status, data: session } = useSession();
+  // const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+  // const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+  // const [sessionUser, setSessionUser] = useState<any | null>(null);
+  // const [deleted, setDeleted] = useState<boolean>(false);
+  // const [posts, setPosts] = useState<any | null>(null);
+  // const router = useRouter();
 
-    fetchData();
-  }, [params.username, isFollowingLoading, deleted]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const userData = await getUserByUsername(params.username);
+  //       setUser(userData);
+  //       if (status === "authenticated") {
+  //         const followerId = (await getSessionUser()).userid;
+  //         setSessionUser(await getSessionUser());
+  //         setIsFollowing(userData.followers.find((follower: any) => follower.userid === followerId));
+  //       }
+  //       setIsLoaded(true);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setIsLoaded(true);
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, [params.username, isFollowingLoading, deleted]);
   
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userData = await getUserByUsername(params.username);
-        setPosts(userData.posts);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const userData = await getUserByUsername(params.username);
+  //       setPosts(userData.posts);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-    fetchData();
-  }, [deleted]);
+  //   fetchData();
+  // }, [deleted]);
 
   async function handleDelete(posturl: string) {
     await fetch(`/api/posts/${user?.username}?postid=${posturl}`, {
@@ -118,27 +128,20 @@ export default function Page({ params }: Props) {
     }
   }
 
-  if (!isLoaded) {
-    // Loading skeleton or spinner while fetching data
-    return (
-      <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
-        {
-          minHeight: "calc(100vh - 192px)"
-        }
-      }>
-         <Icons.spinner className="h-10 animate-spin" />
-       </div>
-    )
-  }
+  // if (!isLoaded) {
+  //   // Loading skeleton or spinner while fetching data
+  //   return (
+  //     <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
+  //       {
+  //         minHeight: "calc(100vh - 192px)"
+  //       }
+  //     }>
+  //        <Icons.spinner className="h-10 animate-spin" />
+  //      </div>
+  //   )
+  // }
 
-  if (params.username !== user?.username) {
-    router.push(`/404`);
-  }
 
-  if (!user) {
-    // User not found
-    router.push(`/404`);
-  }
 
 
   return (

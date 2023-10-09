@@ -1,16 +1,27 @@
 import { sql } from "@vercel/postgres"
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next"
 import type { NextAuthOptions as NextAuthConfig } from "next-auth"
+import PostgresAdapter from "@auth/pg-adapter"
 import { getServerSession } from "next-auth"
 import { Profile } from "next-auth"
-
-
+import { Pool } from "pg"
 import GitHub from "next-auth/providers/github"
 import { redirect } from "next/navigation"
 import { NextResponse } from "next/server"
 
+const pool = new Pool({
+  host: process.env.POSTGRES_HOST,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DATABASE,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000
+})
+
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth
+  adapter: PostgresAdapter(pool),
   providers: [
     GitHub({ 
       clientId: process.env.GITHUB_CLIENT_ID, 
