@@ -86,7 +86,7 @@ function Navbar() {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  <TooltipProvider>
+                  {/* <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
                         <Notifications notifications={notifications} />
@@ -95,7 +95,7 @@ function Navbar() {
                         Notifications
                       </TooltipContent>
                     </Tooltip>
-                  </TooltipProvider>
+                  </TooltipProvider> */}
                 
                 <ModeToggle />
                   <UserNav />
