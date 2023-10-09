@@ -45,13 +45,13 @@ export const config = {
             console.log(`User '${username}' added to the database.`);
 
             const sessionUser = await sql`
-              SELECT Userid FROM users
+              SELECT id FROM users
               WHERE Username = ${username};
             `;
 
             console.log("Session User:", sessionUser.rows[0]);
 
-            const userId = sessionUser.rows[0].userid;
+            const userId = sessionUser.rows[0].id;
             console.log("User ID:", userId);
 
             const userSettingsExists = await sql`
