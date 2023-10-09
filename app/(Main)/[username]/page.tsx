@@ -103,30 +103,30 @@ export default async function Page({ params }: {
   //   fetchData();
   // }, [deleted]);
 
-  async function handleDelete(posturl: string) {
-    await fetch(`/api/posts/${user?.username}?postid=${posturl}`, {
-      method: "DELETE",
-    });
-    setDeleted(true);
-  }
+  // async function handleDelete(posturl: string) {
+  //   await fetch(`/api/posts/${user?.username}?postid=${posturl}`, {
+  //     method: "DELETE",
+  //   });
+  //   setDeleted(true);
+  // }
 
-  async function handleFollow(followeeId: string) {
-    if (status === "authenticated") {
-      setIsFollowingLoading(true);
-      try { 
-      const followerId = (await getSessionUser()).userid;
-      await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-        method: "GET",
-      });
-      setIsFollowingLoading(false);
-      } catch (error) {
-        console.error(error);
-        setIsFollowingLoading(false);
-      }
-    } else {
-      return null;
-    }
-  }
+  // async function handleFollow(followeeId: string) {
+  //   if (status === "authenticated") {
+  //     setIsFollowingLoading(true);
+  //     try { 
+  //     const followerId = (await getSessionUser()).userid;
+  //     await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+  //       method: "GET",
+  //     });
+  //     setIsFollowingLoading(false);
+  //     } catch (error) {
+  //       console.error(error);
+  //       setIsFollowingLoading(false);
+  //     }
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   // if (!isLoaded) {
   //   // Loading skeleton or spinner while fetching data
@@ -180,7 +180,7 @@ export default async function Page({ params }: {
           </div>
           </div>
 
-          {
+          {/* {
             status === "authenticated"? (
               session?.user?.name === user?.name || session?.user?.name === user?.username ? (
                 <Button variant={"outline"} className="w-full">Edit Profile</Button>
@@ -202,7 +202,7 @@ export default async function Page({ params }: {
                 <Button variant={"secondary"} className="w-full">Follow</Button>
               </LoginDialog>
             )
-          }
+          } */}
 
           {user?.bio && (<div className="w-full">{user?.bio}</div>)}
 
@@ -358,7 +358,7 @@ export default async function Page({ params }: {
 
 
       </div>
-      <div className="row-span-2 md:col-span-2">
+      {/* <div className="row-span-2 md:col-span-2">
         <div className="user-articles py-4 md:px-8 space-y-6">
           {posts?.length > 0 ? (
             posts?.map((article: any) => (
@@ -404,7 +404,7 @@ export default async function Page({ params }: {
             <p className="text-base font-light text-center py-5">This user has no posts</p>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
