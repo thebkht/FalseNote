@@ -9,19 +9,8 @@ import GitHub from "next-auth/providers/github"
 import { redirect } from "next/navigation"
 import { NextResponse } from "next/server"
 
-const pool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DATABASE,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000
-})
-
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth
-  adapter: PostgresAdapter(pool),
   providers: [
     GitHub({ 
       clientId: process.env.GITHUB_CLIENT_ID, 
@@ -50,7 +39,7 @@ export const config = {
           // User doesn't exist, add them to the Users table
           try {
             await sql`
-              INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
+              INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Image, Location)
               VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${bio}, ${avatar_url}, ${location});
             `;
             console.log(`User '${username}' added to the database.`);
