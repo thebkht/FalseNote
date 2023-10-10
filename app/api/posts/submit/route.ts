@@ -155,6 +155,5 @@ const tagId = await sql`
           return NextResponse.json({body: "Error processing data"},
             {status: 500});
         }
-        return NextResponse.json({body: "Unsupported method"}, {status: 405});
       }
      
