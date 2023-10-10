@@ -6,5 +6,5 @@ export default async function getAllUsers() {
        `;
      
      //return usernames
-     return rows.map((row) => row.username);
+     return rows;
 }
