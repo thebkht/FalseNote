@@ -8,16 +8,6 @@ import {
   UserDetails,
   UserPosts,
 } from "@/components/user";
-import getAllUsers from "@/components/get-all-users";
-
-export const generateStaticParams = async () => {
-  const users = getAllUsers();
-  return (await users).map((user: any) => ({
-    params: {
-      username: user.username,
-    },
-  }));
-};
 
 
 export default async function Page({ params }: {
