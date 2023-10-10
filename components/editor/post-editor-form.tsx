@@ -45,6 +45,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import { getSessionUser } from "../get-session-user"
 import { useRouter } from "next/navigation"
+import Markdown from "markdown-to-jsx";
 
 export function PostEditorForm(props: {  post: any }) {
   const sessionUser = useSession().data?.user as any;
@@ -204,10 +205,7 @@ const defaultValues: Partial<PostFormValues> = {
   async function handleContentChange(value: string) {
     form.setValue('content', value); // Update the form field value
 
-    // Use remark to convert markdown into HTML string
-    const processedContent = await remark().use(html).process(value);
-    const contentHtml = processedContent.toString();
-    setMarkdownContent(contentHtml);
+    setMarkdownContent(value);
   }
 
   //Set url value from title value
@@ -283,7 +281,10 @@ const defaultValues: Partial<PostFormValues> = {
             )}
           /></TabsContent>
           <TabsContent value="preview" className="px-5 pb-5 bg-popover py-4 text-sm rounded-md">
-            <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
+          <article className="article__content markdown-body">
+                              <Markdown>{markdownContent}</Markdown>
+                              {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
+                         </article>
           </TabsContent>
         </Tabs>
 

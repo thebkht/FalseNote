@@ -177,7 +177,7 @@
   @apply ;
 } */
 
-.markdown-body p {
+/* .markdown-body p {
   @apply mb-4 text-sm md:text-base;
 }
 
@@ -243,7 +243,7 @@
 
 .markdown-body code {
   @apply py-1 px-1 rounded-sm bg-muted text-muted-foreground;
-}
+} */
 
 .container-5xl {
   @apply max-w-5xl mx-auto px-4;
@@ -333,4 +333,187 @@ grid-template-columns: 1fr !important;
   @apply absolute text-center py-1 px-2.5 text-2xl font-bold text-muted-foreground;
   content: counter(counter);
   left: -10px;
+}
+
+.markdown-body{
+  @apply prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto;
+}
+
+.markdown-body p {
+  @apply mb-4 text-sm md:text-base text-foreground;
+}
+
+.markdown-body h1 {
+  @apply text-3xl md:text-4xl font-bold my-4 text-foreground;
+}
+
+.markdown-body h2 {
+  @apply text-2xl md:text-3xl font-bold my-4 pb-1.5 text-foreground;
+}
+
+.markdown-body h3 {
+  @apply text-xl md:text-2xl font-bold my-4 pb-1.5 text-foreground;
+}
+
+.markdown-body h4 {
+  @apply text-lg md:text-xl font-bold my-4 pb-1.5 text-foreground;
+}
+
+.markdown-body h5 {
+  @apply text-base md:text-lg font-bold my-4 pb-1.5 text-foreground;
+}
+
+.markdown-body h6 {
+  @apply text-base font-bold my-4 pb-1.5 text-foreground;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+  @apply font-bold border-b-2 border-muted;
+}
+
+.markdown-body ul {
+  @apply list-disc list-inside text-foreground;
+}
+
+.markdown-body ol {
+  @apply list-decimal ml-6 my-4 text-foreground;
+}
+
+.markdown-body li {
+  @apply mb-2;
+}
+
+.markdown-body li p {
+  @apply inline;
+}
+
+.markdown-body a {
+  @apply underline text-primary;
+}
+
+.markdown-body a:hover {
+  @apply text-foreground;
+}
+
+.markdown-body blockquote {
+  @apply border-l-4 border-primary pl-4 my-8;
+}
+
+.markdown-body blockquote p {
+  @apply text-base;
+}
+
+.markdown-body pre {
+  @apply my-4 rounded-sm bg-card text-card-foreground;
+}
+
+.markdown-body code {
+  @apply py-1.5 px-1.5 rounded-sm bg-card text-card-foreground font-mono;
+}
+
+.markdown-body pre code {
+  @apply py-0 px-0 rounded-sm bg-card text-card-foreground;
+}
+
+.markdown-body hr {
+  @apply my-8 border-none border-t border-card;
+}
+
+.markdown-body table {
+  @apply w-full my-8  border text-card-foreground rounded-lg text-base;
+}
+
+.markdown-body table th {
+  @apply text-left px-4 py-2 border text-card-foreground;
+}
+
+.markdown-body table td {
+  @apply px-4 py-2 border;
+}
+
+.markdown-body strong {
+  @apply font-bold text-foreground;
+}
+
+.markdown-body em {
+  @apply italic text-foreground;
+}
+
+.markdown-body del {
+  @apply line-through text-foreground;
+}
+
+.markdown-body hr {
+  @apply my-8 border-none border-t border-card;
+}
+
+.markdown-body img {
+  @apply w-full h-auto;
+}
+
+.markdown-body .article__cover-image {
+  @apply w-full h-auto mb-8 px-4;
+}
+
+.markdown-body .article__cover-image img{
+  @apply rounded-md ;
+}
+
+.markdown-body .article__cover-image figcaption{
+  @apply text-center text-sm text-muted-foreground;
+}
+
+.markdown-body .article__cover-image figcaption a{
+  @apply underline;
+}
+
+.markdown-body .article__cover-image figcaption a:hover{
+  @apply text-foreground;
+}
+
+.markdown-body .article__cover-image figcaption p{
+  @apply inline;
+}
+
+.markdown-body .article__cover-image figcaption p::after{
+  content: "·";
+  @apply text-muted-foreground inline-block px-1 ;
+}
+
+.markdown-body .article__cover-image figcaption p:last-child::after{
+  content: "";
+}
+
+.markdown-body .article__cover-image figcaption p a{
+  @apply underline;
+}
+
+.markdown-body .article__cover-image figcaption p a:hover{
+  @apply text-foreground;
+}
+
+.markdown-body .article__cover-image figcaption p a::after{
+  content: "·";
+  @apply text-muted-foreground inline-block px-1 ;
+}
+
+.markdown-body .article__cover-image figcaption p a:last-child::after{
+  content: "";
+}
+
+.markdown-body .article__cover-image figcaption p a{
+  @apply underline;
+}
+
+.markdown-body .article__cover-image figcaption p a:hover{
+  @apply text-foreground;
+}
+
+.markdown-body .article__cover-image figcaption p a::after{
+  content: "·";
+  @apply text-muted-foreground inline-block px-1 ;
+}
+
+.markdown-body .article__cover-image figcaption p a:last-child::after{
+  content: "";
 }

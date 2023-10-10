@@ -45,6 +45,7 @@ import { redirect, useRouter } from "next/navigation"
 import { remark } from "remark";
 import html from "remark-html";
 import { ToastAction } from "../ui/toast"
+import Markdown from "markdown-to-jsx";
 
 
 const postFormSchema = z.object({
@@ -228,10 +229,7 @@ export function PostForm() {
   async function handleContentChange(value: string) {
     form.setValue('content', value); // Update the form field value
 
-    // Use remark to convert markdown into HTML string
-    const processedContent = await remark().use(html).process(value);
-    const contentHtml = processedContent.toString();
-    setMarkdownContent(contentHtml);
+    setMarkdownContent(value);
   }
 
   //Set url value from title value
@@ -312,7 +310,9 @@ export function PostForm() {
             )}
           /></TabsContent>
           <TabsContent value="preview" className="px-5 pb-5 bg-popover py-4 text-sm rounded-md">
-            <div dangerouslySetInnerHTML={{ __html: markdownContent }}  className="markdown-body"/>
+          <article className="article__content markdown-body">
+                              <Markdown>{markdownContent}</Markdown>
+                         </article>
           </TabsContent>
         </Tabs>
 

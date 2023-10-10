@@ -52,8 +52,8 @@ export default async function PostView({ params }: { params: { username: string,
      const { rows: postData } = await sql`SELECT * FROM blogposts WHERE authorid = ${author.userid} AND url = ${params.url}`;
      const post = postData[0];
      if (!post) redirect("/404");
-     const processedContent = await remark().use(html).process(post.content);
-     post.content = processedContent.toString();
+     // const processedContent = await remark().use(html).process(post.content);
+     // post.content = processedContent.toString();
      const { rows: postComments } = await sql`SELECT * FROM comments WHERE blogpostid = ${post.postid}`;
      const { rows: postCommentsAuthor } = await sql`SELECT * FROM users WHERE userid IN (SELECT authorid FROM comments WHERE blogpostid = ${post.postid})`;
      postComments.forEach((comment: any) => {

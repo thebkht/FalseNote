@@ -12,6 +12,7 @@ import Image from "next/image";
 import { use, useEffect, useState } from "react";
 import { getSessionUser } from "../get-session-user";
 import { useSession } from "next-auth/react";
+import Markdown from "markdown-to-jsx";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -80,13 +81,11 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
           <>
                <div className="article">
                     <div className="article__container">
-                         <div className="article__header">
+                         <div className="article__header max-w-[65ch] lg:text-xl mx-auto">
                          {
                                    post?.coverimage && (
                                         <div className="article__cover-image">
-                                             <AspectRatio ratio={16 / 9} className="article__cover-image">
                                              <Image src={post?.coverimage} alt={post?.title} layout="fill" objectFit="cover" className="rounded-lg" />
-                                        </AspectRatio>
                                         </div>
                                    )
                               }
@@ -150,9 +149,10 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
 
                          <Separator className="mt-8" />
 
-                         <div className="article__content">
-                              <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" />
-                         </div>
+                         <article className="article__content markdown-body prose lg:prose-xl">
+                              <Markdown>{post?.content}</Markdown>
+                              {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
+                         </article>
 
                          <Separator className="my-8" />
 
