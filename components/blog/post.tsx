@@ -36,7 +36,7 @@ const formatDate = (dateString: string | number | Date) => {
 export default function Post({ post, author, sessionUser, tags }: { post: any, author: any, sessionUser: any, tags: any }) {
      const [isFollowing, setIsFollowing] = useState<boolean>(false);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
-     const { status } = useSession();
+     const { status, data: session } = useSession();
 
      async function incrementPostViews() {
           const cookieName = `post_views_${author.username}_${post.url}`;
@@ -116,7 +116,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                              </UserHoverCard>
 
                                              {
-                                                  status === "authenticated" ? sessionUser?.userid !== author?.userid &&
+                                                  status === "authenticated" ? session.user?.name !== author?.username || session.user?.name !== author?.name &&
                                                   (
                                                        <Button
                                                             variant="link"
