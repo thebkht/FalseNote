@@ -189,7 +189,7 @@ export default function UserDetails({ className, children, user, followers, foll
       )) 
             }
             {
-              followers.length === 0 && (
+              followersRef.current.length === 0 && (
                 <p className="text-sm text-muted-foreground">No followers</p>
               )
             }
