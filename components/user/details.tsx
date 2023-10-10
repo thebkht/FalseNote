@@ -11,8 +11,10 @@ import Link from "next/link";
 import { formatNumberWithSuffix } from "../format-numbers";
 import LoginDialog from "../login-dialog";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getSessionUser } from "../get-session-user";
+
+import { useRef } from "react";
 
 function getRegistrationDateDisplay(registrationDate: string) {
      ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -39,15 +41,36 @@ export default function UserDetails({ className, children, user, followers, foll
      const { data: session, status } = useSession();
      const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+     const followersRef = useRef(followers);
+     
+     useEffect(() => {
+      async function fetchData(followersRef: React.MutableRefObject<any>, user: any, status: string) {
+        if (status === "authenticated") {
+          const followerId = (await getSessionUser()).userid;
+          const userFollowers = await fetch(`/api/users/${user?.username}`);
+          const followers = await userFollowers.json().then((res) => res.user.followers);
+          followersRef.current = followers;
+          console.log(followersRef.current);
+          setIsFollowing(followers.find((follower: any) => follower.userid === followerId));
+        }
+      }
+
+    
+      fetchData(followersRef, user, status);
+       }, [isFollowing]);
 
      async function handleFollow(followeeId: string) {
     if (status === "authenticated") {
       setIsFollowingLoading(true);
       try { 
+      setIsFollowing(!isFollowing);
       const followerId = (await getSessionUser()).userid;
-      await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+      const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
         method: "GET",
       });
+      if (!result.ok) {
+        setIsFollowing(!isFollowing);
+      }
       setIsFollowingLoading(false);
       } catch (error) {
         console.error(error);
@@ -122,14 +145,14 @@ export default function UserDetails({ className, children, user, followers, foll
             <Users2 className="h-5 w-5 text-muted-foreground" />
             <Dialog>
   <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
-              <span>{formatNumberWithSuffix(followers.length)} <span className="text-muted-foreground ml-2">Followers</span></span>
+              <span>{formatNumberWithSuffix(followersRef.current.length)} <span className="text-muted-foreground ml-2">Followers</span></span>
             </Button></DialogTrigger>
   <DialogContent>
     <DialogHeader>
       <DialogTitle>Followers</DialogTitle>
     </DialogHeader>
     <div className="space-y-4">
-      {followers.map((follower: any) => (
+      {followersRef.current.map((follower: any) => (
         <div className="flex gap-4 w-full items-center justify-between" key={follower.userid}>
         <div className="space-y-3">
         <UserHoverCard user={follower} >
