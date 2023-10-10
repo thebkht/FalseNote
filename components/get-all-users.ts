@@ -2,13 +2,9 @@ import { sql } from "@vercel/postgres";
 
 export default async function getAllUsers() {
   const { rows } = await sql`
-     SELECT * FROM users
+     SELECT username FROM users
        `;
      
      //return usernames
-     return rows.map((row) => {
-       return {
-         username: row.username
-       };
-     });
+     return rows.map((row) => row.username);
 }
