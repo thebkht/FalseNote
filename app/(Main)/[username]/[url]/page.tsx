@@ -35,7 +35,7 @@ import PostComment from "@/components/blog/comment"
 import MoreFromAuthor from "@/components/blog/more-from-author"
 
 export default async function PostView({ params }: { params: { username: string, url: string } }) {
-     const { rows: authorData} = await sql`SELECT * FROM users WHERE username = ${params.username}`;
+     const { rows: authorData } = await sql`SELECT * FROM users WHERE username = ${params.username}`;
      const author = authorData[0];
      
      const { rows: authorPosts } = await sql`SELECT * FROM blogposts WHERE authorid = ${author.userid} AND url != ${params.url} ORDER BY PostID DESC LIMIT 4`;
@@ -49,7 +49,7 @@ export default async function PostView({ params }: { params: { username: string,
           )
      }
      )
-     const { rows: postData } = await sql`SELECT * FROM blogposts WHERE authorid = ${author.userid} AND url = ${params.url}`;
+     const { rows: postData } = await sql`SELECT * FROM blogposts WHERE authorid = ${author?.userid} AND url = ${params.url}`;
      const post = postData[0];
      if (!post) redirect("/404");
      // const processedContent = await remark().use(html).process(post.content);

@@ -41,10 +41,10 @@ export default function UserPostCard({ post, user, sessionUser, className, ...pr
           <Card {...props} className={cn("rounded-lg bg-background hover:bg-card w-full", className)}>
                <Link href={`/${user.username}/${post.url}`}>
                     <CardContent className="px-4 md:px-6 py-0 h-full">
-                         <div className="flex items-center flex-col lg:flex-row h-full">
+                         <div className="flex items-center flex-col md:flex-row">
                               {
                                    post.coverimage && (
-                                        <div className="h-full w-full lg:min-w-[180px] py-4 lg:mr-4">
+                                        <div className="h-full w-full md:min-w-[180px] py-4 md:mr-4">
                                              <AspectRatio ratio={4 / 3}>
                                                   <Image
                                                        src={post.coverimage}
@@ -73,7 +73,11 @@ export default function UserPostCard({ post, user, sessionUser, className, ...pr
                                              )}
                                         </CardDescription>
                                    </CardHeader>
-                                   <CardFooter className="px-0 justify-between">
+                                   
+                              </div>
+                              
+                         </div>
+                         <CardFooter className="px-0 justify-between">
                                         <p className="card-text inline mb-0 text-muted-foreground">{formatDate(post.creationdate)}</p>
                                         <div className="stats flex items-center gap-3">
 
@@ -82,8 +86,6 @@ export default function UserPostCard({ post, user, sessionUser, className, ...pr
                                              <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1" /> {formatNumberWithSuffix(post.likes)}</p>
                                         </div>
                                    </CardFooter>
-                              </div>
-                         </div>
                     </CardContent>
                </Link>
           </Card>

@@ -90,7 +90,7 @@ function PostCard(
           </AspectRatio>
         )}
 
-        <CardTitle className="text-xl md:text-2xl">{props.title}</CardTitle>
+        <CardTitle className="text-lg md:text-xl">{props.title}</CardTitle>
         <CardDescription className="text-sm md:text-base">
           {props.content && (
             props.content.length! > 150 ? (
