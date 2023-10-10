@@ -41,10 +41,11 @@ export async function GET(req: Request, { params }: { params: { username: string
   return new ImageResponse(
     (
       post.coverimage ? (
-        <div tw="flex flex-col w-full h-full bg-gray-50 justify-end bg-slate-200" >
-               {post.coverimage && (
-                <img src={post.coverimage} alt="" tw="w-full h-full" style={{ objectFit: 'cover', objectPosition: 'center' }} />
-               )}
+        <div tw="flex flex-col w-full h-full bg-gray-50 justify-end bg-slate-200" style={{
+          backgroundImage: `url(${post.coverimage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }} >
                <div tw="absolute flex flex-col bg-white  py-8 px-14 w-full">
                <div tw="text-3xl font-bold w-3/5 mb-4">{post.title}</div>
           <div tw="flex space-x-4 items-center w-full bg-white justify-between">

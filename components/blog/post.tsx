@@ -84,9 +84,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                          <div className="article__header max-w-[65ch] lg:text-xl mx-auto">
                          {
                                    post?.coverimage && (
-                                        <div className="article__cover-image">
-                                             <Image src={post?.coverimage} alt={post?.title} layout="fill" objectFit="cover" className="rounded-lg" />
-                                        </div>
+                                        <Image src={post?.coverimage} alt={post?.title} fill className="rounded-lg !relative h-auto" />
                                    )
                               }
                               <h1 className="article__title">{post?.title}</h1>

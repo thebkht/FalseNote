@@ -55,11 +55,6 @@ export async function GET(
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
-    // Use remark to convert markdown into HTML string
-    const processedContent = await remark().use(html).process(result.rows[0].content);
-    const contentHtml = processedContent.toString();
-
-    result.rows[0].content = contentHtml;
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });

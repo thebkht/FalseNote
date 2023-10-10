@@ -26,7 +26,7 @@ export async function generateMetadata(
                  url: `${process.env.DOMAIN}/${post.author.username}/${post.url}`,
                  images: [
                    {
-                     url: `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
+                     url: post.coverimage || `${process.env.DOMAIN}/api/ogimage/${post.author.username}/${post.url}`,
                      width: 1200,
                      height: 630,
                      alt: `${post.title} | FalseNotes`,
