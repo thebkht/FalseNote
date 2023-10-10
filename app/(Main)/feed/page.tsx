@@ -19,7 +19,7 @@ export default function Feed() {
   const [page, setPage] = useState(0)
   const [fetching, setFetching] = useState<boolean>(true)
   const [loading, setLoading] = useState(true)
-  const [isEnd, setIsEnd] = useState(false)
+  const [feedLength, setFeedLength] = useState<number>(0)
   const [popularPosts, setPopularPosts] = useState<any | null>([])
   const sentinelRef = useRef(null)
   const route = useRouter()
@@ -29,19 +29,15 @@ async function fetchFeed() {
   if (status !== "unauthenticated") {
     const user = (await sessionUser).userid
      try {
-      let nextPage = page + 1;
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
-      }
-      const nextFeed = await fetch(`/api/feed?user=${user}&page=${nextPage}`).then((res) => res.json());
-      if (nextFeed.feed.length === 0) {
-        setIsEnd(true);
       }
       const data = await response.json();
 
       setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
       setPopularPosts(data.popular);
+      setFeedLength(data.feedLength);
       setFetching(false);
       setLoading(false);
     } catch (error) {
@@ -59,22 +55,24 @@ async function fetchFeed() {
   }, [page])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && !loading) {
-          setPage(prevPage => prevPage + 1)
-        }
-      },
-      { rootMargin: '0px 0px 100% 0px' }
-    )
-
-    if (sentinelRef.current) {
-      observer.observe(sentinelRef.current)
-    }
-
-    return () => {
+    if (feedLength !== 0 && feed.length !== feedLength) {
+      const observer = new IntersectionObserver(
+        entries => {
+          if (entries[0].isIntersecting && !loading) {
+            setPage(prevPage => prevPage + 1)
+          }
+        },
+        { rootMargin: '0px 0px 100% 0px' }
+      )
+  
       if (sentinelRef.current) {
-        observer.unobserve(sentinelRef.current)
+        observer.observe(sentinelRef.current)
+      }
+  
+      return () => {
+        if (sentinelRef.current) {
+          observer.unobserve(sentinelRef.current)
+        }
       }
     }
   }, [loading])
@@ -120,7 +118,7 @@ async function fetchFeed() {
           </div>
 
           <div ref={sentinelRef} />
-          {!isEnd && feed.length > 0 && (
+          {feed.length > 0 && (
             <div className="feed__list_loadmore my-8">
               <div ref={sentinelRef} />
               <Icons.spinner className="h-10 animate-spin mr-2" /> Loading...
@@ -129,7 +127,11 @@ async function fetchFeed() {
           </div>
           {/* Popular posts, blogs, and tags */}
           <div className="feed__popular">
-        <PopularPosts data={popularPosts} isloaded={!fetching} />
+         {
+          popularPosts.length !== 0 && (
+            <PopularPosts data={popularPosts} isloaded={!fetching} />
+          )
+         }
          <EmptyFeed />
           </div>
         </div>

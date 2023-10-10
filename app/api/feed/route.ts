@@ -25,6 +25,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
     LIMIT ${limit} OFFSET ${offset}
   `
 
+  //execute algorithm to determine the end of the feed
+  const { rows: feedLength } = await sql`
+    SELECT COUNT(*) AS feedlength
+    FROM BlogPosts
+    WHERE authorid IN (
+      SELECT followeeid
+      FROM Follows
+      WHERE followerid = ${user_id}
+    )
+  `;
+
   //execute a query to fetch the number of comments of the posts
   const postComments = await sql`
     SELECT blogpostid, COUNT(*) AS commentscount
@@ -92,7 +103,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     })
   })
 
-  return NextResponse.json({ feed, popular })
+  return NextResponse.json({ feed, feedLength, popular })
   }
      catch (error) {
      console.error(error)

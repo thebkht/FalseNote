@@ -32,10 +32,14 @@ export default function EmptyFeed() {
     
 
     fetchData();
-  }, []);
+  }, [status]);
      return (
           <div className="feed__content_featured">
-         <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
+           {
+            featuredDevs.length !== 0 && (
+              <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
+            )
+           }
           </div>
      )
 }
