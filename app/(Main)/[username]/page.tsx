@@ -12,7 +12,7 @@ import getAllUsers from "@/components/get-all-users";
 
 export const generateStaticParams = async () => {
   const users = getAllUsers();
-  const paths = (await users).map((user: any) => ({
+  return (await users).map((user: any) => ({
     params: {
       username: user.username,
     },
