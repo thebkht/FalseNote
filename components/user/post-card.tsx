@@ -46,7 +46,7 @@ export default function UserPostCard({ post, user, sessionUser, className, ...pr
                                         <div className="h-full min-w-[190px] py-4 pr-4">
                                              <AspectRatio ratio={4 / 3}>
                                                   <Image
-                                                       src={post.thumbnail}
+                                                       src={post.coverimage}
                                                        fill
                                                        alt={post.title}
                                                        className="rounded-md
