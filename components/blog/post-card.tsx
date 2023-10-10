@@ -71,9 +71,9 @@ function PostCard(
     <Card {...props} className={cn("rounded-lg bg-background hover:bg-card", props.className)}>
       <Link href={props.url}>
       <CardContent className="px-4 md:px-6 py-0">
-      <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-4")}>
+      <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-2 md:gap-y-4")}>
         {props.thumbnail ? (
-          <AspectRatio ratio={3 / 4}>
+          <AspectRatio ratio={16 / 9}>
             <Image
             src={props.thumbnail}
             fill
@@ -85,13 +85,13 @@ function PostCard(
           />
           </AspectRatio>
         ) : (
-          <AspectRatio ratio={3 / 4}>
+          <AspectRatio ratio={16 / 9}>
             <Icons.noThumbnail className="w-full h-full rounded-md" />
           </AspectRatio>
         )}
 
-        <CardTitle className="">{props.title}</CardTitle>
-        <CardDescription className="text-base">
+        <CardTitle className="text-xl md:text-2xl">{props.title}</CardTitle>
+        <CardDescription className="text-sm md:text-base">
           {props.content && (
             props.content.length! > 150 ? (
               <>{props?.content?.slice(0, 150)}...</>
@@ -101,13 +101,13 @@ function PostCard(
           )}
         </CardDescription>
       </CardHeader>
-      <CardFooter className="px-0 justify-between">
+      <CardFooter className="px-0 justify-between text-sm md:text-base">
         <p className="card-text inline mb-0 text-muted-foreground">{formatDate(props.date)}</p>
                   <div className="stats flex items-center gap-3">
                     
-                    <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1" /> {props.views}</p>
-                    <p className="card-text inline mb-0 text-muted-foreground flex"><MessageCircle className="mr-1" /> {props.comments}</p>
-                    <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1" /> {props.likes}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1 md:h-6 md:w-6 h-5 w-5" /> {props.views}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground flex"><MessageCircle className="mr-1 md:h-6 md:w-6 h-5 w-5" /> {props.comments}</p>
+                    <p className="card-text inline mb-0 text-muted-foreground flex"><Heart className="mr-1 md:h-6 md:w-6 h-5 w-5" /> {props.likes}</p>
                   </div>
       </CardFooter>
       </CardContent>

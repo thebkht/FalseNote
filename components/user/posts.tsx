@@ -1,5 +1,5 @@
 "use client"
-import { ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@radix-ui/react-context-menu";
+import { ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { ContextMenu } from "../ui/context-menu";
 import PostCard from "../blog/post-card";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
      const { data: session } = useSession();
      return (
           <div className={className}>
-               <div className="user-articles py-4 md:px-8 space-y-6">
+               <div className="user-articles py-4 md:px-8 space-y-6 w-full">
           {posts?.length > 0 ? (
             posts?.map((article: any) => (
                 article.visibility === "public" &&
@@ -28,9 +28,24 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
                     <ContextMenu key={article.postid}>
                     <div className="space-y-3 md:space-y-6">
                     <ContextMenuTrigger className="">
-                      <UserPostCard post={article} user={user} sessionUser={sessionUser} />
+                      
+                    <PostCard
+                title={article.title}
+                thumbnail={article.coverimage}
+                content={article.description}
+                author={user?.username || user?.name}
+                date={article.creationdate}
+                views={formatNumberWithSuffix(article.views)}
+                comments={formatNumberWithSuffix(article.comments || 0)}
+                id={article.id}
+                authorid={user?.userid}
+                session={sessionUser}
+                likes={formatNumberWithSuffix(article.likes || 0)}
+                url={`/${user?.username}/${article.url}`}
+                posturl={article.url}
+                className="mt-4" />
                       </ContextMenuTrigger>
-                    <ContextMenuContent>
+                    <ContextMenuContent className="w-full">
                       {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
                         <ContextMenuItem>
                         <Link href={`/editor/${article.url}`}>
@@ -45,7 +60,8 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
                       <ContextMenuItem>Share</ContextMenuItem>
                     </ContextMenuContent>
                     </div>
-                  </ContextMenu>)
+                  </ContextMenu>
+                  )
             ))
           ) : (
             <p className="text-base font-light text-center py-5">This user has no posts</p>

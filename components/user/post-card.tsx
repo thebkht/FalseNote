@@ -37,13 +37,13 @@ export default function UserPostCard({ post, user, sessionUser, className, ...pr
      }
 
      return (
-          <Card {...props} className={cn("rounded-lg bg-background hover:bg-card", className)}>
+          <Card {...props} className={cn("rounded-lg bg-background hover:bg-card w-full", className)}>
                <Link href={`/${user.username}/${post.url}`}>
                     <CardContent className="px-4 md:px-6 py-0">
-                         <div className="flex items-center">
+                         <div className="flex items-center flex-col md:flex-row">
                               {
                                    post.coverimage && (
-                                        <div className="h-full min-w-[190px] py-4 pr-4">
+                                        <div className="h-full w-full md:min-w-[190px] py-4 mr-4">
                                              <AspectRatio ratio={4 / 3}>
                                                   <Image
                                                        src={post.coverimage}
