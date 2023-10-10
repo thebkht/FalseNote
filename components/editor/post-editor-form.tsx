@@ -145,7 +145,7 @@ const defaultValues: Partial<PostFormValues> = {
     try {
       // Submit the form
     await fetch(`/api/posts/submit?postId=${props.post?.postid}`, {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify({ ...data }),
     })
     router.push(`/${user?.username}/${form.getValues('url')}`)

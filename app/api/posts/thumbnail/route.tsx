@@ -55,7 +55,7 @@ try {
 <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={author.profilepicture} />
     <div tw="flex flex-col">
     <span tw="text-base font-bold">{author?.username} </span>
-    <div tw="text-sm text-mute-foreground">{formatDate(creationdate)}</div>
+    <div tw="text-sm text-muted-foreground">{formatDate(creationdate)}</div>
     </div>
 </div>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 689.11 100" height="32">
