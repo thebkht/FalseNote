@@ -89,7 +89,7 @@ export default function CommentForm(props: {session: any, status: any, post: any
                 </UserHoverCard>
                 ) : (
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src="https://avatars.githubusercontent.com/u/144859178?v=4" />
+                    <AvatarImage src="/favicon.ico" />
                     <AvatarFallback>F</AvatarFallback>
                </Avatar>)
                }
@@ -106,7 +106,7 @@ export default function CommentForm(props: {session: any, status: any, post: any
                 ) : (
                   <LoginDialog  className="w-full">
                     <FormControl>
-               <Textarea placeholder="Write a comment..." {...field} className="w-full" onFocus={handleOnFocus} />
+               <Textarea placeholder="Write a comment..." {...field} className="w-full" onFocus={handleOnFocus} readOnly />
              </FormControl>
              <FormMessage />
                   </LoginDialog>

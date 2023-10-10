@@ -19,6 +19,7 @@ export default async function Page({ params }: {
 
   const session = await getSession();
   const user = rows[0];
+  if (!user) redirect("/404");
   
   const {rows: posts} = await sql`SELECT * FROM blogposts WHERE authorid = ${user.userid}`;
   const { rows: postComments } = await sql`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${user.userid})`;
