@@ -37,15 +37,15 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                              title={p.title}
                                              thumbnail={p.coverimage}
                                              content={p.description}
-                                             author={post.author?.username || post.author?.name}
+                                             author={author?.username || author?.name}
                                              date={p.creationdate}
                                              views={formatNumberWithSuffix(p.views)}
                                              comments={formatNumberWithSuffix(p.comments || 0)}
                                              id={p.id}
-                                             authorid={post.author?.userid}
+                                             authorid={author?.userid}
                                              session={sessionUser}
                                              likes={formatNumberWithSuffix(p.likes || 0)}
-                                             url={`/${post.author?.username}/${p.url}`}
+                                             url={`/${author?.username}/${p.url}`}
                                              posturl={p.url} className="bg-transparent !border-none hover:bg-transparent"/>
                                    ))
                               }
