@@ -51,34 +51,42 @@ export async function POST(req: NextRequest) {
 
                     //update tags
                     //first delete all tags associated with the post
-                    await sql`
-                    DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
-                    `;
-                    //then add new tags
-                    if (tags) {
-                         for (const tag of tags) {
-                              // Check if tag exists
-                              const tagExists = await sql`
-                              SELECT * FROM tags WHERE TagName = ${tag.value}
-                              `;
-                              if (tagExists.rows.length === 0) {
-                                   // Insert tag into tags table
-                                   await sql`
-                                   INSERT INTO tags (TagName)
-                                   VALUES (${tag.value})
-                                   `;
-                              }
-                              const tagId = await sql`
-                              SELECT TagID FROM tags WHERE TagName = ${tag.value}
-                              `;
-                              const tagIdInt = tagId.rows?.[0].tagid;
-                              await sql`
-                              INSERT INTO BlogPostTags (BlogPostID, TagID)
-                              VALUES (${postid}, ${tagIdInt})
-                              `;
-                         }
+               }
+               const postTags = await sql`
+               SELECT * FROM BlogPostTags WHERE BlogPostID = ${postid}
+               `;
+               const postTagsData = postTags.rows;
+               if (postTagsData) {
+                    for (const postTag of postTagsData) {
+                         await sql`
+                         DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
+                         `;
                     }
                }
+               if (tags) {
+                    for (const tag of tags) {
+                         // Check if tag exists
+                         const tagExists = await sql`
+                         SELECT * FROM tags WHERE TagName = ${tag.value}
+                         `;
+                         if (tagExists.rows.length === 0) {
+                              // Insert tag into tags table
+                              await sql`
+                              INSERT INTO tags (TagName)
+                              VALUES (${tag.value})
+                              `;
+                         }
+                         const tagId = await sql`
+                         SELECT TagID FROM tags WHERE TagName = ${tag.value}
+                         `;
+                         const tagIdInt = tagId.rows?.[0].tagid;
+                         await sql`
+                         INSERT INTO BlogPostTags (BlogPostID, TagID)
+                         VALUES (${postid}, ${tagIdInt})
+                         `;
+                    }
+               }
+               
 
                return NextResponse.json({ body: "Post updated" });
           }
