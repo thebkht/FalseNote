@@ -130,7 +130,7 @@
 }
 
 .feed__popular {
-  @apply hidden col-span-1 space-y-6 lg:block;
+  @apply hidden col-span-1 space-y-6 md:block;
 }
 
 .article__container {
@@ -299,7 +299,7 @@ grid-template-columns: 1fr !important;
 }
 
 .feed__list{
-  @apply lg:col-span-2 col-span-3;
+  @apply md:col-span-2 col-span-3;
 }
 
 .feed__list_item{
