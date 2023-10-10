@@ -81,7 +81,7 @@ async function fetchFeed() {
 
   return (
     <>
-    <main className="flex min-h-screen flex-col items-center justify-between feed ">
+    <main className="flex flex-col items-center justify-between feed ">
       <div className="feed__content">         
           <div className="feed__list">
          {
