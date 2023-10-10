@@ -100,7 +100,7 @@ export default function FeaturedDev(
                 <div className="space-y-3">
                 <UserHoverCard user={item} >
                 <Link href={`/${item.username}`} className="flex items-center">
-                  <Avatar className="h-10 w-10 mr-2 md:mr-3">
+                  <Avatar className="h-10 w-10 mr-2 md:mr-3 flex items-center justify-center bg-muted">
                     <AvatarImage src={item.profilepicture} alt={item.username} />
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                   </Avatar>
