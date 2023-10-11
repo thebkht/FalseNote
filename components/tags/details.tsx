@@ -28,8 +28,17 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
      const user = session() as any;
 
      useEffect(() => {
-          followersRef.current = fetchFollowers() as any;
-     }, [tagFollowers, isFollowing, fetchFollowers]);
+          async function fetchData(followersRef: React.MutableRefObject<any>, user: any, status: string) {
+            if (status === "authenticated") {
+              const followerId = (await getSessionUser()).userid;
+              const userFollowers = await fetch(`/api/tags?tagId=${tag.tagid}`);
+              const followers = await userFollowers.json().then((res) => res.followers);
+              followersRef.current = followers;
+              setIsFollowing(followers.find((follower: any) => follower.userid === followerId));
+            }
+          }
+          fetchData(followersRef, user, sessionStatus);
+     }, [sessionStatus]);
 
      const handleFollow = () => async () => {
           if (sessionStatus === "authenticated") {
