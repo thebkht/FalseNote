@@ -103,7 +103,7 @@ export default async function PostView({ params }: { params: { username: string,
      return (
           <>
                <Post post={post} author={author} sessionUser={sessionUser} tags={postTags} />
-               <PostComment comments={postComments} sessionUser={sessionUser} post={post} postAuthor={author} />
+               <PostComment comments={postComments} post={post} postAuthor={author} />
                <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
           </>
      )

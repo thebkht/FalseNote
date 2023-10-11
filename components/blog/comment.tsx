@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import { getSessionUser } from "../get-session-user";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -27,10 +28,19 @@ const formatDate = (dateString: string | number | Date) => {
      return formattedDate
 }
 
-export default function PostComment({ comments, sessionUser, post, postAuthor }: { comments: any, sessionUser: any, post: any, postAuthor: any }) {
+export default function PostComment({ comments, post, postAuthor }: { comments: any, post: any, postAuthor: any }) {
      const { status } = useSession();
      const [submitted, setSubmitted] = useState<boolean>(false);
      const commentsRef = useRef(comments)
+     const [sessionUser, setSessionUser] = useState<any>(null)
+
+     useEffect(() => {
+          async function fetchData() {
+               const sessionUser = await getSessionUser();
+               setSessionUser(sessionUser)
+          }
+          fetchData()
+     }, [])
 
      useEffect(() => {
           async function fetchData() {
@@ -50,7 +60,7 @@ export default function PostComment({ comments, sessionUser, post, postAuthor }:
           <>                     <div className="article__comments my-8 max-w-[65ch] lg:text-xl mx-auto">
                                <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
                                {/* commentform prop that inticades comment posted or not */}
-                               <CommentForm session={sessionUser} post={post?.postid} status={status} submitted={submitted} />
+                               <CommentForm session={sessionUser} post={post?.postid}  submitted={submitted} />
                                <div className="article__comments-list">
                                     {
                                          commentsRef.current?.map((comment: any) => (

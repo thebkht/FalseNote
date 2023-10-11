@@ -157,11 +157,11 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                          {
                                    tags && (
                                         <>
-                                             <div className="article__tags">
+                                             <div className="article__tags space-x-2">
                                              {tags.map((tag: any) => (
                                                   <Link href={`/tag/${tag.tagname}`} key={tag.tagid}>
-                                                       <Badge variant={"secondary"} className="h-6 w-auto !px-2 !py-0.5 mr-2 cursor-pointer font-normal">
-                                                            #{tag.tagname}
+                                                       <Badge variant={"secondary"} className="h-6 w-auto cursor-pointer font-normal capitalize text-sm px-2 py-4">
+                                                            {tag.tagname}
                                                        </Badge>
                                                   </Link>
                                              ))}
