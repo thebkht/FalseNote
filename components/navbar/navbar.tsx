@@ -36,7 +36,7 @@ function Navbar() {
     }
   }, [status]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     async function getNotifications(){
       const sessionUser = await getSessionUser();
       try {
@@ -50,7 +50,7 @@ function Navbar() {
       }
     }
     getNotifications();
-      }, [session])
+      }, [session]) */
 
   if (isLoaded) {
     return (

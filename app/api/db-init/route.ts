@@ -74,6 +74,16 @@ export async function GET(request: Request) {
       );
     `;
 
+    // Create the TagFollows table
+    await sql`
+      CREATE TABLE IF NOT EXISTS TagFollows (
+        TagFollowID SERIAL PRIMARY KEY,
+        TagID INT REFERENCES Tags(TagID),
+        UserID INT REFERENCES Users(UserID),
+        CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
     // Create the Follows table
     await sql`
       CREATE TABLE IF NOT EXISTS Follows (
