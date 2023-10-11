@@ -3,68 +3,70 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { getSessionUser } from "../get-session-user";
 import { Button } from "../ui/button";
-import { is } from "date-fns/locale";
 
 export default function TagDetails({tag, post, tagFollowers} : {tag: any, post: any, tagFollowers: any}) {
-     const session = useCallback(async () => {
+     const session = async () => {
           return await getSessionUser();
-     }, []);
+     };
 
-     const followersRef = useRef(tagFollowers);
+     const followersRef = useRef(tagFollowers); // Initialize it as an empty object
 
      const [isFollowing, setIsFollowing] = useState<boolean>(false);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
-
-     const fetchFollowers = useCallback(async () => {
-          const data = await fetch(`/api/tags?tagId=${tag.tagid}`, {
-               method: "GET",
-          });
-          const followers = await data.json();
-          return followers.followers;
-     }, [tag.tagid]);
+   
+     const fetchFollowers = async () => {
+       const data = await fetch(`/api/tags?tagId=${tag.tagid}`, {
+         method: "GET",
+       });
+       const followers = await data.json();
+       return followers.followers as any;
+     };
      const user = session() as any;
-
+   
      useEffect(() => {
-          if (user) {
-               tagFollowers.find((follower: any) => {
-                    if (follower.userid === user?.userid) {
-                         setIsFollowing(true);
-                    } else {
-                         setIsFollowing(false);
-                    }
-               }
-               )
-          } else {
-               setIsFollowing(false);
-          }
-     }, [session, tagFollowers])
-
+       if (user) {
+         const followerArray = Object.values(followersRef.current); // Convert object to array
+         const followerFound = followerArray.find((follower: any) => {
+           return follower.userid === user?.userid;
+         });
+   
+         if (followerFound) {
+           setIsFollowing(true);
+         } else {
+           setIsFollowing(false);
+         }
+       } else {
+         setIsFollowing(false);
+       }
+     }, [session, tagFollowers]);
+   
      useEffect(() => {
-          followersRef.current = fetchFollowers();
-          followersRef.current.find((follower: any) => {
-               if (follower.userid === user?.userid) {
-                    setIsFollowing(true);
-               } else {
-                    setIsFollowing(false);
-               }
-          }
-          )
-     }, [tagFollowers, isFollowing, fetchFollowers])
+       followersRef.current = fetchFollowers() as any;
+       const followerArray = Object.values(followersRef.current); // Convert object to array
+       const followerFound = followerArray.find((follower: any) => {
+         return follower.userid === user?.userid;
+       });
+   
+       if (followerFound) {
+         setIsFollowing(true);
+       } else {
+         setIsFollowing(false);
+       }
+     }, [tagFollowers, isFollowing, fetchFollowers]);
 
-     console.log(tag);
-     const handleFollow = () => async () => {
-          setIsFollowingLoading(true);
-          //add to tagfollow table
-          const userid = (await session()).userid;
-          const response = await fetch(`/api/follow/tag?tagId=${tag.tagid}&userId=${userid}`, {
-               method: "POST",
-          });
-          //if successful, update tag.followers and set isFollowing to true
-          if (response.status === 200) {
-               setIsFollowing(!isFollowing);
-          }
-          setIsFollowingLoading(false);
+  const handleFollow = () => async () => {
+     setIsFollowingLoading(true);
+     // add to tagfollow table
+     const userid = (await session()).userid;
+     const response = await fetch(`/api/follow/tag?tagId=${tag.tagid}&userId=${userid}`, {
+       method: "POST",
+     });
+     // if successful, update tag.followers and set isFollowing to true
+     if (response.status === 200) {
+       setIsFollowing(!isFollowing);
      }
+     setIsFollowingLoading(false);
+   };
      
      return (
           <>
