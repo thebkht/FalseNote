@@ -118,7 +118,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                                        <Button
                                                             variant="link"
                                                             className="py-0 h-6 px-1.5"
-                                                            onClick={() => handleFollow(post?.authorId)}
+                                                            onClick={() => handleFollow(post?.authorid)}
                                                             disabled={isFollowingLoading} >
                                                             {isFollowing ? "Following" : "Follow"}
                                                        </Button>

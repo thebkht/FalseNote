@@ -23,11 +23,16 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                     const followerId = (await getSessionUser()).userid;
                     const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
-                    });
+                    }).then((res) => res.json());
                     if (!result.ok) {
                          setIsFollowing(!isFollowing);
                     }
-                    author.followers = author.followers + 1;
+                    if (result.message === "followed") {
+                         author.followers = author.followers + 1;
+                    } else if (result.message === "unfollowed") {
+                         author.followers = author.followers - 1;
+                    }
+
                     setIsFollowingLoading(false);
                } catch (error) {
                     console.error(error);

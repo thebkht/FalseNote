@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
 export async function GET(request: NextRequest) {
@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
 
      if (isFollowed.rowCount > 0) {
           await sql`DELETE FROM follows WHERE followeeId = ${followeeId} AND followerId = ${followerId}`;
+
+          return NextResponse.json({ message: "unfollowed" }, { status: 200 });
      } else {
           await sql`INSERT INTO follows (followeeId, followerId) VALUES (${followeeId}, ${followerId})`;
 
@@ -33,7 +35,7 @@ export async function GET(request: NextRequest) {
           `;
      }
 
-     return new Response("followed", { status: 200 });
+     return NextResponse.json({ message: "followed" }, { status: 200 });
      } catch (error: any) {
           return new Response(error.message, { status: 500 });
      }
