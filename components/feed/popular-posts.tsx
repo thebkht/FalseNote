@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { getSessionUser } from "@/components/get-session-user";
 import { useSession } from "next-auth/react";
 import { Icons } from "@/components/icon";
+import { formatNumberWithSuffix } from "../format-numbers";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -89,7 +90,7 @@ export default function PopularPosts(
                 <Link href={`/${item.author.username}/${item.url}`} className="text-base font-medium">
                   {item.title}
                 </Link>
-                <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.creationdate)}</span></div>
+                <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.creationdate)}</span><span>{formatNumberWithSuffix(item.views) } views</span></div>
               </li>
 
             ))}
