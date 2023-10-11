@@ -5,6 +5,7 @@ import { getSessionUser } from "../get-session-user";
 import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import LoginDialog from "../login-dialog";
+import { is } from "date-fns/locale";
 
 export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post: any, tagFollowers: any }) {
      const session = async () => {
@@ -17,28 +18,22 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
 
      const [isFollowing, setIsFollowing] = useState<boolean>(false);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
-
-     const fetchFollowers = async () => {
-          const data = await fetch(`/api/tags?tagId=${tag.tagid}`, {
-               method: "GET",
-          });
-          const followers = await data.json();
-          return followers.followers as any;
-     };
      const user = session() as any;
 
      useEffect(() => {
           async function fetchData(followersRef: React.MutableRefObject<any>, user: any, status: string) {
             if (status === "authenticated") {
               const followerId = (await getSessionUser()).userid;
-              const userFollowers = await fetch(`/api/tags?tagId=${tag.tagid}`);
+              const userFollowers = await fetch(`/api/tags?tagId=${tag.tagid}`, {
+               method: "GET",
+             });
               const followers = await userFollowers.json().then((res) => res.followers);
               followersRef.current = followers;
               setIsFollowing(followers.find((follower: any) => follower.userid === followerId));
             }
           }
           fetchData(followersRef, user, sessionStatus);
-     }, [sessionStatus]);
+     }, [isFollowing]);
 
      const handleFollow = () => async () => {
           if (sessionStatus === "authenticated") {
