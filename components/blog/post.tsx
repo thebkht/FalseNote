@@ -65,17 +65,23 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
           if (status === "authenticated") {
                setIsFollowingLoading(true);
                try {
+                    setIsFollowing(!isFollowing);
                     const followerId = (await getSessionUser()).userid;
-                    await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+                    const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
-                    });
+                    }).then((res) => res.json());
+                    if (!result.ok) {
+                         setIsFollowing(!isFollowing);
+                    }
+
+                    setIsFollowingLoading(false);
                } catch (error) {
                     console.error(error);
+                    setIsFollowingLoading(false);
                }
           } else {
                return null;
           }
-
      }
      return (
           <>
