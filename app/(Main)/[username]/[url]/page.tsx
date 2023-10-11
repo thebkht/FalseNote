@@ -49,6 +49,8 @@ export default async function PostView({ params }: { params: { username: string,
           )
      }
      )
+     const { rows: auhorFollowers } = await sql`SELECT * FROM users WHERE userid IN (SELECT followerid FROM follows WHERE followeeid = ${author.userid})`;
+     author.followers = auhorFollowers.length;
      const { rows: postData } = await sql`SELECT * FROM blogposts WHERE authorid = ${author?.userid} AND url = ${params.url}`;
      const post = postData[0];
      if (!post) redirect("/404");

@@ -113,14 +113,13 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                              </UserHoverCard>
 
                                              {
-                                                  status === "authenticated" ? session.user?.name !== author?.username || session.user?.name !== author?.name &&
+                                                  status === "authenticated" && session.user?.name !== author?.username || session?.user?.name !== author?.name ?
                                                   (
                                                        <Button
                                                             variant="link"
                                                             className="py-0 h-6 px-1.5"
                                                             onClick={() => handleFollow(post?.authorId)}
-                                                            disabled={isFollowingLoading}
-                                                       >
+                                                            disabled={isFollowingLoading} >
                                                             {isFollowing ? "Following" : "Follow"}
                                                        </Button>
                                                   ) : (
@@ -129,13 +128,13 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                                                  variant="link"
                                                                  className="py-0 h-6 px-3"
                                                                  onClick={() => handleFollow(post?.authorId)}
-                                                                 disabled={isFollowingLoading}
-                                                            >
+                                                                 disabled={isFollowingLoading} >
                                                                  {isFollowing ? "Following" : "Follow"}
                                                             </Button>
                                                        </LoginDialog>
                                                   )
-                                                  }
+}
+
                                              
 
 
