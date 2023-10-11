@@ -28,34 +28,7 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
      const user = session() as any;
 
      useEffect(() => {
-          if (user) {
-               const followerArray = Object.values(followersRef.current); // Convert object to array
-               const followerFound = followerArray.find((follower: any) => {
-                    return follower.userid === user?.userid;
-               });
-
-               if (followerFound) {
-                    setIsFollowing(true);
-               } else {
-                    setIsFollowing(false);
-               }
-          } else {
-               setIsFollowing(false);
-          }
-     }, [session, tagFollowers]);
-
-     useEffect(() => {
           followersRef.current = fetchFollowers() as any;
-          const followerArray = Object.values(followersRef.current); // Convert object to array
-          const followerFound = followerArray.find((follower: any) => {
-               return follower.userid === user?.userid;
-          });
-
-          if (followerFound) {
-               setIsFollowing(true);
-          } else {
-               setIsFollowing(false);
-          }
      }, [tagFollowers, isFollowing, fetchFollowers]);
 
      const handleFollow = () => async () => {
