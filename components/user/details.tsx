@@ -50,7 +50,6 @@ export default function UserDetails({ className, children, user, followers, foll
           const userFollowers = await fetch(`/api/users/${user?.username}`);
           const followers = await userFollowers.json().then((res) => res.user.followers);
           followersRef.current = followers;
-          console.log(followersRef.current);
           setIsFollowing(followers.find((follower: any) => follower.userid === followerId));
         }
       }
