@@ -118,7 +118,7 @@ async function fetchFeed() {
           </div>
 
           <div ref={sentinelRef} />
-          {feed.length > 0 && (
+          {feed.length !== 0 && (
             <div className="feed__list_loadmore my-8">
               <div ref={sentinelRef} />
               <Icons.spinner className="h-10 animate-spin mr-2" /> Loading...

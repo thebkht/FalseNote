@@ -29,8 +29,6 @@ export async function GET(req: Request, { params }: { params: { username: string
     )
     GROUP BY BlogPostID;
     `;
-
-    console.log("posts comments", postComments);
           
     posts.rows.forEach((post: any) => {
       postComments.rows.forEach((comment: any) => {
@@ -55,8 +53,6 @@ export async function GET(req: Request, { params }: { params: { username: string
           SELECT * FROM users WHERE UserID IN (SELECT FolloweeID FROM Follows WHERE FollowerID= ${result.rows[0]?.userid})`;
 
     result.rows[0].following = following.rows;
-
-    console.log("Query result:", result)
 
     if (result.rowCount === 0 || result.rows.length === 0 || username === undefined, username === null) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });

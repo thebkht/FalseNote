@@ -79,7 +79,7 @@ export default function FeaturedDev(
   let content = null;
 
   if (Array.isArray(featuredDevs)) {
-    isLoaded ? content = (
+    featuredDevs.length && isLoaded ? content = (
       <Card className="feed__content_featured_card">
         <CardHeader className="p-4">
           <CardTitle className="feed__content_featured_card_title text-xl">Featured Devs</CardTitle>
