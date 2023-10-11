@@ -8,7 +8,7 @@ const { rows: tags } = await sql`SELECT * FROM tags`;
      }
      )
 
-export default function TagLayout({ children, tag }: { children: React.ReactNode, tag: any }) {
+export default function TagLayout({ children }: { children: React.ReactNode }) {
 
      return (
           <>
