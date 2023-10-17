@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres'
+import { sql } from '@/lib/postgres'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest, res: NextResponse) {
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     offset = (page + 1) * limit 
   }
 
-  const { rows: feed } = await sql`
+  const { rows: feed } = await sql(`
     SELECT *
     FROM BlogPosts
     WHERE authorid IN (
@@ -23,10 +23,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
     )
     ORDER BY creationdate DESC
     LIMIT ${limit} OFFSET ${offset}
-  `
+  `)
 
   //execute algorithm to determine the end of the feed
-  const { rows: feedLength } = await sql`
+  const { rows: feedLength } = await sql(`
     SELECT COUNT(*) AS feedlength
     FROM BlogPosts
     WHERE authorid IN (
@@ -34,14 +34,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
       FROM Follows
       WHERE followerid = ${user_id}
     )
-  `;
+  `);
 
   //execute a query to fetch the number of comments of the posts
-  const postComments = await sql`
+  const postComments = await sql(`
     SELECT blogpostid, COUNT(*) AS commentscount
     FROM Comments
     GROUP BY blogpostid
-  `;
+  `);
 
   console.log("posts comments", postComments);
         
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   }
   )
 
-  const { rows: author } = await sql`
+  const { rows: author } = await sql(`
     SELECT *
     FROM Users
     WHERE userid IN (
@@ -67,7 +67,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         WHERE followerid = ${user_id}
       )
     )
-  `
+  `)
 
   feed.forEach((post: any) => {
     author.forEach((user: any) => {
@@ -77,14 +77,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
     })
   })
 
-  const { rows: popular } = await sql`
+  const { rows: popular } = await sql(`
     SELECT *
     FROM BlogPosts
     ORDER BY views DESC
     LIMIT 5
-  `
+  `)
 
-  const { rows: popularAuthor } = await sql`
+  const { rows: popularAuthor } = await sql(`
     SELECT *
     FROM Users
     WHERE userid IN (
@@ -93,7 +93,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       ORDER BY likes DESC
       LIMIT 5
     )
-  `
+  `)
 
   popular.forEach((post: any) => {
     popularAuthor.forEach((user: any) => {

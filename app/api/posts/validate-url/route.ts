@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 
 export async function GET(request: NextRequest) {
      try {
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
                return new Response("url is required query parameter", { status: 400 });
           }
 
-          const isUrlValid = await sql`SELECT * FROM blogposts WHERE url = ${url} AND AuthorId = ${authorId}`;
+          const isUrlValid = await sql(`SELECT * FROM blogposts WHERE url = ${url} AND AuthorId = ${authorId}`);
 
           if (isUrlValid.rowCount > 0) {
                return new Response("url is not available", { status: 400 });

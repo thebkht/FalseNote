@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres"
+import { sql } from "@/lib/postgres"
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next"
 import type { NextAuthOptions as NextAuthConfig } from "next-auth"
 import PostgresAdapter from "@auth/pg-adapter"
@@ -26,10 +26,10 @@ export const config = {
         console.log("GitHub Profile:", profile);
   
         // Check if the user exists in your database based on their email
-        const userExists = await sql`
+        const userExists = await sql(`
           SELECT * FROM Users
           WHERE Username = ${username};
-        `;
+        `);
   
         if (!userExists.rows[0]) {
           if (!username) {
@@ -38,30 +38,30 @@ export const config = {
           }
           // User doesn't exist, add them to the Users table
           try {
-            await sql`
+            await sql(`
               INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
               VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${bio}, ${avatar_url}, ${location});
-            `;
+            `);
             console.log(`User '${username}' added to the database.`);
 
-            const sessionUser = await sql`
+            const sessionUser = await sql(`
               SELECT Userid FROM users
               WHERE Username = ${username};
-            `;
+            `);
 
             console.log("Session User:", sessionUser.rows[0]);
 
             const userId = sessionUser.rows[0].userid;
             console.log("User ID:", userId);
 
-            const userSettingsExists = await sql`
+            const userSettingsExists = await sql(`
               SELECT * FROM usersettings
               WHERE Userid = ${ userId };
-            `;
+            `);
             if (!userSettingsExists.rows[0]) {
-              await sql`
+              await sql(`
                 INSERT INTO UserSettings (UserId) VALUEs (${ userId });
-              `;
+              `);
               console.log(`User '${username}' added to the usersettings table.`);
             }
           } catch (error) {
@@ -76,7 +76,7 @@ export const config = {
     //   const sessionUserName = session.user?.name;
       
     //   try{
-    //     const isName = await sql`SELECT * FROM users WHERE Name = ${sessionUserName}`;
+    //     const isName = await sql(`SELECT * FROM users WHERE Name = ${sessionUserName}`);
 
     //     console.log(isName.rows[0])
 

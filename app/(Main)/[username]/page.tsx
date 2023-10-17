@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/react";
 import { getSessionUser } from "@/components/get-session-user";
 import { redirect, useRouter } from "next/navigation";
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 import { ro } from "date-fns/locale";
 import { User } from "lucide-react";
 import {
@@ -15,15 +15,15 @@ export default async function Page({ params }: {
       username: string
    }
  }) {
-  const { rows } = await sql`SELECT * FROM users WHERE username = ${params.username}`;
+  const { rows } = await sql(`SELECT * FROM users WHERE username = ${params.username}`);
 
 
   const session = await getSession();
   const user = rows[0];
   if (!user) redirect("/404");
   
-  const {rows: posts} = await sql`SELECT * FROM blogposts WHERE authorid = ${user.userid} ORDER BY creationdate DESC`;
-  const { rows: postComments } = await sql`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${user.userid})`;
+  const {rows: posts} = await sql(`SELECT * FROM blogposts WHERE authorid = ${user.userid} ORDER BY creationdate DESC`);
+  const { rows: postComments } = await sql(`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${user.userid})`);
   posts.forEach((post: any) => {
     postComments.forEach((comment: any) => {
       if (comment.postid === post.postid) {
@@ -33,8 +33,8 @@ export default async function Page({ params }: {
     )
   }
   )
-  const { rows: followers } = await sql`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${user.userid})`;
-  const { rows: following } = await sql`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FollowerID= ${user.userid})`;
+  const { rows: followers } = await sql(`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${user.userid})`);
+  const { rows: following } = await sql(`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FollowerID= ${user.userid})`);
 
   const sessionUserName = await getSessionUser();
   console.log(sessionUserName);

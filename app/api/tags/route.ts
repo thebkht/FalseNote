@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest){
@@ -9,17 +9,17 @@ export async function GET(req: NextRequest){
      } 
 
      try{
-          const { rows } = await sql`
+          const { rows } = await sql(`
           SELECT * FROM Tags WHERE TagID = ${tagid}
-          `
+          `)
           if (rows.length === 0){
                return new NextResponse("Tag not found", {status: 404})
           }
 
           //get followers
-          const followers = await sql`
+          const followers = await sql(`
           SELECT * FROM TagFollows WHERE TagID = ${tagid}
-          `
+          `)
           rows[0].followers = followers.rows
 
           return new NextResponse(JSON.stringify(rows[0]), {status: 200})

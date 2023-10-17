@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 import { remark } from "remark";
 import html from "remark-html";
@@ -19,25 +19,25 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
     // Execute a query to fetch the specific user by name
-    const author = await sql`
+    const author = await sql(`
        SELECT * FROM users WHERE Username = ${username}
-     `;
+     `);
     const authorID = author.rows[0]?.userid;
     //Get author's posts
-    const authorPosts = await sql`
+    const authorPosts = await sql(`
         SELECT * FROM BlogPosts WHERE AuthorID = ${authorID}
-      `;
+      `);
     author.rows[0].posts = authorPosts.rows;
 
     // Get author's followers
-    const followers = await sql`
+    const followers = await sql(`
         SELECT * FROM Follows WHERE FolloweeID = ${authorID}
-      `;
+      `);
     author.rows[0].followers = followers.rows;
 
-    const result = await sql`
+    const result = await sql(`
        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url = ${postUrl}
-     `;
+     `);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -45,15 +45,15 @@ export async function GET(
 
     result.rows[0].author = author.rows[0];
 
-    const comments = await sql`
-           SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
+    const comments = await sql(`
+           SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`);
     result.rows[0].comments = comments.rows;
 
-    const commentsNum = await sql`
-            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
+    const commentsNum = await sql(`
+            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`);
     result.rows[0].commentsNum = commentsNum.rows[0].count;
-    const tags = await sql`
-               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result.rows[0]?.postid})`;
+    const tags = await sql(`
+               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result.rows[0]?.postid})`);
     result.rows[0].tags = tags.rows;
 
     console.log("Query result:", result);

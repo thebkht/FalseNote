@@ -27,19 +27,20 @@ import CommentForm from "@/components/blog/comments/comment-form"
 import LoginDialog from "@/components/login-dialog"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import UserHoverCard from "@/components/user-hover-card"
-import { sql } from "@vercel/postgres"
+import { sql } from "@/lib/postgres"
 import { remark } from "remark";
 import html from "remark-html";
 import Post from "@/components/blog/post"
 import PostComment from "@/components/blog/comment"
 import MoreFromAuthor from "@/components/blog/more-from-author"
 
+
 export default async function PostView({ params }: { params: { username: string, url: string } }) {
-     const { rows: authorData } = await sql`SELECT * FROM users WHERE username = ${params.username}`;
+     const { rows: authorData } = await sql(`SELECT * FROM users WHERE username = ${params.username}`);
      const author = authorData[0];
      
-     const { rows: authorPosts } = await sql`SELECT * FROM blogposts WHERE authorid = ${author.userid} AND url != ${params.url} ORDER BY PostID DESC LIMIT 4`;
-     const { rows: authorPostsComments } = await sql`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${author.userid} AND visibility = 'public' AND url != ${params.url})`;
+     const { rows: authorPosts } = await sql(`SELECT * FROM blogposts WHERE authorid = ${author.userid} AND url != ${params.url} ORDER BY PostID DESC LIMIT 4`);
+     const { rows: authorPostsComments } = await sql(`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${author.userid} AND visibility = 'public' AND url != ${params.url})`);
      authorPosts.forEach((post: any) => {
           authorPostsComments.forEach((comment: any) => {
                if (comment.postid === post.postid) {
@@ -49,15 +50,15 @@ export default async function PostView({ params }: { params: { username: string,
           )
      }
      )
-     const { rows: auhorFollowers } = await sql`SELECT * FROM users WHERE userid IN (SELECT followerid FROM follows WHERE followeeid = ${author.userid})`;
+     const { rows: auhorFollowers } = await sql(`SELECT * FROM users WHERE userid IN (SELECT followerid FROM follows WHERE followeeid = ${author.userid})`);
      author.followers = auhorFollowers.length;
-     const { rows: postData } = await sql`SELECT * FROM blogposts WHERE authorid = ${author?.userid} AND url = ${params.url}`;
+     const { rows: postData } = await sql(`SELECT * FROM blogposts WHERE authorid = ${author?.userid} AND url = ${params.url}`);
      const post = postData[0];
      if (!post) redirect("/404");
      // const processedContent = await remark().use(html).process(post.content);
      // post.content = processedContent.toString();
-     const { rows: postComments } = await sql`SELECT * FROM comments WHERE blogpostid = ${post.postid}`;
-     const { rows: postCommentsAuthor } = await sql`SELECT * FROM users WHERE userid IN (SELECT authorid FROM comments WHERE blogpostid = ${post.postid})`;
+     const { rows: postComments } = await sql(`SELECT * FROM comments WHERE blogpostid = ${post.postid}`);
+     const { rows: postCommentsAuthor } = await sql(`SELECT * FROM users WHERE userid IN (SELECT authorid FROM comments WHERE blogpostid = ${post.postid})`);
      postComments.forEach((comment: any) => {
           postCommentsAuthor.forEach((author: any) => {
                if (comment.authorid === author.userid) {
@@ -67,7 +68,7 @@ export default async function PostView({ params }: { params: { username: string,
           )
      }
      )
-     const { rows: postTags } = await sql`SELECT * FROM tags WHERE tagid IN (SELECT tagid FROM blogposttags WHERE blogpostid = ${post.postid})`;
+     const { rows: postTags } = await sql(`SELECT * FROM tags WHERE tagid IN (SELECT tagid FROM blogposttags WHERE blogpostid = ${post.postid})`);
      console.log(postTags);
 
      const sessionUser = await getSessionUser()

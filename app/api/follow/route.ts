@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 
 export async function GET(request: NextRequest) {
      try{
@@ -10,17 +10,16 @@ export async function GET(request: NextRequest) {
           return new Response("followeeId and followerId are required query parameters", { status: 400 });
      }
 
-     const isFollowed = await sql`SELECT * FROM follows WHERE followeeId = ${followeeId} AND followerId = ${followerId}`;
+     const isFollowed = await sql(`SELECT * FROM follows WHERE followeeId = ${followeeId} AND followerId = ${followerId}`);
 
      if (isFollowed.rowCount > 0) {
-          await sql`DELETE FROM follows WHERE followeeId = ${followeeId} AND followerId = ${followerId}`;
+          await sql(`DELETE FROM follows WHERE followeeId = ${followeeId} AND followerId = ${followerId}`);
 
           return NextResponse.json({ message: "unfollowed" }, { status: 200 });
      } else {
-          await sql`INSERT INTO follows (followeeId, followerId) VALUES (${followeeId}, ${followerId})`;
+          await sql(`INSERT INTO follows (followeeId, followerId) VALUES (${followeeId}, ${followerId})`);
 
-          const { rows: followeeDetails } = await sql`SELECT * FROM users WHERE userid = ${followeeId}`;
-          const { rows: followerDetails } = await sql`SELECT * FROM users WHERE userid = ${followerId}`;
+          const { rows: followerDetails } = await sql(`SELECT * FROM users WHERE userid = ${followerId}`);
 
           const message = `${followerDetails[0].username} is now following you`;
           const user_id = followeeId;
@@ -29,10 +28,10 @@ export async function GET(request: NextRequest) {
           const read_at = null;
           const sender_id = followerId;
 
-          await sql`
+          await sql(`
             INSERT INTO notifications (type, message, userid, createdat, readat, sender_id)
             VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at}, ${sender_id})
-          `;
+          `);
      }
 
      return NextResponse.json({ message: "followed" }, { status: 200 });

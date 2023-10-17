@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 import { remark } from "remark";
 import html from "remark-html";
@@ -19,19 +19,19 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
     // Execute a query to fetch the specific user by name
-    const author = await sql`
+    const author = await sql(`
        SELECT * FROM users WHERE Username = ${username}
-     `;
+     `);
     const authorID = author.rows[0]?.userid;
     //Get author's posts
-    const authorPosts = await sql`
+    const authorPosts = await sql(`
         SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url != ${postUrl} ORDER BY PostID DESC LIMIT 4
-      `;
+      `);
     author.rows[0].posts = authorPosts.rows;
 
-    const authorPostsComments = await sql`
+    const authorPostsComments = await sql(`
         SELECT * FROM Comments WHERE BlogPostID IN (SELECT PostID FROM BlogPosts WHERE AuthorID = ${authorID} AND Url != ${postUrl})
-      `;
+      `);
 
       console.log(authorPostsComments.rows);
     authorPosts.rows.forEach((post) => {
@@ -43,14 +43,14 @@ export async function GET(
     );
 
     // Get author's followers
-    const followers = await sql`
+    const followers = await sql(`
         SELECT * FROM Follows WHERE FolloweeID = ${authorID}
-      `;
+      `);
     author.rows[0].followers = followers.rows;
 
-    const result = await sql`
+    const result = await sql(`
        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url = ${postUrl}
-     `;
+     `);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -62,12 +62,12 @@ export async function GET(
 
     result.rows[0].author = author.rows[0];
 
-    const comments = await sql`
-           SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
+    const comments = await sql(`
+           SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`);
     result.rows[0].comments = comments.rows;
 
-    const commentsAuthors = await sql`
-            SELECT * FROM Users WHERE UserID IN (SELECT AuthorID FROM Comments WHERE BlogPostID = ${result.rows[0]?.postid})`;
+    const commentsAuthors = await sql(`
+            SELECT * FROM Users WHERE UserID IN (SELECT AuthorID FROM Comments WHERE BlogPostID = ${result.rows[0]?.postid})`);
     
     comments.rows.forEach((comment) => {
       const author = commentsAuthors.rows.find((author) => author.userid === comment.authorid);
@@ -75,11 +75,11 @@ export async function GET(
     }
     );
 
-    const commentsNum = await sql`
-            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`;
+    const commentsNum = await sql(`
+            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`);
     result.rows[0].commentsNum = commentsNum.rows[0].count;
-    const tags = await sql`
-               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result.rows[0]?.postid})`;
+    const tags = await sql(`
+               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result.rows[0]?.postid})`);
     result.rows[0].tags = tags.rows;
 
     console.log("Query result:", result);
@@ -108,39 +108,39 @@ export async function DELETE(req: NextRequest, { params }: { params: { username:
   }
 
   try {
-    const author = await sql`
+    const author = await sql(`
        SELECT * FROM users WHERE Username = ${username}
-     `;
+     `);
     const authorID = author.rows[0]?.userid;
 
     //check if the post belongs to the user
-    const result = await sql`
+    const result = await sql(`
        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND PostID = ${postid}
-     `;
+     `);
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
     //check if the post has comments and tags
-    const comments = await sql`
+    const comments = await sql(`
        SELECT * FROM Comments WHERE BlogPostID = ${postid}
-     `;
-    const tags = await sql`
+     `);
+    const tags = await sql(`
        SELECT * FROM BlogPostTags WHERE BlogPostID = ${postid}
-     `;
+     `);
     if (comments.rows.length !== 0) {
-      await sql`
+      await sql(`
         DELETE FROM Comments WHERE BlogPostID = ${postid}
-      `;
+      `);
     }
     if (tags.rows.length !== 0) {
-      await sql`
+      await sql(`
         DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
-      `;
+      `);
     }
-    await sql`
+    await sql(`
        DELETE FROM BlogPosts WHERE PostID = ${postid}
-     `;
+     `);
     return NextResponse.json({ message: "Post deleted" }, { status: 200 });
   } catch (error) {
     console.log(error);

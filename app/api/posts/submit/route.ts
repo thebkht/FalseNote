@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres"
-import { redirect } from "next/navigation";
+import { sql } from "@/lib/postgres"
 
 export async function POST(req: NextRequest) {
      try {
@@ -19,9 +18,9 @@ export async function POST(req: NextRequest) {
                //check is there any changes to the post
                //if there are changes then update the post
                //if there are no changes then do nothing
-               const post = await sql`
+               const post = await sql(`
                SELECT * FROM BlogPosts WHERE PostID = ${postid}
-               `;
+               `);
                const postData = post.rows?.[0];
                if (!postData) {
                     return new Response("Post does not exist", { status: 400 });
@@ -43,47 +42,45 @@ export async function POST(req: NextRequest) {
                     isDraft = false;
                }
                if (title !== postData.title || content !== postData.content || coverImage !== postData.coverimage || visibility !== postData.visibility || isDraft !== postData.draft || url !== postData.url || description !== postData.description) {
-                    await sql`
+                    await sql(`
                     UPDATE BlogPosts
                     SET Title = ${title}, Content = ${content}, CoverImage = ${coverImage}, Visibility = ${visibility}, Draft = ${isDraft}, url = ${url}, Description = ${description}, Lastupdateddate = NOW()
                     WHERE PostID = ${postid}
-                    `;
+                    `);
 
                     //update tags
                     //first delete all tags associated with the post
                }
-               const postTags = await sql`
+               const postTags = await sql(`
                SELECT * FROM BlogPostTags WHERE BlogPostID = ${postid}
-               `;
+               `);
                const postTagsData = postTags.rows;
                if (postTagsData) {
-                    for (const postTag of postTagsData) {
-                         await sql`
+                    await sql(`
                          DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
-                         `;
-                    }
+                         `);
                }
                if (tags) {
                     for (const tag of tags) {
                          // Check if tag exists
-                         const tagExists = await sql`
+                         const tagExists = await sql(`
                          SELECT * FROM tags WHERE TagName = ${tag.value}
-                         `;
+                         `);
                          if (tagExists.rows.length === 0) {
                               // Insert tag into tags table
-                              await sql`
+                              await sql(`
                               INSERT INTO tags (TagName)
                               VALUES (${tag.value})
-                              `;
+                              `);
                          }
-                         const tagId = await sql`
+                         const tagId = await sql(`
                          SELECT TagID FROM tags WHERE TagName = ${tag.value}
-                         `;
+                         `);
                          const tagIdInt = tagId.rows?.[0].tagid;
-                         await sql`
+                         await sql(`
                          INSERT INTO BlogPostTags (BlogPostID, TagID)
                          VALUES (${postid}, ${tagIdInt})
-                         `;
+                         `);
                     }
                }
                
@@ -115,18 +112,18 @@ export async function POST(req: NextRequest) {
                isDraft = false;
           }
 
-          await sql`
+          await sql(`
           INSERT INTO BlogPosts (Title, Content, CoverImage, Visibility, Draft, url, AuthorID, Description)
           VALUES (${title}, ${content}, ${coverImage}, ${visibility}, ${isDraft}, ${url}, ${authorId}, ${description})
-          `;
+          `);
 
-          const submittedPostId = await sql`
+          const submittedPostId = await sql(`
           SELECT PostID FROM BlogPosts WHERE url = ${url}
-          `;
+          `);
 
-          const user = await sql`
+          const user = await sql(`
           SELECT username FROM Users WHERE UserID = ${authorId}
-          `;
+          `);
 
           const username = user.rows?.[0];
 
@@ -135,25 +132,25 @@ export async function POST(req: NextRequest) {
           if (tags) {
                for (const tag of tags) {
                     // Check if tag exists
-                    const tagExists = await sql`
+                    const tagExists = await sql(`
                     SELECT * FROM tags WHERE TagName = ${tag.value}
-                    `;
+                    `);
                     if (tagExists.rows.length === 0) {
                          // Insert tag into tags table
-                         await sql`
+                         await sql(`
                          INSERT INTO tags (TagName)
                          VALUES (${tag.value})
-                         `;
+                         `);
                     }
 
-const tagId = await sql`
+const tagId = await sql(`
                     SELECT TagID FROM tags WHERE TagName = ${tag.value}
-                    `;
+                    `);
                     const tagIdInt = tagId.rows?.[0].tagid;
-                    await sql`
+                    await sql(`
                     INSERT INTO BlogPostTags (BlogPostID, TagID)
                     VALUES (${postId}, ${tagIdInt})
-                    `;
+                    `);
                }
           }
 

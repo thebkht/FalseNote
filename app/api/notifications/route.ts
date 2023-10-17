@@ -1,4 +1,4 @@
-import { sql } from "@vercel/postgres"
+import { sql } from "@/lib/postgres"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -11,10 +11,10 @@ export async function POST(request: NextRequest) {
      const { type, message, user_id } = data
      const created_at = new Date().toISOString()
      const read_at = null
-          await sql`
+          await sql(`
                INSERT INTO notifications (type, message, userid, createdat, readat)
                VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
-          `
+          `)
           // Execute the query here
           return NextResponse.json({ status: 201, message: "Notification created" })
      } catch (error) {
@@ -37,13 +37,13 @@ export async function GET(request: NextRequest) {
                      message: "Missing user_id query parameter",
                 });
            }
-                const data = await sql`
+                const data = await sql(`
                      SELECT * FROM notifications WHERE userid = ${user_id} ORDER BY createdat DESC
-                `;
+                `);
                 
-                const sender = await sql`
+                const sender = await sql(`
                          SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = ${user_id})
-                    `
+                    `)
                     data.rows.forEach((notification: any) => {
                          sender.rows.forEach((user: any) => {
                               if (notification.sender_id === user.userid) {
@@ -72,9 +72,9 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
      const id = await request.nextUrl.searchParams.get("id")
      try {
-          await sql`
+          await sql(`
                UPDATE notifications SET readat = ${new Date().toISOString()} WHERE id = ${id}
-          `
+          `)
           return NextResponse.json({ status: 200, message: "Notification updated" })
      } catch (error) {
           console.log("Failed to update notification:", error)
@@ -86,9 +86,9 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
      const id = await request.nextUrl.searchParams.get("id")
      try {
-          await sql`
+          await sql(`
                DELETE FROM notifications WHERE id = ${id}
-          `
+          `)
           return NextResponse.json({ status: 200, message: "Notification deleted" })
      } catch (error) {
           console.log("Failed to delete notification:", error)
