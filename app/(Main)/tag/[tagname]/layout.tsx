@@ -1,7 +1,7 @@
 import { TagNav } from "@/components/tags/nav";
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 
-const { rows: tags } = await sql`SELECT * FROM tags`;
+const { rows: tags } = await sql(`SELECT * FROM tags`);
      //add href to tags
      tags.forEach((tag: any) => {
           tag.href = `/tag/${tag.tagname}`;
