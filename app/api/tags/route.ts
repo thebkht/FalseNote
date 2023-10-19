@@ -9,17 +9,13 @@ export async function GET(req: NextRequest){
      } 
 
      try{
-          const rows = await sql`
-          SELECT * FROM Tags WHERE TagID = ${tagid}
-          `
+          const rows = await sql('SELECT * FROM Tags WHERE TagID = $1', [tagid])
           if (rows.length === 0){
                return new NextResponse("Tag not found", {status: 404})
           }
 
           //get followers
-          const followers = await sql`
-          SELECT * FROM TagFollows WHERE TagID = ${tagid}
-          `
+          const followers = await sql('SELECT * FROM users WHERE userid IN (SELECT userid FROM TagFollowers WHERE TagID = $1)', [tagid])
           rows[0].followers = followers
 
           return new NextResponse(JSON.stringify(rows[0]), {status: 200})

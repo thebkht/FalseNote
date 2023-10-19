@@ -10,25 +10,18 @@ export async function POST(request: NextRequest){
                return new NextResponse("Missing tagid or userid", {status: 400})
           } 
           //check if tag exists
-          const rows = await sql`
-          SELECT * FROM Tags WHERE TagID = ${tagid}
-          `
+          const rows = await sql('SELECT * FROM Tags WHERE TagID = $1', [tagid])
+
           if (rows.length === 0){
                return new NextResponse("Tag not found", {status: 404})
           }
           //check if user follows tag
-          const follows = await sql`
-          SELECT * FROM TagFollows WHERE TagID = ${tagid} AND UserID = ${userid}
-          `
+          const follows = await sql('SELECT * FROM TagFollows WHERE TagID = $1 AND UserID = $2', [tagid, userid])
           if (follows.length !== 0){
-               await sql`
-               DELETE FROM TagFollows WHERE TagID = ${tagid} AND UserID = ${userid}
-               `
+               await sql('DELETE FROM TagFollows WHERE TagID = $1 AND UserID = $2', [tagid, userid])
                return new NextResponse("Tag unfollowed", {status: 200})
           } else {
-               const result = await sql`
-     INSERT INTO TagFollows (TagID, UserID) VALUES (${tagid}, ${userid})
-     `
+               const result = await sql('INSERT INTO TagFollows (TagID, UserID) VALUES ($1, $2) RETURNING *', [tagid, userid])
      if (result.length === 1){
           return new NextResponse("Tag followed", {status: 200})
      } else {

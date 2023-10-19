@@ -11,10 +11,11 @@ export async function POST(request: NextRequest) {
      const { type, message, user_id } = data
      const created_at = new Date().toISOString()
      const read_at = null
-          await sql`
-               INSERT INTO notifications (type, message, userid, createdat, readat)
-               VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
-          `
+          // await sql`
+          //      INSERT INTO notifications (type, message, userid, createdat, readat)
+          //      VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
+          // `
+          await sql('INSERT INTO notifications (type, message, userid, createdat, readat) VALUES ($1, $2, $3, $4, $5)', [type, message, user_id, created_at, read_at])
           // Execute the query here
           return NextResponse.json({ status: 201, message: "Notification created" })
      } catch (error) {
@@ -37,13 +38,15 @@ export async function GET(request: NextRequest) {
                      message: "Missing user_id query parameter",
                 });
            }
-                const data = await sql`
-                     SELECT * FROM notifications WHERE userid = ${user_id} ORDER BY createdat DESC
-                `;
+               //  const data = await sql`
+               //       SELECT * FROM notifications WHERE userid = ${user_id} ORDER BY createdat DESC
+               //  `;
+               const data = await sql('SELECT * FROM notifications WHERE userid = $1 ORDER BY createdat DESC', [user_id])
                 
-                const sender = await sql`
-                         SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = ${user_id})
-                    `
+               //  const sender = await sql`
+               //           SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = ${user_id})
+               //      `
+               const sender = await sql('SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = $1)', [user_id])
                     data.forEach((notification: any) => {
                          sender.forEach((user: any) => {
                               if (notification.sender_id === user.userid) {
@@ -72,9 +75,10 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
      const id = await request.nextUrl.searchParams.get("id")
      try {
-          await sql`
-               UPDATE notifications SET readat = ${new Date().toISOString()} WHERE id = ${id}
-          `
+          // await sql`
+          //      UPDATE notifications SET readat = ${new Date().toISOString()} WHERE id = ${id}
+          // `
+          await sql('UPDATE notifications SET readat = $1 WHERE id = $2', [new Date().toISOString(), id])
           return NextResponse.json({ status: 200, message: "Notification updated" })
      } catch (error) {
           console.log("Failed to update notification:", error)
@@ -86,9 +90,10 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
      const id = await request.nextUrl.searchParams.get("id")
      try {
-          await sql`
-               DELETE FROM notifications WHERE id = ${id}
-          `
+          // await sql`
+          //      DELETE FROM notifications WHERE id = ${id}
+          // `
+          await sql('DELETE FROM notifications WHERE id = $1', [id])
           return NextResponse.json({ status: 200, message: "Notification deleted" })
      } catch (error) {
           console.log("Failed to delete notification:", error)

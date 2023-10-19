@@ -40,20 +40,24 @@
     "@vercel/og": "^0.5.14",
     "autoprefixer": "10.4.15",
     "aws-sdk": "^2.1462.0",
+    "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "fs": "^0.0.1-security",
     "lucide-react": "^0.274.0",
     "markdown-to-jsx": "^7.3.2",
     "marked": "^9.0.2",
     "multer": "^1.4.5-lts.1",
+    "net": "^1.0.2",
     "next": "13.5",
     "next-auth": "^4.23.2",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.4.2",
+    "pg": "^8.11.3",
     "postcss": "^8.4.31",
     "postgres": "^3.4.0",
     "react": "^18.2.0",
@@ -66,6 +70,7 @@
     "react-markdown": "^8.0.7",
     "react-textarea-autosize": "^8.5.3",
     "react-tweet": "^3.1.1",
+    "readable-stream": "^4.4.2",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "shadcn-ui": "^0.4.0",
@@ -83,6 +88,10 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/formidable": "^3.4.3",
     "@types/pg": "^8.10.7",
-    "@types/uuid": "^9.0.4"
-  }
+    "@types/uuid": "^9.0.4",
+    "dns": "file:./app/mock/dns"
+  },
+  "browser": {
+    "crypto": false
+}
 }

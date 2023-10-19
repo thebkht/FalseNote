@@ -11,18 +11,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
           const { post, content, author } = data;
 
-    await sql`
-      INSERT INTO comments (blogpostid, content, authorid)
-      VALUES (${post}, ${content}, ${author})
-      RETURNING *
-    `;
+    // await sql`
+    //   INSERT INTO comments (blogpostid, content, authorid)
+    //   VALUES (${post}, ${content}, ${author})
+    //   RETURNING *
+    // `;
+    await sql('INSERT INTO comments (blogpostid, content, authorid) VALUES ($1, $2, $3) RETURNING *', [post, content, author])
 
-    const authorDetails = await sql`
-      SELECT * FROM users WHERE userid = ${author}
-    `;
-    const postDetails = await sql`
-      SELECT * FROM blogposts WHERE postid = ${post}
-    `;
+    const authorDetails = await sql('SELECT * FROM users WHERE userid = $1', [author])
+    const postDetails = await sql('SELECT * FROM blogposts WHERE postid = $1', [post])
 
     // Send a notification to the author of the post using api/notifications post method body json
     const message = `${authorDetails[0].username} commented on your post "${postDetails[0].title}: ${content}"`;
@@ -32,10 +29,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const read_at = null
     const sender_id = authorDetails[0].userid;
 
-    await sql`
-      INSERT INTO notifications (type, message, userid, createdat, readat, sender_id)
-      VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at}, ${sender_id})
-    `;
+    await sql('INSERT INTO notifications (message, user_id, type, created_at, read_at, sender_id) VALUES ($1, $2, $3, $4, $5, $6)', [message, user_id, type, created_at, read_at, sender_id])
 
     // const notification = await fetch(`localhost:3000/api/notifications`, {
     //   method: "POST",

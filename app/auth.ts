@@ -19,10 +19,7 @@ export const config = {
         console.log("GitHub Profile:", profile);
   
         // Check if the user exists in your database based on their email
-        const userExists = await sql`
-          SELECT * FROM Users
-          WHERE Username = ${username};
-        `;
+        const userExists = await sql('SELECT * FROM Users WHERE Username = $1;', [username]);
   
         if (!userExists[0]) {
           if (!username) {
@@ -31,30 +28,14 @@ export const config = {
           }
           // User doesn't exist, add them to the Users table
           try {
-            await sql`
-              INSERT INTO users (Username, Name, Email, GitHubProfileURL, Bio, Profilepicture, Location)
-              VALUES (${username}, ${name}, ${email}, ${githubProfileURL}, ${bio}, ${avatar_url}, ${location});
-            `;
+            await sql('INSERT INTO Users (Username, Name, Email, Bio, GithubProfileURL, AvatarURL, Location) VALUES ($1, $2, $3, $4, $5, $6, $7);', [username, name, email, bio, githubProfileURL, avatar_url, location]);
             console.log(`User '${username}' added to the database.`);
 
-            const sessionUser = await sql`
-              SELECT Userid FROM users
-              WHERE Username = ${username};
-            `;
+            const sessionUser = await sql('SELECT * FROM Users WHERE Username = $1;', [username]);
 
-            console.log("Session User:", sessionUser[0]);
-
-            const userId = sessionUser[0].userid;
-            console.log("User ID:", userId);
-
-            const userSettingsExists = await sql`
-              SELECT * FROM usersettings
-              WHERE Userid = ${ userId };
-            `;
+            const userSettingsExists = await sql('SELECT * FROM UserSettings WHERE UserId = $1;', [sessionUser[0].userid]);
             if (!userSettingsExists[0]) {
-              await sql`
-                INSERT INTO UserSettings (UserId) VALUEs (${ userId });
-              `;
+              await sql('INSERT INTO UserSettings (UserId) VALUES ($1);', [sessionUser[0].userid])
               console.log(`User '${username}' added to the usersettings table.`);
             }
           } catch (error) {

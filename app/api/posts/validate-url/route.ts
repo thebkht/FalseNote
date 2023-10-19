@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
                return new Response("url is required query parameter", { status: 400 });
           }
 
-          const isUrlValid = await sql`SELECT * FROM blogposts WHERE url = ${url} AND AuthorId = ${authorId}`;
+          const isUrlValid = await sql("SELECT * FROM blogposts WHERE url = $1 AND authorid = $2", [url, authorId]);
 
           if (isUrlValid.length > 0) {
                return new Response("url is not available", { status: 400 });
