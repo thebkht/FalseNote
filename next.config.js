@@ -22,13 +22,13 @@ const nextConfig = {
             }
           ],
         },
-        webpack: (config, { webpack }) => {
-          config.plugins.push(new webpack.IgnorePlugin({
-              resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
-          }))
-  
-          return config
-      },
+        webpack: (config, { isServer }) => {
+          if (isServer) {
+            config.externals.push('pg-native');
+          }
+      
+          return config;
+        },
 }
 
 module.exports = {
