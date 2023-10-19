@@ -92,6 +92,12 @@
     "dns": "file:./app/mock/dns"
   },
   "browser": {
-    "crypto": false
+    "crypto": false,
+    "fs": false,
+    "net": false,
+    "os": false,
+    "path": false,
+    "stream": false,
+    "tls": false
 }
 }

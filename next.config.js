@@ -24,19 +24,7 @@ const nextConfig = {
       }
     ],
   },
-  webpack: (config, { isServer, webpack }) => {
-    if (!isServer) {
-      config.node = {
-        dgram: "empty",
-        fs: "empty",
-        net: "empty",
-        tls: "empty",
-        child_process: "empty",
-      };
-    }
-    config.resolve.fallback = { fs: false };
-    return config;
-  },
+  
 };
 
 module.exports = {
