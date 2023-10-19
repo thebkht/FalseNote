@@ -3,8 +3,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import TopLoader from '@/components/providers/top-loader'
-import Navbar from '@/components/navbar/navbar'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import AuthProvider from '@/components/providers/auth-provider'
 import { Analytics } from '@vercel/analytics/react';
 import { TailwindIndicator } from '@/components/indicator'

@@ -11,19 +11,10 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Icons } from "../icon";
-import { useSession } from "next-auth/react";
 import { CalendarDays, Check, Eye, Heart, MessageCircle, User } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu"
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 import UserHoverCard from "../user-hover-card";
 
 

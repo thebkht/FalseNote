@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { items } from "./items";
 import Link from "next/link";
 import { MenuIcon, Plus, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -18,11 +17,6 @@ import { use, useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import SearchBar from "../searchbar";
 import { useRouter } from "next/navigation";
-import { get } from "http";
-import { getSessionUser } from "../get-session-user";
-import { Command } from "@/components/ui/command"
-import { Notifications } from "./notifications";
-import { tr } from "date-fns/locale";
 
 function Navbar() {
   const { data: session, status } = useSession();

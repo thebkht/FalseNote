@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -9,11 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../icon";
-import { useSession } from "next-auth/react";
 import { Eye, Heart, MessageCircle } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 

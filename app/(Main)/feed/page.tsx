@@ -4,13 +4,9 @@ import { getSessionUser } from '@/components/get-session-user';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef, Key } from 'react'
 import FeedPostCard from '@/components/blog/feed-post-card'
-import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icon';
-import { set } from 'react-hook-form';
 import PopularPosts from '@/components/feed/popular-posts';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Feed() {
   const { status, data: session } = useSession()

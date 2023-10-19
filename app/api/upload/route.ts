@@ -1,6 +1,4 @@
-import { writeFile } from "fs/promises";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
 const AWS = require('aws-sdk');
 
 export async function POST(req: NextRequest) {

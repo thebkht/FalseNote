@@ -1,7 +1,4 @@
-import { Icons } from "@/components/icon";
-import Image from "next/image";
 import { ImageResponse } from "next/server";
-import { Inter } from 'next/font/google'
 
 export const runtime = 'edge';
 interface Props {

@@ -1,12 +1,7 @@
-import FeedPostCard from "@/components/blog/feed-post-card";
-import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getSessionUser } from "@/components/get-session-user";
 import TagDetails from "@/components/tags/details";
 import TagPosts from "@/components/tags/post";
-import { Button } from "@/components/ui/button";
 import { sql } from "@/lib/postgres";
-import { ta } from "date-fns/locale";
-import { Tag } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default async function TagPage({ params }: { params: { tagname: string } }) {

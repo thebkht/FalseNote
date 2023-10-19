@@ -1,12 +1,10 @@
 import { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/auth/user-auth-form"
 import { Icons } from "@/components/icon"
-import { ModeToggle } from "@/components/mode-toggle"
 
 export const metadata: Metadata = {
   title: "Authentication",

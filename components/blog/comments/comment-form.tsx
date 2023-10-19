@@ -18,7 +18,6 @@ import {
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import LoginDialog from "@/components/login-dialog";
 import UserHoverCard from "@/components/user-hover-card";
 import { getSessionUser } from "@/components/get-session-user";

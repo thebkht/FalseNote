@@ -17,33 +17,26 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import React, { use, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ArrowUp } from "lucide-react"
-import { cp } from "fs"
 import { useSession } from "next-auth/react"
 import { getUserByUsername } from "../get-user"
 import { ScrollArea } from "../ui/scroll-area"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
-import { redirect, useRouter } from "next/navigation"
-import { remark } from "remark";
-import html from "remark-html";
+import { useRouter } from "next/navigation"
 import { ToastAction } from "../ui/toast"
 import Markdown from "markdown-to-jsx";
 

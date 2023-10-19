@@ -1,8 +1,6 @@
 import { signIn } from "next-auth/react";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { FormControl, FormMessage } from "./ui/form";
-import { Textarea } from "./ui/textarea";
 import { cn } from "@/lib/utils";
 
 export default function LoginDialog({ className, children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog> & { children: React.ReactNode, className?: string }) {

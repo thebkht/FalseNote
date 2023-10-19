@@ -6,7 +6,6 @@ import Link from "next/link";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import UserPostCard from "./post-card";
 
 export default function UserPosts({ posts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
      const [deleted, setDeleted] = useState<boolean>(false);

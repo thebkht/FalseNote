@@ -1,7 +1,7 @@
-import { sql } from "@vercel/postgres";
+import { sql } from "@/lib/postgres";
 
 export default async function getAllUsers() {
-  const { rows } = await sql`
+  const rows = await sql`
      SELECT username FROM users
        `;
      

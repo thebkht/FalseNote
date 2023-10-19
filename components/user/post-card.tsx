@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
 import Image from "next/image";
-import { Icons } from "../icon";
 import { Eye, Heart, MessageCircle } from "lucide-react";
 import { formatNumberWithSuffix } from "../format-numbers";
 

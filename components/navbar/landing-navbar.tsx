@@ -1,21 +1,12 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { items } from "./items";
 import Link from "next/link";
-import { MenuIcon, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
-import { UserNav } from "./user-nav";
-import { Icons } from "@/components/icon";
-import { signIn, useSession } from "next-auth/react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { useSession } from "next-auth/react";
 import { use, useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
+import { Icons } from "../icon";
 
 
 function LandingNavbar() {

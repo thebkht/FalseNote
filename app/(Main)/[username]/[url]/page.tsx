@@ -1,35 +1,8 @@
-//Post view page for a specific user (username) and post (url)
-// Path: app/%28Main%29/%5Busername%5D/%5Burl%5D/page.tsx
-// Compare this snippet from components/feed/feed.tsx:
-import { AvatarFallback, Avatar, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+
 import React, { use, useEffect, useState } from "react"
-import {
-     HoverCard,
-     HoverCardContent,
-     HoverCardTrigger,
-} from "@/components/ui/hover-card"
-import { CalendarDays, Check, User } from "lucide-react"
-import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
 import { getSessionUser } from "@/components/get-session-user"
-import { useSession } from "next-auth/react"
-import { Icons } from "@/components/icon"
-import { Separator } from "@/components/ui/separator"
 import { redirect, useRouter } from "next/navigation"
-import Image from "next/image"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
-import PostCard from "@/components/blog/post-card"
-import { formatNumberWithSuffix } from "@/components/format-numbers"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import CommentForm from "@/components/blog/comments/comment-form"
-import LoginDialog from "@/components/login-dialog"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import UserHoverCard from "@/components/user-hover-card"
 import { sql } from "@/lib/postgres"
-import { remark } from "remark";
-import html from "remark-html";
 import Post from "@/components/blog/post"
 import PostComment from "@/components/blog/comment"
 import MoreFromAuthor from "@/components/blog/more-from-author"

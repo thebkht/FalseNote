@@ -1,6 +1,5 @@
 "use client"
 import { formatNumberWithSuffix } from "../format-numbers";
-import UserPostCard from "../user/post-card";
 import PostCard from "./post-card";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { Button } from "../ui/button";

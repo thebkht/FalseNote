@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import EditorNavbar from '@/components/navbar/editor-nav'
 import { Toaster } from '@/components/ui/toaster'

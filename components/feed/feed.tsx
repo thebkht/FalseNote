@@ -1,10 +1,7 @@
 "use client";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import FeaturedDev from "./featured/featured-dev";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { get } from "http";
 import { getSessionUser } from "../get-session-user";
 
 export default function EmptyFeed() {

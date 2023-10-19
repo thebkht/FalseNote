@@ -2,8 +2,6 @@ import { getSession } from "next-auth/react";
 import { getSessionUser } from "@/components/get-session-user";
 import { redirect, useRouter } from "next/navigation";
 import { sql } from "@/lib/postgres";
-import { ro } from "date-fns/locale";
-import { User } from "lucide-react";
 import {
   UserDetails,
   UserPosts,

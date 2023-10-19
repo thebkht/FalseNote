@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { use } from 'react';
 
 type Props = {
      params: { username: string }

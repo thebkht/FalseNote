@@ -1,7 +1,5 @@
 import { sql } from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
-import { remark } from "remark";
-import html from "remark-html";
 
 export async function POST(
   req: NextRequest,

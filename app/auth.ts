@@ -1,13 +1,6 @@
 import { sql } from "@/lib/postgres"
-import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from "next"
 import type { NextAuthOptions as NextAuthConfig } from "next-auth"
-import PostgresAdapter from "@auth/pg-adapter"
-import { getServerSession } from "next-auth"
-import { Profile } from "next-auth"
-import { Pool } from "pg"
 import GitHub from "next-auth/providers/github"
-import { redirect } from "next/navigation"
-import { NextResponse } from "next/server"
 
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth

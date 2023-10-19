@@ -1,17 +1,8 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { featuredItems } from "./featured/items";
-import { AvatarFallback } from "@radix-ui/react-avatar";
-import { Button } from "@/components/ui/button";
-import { Check, Plus } from "lucide-react";
-import { Key } from "react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 import { getSessionUser } from "@/components/get-session-user";
 import { useSession } from "next-auth/react";
-import { Icons } from "@/components/icon";
 import { formatNumberWithSuffix } from "../format-numbers";
 
 const formatDate = (dateString: string | number | Date) => {
