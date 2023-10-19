@@ -1,3 +1,5 @@
+import { Icons } from "@/components/icon";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
@@ -27,18 +29,20 @@ export default function NotFound(){
                height: "100vh",
                justifyContent: "center",
              }
-        }>
-          <div className="flex justify-around w-full items-center">
-     
-            <h1 className="next-error-h1" style={h1Style}>
-              404
-            </h1>
-            <Separator orientation="vertical" className="mx-5"/>
-            <div style={{ display: "inline-block" }}>
-              <h2 style={h2Style}>This page could not be found.</h2>
-            </div>
+        } className="space-y-10">
+          <Icons.notFound className="h-56" />
+          <div className="flex flex-col space-y-4">
+            {/* 404 page title */}
+            <h2 className="text-4xl font-bold">Lost in the Digital Abyss</h2>
+            <Separator />
+            {/* 404 page subtitle */}
+            <p className="text-lg font-light">Oops! It looks like you&apos;ve taken wrong turn</p>
           </div>
-          <Link href="/" className="py-5">Go back home</Link>
+          <Button variant={"outline"} size={"lg"} className="py-6" asChild>
+            <Link href="/" className="text-lg">
+              Go back home
+            </Link>
+          </Button>
         </div>
       </div>
     </main>
