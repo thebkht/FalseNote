@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request: Request) {
   try {
     // Create the Users table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS Users (
         UserID SERIAL PRIMARY KEY,
         Username VARCHAR(255) UNIQUE NOT NULL,
@@ -20,10 +20,10 @@ export async function GET(request: Request) {
         falsemember BOOLEAN DEFAULT false,
         RegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
-    `);
+    `;
 
     // Create the BlogPosts table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS BlogPosts (
         PostID SERIAL PRIMARY KEY,
         Title VARCHAR(255) NOT NULL,
@@ -40,10 +40,10 @@ export async function GET(request: Request) {
         Dislikes INT DEFAULT 0,
         url VARCHAR(255) UNIQUE NOT NULL
       );
-    `);
+    `;
 
     // Create the Comments table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS Comments (
         CommentID SERIAL PRIMARY KEY,
         Content TEXT, -- For comment text or markdown
@@ -53,18 +53,18 @@ export async function GET(request: Request) {
         Dislikes INT DEFAULT 0,
         BlogPostID INT REFERENCES BlogPosts(PostID)
       );
-    `);
+    `;
 
     // Create the Tags table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS Tags (
         TagID SERIAL PRIMARY KEY,
         TagName VARCHAR(255) NOT NULL
       );
-    `);
+    `;
 
     // Create the BlogPostTags table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS BlogPostTags (
         BlogPostTagID SERIAL PRIMARY KEY,
         BlogPostID INT,
@@ -72,29 +72,29 @@ export async function GET(request: Request) {
         FOREIGN KEY (BlogPostID) REFERENCES BlogPosts(PostID),
         FOREIGN KEY (TagID) REFERENCES Tags(TagID)
       );
-    `);
+    `;
 
     // Create the TagFollows table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS TagFollows (
         TagFollowID SERIAL PRIMARY KEY,
         TagID INT REFERENCES Tags(TagID),
         UserID INT REFERENCES Users(UserID),
         CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
-    `);
+    `;
 
     // Create the Follows table
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS Follows (
         FollowID SERIAL PRIMARY KEY,
         FolloweeID INT REFERENCES Users(UserID),
         FollowerID INT REFERENCES Users(UserID),
         CreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
-    `);
+    `;
 
-    await sql(`
+    await sql`
       CREATE TABLE IF NOT EXISTS Notifications (
         NotificationID SERIAL PRIMARY KEY,
         Type VARCHAR(255),
@@ -104,18 +104,18 @@ export async function GET(request: Request) {
         UserID INT REFERENCES Users(UserID),
         Sender_id INT NOT NULL 
       );
-    `);
+    `;
     
 
     // Create the UserSettings table
-    await sql(`
+    await sql`
     CREATE TABLE IF NOT EXISTS UserSettings (
       UserSettingID SERIAL PRIMARY KEY,
       Appearance VARCHAR(255) DEFAULT 'System',
       Language VARCHAR(255) DEFAULT 'English',
       UserID INT REFERENCES Users(UserID)
     );    
-    `);
+    `;
 
     
 

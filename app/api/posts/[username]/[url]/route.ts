@@ -19,46 +19,46 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
     // Execute a query to fetch the specific user by name
-    const author = await sql(`
+    const author = await sql`
        SELECT * FROM users WHERE Username = ${username}
-     `);
-    const authorID = author.rows[0]?.userid;
+     `;
+    const authorID = author[0]?.userid;
     //Get author's posts
-    const authorPosts = await sql(`
+    const authorPosts = await sql`
         SELECT * FROM BlogPosts WHERE AuthorID = ${authorID}
-      `);
-    author.rows[0].posts = authorPosts.rows;
+      `;
+    author[0].posts = authorPosts;
 
     // Get author's followers
-    const followers = await sql(`
+    const followers = await sql`
         SELECT * FROM Follows WHERE FolloweeID = ${authorID}
-      `);
-    author.rows[0].followers = followers.rows;
+      `;
+    author[0].followers = followers;
 
-    const result = await sql(`
+    const result = await sql`
        SELECT * FROM BlogPosts WHERE AuthorID = ${authorID} AND Url = ${postUrl}
-     `);
+     `;
 
-    if (result.rows.length === 0) {
+    if (result.length === 0) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    result.rows[0].author = author.rows[0];
+    result[0].author = author[0];
 
-    const comments = await sql(`
-           SELECT * FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`);
-    result.rows[0].comments = comments.rows;
+    const comments = await sql`
+           SELECT * FROM Comments WHERE BlogPostID= ${result[0]?.postid}`;
+    result[0].comments = comments;
 
-    const commentsNum = await sql(`
-            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result.rows[0]?.postid}`);
-    result.rows[0].commentsNum = commentsNum.rows[0].count;
-    const tags = await sql(`
-               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result.rows[0]?.postid})`);
-    result.rows[0].tags = tags.rows;
+    const commentsNum = await sql`
+            SELECT COUNT(*) FROM Comments WHERE BlogPostID= ${result[0]?.postid}`;
+    result[0].commentsNum = commentsNum[0].count;
+    const tags = await sql`
+               SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM BlogPostTags WHERE BlogPostID = ${result[0]?.postid})`;
+    result[0].tags = tags;
 
     console.log("Query result:", result);
     // Return the user as JSON with status 200
-    return NextResponse.json(result.rows[0], { status: 200 });
+    return NextResponse.json(result[0], { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

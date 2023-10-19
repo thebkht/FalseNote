@@ -15,15 +15,15 @@ export default async function Page({ params }: {
       username: string
    }
  }) {
-  const { rows } = await sql(`SELECT * FROM users WHERE username = ${params.username}`);
+  const rows = await sql`SELECT * FROM users WHERE username = ${params.username}`;
 
 
   const session = await getSession();
   const user = rows[0];
   if (!user) redirect("/404");
   
-  const {rows: posts} = await sql(`SELECT * FROM blogposts WHERE authorid = ${user.userid} ORDER BY creationdate DESC`);
-  const { rows: postComments } = await sql(`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${user.userid})`);
+  const posts = await sql`SELECT * FROM blogposts WHERE authorid = ${user.userid} ORDER BY creationdate DESC`;
+  const postComments = await sql`SELECT * FROM comments WHERE blogpostid IN (SELECT postid FROM blogposts WHERE authorid = ${user.userid})`;
   posts.forEach((post: any) => {
     postComments.forEach((comment: any) => {
       if (comment.postid === post.postid) {
@@ -33,8 +33,8 @@ export default async function Page({ params }: {
     )
   }
   )
-  const { rows: followers } = await sql(`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${user.userid})`);
-  const { rows: following } = await sql(`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FollowerID= ${user.userid})`);
+  const followers = await sql`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= ${user.userid})`;
+  const following = await sql`SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FollowerID= ${user.userid})`;
 
   const sessionUserName = await getSessionUser();
   console.log(sessionUserName);

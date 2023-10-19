@@ -40,7 +40,7 @@ export async function getSessionUser() {
     it must return userJson.user to get the user object
 
     */
-     return Promise.resolve(userJson.user);
+     return Promise.resolve(userJson);
      } catch (error) {
           //If there is no user details in database return null
           return Promise.reject(null);

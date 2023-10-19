@@ -1,14 +1,9 @@
-import { pool } from "./db";
+import postgres from "postgres";
 
-export const sql = async (strings: string) => {
-    const client = await pool.connect();
-     try {
-          const result = await client.query(strings);
-          return result;
-     } catch (err) {
-          throw err;
-     }
-      finally {
-          client.release();
-     }
-}
+export const sql = postgres(`${process.env.POSTGRES_URL}`, {
+     user: process.env.POSTGRES_USER,
+     host: process.env.POSTGRES_HOST,
+     database: process.env.POSTGRES_DATABASE,
+     password: process.env.POSTGRES_PASSWORD,
+     port: 5432,
+})

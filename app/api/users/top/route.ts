@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
 
     // execute the query to fetch the top 5 users by followers where the user is not following them and dont display the user itself
 
-    const { rows: users } = await sql(`
+    const users = await sql`
     SELECT *
     FROM Users
     WHERE userid NOT IN (
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     ) AND userid <> ${userid}
     ORDER BY (SELECT COUNT(*) FROM Follows WHERE followeeid = Users.userid) DESC
     LIMIT 5
-  `);
+  `;
     // return the result
     return NextResponse.json({ users });
   } catch (error) {

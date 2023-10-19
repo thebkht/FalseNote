@@ -86,7 +86,7 @@ export default function FeaturedDev(
         </CardHeader>
         <CardContent className="p-4 pt-0">
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
-            {featuredDevs.map(
+            {featuredDevs?.map(
                   (item: {
                     registrationdate: any;
                     verified: boolean;

@@ -25,12 +25,12 @@ export async function POST(
 
      if (!hasViewed) {
       // Execute a query to fetch the specific userid by name
-      const author = await sql(`
+      const author = await sql`
         SELECT * FROM users WHERE Username = ${username}
-      `);
-      const authorID = author.rows[0]?.userid;
+      `;
+      const authorID = author[0]?.userid;
 
-      await sql(`UPDATE blogposts SET views = views + 1 WHERE authorid = ${authorID} AND url = ${postUrl}`);
+      await sql`UPDATE blogposts SET views = views + 1 WHERE authorid = ${authorID} AND url = ${postUrl}`;
 
       // Set a cookie to indicate that the post has been viewed
       req.cookies.set(cookieName, "true",)

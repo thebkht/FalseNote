@@ -35,8 +35,8 @@ try {
      //creation date is the date the post was published on dev.to ex: Apr 4, 2021 it must be current date
      const creationdate = new Date();
 
-     const result = await sql(`SELECT * FROM users WHERE userid = ${authorid}`);
-     const author = result.rows[0]
+     const result = await sql`SELECT * FROM users WHERE userid = ${authorid}`;
+     const author = result[0]
 
   return new ImageResponse(
     (

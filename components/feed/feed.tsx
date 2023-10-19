@@ -36,7 +36,7 @@ export default function EmptyFeed() {
      return (
           <div className="feed__content_featured">
            {
-            featuredDevs.length !== 0 && (
+            featuredDevs?.length !== 0 && (
               <FeaturedDev data={featuredDevs} isloaded={isLoaded} />
             )
            }
