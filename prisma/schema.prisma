@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSGRES_URL")
+  url      = env("POSTGRES_URL")
 }
 
 model User {
@@ -24,7 +24,7 @@ model User {
   falsemember Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  settings UserSetting?
+  settings UserSettings?
   notifications Notification[]
   posts     Post[]
   comments  Comment[]
@@ -176,7 +176,7 @@ model Bookmark {
   @@map("bookmarks")
 }
 
-model UserSetting {
+model UserSettings {
   id        Int      @id @default(autoincrement())
   user    User     @relation(fields: [userId], references: [id])
   userId  Int @unique

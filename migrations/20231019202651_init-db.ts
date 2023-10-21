@@ -55,7 +55,7 @@ export async function up(knex: Knex): Promise<void> {
           table.timestamp("updatedAt").defaultTo(knex.fn.now());
      });
 
-     await knex.schema.createTable("commentslikes", (table) => {
+     await knex.schema.createTable("commentlikes", (table) => {
           table.increments("id").primary();
           table.integer("authorId").unsigned().notNullable();
           table.foreign("authorId").references("users.id").onDelete("CASCADE");
@@ -72,7 +72,7 @@ export async function up(knex: Knex): Promise<void> {
           table.timestamp("updatedAt").defaultTo(knex.fn.now());
      });
 
-     await knex.schema.createTable("posts_tags", (table) => {
+     await knex.schema.createTable("posttags", (table) => {
           table.increments("id").primary();
           table.integer("postId").unsigned().notNullable();
           table.foreign("postId").references("posts.id").onDelete("CASCADE");
@@ -92,7 +92,7 @@ export async function up(knex: Knex): Promise<void> {
           table.timestamp("updatedAt").defaultTo(knex.fn.now());
      } );
 
-     await knex.schema.createTable("tags_follows", (table) => {
+     await knex.schema.createTable("tagfollows", (table) => {
           table.increments("id").primary();
           table.integer("tagId").unsigned().notNullable();
           table.foreign("tagId").references("tags.id").onDelete("CASCADE");
@@ -104,8 +104,8 @@ export async function up(knex: Knex): Promise<void> {
 
      await knex.schema.createTable("notifications", (table) => {
           table.increments("id").primary();
-          table.integer("reciverId").unsigned().notNullable();
-          table.foreign("reciverId").references("users.id").onDelete("CASCADE");
+          table.integer("receiverId").unsigned().notNullable();
+          table.foreign("receiverId").references("users.id").onDelete("CASCADE");
           table.string("content").notNullable();
           table.string("type").notNullable();
           table.string("url");
@@ -125,7 +125,7 @@ export async function up(knex: Knex): Promise<void> {
           table.timestamp("updatedAt").defaultTo(knex.fn.now());
      });
 
-     await knex.schema.createTable("users_settings", (table) => {
+     await knex.schema.createTable("userssettings", (table) => {
           table.increments("id").primary();
           table.integer("userId").unsigned().notNullable();
           table.foreign("userId").references("users.id").onDelete("CASCADE");
@@ -138,14 +138,14 @@ export async function up(knex: Knex): Promise<void> {
 
 
 export async function down(knex: Knex): Promise<void> {
-     await knex.schema.dropTable("user_settings");
+     await knex.schema.dropTable("usersettings");
      await knex.schema.dropTable("bookmarks");
      await knex.schema.dropTable("notifications");
-     await knex.schema.dropTable("tags_follows");
+     await knex.schema.dropTable("tagfollows");
      await knex.schema.dropTable("follows");
-     await knex.schema.dropTable("posts_tags");
+     await knex.schema.dropTable("posttags");
      await knex.schema.dropTable("tags");
-     await knex.schema.dropTable("commentslikes");
+     await knex.schema.dropTable("commentlikes");
      await knex.schema.dropTable("likes");
      await knex.schema.dropTable("comments");
      await knex.schema.dropTable("posts");

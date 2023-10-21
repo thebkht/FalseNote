@@ -1,10 +1,10 @@
-import { sql } from '@/lib/postgres';
+import postgres from '@/lib/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   try {
     // Execute a query to fetch all table names
-    const result = await sql('SELECT * FROM users');
+    const result = await postgres.user.findMany()
 
     const users = result;
 
