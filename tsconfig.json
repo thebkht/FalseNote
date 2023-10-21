@@ -19,11 +19,7 @@
       }
     ],
     "paths": {
-      "crypto": [
-        "./node_modules/crypto-js"
-      ],
-      "@/*": ["./*"],
-      
+      "@/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

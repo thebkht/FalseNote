@@ -1,0 +1,189 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSGRES_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username      String? @unique
+  name      String
+  bio       String
+  password  String
+  image     String?
+  githubprofile String
+  location String
+  verified Boolean @default(false)
+  falsemember Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  settings UserSetting?
+  notifications Notification[]
+  posts     Post[]
+  comments  Comment[]
+  likes     Like[]
+  commentlikes CommentLike[]
+  Followers Follow[] @relation("Follower")
+  Following Follow[] @relation("Following")
+  tagfollower TagFollow[] @relation("TagFollower")
+  bookmarks Bookmark[]
+
+
+  @@map("users")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String?
+  subtitle  String
+  cover    String
+  views    Int @default(0)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  url       String?   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  visibility String @default("public")
+  updated Boolean @default(false)
+  tags      PostTag[]
+  comments  Comment[]
+  likes     Like[]
+  savedUsers Bookmark[]
+
+  @@index([createdAt])
+  @@map("posts")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  likes     CommentLike[]
+
+  @@index([createdAt])
+  @@map("comments")
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("likes")
+}
+
+model CommentLike {
+  id        Int      @id @default(autoincrement())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  comment   Comment     @relation(fields: [commentId], references: [id])
+  commentId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("commentlikes")
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     PostTag[]
+  followingtag TagFollow[] @relation("FollowingTag")
+
+  @@map("tags")
+}
+
+model PostTag {
+  id        Int      @id @default(autoincrement())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posttags")
+}
+
+model Follow {
+  id        Int      @id @default(autoincrement())
+  follower  User     @relation("Follower", fields: [followerId], references: [id])
+  followerId  Int
+  following User     @relation("Following", fields: [followingId], references: [id])
+  followingId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("follows")
+}
+
+model TagFollow {
+  id        Int      @id @default(autoincrement())
+  follower  User     @relation("TagFollower", fields: [followerId], references: [id])
+  followerId  Int
+  tag       Tag      @relation("FollowingTag", fields: [tagId], references: [id])
+  tagId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("tagfollows")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  content   String
+  read      Boolean @default(false)
+  receiver  User     @relation(fields: [receiverId], references: [id])
+  receiverId  Int
+  type      String?
+  url       String
+  senderId  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model Bookmark {
+  id        Int      @id @default(autoincrement())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("bookmarks")
+}
+
+model UserSetting {
+  id        Int      @id @default(autoincrement())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  Int @unique
+  appearance String @default("system")
+  language String @default("en")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("usersettings")
+}

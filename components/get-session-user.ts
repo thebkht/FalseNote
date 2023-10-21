@@ -18,7 +18,7 @@ export async function getSessionUser() {
      //Convert user details to JSON and return user object with details from database as a object
      const userJson = await user.json();
 
-     return Promise.resolve(userJson);
+     return Promise.resolve(userJson.user);
      } catch (error) {
           //If there is no user details in database return null
           return Promise.reject(null);
