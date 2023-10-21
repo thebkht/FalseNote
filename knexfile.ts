@@ -5,7 +5,7 @@ import { Knex } from "knex";
 
 const config: Knex.Config = {
   client: "pg",
-  connection: process.env.POSTGRES_URL + (process.env.NODE_ENV === "production" ? "?sslmode=require" : ""),
+  connection: process.env.POSTGRES_URL ,
   migrations: {
     extension: "ts",
   },
