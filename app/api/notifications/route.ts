@@ -1,4 +1,4 @@
-import { sql } from "@/lib/postgres"
+import postgres from "@/lib/postgres"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -7,15 +7,17 @@ export async function POST(request: NextRequest) {
      if (!data) {
           return NextResponse.json({ status: 400, message: "No data provided" })
      }
-     console.log("Received data:", data)
-     const { type, message, user_id } = data
-     const created_at = new Date().toISOString()
-     const read_at = null
-          // await sql`
-          //      INSERT INTO notifications (type, message, userid, createdat, readat)
-          //      VALUES (${type}, ${message}, ${user_id}, ${created_at}, ${read_at})
-          // `
-          await sql('INSERT INTO notifications (type, message, userid, createdat, readat) VALUES ($1, $2, $3, $4, $5)', [type, message, user_id, created_at, read_at])
+     const { content, receiverId, type, url, senderId } = data
+
+          await postgres.notification.create({
+               data: {
+                    content,
+                    receiverId,
+                    type,
+                    url,
+                    senderId
+               }
+          })
           // Execute the query here
           return NextResponse.json({ status: 201, message: "Notification created" })
      } catch (error) {
@@ -26,49 +28,32 @@ export async function POST(request: NextRequest) {
 
 // GET /api/notifications
 export async function GET(request: NextRequest) {
-     // request url: /api/notifications body: json.stringify({ user_id: 1 })
-      
-           try {
-               const user_id = request.nextUrl.searchParams.get("user_id")
-           console.log("Received user_id:", user_id);
-      
-           if (!user_id) {
-                return NextResponse.json({
-                     status: 400,
-                     message: "Missing user_id query parameter",
-                });
-           }
-               //  const data = await sql`
-               //       SELECT * FROM notifications WHERE userid = ${user_id} ORDER BY createdat DESC
-               //  `;
-               const data = await sql('SELECT * FROM notifications WHERE userid = $1 ORDER BY createdat DESC', [user_id])
-                
-               //  const sender = await sql`
-               //           SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = ${user_id})
-               //      `
-               const sender = await sql('SELECT * FROM users WHERE userid IN (SELECT sender_id FROM notifications WHERE userid = $1)', [user_id])
-                    data.forEach((notification: any) => {
-                         sender.forEach((user: any) => {
-                              if (notification.sender_id === user.userid) {
-                                   notification.sender = user
-                              }
-                         }
-                         )
-                    }
-                    )
-
-                    return NextResponse.json({
-                         status: 200,
-                         data: data,
-                    });
-           } catch (error: any) {
-                console.error("Failed to fetch notifications:", error);
-                return NextResponse.json({
-                     status: 500,
-                     message: `Failed to fetch notifications: ${error.message}`,
-                });
-           }
-      }
+     try {
+       const body = await request.json();
+       if (!body || !body.receiverId) {
+         return NextResponse.json({
+           status: 400,
+           message: "Missing receiverId query parameter",
+         });
+       }
+       const receiverId = Number(body.receiverId);
+       const data = await postgres.notification.findMany({
+         where: {
+           receiverId,
+         },
+         orderBy: {
+           createdAt: "desc",
+         },
+       });
+       return NextResponse.json(data);
+     } catch (error) {
+       return NextResponse.json({
+         status: 400,
+         message: "Invalid request body",
+         error,
+       });
+     }
+   }
    
 
 // PUT /api/notifications?id
@@ -78,7 +63,14 @@ export async function PUT(request: NextRequest) {
           // await sql`
           //      UPDATE notifications SET readat = ${new Date().toISOString()} WHERE id = ${id}
           // `
-          await sql('UPDATE notifications SET readat = $1 WHERE id = $2', [new Date().toISOString(), id])
+          await postgres.notification.update({
+               where: {
+                    id: Number(id)
+               },
+               data: {
+                    read: true
+               }
+          })
           return NextResponse.json({ status: 200, message: "Notification updated" })
      } catch (error) {
           console.log("Failed to update notification:", error)
@@ -90,10 +82,11 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
      const id = await request.nextUrl.searchParams.get("id")
      try {
-          // await sql`
-          //      DELETE FROM notifications WHERE id = ${id}
-          // `
-          await sql('DELETE FROM notifications WHERE id = $1', [id])
+          await postgres.notification.delete({
+               where: {
+                    id: Number(id)
+               }
+          })
           return NextResponse.json({ status: 200, message: "Notification deleted" })
      } catch (error) {
           console.log("Failed to delete notification:", error)

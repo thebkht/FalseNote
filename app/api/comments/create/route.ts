@@ -24,35 +24,35 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
-    const authorDetails = await postgres.user.findFirst({
-      where: {
-        id: author,
-      },
-    });
-    const postDetails = await postgres.post.findFirst({
-      where: {
-        id: post,
-      },
-    });
+    // const authorDetails = await postgres.user.findFirst({
+    //   where: {
+    //     id: author,
+    //   },
+    // });
+    // const postDetails = await postgres.post.findFirst({
+    //   where: {
+    //     id: post,
+    //   },
+    // });
 
-    // Send a notification to the author of the post using api/notifications post method body json
-    const message = `${authorDetails?.username} commented on your post "${postDetails?.title}: ${content}"`;
-    const user_id = postDetails?.authorId;
-    const type = "comment";
-    const created_at = new Date().toISOString()
-    const read_at = null
-    const sender_id = authorDetails?.id;
+    // // Send a notification to the author of the post using api/notifications post method body json
+    // const message = `${authorDetails?.username} commented on your post "${postDetails?.title}: ${content}"`;
+    // const user_id = postDetails?.authorId;
+    // const type = "comment";
+    // const created_at = new Date().toISOString()
+    // const read_at = null
+    // const sender_id = authorDetails?.id;
 
-    await postgres.notification.create({
-      data: {
-        content: message,
-        type: type,
-        createdAt: created_at,
-        receiverId: user_id!,
-        senderId: sender_id!,
+    // await postgres.notification.create({
+    //   data: {
+    //     content: message,
+    //     type: type,
+    //     createdAt: created_at,
+    //     receiverId: user_id!,
+    //     senderId: sender_id!,
         
-      },
-    });
+    //   },
+    // });
 
     // const notification = await fetch(`localhost:3000/api/notifications`, {
     //   method: "POST",

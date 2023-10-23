@@ -1,4 +1,5 @@
-import { sql } from "@/lib/postgres";
+import postgres from "@/lib/postgres";
+import { tr } from "date-fns/locale";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest){
@@ -9,16 +10,25 @@ export async function GET(req: NextRequest){
      } 
 
      try{
-          const rows = await sql('SELECT * FROM Tags WHERE TagID = $1', [tagid])
-          if (rows.length === 0){
+          const rows = await postgres.tag.findFirst({
+               where: {
+                    id: Number(tagid)
+               },
+               include: {
+                    _count: {
+                         select: { 
+                              posts: true,
+                              followingtag: true
+                         }
+                    },
+                    followingtag: true
+               }
+          })
+          if (!rows){
                return new NextResponse("Tag not found", {status: 404})
           }
 
-          //get followers
-          const followers = await sql('SELECT * FROM users WHERE userid IN (SELECT userid FROM TagFollowers WHERE TagID = $1)', [tagid])
-          rows[0].followers = followers
-
-          return new NextResponse(JSON.stringify(rows[0]), {status: 200})
+          return new NextResponse(JSON.stringify(rows), {status: 200})
      } catch (error) {
           return new NextResponse("Failed to get tag", {status: 500})
      }

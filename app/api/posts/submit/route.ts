@@ -1,27 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@/lib/postgres"
-import { sq } from "date-fns/locale";
+import postgres from "@/lib/postgres"
 
 async function insertTag(tags: any, postid: any) {
      if (tags) {
           for (const tag of tags) {
                // Check if tag exists
-               const tagExists = await sql('SELECT * FROM tags WHERE TagName = $1', [tag.value])
-               if (tagExists.length === 0) {
-                    // Insert tag into tags table
-                    // await sql`
-                    // INSERT INTO tags (TagName)
-                    // VALUES (${tag.value})
-                    // `;
-                    await sql('INSERT INTO tags (TagName) VALUES ($1)', [tag.value]);
+               const tagExists = await postgres.tag.findFirst({
+                    where: {
+                         name: tag.value,
+                    },
+               })
+               if (!tagExists) {
+                    await postgres.tag.create({
+                         data: {
+                              name: tag.value,
+                         }
+                    })
                }
-               const tagId = await sql('SELECT TagID FROM tags WHERE TagName = $1', [tag.value])
-               const tagIdInt = tagId?.[0].tagid;
-               // await sql`
-               // INSERT INTO BlogPostTags (BlogPostID, TagID)
-               // VALUES (${postid}, ${tagIdInt})
-               // `;
-               await sql('INSERT INTO BlogPostTags (BlogPostID, TagID) VALUES ($1, $2)', [postid, tagIdInt]);
+               const tagId = await postgres.tag.findFirst({
+                    where: {
+                         name: tag.value,
+                    },
+                    select: {
+                         id: true,
+                    }
+               })
+               if (tagId) {
+                    await postgres.postTag.create({
+                         data: {
+                              tagId: tagId.id,
+                              postId: Number(postid),
+                         }
+                    })
+               }
           }
      }
 }
@@ -32,13 +43,9 @@ export async function POST(req: NextRequest) {
           if (!data) {
                return new Response("No data provided", { status: 400 });
           }
-          console.log("Received data:", data);
-
-          //if req url is /api/posts/submit then add new post to database
-          //if req url is /api/posts/submit?postid then update post in database
           const postid = req.nextUrl.searchParams.get("postId");
 
-          const { title, content, coverImage, visibility, tags, url, authorId, description } = data;
+          const { title, content, coverImage, visibility, tags, url, authorId, subtitle } = data;
 
           if (!title) {
                return new Response("No title provided", { status: 400 });
@@ -55,42 +62,54 @@ export async function POST(req: NextRequest) {
                return new Response("No url provided", { status: 400 });
           }
 
-          var isDraft;
-          if (visibility === "Draft") {
-               isDraft = true;
-          } else {
-               isDraft = false;
-          }
-
           if (postid) {
-               //first check if post exists in database
-               //check is there any changes to the post
-               //if there are changes then update the post
-               //if there are no changes then do nothing
-               const post = await sql('SELECT * FROM BlogPosts WHERE PostID = $1', [postid])
-               const postData = post?.[0];
+               const postData = await postgres.post.findFirst({
+                    where: {
+                         id: Number(postid),
+                    },
+               })
                if (!postData) {
                     return new Response("Post does not exist", { status: 400 });
                }
                
-               if (title !== postData.title || content !== postData.content || coverImage !== postData.coverimage || visibility !== postData.visibility || isDraft !== postData.draft || url !== postData.url || description !== postData.description) {
-                    // await sql`
-                    // UPDATE BlogPosts
-                    // SET Title = ${title}, Content = ${content}, CoverImage = ${coverImage}, Visibility = ${visibility}, Draft = ${isDraft}, url = ${url}, Description = ${description}, Lastupdateddate = NOW()
-                    // WHERE PostID = ${postid}
-                    // `;
-                    await sql('UPDATE BlogPosts SET Title = $1, Content = $2, CoverImage = $3, Visibility = $4, Draft = $5, url = $6, Description = $7, Lastupdateddate = NOW() WHERE PostID = $8', [title, content, coverImage, visibility, isDraft, url, description, postid]);
+               if (title !== postData.title || content !== postData.content || coverImage !== postData.cover || visibility !== postData.visibility || url !== postData.url || subtitle !== postData.subtitle) {
+                    
+                    await postgres.post.update({
+                         where: {
+                              id: Number(postid),
+                         },
+                         data: {
+                              title: title,
+                              content: content,
+                              cover: coverImage,
+                              visibility: visibility,
+                              url: url,
+                              subtitle: subtitle,
+                         }
+                    })
 
-                    //update tags
-                    //first delete all tags associated with the post
                }
-               const postTags = await sql('SELECT * FROM BlogPostTags WHERE BlogPostID = $1', [postid])
-               const postTagsData = postTags;
+               const postTagsData = await postgres.postTag.findMany({
+                    where: {
+                         postId: Number(postid),
+                    },
+                    select: {
+                         tag: {
+                              select: {
+                                   name: true,
+                              }
+                         }
+                    }
+               })
                if (postTagsData) {
                     // await sql`
                     //      DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
                     //      `;
-                    await sql('DELETE FROM BlogPostTags WHERE BlogPostID = $1', [postid]);
+                    await postgres.postTag.deleteMany({
+                         where: {
+                              postId: Number(postid),
+                         }
+                    })
                }
                await insertTag(tags, postid);
                
@@ -98,16 +117,28 @@ export async function POST(req: NextRequest) {
                return NextResponse.json({ body: "Post updated" });
           }
           else {
+          await postgres.post.create({
+               data: {
+                    title: title,
+                    content: content,
+                    cover: coverImage,
+                    visibility: visibility,
+                    url: url,
+                    subtitle: subtitle,
+                    authorId: authorId,
+               }
+          })
 
-          // await sql`
-          // INSERT INTO BlogPosts (Title, Content, CoverImage, Visibility, Draft, url, AuthorID, Description)
-          // VALUES (${title}, ${content}, ${coverImage}, ${visibility}, ${isDraft}, ${url}, ${authorId}, ${description})
-          // `;
-          await sql('INSERT INTO BlogPosts (Title, Content, CoverImage, Visibility, Draft, url, AuthorID, Description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [title, content, coverImage, visibility, isDraft, url, authorId, description]);
+          const submittedPostId = await postgres.post.findFirst({
+               where: {
+                    url: url,
+               },
+               select: {
+                    id: true,
+               }
+          })
 
-          const submittedPostId = await sql('SELECT PostID FROM BlogPosts WHERE url = $1 AND authodid = $2', [url, authorId])
-
-          const postId = submittedPostId?.[0].postid;
+          const postId = submittedPostId?.id;
 
           await insertTag(tags, postId);
 
