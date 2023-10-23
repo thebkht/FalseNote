@@ -79,7 +79,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                                             key={p.id}
                                                             title={p.title}
                                                             thumbnail={p.cover}
-                                                            content={p.description}
+                                                            content={p.subtitle}
                                                             author={author?.username || author?.name}
                                                             date={p.createdAt}
                                                             views={formatNumberWithSuffix(p.views)}

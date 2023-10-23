@@ -22,7 +22,7 @@ export function TagNav({ className, items, ...props }: { className?: string, ite
       {items.map((item: any) => (
         <Button
           key={item.tagid}
-          variant={pathname === item.href ? "default" : "ghost"}
+          variant={pathname === item.href ? "secondary" : "outline"}
           asChild
           >
           <Link href={item.href} className="capitalize">

@@ -67,14 +67,14 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                               {
                                    sessionStatus === "authenticated" ? (
                                         <form action={handleFollow}>
-                                             <Button variant={"secondary"} size={"lg"}>{
-                                                  isFollowing ? "Following" : "Follow"}
+                                             <Button variant={"secondary"} size={"lg"}>
+                                                  { isFollowing ? "Following" : "Follow" }
                                              </Button>
                                         </form>
 
                                    ) : (
                                         <LoginDialog>
-                                             <Button variant={"secondary"} size={"lg"}>Follow</Button>
+                                             <Button variant={"secondary"} size={"lg"} disabled>Follow</Button>
                                         </LoginDialog>
                                    )
                               }
