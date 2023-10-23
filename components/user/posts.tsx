@@ -24,20 +24,20 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
             posts?.map((article: any) => (
                 article.visibility === "public" &&
                   (
-                    <ContextMenu key={article.postid}>
+                    <ContextMenu key={article.id}>
                     <div className="space-y-3 md:space-y-6">
                     <ContextMenuTrigger className="">
                       
                     <PostCard
                 title={article.title}
-                thumbnail={article.coverimage}
-                content={article.description}
+                thumbnail={article.cover}
+                content={article.subtitle}
                 author={user?.username || user?.name}
-                date={article.creationdate}
+                date={article.createdAt}
                 views={formatNumberWithSuffix(article.views)}
                 comments={formatNumberWithSuffix(article.comments || 0)}
                 id={article.id}
-                authorid={user?.userid}
+                authorid={user?.id}
                 session={sessionUser}
                 likes={formatNumberWithSuffix(article.likes || 0)}
                 url={`/${user?.username}/${article.url}`}

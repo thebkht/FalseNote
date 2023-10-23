@@ -55,7 +55,7 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
           // ✅ This will be type-safe and validated.
           setPosting(true);
           try{
-                const author =( await getSessionUser()).userid;
+                const author =( await getSessionUser()).id;
                 await fetch("/api/comments/create", {
                   method: "POST",
                   body: JSON.stringify({ ...data, author, post: props.post }),

@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
           return new Response("followeeId and followerId are required query parameters", { status: 400 });
      }
 
-     const isFollowed = await postgres.follow.findFirstOrThrow({
+     const isFollowed = await postgres.follow.findFirst({
           where: {
                followerId: Number(followerId),
                followingId: Number(followeeId)

@@ -33,7 +33,7 @@ export default async function Page({ params }: {
   const postComments = await postgres.comment.findMany({
     where: {
       postId: {
-        in: posts.map((post: any) => post.postid)
+        in: posts.map((post: any) => post.id)
       }
     }
   });

@@ -46,7 +46,7 @@ export default function PopularPosts(
       setIsFollowingLoading(newLoadingStates);
 
       try {
-        const followerId = (await getSessionUser()).userid;
+        const followerId = (await getSessionUser()).id;
         await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
           method: "GET",
         });
@@ -78,11 +78,11 @@ export default function PopularPosts(
           <ol className="flex flex-col items-start justify-between space-y-4 feed__popular-list">
             {popularPosts.map(
                   (item: any, index: number) => (
-              <li key={item.postid} className="text-sm">
+              <li key={item.id} className="text-sm">
                 <Link href={`/${item.author.username}/${item.url}`} className="text-base font-medium">
                   {item.title}
                 </Link>
-                <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.creationdate)}</span><span>{formatNumberWithSuffix(item.views) } views</span></div>
+                <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.createdAt)}</span><span>{formatNumberWithSuffix(item.views) } views</span></div>
               </li>
 
             ))}

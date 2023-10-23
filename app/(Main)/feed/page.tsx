@@ -89,7 +89,7 @@ async function fetchFeed() {
             <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
               <div className="flex flex-col items-center justify-center space-y-4">
                 <h1 className="text-2xl font-bold">No posts yet</h1>
-                <p className="text-gray-500">When you follow someone, their posts will show up here.</p>
+                <p className="text-muted-foreground">When you follow someone, their posts will show up here.</p>
               </div>
             </div>
           )
@@ -98,13 +98,13 @@ async function fetchFeed() {
           <div className="feed__list_item">
           {feed.map((post: any) => (
         <FeedPostCard
-                key={post.postid}
-                id={post.postid as string}
+                key={post.id}
+                id={post.id as string}
                 title={post.title}
-                content={post.description}
-                date={post.creationdate}
+                content={post.subtitle}
+                date={post.createdAt}
                 author={post.author}
-                thumbnail={post.coverimage}
+                thumbnail={post.cover}
                 likes={post.likes}
                 comments={post.comments || "0"}
                 views={post.views} authorid={post.author?.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
