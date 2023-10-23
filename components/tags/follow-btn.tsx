@@ -4,15 +4,13 @@ import { Button } from "../ui/button";
 
 type Props = React.ComponentPropsWithoutRef<typeof Button> & {
      onClick?: () => Promise<void> | void;
-     children: React.ReactNode;
+     isFollowing: boolean;
 }
 
-const FollowTagButton: React.FC<Props> = ({ onClick, children, ...props }) => {
+const FollowTagButton: React.FC<Props> = ({ isFollowing, onClick, ...props }) => {
      return (
-          <Button onClick={async () => {
-               if(onClick) await onClick()
-          }} {...props}>
-               {children}
+          <Button {...props}>
+               {isFollowing ? "Following" : "Follow"}
           </Button>
      )
 }

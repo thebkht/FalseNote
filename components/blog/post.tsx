@@ -165,7 +165,10 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                              {tags.map((tag: any) => (
                                                   <Link href={`/tag/${tag.tag.name}`} key={tag.tag.id}>
                                                        <Badge variant={"secondary"} className="h-6 w-auto cursor-pointer font-normal capitalize text-sm px-2 py-4">
-                                                            {tag.tag.name}
+                                                            {
+                                                                 //replace - with space
+                                                                 tag.tag.name.replace(/-/g, " ")
+                                                            }
                                                        </Badge>
                                                   </Link>
                                              ))}

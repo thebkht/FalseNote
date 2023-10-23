@@ -21,12 +21,12 @@ export function TagNav({ className, items, ...props }: { className?: string, ite
       <div className="flex gap-2 pb-3">
       {items.map((item: any) => (
         <Button
-          key={item.tagid}
+          key={item.id}
           variant={pathname === item.href ? "secondary" : "outline"}
           asChild
           >
           <Link href={item.href} className="capitalize">
-            {item.tagname}
+            {item.name.replace(/-/g, " ")}
           </Link>
           </Button>
       ))}

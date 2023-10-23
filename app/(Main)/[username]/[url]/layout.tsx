@@ -18,14 +18,14 @@ export async function generateMetadata(
           return {
             metadataBase: new URL(`${process.env.DOMAIN}/${post.author.username}/${post.url}`),
                title: `${post.title} | FalseNotes`,
-               description: post.description,
+               description: post.subtitle,
                openGraph: {
                  title: `${post.title} | FalseNotes`,
-                 description: post.description,
+                 description: post.subtitle,
                  url: `${process.env.DOMAIN}/${post.author.username}/${post.url}`,
                  images: [
                    {
-                     url: post.coverimage || `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
+                     url: `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
                      width: 1200,
                      height: 630,
                      alt: `${post.title} | FalseNotes`,
@@ -35,7 +35,7 @@ export async function generateMetadata(
                twitter: {
                  card: 'summary_large_image',
                  title: `${post.title} | FalseNotes`,
-                 description: post.description,
+                 description: post.subtitle,
                },
     } 
     } catch (error) {

@@ -40,9 +40,9 @@ export async function GET(req: Request, { params }: { params: { username: string
 
   return new ImageResponse(
     (
-      post.coverimage ? (
+      post.cover !== '' ? (
         <div tw="flex flex-col w-full h-full bg-gray-50 justify-end bg-slate-200" style={{
-          backgroundImage: `url(${post.coverimage})`,
+          backgroundImage: `url(${post.cover})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }} >
@@ -50,7 +50,7 @@ export async function GET(req: Request, { params }: { params: { username: string
                <div tw="text-3xl font-bold w-3/5 mb-4">{post.title}</div>
           <div tw="flex space-x-4 items-center w-full bg-white justify-between">
           <div tw="flex">
-          <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={post.author.profilepicture} />
+          <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={post.author.image} />
               <div tw="flex flex-col">
               <span tw="text-base font-bold">{post?.author?.username} </span>
               <div tw="text-sm text-mute-foreground">{formatDate(post.creationdate)}</div>
@@ -65,20 +65,20 @@ export async function GET(req: Request, { params }: { params: { username: string
       ) : (
         <div tw="flex flex-col w-full h-full bg-gray-50 justify-end bg-gray-50" >
                <div tw="flex flex-col py-8 px-14">
-               <div tw="text-3xl font-bold w-3/5 mb-4">{post.title}</div>
-               <div tw="text-xl w-3/5 mb-6">{
-                    post.description.length > 150 ? (
-                      post.description.slice(0, 150) + "..."
+               <div tw="text-6xl font-bold w-4/5 mb-4">{post.title}</div>
+               <div tw="text-2xl w-3/5 mb-6">{
+                    post.subtitle.length > 150 ? (
+                      post.subtitle.slice(0, 150) + "..."
                     ) : (
-                      post.description
+                      post.subtitle
                     )
                }</div>
           <div tw="flex space-x-4 items-center w-full justify-between">
           <div tw="flex">
-          <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={post.author.profilepicture} />
+          <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={post.author.image} />
               <div tw="flex flex-col">
               <span tw="text-base font-bold">{post?.author?.username} </span>
-              <div tw="text-sm text-mute-foreground">{formatDate(post.creationdate)}</div>
+              <div tw="text-sm text-mute-foreground">{formatDate(post.createdAt)}</div>
               </div>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 689.11 100" height="32">

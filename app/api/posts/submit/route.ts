@@ -7,19 +7,19 @@ async function insertTag(tags: any, postid: any) {
                // Check if tag exists
                const tagExists = await postgres.tag.findFirst({
                     where: {
-                         name: tag.value,
+                         name: tag.value.replace(/\s+/g, '-').toLowerCase(),
                     },
                })
                if (!tagExists) {
                     await postgres.tag.create({
                          data: {
-                              name: tag.value,
+                              name: tag.value.replace(/\s+/g, '-').toLowerCase(),
                          }
                     })
                }
                const tagId = await postgres.tag.findFirst({
                     where: {
-                         name: tag.value,
+                         name: tag.value.replace(/\s+/g, '-').toLowerCase(),
                     },
                     select: {
                          id: true,
