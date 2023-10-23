@@ -43,13 +43,13 @@ try {
     (
      <div tw="flex flex-col w-full h-full bg-gray-50 justify-end bg-gray-50" >
      <div tw="flex flex-col py-8 px-14">
-     <div tw="text-3xl font-bold w-3/5 mb-4">{title}</div>
-     <div tw="text-xl w-3/5 mb-6">{
-            subtitle && subtitle.length > 150 ? (
+     <div tw="text-6xl font-bold w-4/5 mb-4">{title}</div>
+     <div tw="text-3xl w-4/5 mb-6">{
+            subtitle !== null && (subtitle.length > 150 ? (
             subtitle.slice(0, 150) + "..."
           ) : (
             subtitle
-          )
+          ))
      }</div>
 <div tw="flex space-x-4 items-center w-full justify-between">
 <div tw="flex">
