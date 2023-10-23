@@ -1,6 +1,10 @@
+import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getSessionUser } from "@/components/get-session-user";
+import LoginDialog from "@/components/login-dialog";
 import TagDetails from "@/components/tags/details";
+import FollowTagButton from "@/components/tags/follow-btn";
 import TagPosts from "@/components/tags/post";
+import { Button } from "@/components/ui/button";
 import postgres from "@/lib/postgres";
 import { redirect } from "next/navigation";
 
@@ -29,26 +33,52 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           }
      });
      const session = await getSessionUser();
+     const sessionStatus = session ? "authenticated" : "unauthenticated";
 
-     //if session, check if user is following tag
-     if (session) {
-          tag.followingtag.find((follower: any) => {
-               if (follower.userid === session.userid) {
-                    tag.isFollowing = true;
-               } else {
-                    tag.isFollowing = false;
-               }
+     const isFollowing = tag.followingtag.some((user) => user.id === session?.id);
+
+     const handleFollow = () => async () => {
+          'use server'
+          if (isFollowing) {
+               await postgres.tagFollow.deleteMany({
+                    where: {
+                         followerId: session?.id,
+                         tagId: tag.id
+                    }
+               })
+          } else {
+               await postgres.tagFollow.create({
+                    data: {
+                         followerId: session?.id,
+                         tagId: tag.id
+                    }
+               })
           }
-          )
-     } else {
-          tag.isFollowing = false;
      }
 
      console.log(tag);
      return (
           <>
                <div className="flex flex-col space-y-6">
-                    <TagDetails tag={tag} post={posts.length} tagFollowers={tag.followingtag} />
+               <div className="space-y-0.5 px-6 pb-14 w-full">
+                    <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name}</h2>
+                    <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
+                         Tag<div className="mx-2">·</div>{formatNumberWithSuffix(posts.length)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tag.followingtag.length)} Followers
+                    </div>
+                    <div className="w-full flex justify-center">
+                         {
+                              sessionStatus === "authenticated" ? (
+                                   <FollowTagButton variant={"secondary"} size={"lg"} onClick={handleFollow()}>{
+                                        isFollowing ? "Following" : "Follow" }
+                                   </FollowTagButton>
+                              ) : (
+                                   <LoginDialog>
+                                        <Button variant={"secondary"} size={"lg"}>Follow</Button>
+                                   </LoginDialog>
+                              )
+                         }
+                    </div>
+               </div>
                     <TagPosts posts={posts} tag={tag} session={session} />
                </div>
           </>
