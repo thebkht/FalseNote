@@ -1,4 +1,4 @@
-import { sql } from "@/lib/postgres";
+import postgres from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
@@ -23,11 +23,27 @@ export async function POST(
 
      if (!hasViewed) {
       // Execute a query to fetch the specific userid by name
-      const author = await sql('SELECT * FROM Users WHERE Username = $1', [username]);
-      const authorID = author[0]?.userid;
+      const author = await postgres.user.findUnique({
+        where: {
+          username: username,
+        },
+        select: {
+          id: true,
+        },
+      });
+      const authorID = author?.id;
 
-      await sql('UPDATE BlogPosts SET Views = Views + 1 WHERE Url = $1 AND AuthorID = $2', [postUrl, authorID]);
-
+      await postgres.post.update({
+        where: {
+          url: postUrl,
+          authorId: authorID,
+        },
+        data: {
+          views: {
+            increment: 1,
+          },
+        },
+      });
       // Set a cookie to indicate that the post has been viewed
       req.cookies.set(cookieName, "true",)
     }

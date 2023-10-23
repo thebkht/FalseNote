@@ -1,4 +1,4 @@
-import { sql } from "@/lib/postgres";
+import postgres from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -17,56 +17,44 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
     // Execute a query to fetch the specific user by name
-    const author = await sql('SELECT * FROM Users WHERE Username = $1', [username]);
-    const authorID = author[0]?.userid;
-    //Get author's posts
-    const authorPosts = await sql('SELECT * FROM BlogPosts WHERE AuthorID = $1 AND url = $2 ORDER BY PostID DESC LIMIT 4', [authorID, postUrl])
-    author[0].posts = authorPosts;
+    const author = await postgres.user.findUnique({
+      where: {
+        username: username,
+      }
+    });
+    const authorID = author?.id;
 
-    const authorPostsComments = await sql('SELECT * FROM Comments WHERE BlogPostID IN (WHERE AuthorID = $1 AND url = $2 LIMIT 4)', [authorID, postUrl])
-
-      console.log(authorPostsComments);
-    authorPosts.forEach((post: any) => {
-      const comments = authorPostsComments.filter(
-        (comment: any) => comment.blogpostid === post.postid
-      );
-      post.comments = comments.length;
-    }
-    );
-
-    // Get author's followers
-    const followers = await sql('SELECT * FROM Users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID = $1)', [authorID])
-    author[0].followers = followers;
-
-    const result = await sql('SELECT * FROM BlogPosts WHERE Url = $1 AND authorid = $2', [postUrl, authorID]);
-    if (result.length === 0) {
+    const result = await postgres.post.findUnique({
+      where: {
+        url: postUrl,
+        authorId: authorID,
+      },
+      include: {
+        comments: true,
+        tags: true,
+        likes: true,
+        savedUsers: true,
+        author: {
+          include: {
+            _count: {
+              select: {
+                posts: true,
+                Followers: true,
+                Following: true,
+              },
+            },
+            posts: {
+              take: 4,
+            },
+          }
+        },
+      },
+    })
+    if (!result) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
-
-    if (result.length === 0) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
-
-    result[0].author = author[0];
-
-    const comments = await sql('SELECT * FROM Comments WHERE BlogPostID = $1', [result[0]?.postid])
-    result[0].comments = comments;
-
-    const commentsAuthors = await sql('SELECT * FROM Users WHERE UserID IN (SELECT AuthorID FROM Comments WHERE BlogPostID = $1)', [result[0]?.postid])
-    
-    comments.forEach((comment: any) => {
-      const author = commentsAuthors.find((author: any) => author.userid === comment.authorid);
-      comment.author = author;
-    }
-    );
-
-    result[0].commentsNum = comments.length;
-    const tags = await sql('SELECT * FROM Tags WHERE TagID IN (SELECT TagID FROM PostTags WHERE PostID = $1)', [result[0]?.postid]);
-    result[0].tags = tags;
-
-    console.log("Query result:", result);
     // Return the user as JSON with status 200
-    return NextResponse.json(result[0], { status: 200 });
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
@@ -90,25 +78,81 @@ export async function DELETE(req: NextRequest, { params }: { params: { username:
   }
 
   try {
-    const author = await sql('SELECT * FROM Users WHERE Username = $1', [username])
-    const authorID = author[0]?.userid;
+    const author = await postgres.user.findUnique({
+      where: {
+        username: username,
+      },
+      select: {
+        id: true,
+      },
+    });
+    const authorID = author?.id;
 
     //check if the post belongs to the user
-    const result = await sql('SELECT * FROM BlogPosts WHERE PostID = $1 AND AuthorID = $2', [postid, authorID]);
-    if (result.length === 0) {
+    const result = await postgres.post.findUnique({
+      where: {
+        id: Number(postid),
+        authorId: authorID,
+      },
+    });
+    if (!result) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
     //check if the post has comments and tags
-    const comments = await sql('SELECT * FROM Comments WHERE BlogPostID = $1', [postid])
-    const tags = await sql('SELECT * FROM BlogPostTags WHERE BlogPostID = $1', [postid])
+    const comments = await postgres.comment.findMany({
+      where: {
+        postId: Number(postid),
+      },
+    });
+    const tags = await postgres.postTag.findMany({
+      where: {
+        postId: Number(postid),
+      },
+    });
+    const likes = await postgres.like.findMany({
+      where: {
+        postId: Number(postid),
+      },
+    });
+    const saved = await postgres.bookmark.findMany({
+      where: {
+        postId: Number(postid),
+      },
+    });
     if (comments.length !== 0) {
-      await sql('DELETE FROM Comments WHERE BlogPostID = $1', [postid])
+      await postgres.comment.deleteMany({
+        where: {
+          postId: Number(postid),
+        },
+      });
     }
     if (tags.length !== 0) {
-      await sql('DELETE FROM BlogPostTags WHERE BlogPostID = $1', [postid])
+      await postgres.postTag.deleteMany({
+        where: {
+          postId: Number(postid),
+        },
+      });
     }
-    await sql('DELETE FROM BlogPosts WHERE PostID = $1', [postid])
+    if (likes.length !== 0) {
+      await postgres.like.deleteMany({
+        where: {
+          postId: Number(postid),
+        },
+      });
+    }
+    if (saved.length !== 0) {
+      await postgres.bookmark.deleteMany({
+        where: {
+          postId: Number(postid),
+        },
+      });
+    }
+    await postgres.post.delete({
+      where: {
+        id: Number(postid),
+      },
+    });
     return NextResponse.json({ message: "Post deleted" }, { status: 200 });
   } catch (error) {
     console.log(error);
