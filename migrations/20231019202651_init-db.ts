@@ -125,7 +125,7 @@ export async function up(knex: Knex): Promise<void> {
           table.timestamp("updatedAt").defaultTo(knex.fn.now());
      });
 
-     await knex.schema.createTable("userssettings", (table) => {
+     await knex.schema.createTable("usersettings", (table) => {
           table.increments("id").primary();
           table.integer("userId").unsigned().notNullable();
           table.foreign("userId").references("users.id").onDelete("CASCADE");

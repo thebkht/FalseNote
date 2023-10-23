@@ -83,25 +83,17 @@ export default function FeaturedDev(
         <CardContent className="p-4 pt-0">
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs?.map(
-                  (item: {
-                    registrationdate: any;
-                    verified: boolean;
-                    userid: string;
-                    profilepicture: string | undefined;
-                    username: string | undefined;
-                    name: string | undefined;
-                    bio: string | undefined;
-                  }, index: number) => (
-              <div className="flex gap-4 w-full items-center justify-between" key={item.userid}>
+                  (item: any, index: number) => (
+              <div className="flex gap-4 w-full items-center justify-between" key={item.id}>
                 <div className="space-y-3">
                 <UserHoverCard user={item} >
                 <Link href={`/${item.username}`} className="flex items-center">
                   <Avatar className="h-10 w-10 mr-2 md:mr-3 flex items-center justify-center bg-muted">
-                    <AvatarImage src={item.profilepicture} alt={item.username} />
+                    <AvatarImage src={item.image} alt={item.username} />
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   {
-                    item.name === null ? (
+                    item.name === '' ? (
                       <div>
                         <p className="text-sm font-medium leading-none">{item.username} {item?.verified && (
                     <Badge className="h-3 w-3 !px-0">
@@ -124,7 +116,7 @@ export default function FeaturedDev(
                 </UserHoverCard>
                 </div>
                 <Button variant="secondary" className="flex-shrink-0 h-8 text-sm" onClick={() => {
-                          handleFollow(item?.userid, index);
+                          handleFollow(item?.id, index);
                         }}
                         disabled={isFollowingLoading[index]}
                       >

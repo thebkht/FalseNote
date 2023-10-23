@@ -37,11 +37,11 @@ export const config = {
             await postgres.user.create({
               data: {
                 username: username,
-                name: name,
-                email: email,
+                name: name || '',
+                email: email || '',
                 bio: bio || '',
                 githubprofile: githubProfileURL,
-                location: location,
+                location: location || '',
                 image: avatar_url,
                 password: ''
               }

@@ -12,8 +12,14 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     // Execute a query to fetch the specific user by name
     const result = await postgres.user.findMany({
+      include: {
+        posts: true,
+        Followers: true,
+        Following: true,
+        notifications: true,
+      },
       where: {
-        username: username,
+        OR: [{username: username}, {name: username}]        
       }
     })
 

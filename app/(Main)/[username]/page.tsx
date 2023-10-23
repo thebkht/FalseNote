@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/react";
 import { getSessionUser } from "@/components/get-session-user";
 import { redirect, useRouter } from "next/navigation";
-import { sql } from "@/lib/postgres";
+import postgres from "@/lib/postgres";
 import {
   UserDetails,
   UserPosts,
@@ -13,17 +13,32 @@ export default async function Page({ params }: {
       username: string
    }
  }) {
-  const rows = await sql('SELECT * FROM users WHERE username = $1', [params.username]);
+  const rows = await postgres.user.findMany({
+    include: {
+      posts: true,
+      Followers: true,
+      Following: true
+    },
+    where: {
+      username: params.username
+    }
+  })
 
 
   const session = await getSession();
   const user = rows[0];
   if (!user) redirect("/404");
   
-  const posts = await sql('SELECT * FROM blogposts WHERE authorid IN (SELECT userid FROM users WHERE username = $1)', [params.username]);
-  const postComments = await sql('SELECT blogpostid FROM comments WHERE blogpostid IN (SELECT postid FROM BlogPosts WHERE AuthorID = $1) GROUP BY blogpostid', [user?.userid]);
-          
-    posts?.forEach((post: any) => {
+  const posts = user.posts;
+  const postComments = await postgres.comment.findMany({
+    where: {
+      postId: {
+        in: posts.map((post: any) => post.postid)
+      }
+    }
+  });
+
+  posts?.forEach((post: any) => {
       postComments?.forEach((comment: any) => {
         if (comment.postid === post.postid) {
           post.comments = post.comments + 1;
@@ -32,8 +47,8 @@ export default async function Page({ params }: {
       )
     }
     )
-  const followers = await sql('SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= $1)', [user.userid]);
-  const following = await sql('SELECT * FROM users WHERE UserID IN (SELECT FolloweeID FROM Follows WHERE FollowerID= $1)', [user.userid]);
+  const followers = user.Followers;
+  const following = user.Following;
 
   const sessionUserName = await getSessionUser();
   console.log(sessionUserName);

@@ -13,11 +13,11 @@ export default function EmptyFeed() {
     async function fetchData() {
       if (status !== "unauthenticated") {
         try {
-          const userid = (await getSessionUser()).userid;
+          const userid = (await getSessionUser()).id;
           const userData = await fetch(`/api/users/top?user=${userid}`, {
             method: "GET",
             }).then((res) => res.json());
-          setFeaturedDevs(userData.users);
+          setFeaturedDevs(userData.topUsers);
           setIsLoaded(true);
         } catch (error) {
           // Handle errors

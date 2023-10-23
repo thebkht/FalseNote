@@ -23,7 +23,7 @@ export default function Feed() {
   useEffect(() => {
 async function fetchFeed() {
   if (status !== "unauthenticated") {
-    const user = (await sessionUser).userid
+    const user = (await sessionUser).id
      try {
       const response = await fetch(`/api/feed?user=${user}&page=${page}`);
       if (!response.ok) {

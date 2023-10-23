@@ -84,7 +84,7 @@ export default function UserDetails({ className, children, user, followers, foll
           <div className={className}>
           <div className="user__header flex md:block items-center space-y-4">
           <Avatar className="rounded-full mr-3 lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6">
-              <AvatarImage className="rounded-full" src={user?.profilepicture} alt={user?.name} />
+              <AvatarImage className="rounded-full" src={user?.image} alt={user?.name} />
               <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
             </Avatar>
           <div className="flex items-center py-4">
@@ -120,7 +120,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 <Button variant={"outline"} className="w-full">Edit Profile</Button>
               ) : (
                 <Button className="w-full" onClick={() => {
-                  handleFollow(user?.userid);
+                  handleFollow(user?.id);
                 }} disabled={isFollowingLoading} >
                   {
                     isFollowingLoading ? (
@@ -152,12 +152,12 @@ export default function UserDetails({ className, children, user, followers, foll
     </DialogHeader>
     <div className="space-y-4">
       {followersRef.current.map((follower: any) => (
-        <div className="flex gap-4 w-full items-center justify-between" key={follower.userid}>
+        <div className="flex gap-4 w-full items-center justify-between" key={follower.id}>
         <div className="space-y-3">
         <UserHoverCard user={follower} >
         <Link href={`/${follower.username}`} className="flex items-center">
           <Avatar className="h-10 w-10 mr-2 md:mr-3">
-            <AvatarImage src={follower.profilepicture} alt={follower.username} />
+            <AvatarImage src={follower.image} alt={follower.username} />
             <AvatarFallback>{follower.name?.charAt(0) || follower.username?.charAt(0)}</AvatarFallback>
           </Avatar>
           {
@@ -210,7 +210,7 @@ export default function UserDetails({ className, children, user, followers, foll
         <UserHoverCard user={following} >
         <Link href={`/${following.username}`} className="flex items-center">
           <Avatar className="h-10 w-10 mr-2 md:mr-3">
-            <AvatarImage src={following.profilepicture} alt={following.username} />
+            <AvatarImage src={following.image} alt={following.username} />
             <AvatarFallback>{following.name?.charAt(0) || following.username?.charAt(0)}</AvatarFallback>
           </Avatar>
           {
@@ -271,9 +271,9 @@ export default function UserDetails({ className, children, user, followers, foll
             </li>}
             <li>
               <Button variant={"link"} size={"sm"} asChild className="p-0 text-foreground" >
-                <Link href={user?.githubprofileurl} target="_blank" className="flex items-center font-light !text-sm">
+                <Link href={user?.githubprofile} target="_blank" className="flex items-center font-light !text-sm">
                   <Icons.gitHub className="mr-2 h-5 w-5 text-muted-foreground" />
-                  {user?.githubprofileurl?.replace("https://github.com/", "")}
+                  {user?.githubprofile?.replace("https://github.com/", "")}
                 </Link>
               </Button>
             </li>
@@ -281,7 +281,7 @@ export default function UserDetails({ className, children, user, followers, foll
               <Button variant={"link"} size={"sm"} asChild className="p-0 !text-sm hover:!no-underline text-foreground" >
                 <span>
                   <CalendarDays className="mr-2 h-5 w-5 text-muted-foreground" />
-                  Joined {getRegistrationDateDisplay(user?.registrationdate)}
+                  Joined {getRegistrationDateDisplay(user?.createdAt)}
                 </span>
               </Button>
             </li>
