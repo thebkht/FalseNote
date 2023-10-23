@@ -1,10 +1,10 @@
 import { TagNav } from "@/components/tags/nav";
-import { sql } from "@/lib/postgres";
+import postgres from "@/lib/postgres";
 
-const tags = await sql('SELECT * FROM tags');
+const tags = await postgres.tag.findMany();
      //add href to tags
      tags.forEach((tag: any) => {
-          tag.href = `/tag/${tag.tagname}`;
+          tag.href = `/tag/${tag.name}`;
      }
      )
 

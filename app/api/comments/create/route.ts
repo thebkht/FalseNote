@@ -1,4 +1,4 @@
-import { sql } from "@/lib/postgres";
+import postgres from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -16,20 +16,43 @@ export async function POST(req: NextRequest, res: NextResponse) {
     //   VALUES (${post}, ${content}, ${author})
     //   RETURNING *
     // `;
-    await sql('INSERT INTO comments (blogpostid, content, authorid) VALUES ($1, $2, $3) RETURNING *', [post, content, author])
+    await postgres.comment.create({
+      data: {
+        content: content,
+        authorId: author,
+        postId: post,
+      },
+    });
 
-    const authorDetails = await sql('SELECT * FROM users WHERE userid = $1', [author])
-    const postDetails = await sql('SELECT * FROM blogposts WHERE postid = $1', [post])
+    const authorDetails = await postgres.user.findFirst({
+      where: {
+        id: author,
+      },
+    });
+    const postDetails = await postgres.post.findFirst({
+      where: {
+        id: post,
+      },
+    });
 
     // Send a notification to the author of the post using api/notifications post method body json
-    const message = `${authorDetails[0].username} commented on your post "${postDetails[0].title}: ${content}"`;
-    const user_id = postDetails[0].authorid;
+    const message = `${authorDetails?.username} commented on your post "${postDetails?.title}: ${content}"`;
+    const user_id = postDetails?.authorId;
     const type = "comment";
     const created_at = new Date().toISOString()
     const read_at = null
-    const sender_id = authorDetails[0].userid;
+    const sender_id = authorDetails?.id;
 
-    await sql('INSERT INTO notifications (message, user_id, type, created_at, read_at, sender_id) VALUES ($1, $2, $3, $4, $5, $6)', [message, user_id, type, created_at, read_at, sender_id])
+    await postgres.notification.create({
+      data: {
+        content: message,
+        type: type,
+        createdAt: created_at,
+        receiverId: user_id!,
+        senderId: sender_id!,
+        
+      },
+    });
 
     // const notification = await fetch(`localhost:3000/api/notifications`, {
     //   method: "POST",

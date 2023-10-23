@@ -11,7 +11,7 @@ export async function GET(req: Request, { params }: { params: { username: string
     }
 
     // Execute a query to fetch the specific user by name
-    const result = await postgres.user.findMany({
+    const result = await postgres.user.findFirst({
       include: {
         posts: true,
         Followers: true,
@@ -25,16 +25,16 @@ export async function GET(req: Request, { params }: { params: { username: string
 
     const posts = await postgres.post.findMany({
       where: {
-        authorId: result[0]?.id,
+        authorId: result?.id,
         visibility: "public",
       }
     })
 
-    if (result.length === 0 || username === undefined, username === null) {
+    if (!result) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ user: result[0] }, { status: 200 });
+    return NextResponse.json({ user: result }, { status: 200 });
   } catch (error) {
       
     return NextResponse.json({ error }, { status: 404 });

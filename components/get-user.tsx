@@ -15,19 +15,3 @@ export async function getUserByUsername(username: string) {
        throw error;
      }
    }
-
-export async function getFeaturedDevs() {
-      try {
-        const response = await fetch("/api/users");
-        if (!response.ok) {
-          throw new Error(`Error fetching featured devs: ${response.statusText}`);
-        } else if (response.status === 404) {
-          return null
-        };
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error('Error fetching featured devs:', error);
-        throw error;
-      }
-}

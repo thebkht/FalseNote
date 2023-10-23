@@ -1,4 +1,4 @@
-import { sql } from "@/lib/postgres";
+import postgrtes from "@/lib/postgres";
 import { ImageResponse } from "next/server";
 
 export const runtime = 'edge';
@@ -29,14 +29,17 @@ export async function GET(req: Request) {
   ]);
 try {
      const url = new URL(req.url);
-     const authorid = url.searchParams.get("author");
+     const authorid = Number(url.searchParams.get("authorid"));
      const title = url.searchParams.get("title");
      const description = url.searchParams.get("description");
      //creation date is the date the post was published on dev.to ex: Apr 4, 2021 it must be current date
      const creationdate = new Date();
 
-     const result = await sql('SELECT * FROM users WHERE userid = $1', [authorid])
-     const author = result[0]
+     const author = await postgrtes.user.findFirst({
+      where:{
+            id: authorid
+      }
+     })
 
   return new ImageResponse(
     (
@@ -52,7 +55,7 @@ try {
      }</div>
 <div tw="flex space-x-4 items-center w-full justify-between">
 <div tw="flex">
-<img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={author.profilepicture} />
+<img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={author?.image as string} />
     <div tw="flex flex-col">
     <span tw="text-base font-bold">{author?.username} </span>
     <div tw="text-sm text-muted-foreground">{formatDate(creationdate)}</div>
