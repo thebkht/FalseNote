@@ -2,49 +2,50 @@
 import React, { use, useEffect, useState } from "react"
 import { getSessionUser } from "@/components/get-session-user"
 import { redirect, useRouter } from "next/navigation"
-import { sql } from "@/lib/postgres"
+import postgres from "@/lib/postgres"
 import Post from "@/components/blog/post"
 import PostComment from "@/components/blog/comment"
 import MoreFromAuthor from "@/components/blog/more-from-author"
 
 
 export default async function PostView({ params }: { params: { username: string, url: string } }) {
-     const authorData = await sql('SELECT * FROM users WHERE username = $1', [params.username]);
-     const author = authorData[0];
+     const author = await postgres.user.findFirst({
+          where: {
+               username: params.username
+               },
+          include: {
+               posts: {
+                    where: {
+                         visibility: 'public'
+                    },
+                    include: {
+                         _count: { select: { comments: true } }
+                    }
+               },
+               _count: { select: { posts: true, Followers: true, Following: true } }
+          }
+               });
      
-     const authorPosts = await sql('SELECT * FROM blogposts WHERE authorid = $1 AND visibility = \'public\' AND url != $2', [author.userid, params.url]);
-     const authorPostsComments = await sql('SELECT blogpostid FROM comments WHERE blogpostid IN (SELECT postid FROM BlogPosts WHERE AuthorID = $1) GROUP BY blogpostid', [author.userid]);
-     authorPosts.forEach((post: any) => {
-          authorPostsComments.forEach((comment: any) => {
-               if (comment.postid === post.postid) {
-                    post.comments = post.comments + 1;
-               }
+     const authorPosts = author?.posts;
+     const post = await postgres.post.findFirst({
+          where: {
+               url: params.url,
+               authorId: author?.id
+          },
+          include: {
+               comments: true,
+               likes: true,
+               tags: true,
+               _count: { select: { savedUsers: true, likes: true } }
           }
-          )
-     }
-     )
-     const auhorFollowers = await sql('SELECT * FROM users WHERE UserID IN (SELECT FollowerID FROM Follows WHERE FolloweeID= $1)', [author.userid]);
-     author.followers = auhorFollowers.length;
-     const postData = await sql('SELECT * FROM blogposts WHERE url = $1 AND authorid = $2', [params.url, author.userid]);
-     const post = postData[0];
+     });
      if (!post) redirect("/404");
-     // const processedContent = await remark().use(html).process(post.content);
-     // post.content = processedContent.toString();
-     const postComments = await sql('SELECT * FROM comments WHERE blogpostid = $1', [post.postid]);
-     const postCommentsAuthor = await sql('SELECT * FROM users WHERE userid IN (SELECT authorid FROM comments WHERE blogpostid = $1)', [post.postid]);
-     postComments.forEach((comment: any) => {
-          postCommentsAuthor.forEach((author: any) => {
-               if (comment.authorid === author.userid) {
-                    comment.author = author;
-               }
-          }
-          )
-     }
-     )
-     const postTags = await sql('SELECT * FROM tags WHERE tagid IN (SELECT tagid FROM blogposttags WHERE postid = $1)', [post.postid]);
 
      const sessionUser = await getSessionUser()
 
+     if (post?.authorId !== sessionUser?.userid) {
+          if (post?.visibility !== "public") redirect("/404");
+     }
 
      // async function handleFollow(followeeId: string) {
      //      if (status === "authenticated") {
@@ -77,8 +78,8 @@ export default async function PostView({ params }: { params: { username: string,
 
      return (
           <>
-               <Post post={post} author={author} sessionUser={sessionUser} tags={postTags} />
-               <PostComment comments={postComments} post={post} postAuthor={author} />
+               <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
+               <PostComment comments={post.comments} post={post} postAuthor={author} />
                <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
           </>
      )
