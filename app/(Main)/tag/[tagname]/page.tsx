@@ -15,6 +15,11 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           },
           include: {
                followingtag: true,
+          },
+          orderBy: {
+               posts: {
+                    _count: 'desc'
+               }
           }
      })
      if (!tag) redirect("/404");

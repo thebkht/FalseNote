@@ -18,11 +18,12 @@ export function TagNav({ className, items, ...props }: { className?: string, ite
       {...props}
     >
       <ScrollArea className="w-full">
-      <div className="flex gap-2 pb-3">
+      <div className="flex gap-2 pb-3 justify-center w-full">
       {items.map((item: any) => (
         <Button
           key={item.id}
           variant={pathname === item.href ? "secondary" : "outline"}
+          className={pathname !== item.href ? "bg-background" : ""}
           asChild
           >
           <Link href={item.href} className="capitalize">
