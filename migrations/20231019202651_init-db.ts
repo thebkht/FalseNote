@@ -21,7 +21,7 @@ export async function up(knex: Knex): Promise<void> {
      await knex.schema.createTable("posts", (table) => {
           table.increments("id").primary();
           table.string("title").notNullable();
-          table.string("content").notNullable();
+          table.text("content").notNullable();
           table.string("subtitle");
           table.string("cover");
           table.integer("authorId").unsigned().notNullable();
@@ -36,7 +36,7 @@ export async function up(knex: Knex): Promise<void> {
 
      await knex.schema.createTable("comments", (table) => {
           table.increments("id").primary();
-          table.string("content").notNullable();
+          table.text("content").notNullable();
           table.integer("authorId").unsigned().notNullable();
           table.foreign("authorId").references("users.id").onDelete("CASCADE");
           table.integer("postId").unsigned().notNullable();

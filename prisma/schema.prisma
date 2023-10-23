@@ -43,8 +43,10 @@ model User {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String?
-  content   String?
-  subtitle  String
+  //content Text in postgresql
+  
+  content   String? @db.Text
+  subtitle  String @db.VarChar(280)
   cover    String
   views    Int @default(0)
   author    User     @relation(fields: [authorId], references: [id])

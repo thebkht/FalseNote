@@ -29,17 +29,15 @@ export async function GET(req: Request) {
   ]);
 try {
      const url = new URL(req.url);
-     const authorid = Number(url.searchParams.get("authorid"));
+     const authorid = Number(url.searchParams.get("author"));
      const title = url.searchParams.get("title");
      const subtitle = url.searchParams.get("subtitle");
      //creation date is the date the post was published on dev.to ex: Apr 4, 2021 it must be current date
      const creationdate = new Date();
 
-     const author = await postgrtes.user.findFirst({
-      where:{
-            id: authorid
-      }
-     })
+     const user = await fetch(`${process.env.DOMAIN}/api/users?id=${authorid}`).then((res) => res.json());
+     console.log(user);
+      const author = user?.user;
 
   return new ImageResponse(
     (
@@ -87,6 +85,7 @@ try {
   );
      } catch (error) {
           console.error(error);
+          return new Response("error", { status: 500 });
      }
 }
 
