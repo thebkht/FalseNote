@@ -195,10 +195,10 @@ export function PostForm() {
 
       if (!result.ok) {
         setIsValidUrl(false);
-        return
+        return false;
       } else {
         setIsValidUrl(true);
-        return
+        return true;
       }
     } catch (error) {
       console.log(error);
@@ -225,23 +225,20 @@ export function PostForm() {
   }
 
   //Set url value from title value
-  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     form.setValue('title', value);
     // Replace spaces with dashes and make lowercase, if the title has more than 2 words, less than 100 characters and don't have any special characters if it has any special characters remove them, if less than 2 words, change the url to random string
     //if title has less than 2 words, change the url to random string
-    let url : string = '';
     if (value.length < 100) {
       if (value.split(' ').length < 2) {
-        url = Math.random().toString(36).substring(2, 15)
+        const url = Math.random().toString(36).substring(2, 15)
+        if(await validateUrl(url)) form.setValue('url', url);
       } else {
         // Replace spaces with dashes and make lowercase of 2 words only and remove special characters
-        url = value.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, '-').toLowerCase().split(' ').slice(0, 2).join('-')
+        const url = value.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, '-').toLowerCase().split(' ').slice(0, 2).join('-')
+        if(await validateUrl(url)) form.setValue('url', url);
       }
-    }
-    if(url !== '') {
-      validateUrl(url);
-      if(isValidUrl) form.setValue('url', url);
     }
   }
 

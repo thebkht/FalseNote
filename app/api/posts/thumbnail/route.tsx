@@ -31,7 +31,7 @@ try {
      const url = new URL(req.url);
      const authorid = Number(url.searchParams.get("authorid"));
      const title = url.searchParams.get("title");
-     const description = url.searchParams.get("description");
+     const subtitle = url.searchParams.get("subtitle");
      //creation date is the date the post was published on dev.to ex: Apr 4, 2021 it must be current date
      const creationdate = new Date();
 
@@ -47,10 +47,10 @@ try {
      <div tw="flex flex-col py-8 px-14">
      <div tw="text-3xl font-bold w-3/5 mb-4">{title}</div>
      <div tw="text-xl w-3/5 mb-6">{
-            description && description.length > 150 ? (
-            description.slice(0, 150) + "..."
+            subtitle && subtitle.length > 150 ? (
+            subtitle.slice(0, 150) + "..."
           ) : (
-            description
+            subtitle
           )
      }</div>
 <div tw="flex space-x-4 items-center w-full justify-between">
