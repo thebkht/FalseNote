@@ -64,7 +64,7 @@ export default function PostComment({ comments, post, postAuthor }: { comments: 
                                <div className="article__comments-list">
                                     {
                                          commentsRef.current?.map((comment: any) => (
-                                              <div className="article__comments-item flex gap-3 space-y-3" key={comment.commentid}>
+                                              <div className="article__comments-item flex gap-3 space-y-3" key={comment.id}>
                                                    <div className="article__comments-item-avatar mt-3">
                                                         <UserHoverCard user={comment.author} >
                                                              <Link href={`/${comment.author.username}`} className="inline-block">

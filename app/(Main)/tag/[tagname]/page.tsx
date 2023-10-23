@@ -1,8 +1,6 @@
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getSessionUser } from "@/components/get-session-user";
 import LoginDialog from "@/components/login-dialog";
-import TagDetails from "@/components/tags/details";
-import FollowTagButton from "@/components/tags/follow-btn";
 import TagPosts from "@/components/tags/post";
 import { Button } from "@/components/ui/button";
 import postgres from "@/lib/postgres";
@@ -60,25 +58,28 @@ export default async function TagPage({ params }: { params: { tagname: string } 
      return (
           <>
                <div className="flex flex-col space-y-6">
-               <div className="space-y-0.5 px-6 pb-14 w-full">
-                    <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name}</h2>
-                    <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
-                         Tag<div className="mx-2">·</div>{formatNumberWithSuffix(posts.length)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tag.followingtag.length)} Followers
+                    <div className="space-y-0.5 px-6 pb-14 w-full">
+                         <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name}</h2>
+                         <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
+                              Tag<div className="mx-2">·</div>{formatNumberWithSuffix(posts.length)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tag.followingtag.length)} Followers
+                         </div>
+                         <div className="w-full flex justify-center">
+                              {
+                                   sessionStatus === "authenticated" ? (
+                                        <form action={handleFollow}>
+                                             <Button variant={"secondary"} size={"lg"}>{
+                                                  isFollowing ? "Following" : "Follow"}
+                                             </Button>
+                                        </form>
+
+                                   ) : (
+                                        <LoginDialog>
+                                             <Button variant={"secondary"} size={"lg"}>Follow</Button>
+                                        </LoginDialog>
+                                   )
+                              }
+                         </div>
                     </div>
-                    <div className="w-full flex justify-center">
-                         {
-                              sessionStatus === "authenticated" ? (
-                                   <FollowTagButton variant={"secondary"} size={"lg"} onClick={handleFollow()}>{
-                                        isFollowing ? "Following" : "Follow" }
-                                   </FollowTagButton>
-                              ) : (
-                                   <LoginDialog>
-                                        <Button variant={"secondary"} size={"lg"}>Follow</Button>
-                                   </LoginDialog>
-                              )
-                         }
-                    </div>
-               </div>
                     <TagPosts posts={posts} tag={tag} session={session} />
                </div>
           </>

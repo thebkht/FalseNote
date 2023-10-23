@@ -65,7 +65,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                setIsFollowingLoading(true);
                try {
                     setIsFollowing(!isFollowing);
-                    const followerId = (await getSessionUser()).userid;
+                    const followerId = (await getSessionUser()).id;
                     const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
                     }).then((res) => res.json());
@@ -88,8 +88,8 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                     <div className="article__container">
                          <div className="article__header max-w-[65ch] lg:text-xl mx-auto">
                          {
-                                   post?.coverimage && (
-                                        <Image src={post?.coverimage} alt={post?.title} fill className="rounded-lg !relative h-auto" />
+                                   post?.cover !== '' && (
+                                        <Image src={post?.cover} alt={post?.title} fill className="rounded-lg !relative h-auto" />
                                    )
                               }
                               <h1 className="article__title">{post?.title}</h1>
@@ -98,7 +98,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                    <Button variant="link" className="px-0" asChild>
                                                   <Link href={`/${author?.username}`}>
                                                        <Avatar className="article__author-avatar">
-                                                            <AvatarImage src={author?.profilepicture} alt={author?.username} />
+                                                            <AvatarImage src={author?.image} alt={author?.username} />
                                                             <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
                                                        </Avatar>
                                                   </Link>
@@ -144,7 +144,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
 
 
                                         </span>
-                                        <span className="article__date">{post?.lastupdateddate == post?.creationdate ? formatDate(post?.creationdate) : (formatDate(post?.creationdate) + " · Updated on " + formatDate(post?.lastupdateddate))}</span>
+                                        <span className="article__date">{!post?.updated ? formatDate(post?.createdAt) : (formatDate(post?.createdAt) + " · Updated on " + formatDate(post?.updatedAt))}</span>
                                    </div>
                               </div>
                          </div>
@@ -163,9 +163,9 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                         <>
                                              <div className="article__tags space-x-2">
                                              {tags.map((tag: any) => (
-                                                  <Link href={`/tag/${tag.tagname}`} key={tag.tagid}>
+                                                  <Link href={`/tag/${tag.tag.name}`} key={tag.tag.id}>
                                                        <Badge variant={"secondary"} className="h-6 w-auto cursor-pointer font-normal capitalize text-sm px-2 py-4">
-                                                            {tag.tagname}
+                                                            {tag.tag.name}
                                                        </Badge>
                                                   </Link>
                                              ))}

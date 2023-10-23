@@ -22,7 +22,9 @@ export default async function PostView({ params }: { params: { username: string,
                          _count: { select: { comments: true } }
                     }
                },
-               _count: { select: { posts: true, Followers: true, Following: true } }
+               _count: { select: { posts: true, Followers: true, Following: true } },
+               Followers: true,
+               Following: true
           }
                });
      
@@ -33,13 +35,27 @@ export default async function PostView({ params }: { params: { username: string,
                authorId: author?.id
           },
           include: {
-               comments: true,
+               comments: {
+                    include: {
+                         author: {
+                              include: {
+                                   Followers: true,
+                                   Following: true
+                              }
+                         }
+                    }
+               },
                likes: true,
-               tags: true,
+               tags: {
+                    include: {
+                         tag: true
+                    }
+               },
                _count: { select: { savedUsers: true, likes: true } }
           }
      });
      if (!post) redirect("/404");
+     console.log(post);
 
      const sessionUser = await getSessionUser()
 

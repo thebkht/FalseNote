@@ -58,7 +58,7 @@ export default function UserHoverCard({ user, children, className, ...props }: R
             <p className="text-sm">
               {user?.bio}
             </p>
-            <div className="flex items-center flex gap-1 w-full">
+            {/* <div className="flex items-center flex gap-1 w-full">
             <Users2 className="mr-2 h-5 w-5 text-muted-foreground" />
             <Button variant={"link"} size={"sm"} className="pl-0 py-0" asChild>
               <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user.Followers?.length)}</span> <span className="text-muted-foreground ml-2">Followers</span></span>
@@ -66,7 +66,7 @@ export default function UserHoverCard({ user, children, className, ...props }: R
             <Button variant={"link"} size={"sm"} className="pl-0 py-0" asChild>
               <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user.Following?.length)}</span> <span className="text-muted-foreground ml-2">Followings</span></span>
             </Button>
-          </div>
+          </div> */}
             <div className="flex items-center pt-2">
               <CalendarDays className="mr-2 h-5 w-5 opacity-70" />{" "}
               <span className="text-xs text-muted-foreground">

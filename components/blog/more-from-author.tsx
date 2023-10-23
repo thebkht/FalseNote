@@ -50,7 +50,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                               <div className="max-w-[65ch] lg:text-xl mx-auto">
                                    <div className="author__details flex flex-col gap-y-4">
                                         <Avatar className="h-20 w-20">
-                                             <AvatarImage src={author?.profilepicture} alt={author?.username} />
+                                             <AvatarImage src={author?.image} alt={author?.username} />
                                              <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex">
@@ -60,7 +60,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                              </div>
                                              <div className="ml-auto">
                                                   {
-                                                       status === "authenticated" && sessionUser?.userid !== author?.userid ? (
+                                                       status === "authenticated" && sessionUser?.id !== author?.id ? (
                                                             <Button className="ml-auto" variant={"secondary"} size={"lg"} onClick={() => handleFollow(author.userid)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
                                                        ) : (
                                                             <LoginDialog>
@@ -76,12 +76,12 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                              {
                                                   post?.map((p: any) => (
                                                        <PostCard
-                                                            key={p.postid}
+                                                            key={p.id}
                                                             title={p.title}
-                                                            thumbnail={p.coverimage}
+                                                            thumbnail={p.cover}
                                                             content={p.description}
                                                             author={author?.username || author?.name}
-                                                            date={p.creationdate}
+                                                            date={p.createdAt}
                                                             views={formatNumberWithSuffix(p.views)}
                                                             comments={formatNumberWithSuffix(p.comments || 0)}
                                                             id={p.id}

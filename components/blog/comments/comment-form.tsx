@@ -92,7 +92,7 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
                 status === "authenticated" ? (
                   <UserHoverCard user={props.session} >
                     <Avatar className="h-10 w-10">
-                    <AvatarImage src={props.session?.profilepicture} alt={props.session?.name} />
+                    <AvatarImage src={props.session?.image} alt={props.session?.name} />
                     <AvatarFallback>{props.session?.name ? props.session?.name?.charAt(0) : props.session?.username?.charAt(0)}</AvatarFallback>
                </Avatar>
                 </UserHoverCard>

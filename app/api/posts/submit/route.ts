@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
                data: {
                     title: title,
                     content: content,
-                    cover: coverImage,
+                    cover: coverImage || '',
                     visibility: visibility,
                     url: url,
                     subtitle: subtitle,

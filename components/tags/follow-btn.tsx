@@ -10,7 +10,7 @@ type Props = React.ComponentPropsWithoutRef<typeof Button> & {
 const FollowTagButton: React.FC<Props> = ({ onClick, children, ...props }) => {
      return (
           <Button onClick={async () => {
-               onClick && await onClick()
+               if(onClick) await onClick()
           }} {...props}>
                {children}
           </Button>
