@@ -6,6 +6,7 @@ import {
   UserDetails,
   UserPosts,
 } from "@/components/user";
+import { getServerSession } from "next-auth";
 
 
 export default async function Page({ params }: {
@@ -25,7 +26,8 @@ export default async function Page({ params }: {
   })
 
 
-  const session = await getSession();
+  const session = await getServerSession();
+  console.log(session);
   const user = rows[0];
   if (!user) redirect("/404");
   
@@ -50,7 +52,7 @@ export default async function Page({ params }: {
   const followers = user.Followers;
   const following = user.Following;
 
-  const sessionUserName = await getSessionUser();
+  const sessionUserName = await getSession();
   console.log(sessionUserName);
   // const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
   // const [isLoaded, setIsLoaded] = useState<boolean>(false);

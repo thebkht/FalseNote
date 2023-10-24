@@ -3,8 +3,8 @@ import { getSession } from "next-auth/react";
 //Get session user using getSession() from next-auth and return user object
 export async function getSessionUser() {
      const session = await getSession();
+     console.log(session);
      const sessionUser = session?.user as any;
-
      //If there is no session user return null
      if (!sessionUser) {
           return Promise.resolve(null);

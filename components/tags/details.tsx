@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import LoginDialog from "../login-dialog";
 import { is } from "date-fns/locale";
+import { revalidatePath } from "next/cache";
 
 export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post: any, tagFollowers: any }) {
      const session = async () => {
@@ -14,55 +15,51 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
 
      const { status: sessionStatus } = useSession();
 
-     const followersRef = useRef(tagFollowers); // Initialize it as an empty object
-
      const [isFollowing, setIsFollowing] = useState<boolean>(false);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
      const user = session() as any;
 
      useEffect(() => {
-          async function fetchData(followersRef: React.MutableRefObject<any>, user: any, status: string) {
-            if (status === "authenticated") {
-              const followerId = (await getSessionUser()).userid;
-              const userFollowers = await fetch(`/api/tags?tagId=${tag.tagid}`, {
-               method: "GET",
-             });
-              const followers = await userFollowers.json().then((res) => res.followers);
-              followersRef.current = followers;
-              setIsFollowing(followers.find((follower: any) => follower.userid === followerId));
-            }
+          if (user) {
+               tagFollowers.forEach((follower: any) => {
+                    if (follower.userid === user.id) {
+                         setIsFollowing(true);
+                    }
+               })
           }
-          fetchData(followersRef, user, sessionStatus);
-     }, [isFollowing]);
+     }, [user]);
 
      const handleFollow = () => async () => {
           if (sessionStatus === "authenticated") {
                setIsFollowingLoading(true);
                try {
                     setIsFollowing(!isFollowing);
-                    const userid = (await session()).userid;
-                    const response = await fetch(`/api/follow/tag?tagId=${tag.tagid}&userId=${userid}`, {
+                    const userid = (await session()).id;
+                    const response = await fetch(`/api/follow/tag?tagId=${tag.id}&userId=${userid}`, {
                          method: "POST",
                     });
                     if (!response.ok) {
                          setIsFollowing(!isFollowing);
                     }
+                    
                     setIsFollowingLoading(false);
                } catch (error) {
                     console.error(error);
                     setIsFollowingLoading(false);
                }
+               revalidatePath(`/tag/${tag.name}`);
      } else {
           return null;
      };
+     
      }
 
      return (
           <>
                <div className="space-y-0.5 px-6 pb-14 w-full">
-                    <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.tagname}</h2>
+                    <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name}</h2>
                     <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
-                         Tag<div className="mx-2">·</div>{formatNumberWithSuffix(post)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(followersRef.current.length)} Followers
+                         Tag<div className="mx-2">·</div>{formatNumberWithSuffix(post)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tagFollowers.length)} Followers
                     </div>
                     <div className="w-full flex justify-center">
                          {

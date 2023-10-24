@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest){
      const tagid = Number(request.nextUrl.searchParams.get("tagId"))
-     const userid = Number(request.nextUrl.searchParams.get("userId"))
+     const userid = request.nextUrl.searchParams.get("userId")
 
      try {
           if (!tagid || !userid){
                return new NextResponse("Missing tagid or userid", {status: 400})
           } 
           //check if tag exists
-          const rows = await postgres.tag.findUnique({
+          const rows = await postgres.tag.findFirst({
                where: {
                     id: tagid
                }
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest){
                     followerId: userid
                }
           })
-          if (!follows){
+          if (follows){
                await postgres.tagFollow.deleteMany({
                     where: {
                          tagId: tagid,

@@ -7,7 +7,7 @@ export default function Landing() {
       <div className="landing__hero">
         <div className="landing__hero_content flex flex-col items-center justify-center">
           <div className="landing_hero-image md:my-20 my-14 w-[120vw] md:w-full">
-            <Image src="https://s3.ap-northeast-2.amazonaws.com/falsenotes.app/assets/media/header/header-img.png" sizes="100vw" width={1200} height={600}
+            <Image src="https://falsenotescontent.s3.ap-northeast-2.amazonaws.com/header/header-img.png" sizes="100vw" width={1200} height={600}
         // Make the image display full width
         style={{
           width: '100%',

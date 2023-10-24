@@ -1,9 +1,11 @@
 import postgres from "@/lib/postgres"
 import type { NextAuthOptions as NextAuthConfig } from "next-auth"
 import GitHub from "next-auth/providers/github"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth
+  //adapter: PrismaAdapter(postgres),
   providers: [
     GitHub({ 
       clientId: process.env.GITHUB_CLIENT_ID, 
@@ -76,31 +78,36 @@ export const config = {
       }
       return true; // Continue sign-in process
     },
-    // async session({session}) {
-    //   const sessionUserName = session.user?.name;
-      
-    //   try{
-    //     const isName = await sql(`SELECT * FROM users WHERE Name = ${sessionUserName}`);
-
-    //     console.log(isName.rows[0])
-
-    //     if(isName.rows[0]){
-    //       const updatedSession = {
-    //         ...session,
-    //         user: {
-    //           ...session.user,
-    //           name: isName.rows[0].Username as string,
-    //         },
-    //       };
-    
-    //       return updatedSession;
-    //     }
-    //     console.log("Name changed to username")
-    //   } catch(error){
-    //     console.error("Error there is no user:", error);
-            
-    //   } return session;
-    // },
+    async jwt({ token, user, session, profile}) {
+      // Add access_token to the token right after signin
+      if (user) {
+        const account = await postgres.user.findFirst({
+          where: {
+            image: token.picture,
+          }
+        })
+        return { ...token, id: account?.id, picture: account?.image, username: account?.username, name: account?.name, email: account?.email, bio: account?.bio, githubprofile: account?.githubprofile, location: account?.location, password: account?.password }
+      }
+      return token;
+    },
+    async session({ session, user, token }) {
+      // Add property to session, like an access_token from a provider.
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          picture: token.image,
+          username: token.username,
+          name: token.name,
+          email: token.email,
+          bio: token.bio,
+          githubprofile: token.githubprofile,
+          location: token.location,
+          password: token.password,
+        }
+      }
+    }
   },
   
 } satisfies NextAuthConfig

@@ -73,6 +73,8 @@ async function fetchFeed() {
     }
   }, [loading])
 
+  console.log(session ? session : 'no session')
+
   return (
     <>
     <main className="flex flex-col items-center justify-between feed ">

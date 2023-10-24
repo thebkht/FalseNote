@@ -53,7 +53,7 @@ export async function GET(req: Request, { params }: { params: { username: string
           <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={post.author.image} />
               <div tw="flex flex-col">
               <span tw="text-base font-bold">{post?.author?.username} </span>
-              <div tw="text-sm text-mute-foreground">{formatDate(post.creationdate)}</div>
+              <div tw="text-sm text-mute-foreground">{formatDate(post.createdAt)}</div>
               </div>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 689.11 100" height="32">

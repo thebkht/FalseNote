@@ -2,12 +2,38 @@ import { Knex } from "knex";
 
 
 export async function up(knex: Knex): Promise<void> {
+     await knex.schema.createTable("accounts", (table) => {
+          table.increments("id").primary();
+          table.integer("user_id").notNullable();
+          table.string("type");
+          table.string("provider").unique();
+          table.string("provider_account_id").unique();
+          table.string("refresh_token").notNullable();
+          table.string("access_token").notNullable();
+          table.integer("expires_at").notNullable();
+          table.string("token_type").notNullable();
+          table.string("scope").notNullable();
+          table.text("id_token").notNullable();
+          table.string("session_state").notNullable();
+     })
+     await knex.schema.createTable("sessions", (table) => {
+          table.increments("id").primary();
+          table.string("session_token").unique();
+          table.string("user_id");
+          table.dateTime("expires");
+     })
+     await knex.schema.createTable("verificationtokens", (table) => {
+          table.string("identifier").unique();
+          table.string("token").unique();
+          table.dateTime("expires");
+     })
      await knex.schema.createTable("users", (table) => {
           table.increments("id").primary();
           table.string("name");
           table.string("username").notNullable().unique();
           table.string("bio");
           table.string("email");
+          table.dateTime("email_verified");
           table.string("image").notNullable();
           table.string("password");
           table.string("githubprofile");
@@ -138,6 +164,9 @@ export async function up(knex: Knex): Promise<void> {
 
 
 export async function down(knex: Knex): Promise<void> {
+     await knex.schema.dropTable("accounts");
+     await knex.schema.dropTable("sessions");
+     await knex.schema.dropTable("verificationtokens");
      await knex.schema.dropTable("usersettings");
      await knex.schema.dropTable("bookmarks");
      await knex.schema.dropTable("notifications");
