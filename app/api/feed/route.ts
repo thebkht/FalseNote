@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-     const user_id = Number(req.nextUrl.searchParams.get('user'))
+     const user_id = req.nextUrl.searchParams.get('user') as string
   let page = parseInt(req.nextUrl.searchParams.get('page') || '0', 10)
   let limit = 10
   let offset = 0
@@ -36,9 +36,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const feed = await postgres.post.findMany({
     where: {
       authorId: {
-        in: [
-          Number(userFollowings.map((user) => user.followingId)),
-          ],
+        in: userFollowings.map((user) => user.followingId),
         },
       },
     orderBy: {
