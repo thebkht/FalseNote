@@ -1,6 +1,5 @@
 "use client";
 import EmptyFeed from '@/components/feed/feed';
-import { getSessionUser } from '@/components/get-session-user';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef, Key } from 'react'
 import FeedPostCard from '@/components/blog/feed-post-card'
@@ -10,7 +9,6 @@ import { useRouter } from 'next/navigation';
 
 export default function Feed() {
   const { status, data: session } = useSession()
-  const sessionUser = getSessionUser()
   const [feed, setFeed] = useState<any | null>([])
   const [page, setPage] = useState(0)
   const [fetching, setFetching] = useState<boolean>(true)
@@ -23,9 +21,8 @@ export default function Feed() {
   useEffect(() => {
 async function fetchFeed() {
   if (status !== "unauthenticated") {
-    const user = (await sessionUser).id
      try {
-      const response = await fetch(`/api/feed?user=${user}&page=${page}`);
+      const response = await fetch(`/api/feed?user=${session?.user?.id}&page=${page}`);
       if (!response.ok) {
         throw new Error(`Fetch failed with status: ${response.status}`);
       }
@@ -72,8 +69,6 @@ async function fetchFeed() {
       }
     }
   }, [loading])
-
-  console.log(session ? session : 'no session')
 
   return (
     <>

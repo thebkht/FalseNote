@@ -46,11 +46,11 @@ export default function UserDetails({ className, children, user, followers, foll
      useEffect(() => {
       async function fetchData(followersRef: React.MutableRefObject<any>, user: any, status: string) {
         if (status === "authenticated") {
-          const followerId = (await getSessionUser()).userid;
+          const followerId = (await getSessionUser()).id;
           const userFollowers = await fetch(`/api/users/${user?.username}`);
           const followers = await userFollowers.json().then((res) => res.user.followers);
           followersRef.current = followers;
-          setIsFollowing(followers.find((follower: any) => follower.userid === followerId));
+          setIsFollowing(followers.find((follower: any) => follower.followerId === followerId));
         }
       }
 
@@ -63,7 +63,7 @@ export default function UserDetails({ className, children, user, followers, foll
       setIsFollowingLoading(true);
       try { 
       setIsFollowing(!isFollowing);
-      const followerId = (await getSessionUser()).userid;
+      const followerId = (await getSessionUser()).id;
       const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
         method: "GET",
       });

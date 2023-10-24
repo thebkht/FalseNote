@@ -35,7 +35,7 @@ export default function PopularPosts(
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean[]>(
     popularPosts?.map(() => false) || []
   );
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   
   const handleFollow = async (followeeId: string, index: number) => {
     if (status === "authenticated") {
@@ -46,7 +46,7 @@ export default function PopularPosts(
       setIsFollowingLoading(newLoadingStates);
 
       try {
-        const followerId = (await getSessionUser()).id;
+        const followerId = session?.user?.id;
         await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
           method: "GET",
         });

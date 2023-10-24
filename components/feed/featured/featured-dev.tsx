@@ -41,7 +41,7 @@ export default function FeaturedDev(
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
   );
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   
   const handleFollow = async (followeeId: string, index: number) => {
     if (status === "authenticated") {
@@ -52,7 +52,7 @@ export default function FeaturedDev(
       setIsFollowingLoading(newLoadingStates);
 
       try {
-        const followerId = (await getSessionUser()).id;
+        const followerId = session?.user?.id;
         
         await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
           method: "GET",

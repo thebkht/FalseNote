@@ -19,25 +19,22 @@ export async function GET(request: NextRequest) {
   //   ORDER BY (SELECT COUNT(*) FROM Follows WHERE followeeid = Users.userid) DESC
   //   LIMIT 5
   // `;
+
     // const users = await sql('SELECT * FROM Users WHERE userid NOT IN (SELECT followeeid FROM Follows WHERE followerid = $1) AND userid <> $1 ORDER BY (SELECT COUNT(*) FROM Follows WHERE followeeid = Users.userid) DESC LIMIT 5', [userid])      
     const topUsers = await postgres.user.findMany({
       include: {
         Followers: true,
-        Following: true,
         posts: true,
       },
       take: 5,
       where: {
-        Followers: {
+        Following: {
           some: {
-            followerId: {
-              not: userid, // Replace with the user's ID
-            }, // Replace with the user's ID
+            followingId: { not : userid },
           },
         },
-        id: {
-          not: userid, // Replace with the user's ID
-        },
+          
+          id: { not : userid },
       },
       orderBy: {
         Followers: {
