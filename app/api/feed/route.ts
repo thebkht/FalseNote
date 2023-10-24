@@ -66,7 +66,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
   //     WHERE followerid = ${user_id}
   //   )
   // `;
-  const feedLength = feed.length
+  const feedLength = postgres.post.count({
+    where: {
+      authorId: {
+        in: userFollowings.map((user) => user.followingId),
+        },
+      },
+  })
 
   //execute a query to fetch the number of comments of the posts
   // const postComments = await sql`

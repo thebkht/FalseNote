@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 // api to execute the top users query by followers and return the result
 export async function GET(request: NextRequest) {
   try {
-    const userid = request.nextUrl.searchParams.get("user");
+    const userid = request.nextUrl.searchParams.get("user")?.toString();
 
     // execute the query to fetch the top 5 users by followers where the user is not following them and dont display the user itself
 
@@ -31,12 +31,12 @@ export async function GET(request: NextRequest) {
         Followers: {
           some: {
             followerId: {
-              not: Number(userid), // Replace with the user's ID
+              not: userid, // Replace with the user's ID
             }, // Replace with the user's ID
           },
         },
         id: {
-          not: Number(userid), // Replace with the user's ID
+          not: userid, // Replace with the user's ID
         },
       },
       orderBy: {

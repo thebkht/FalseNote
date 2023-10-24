@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
            message: "Missing receiverId query parameter",
          });
        }
-       const receiverId = Number(body.receiverId);
+       const receiverId = body.receiverId;
        const data = await postgres.notification.findMany({
          where: {
            receiverId,

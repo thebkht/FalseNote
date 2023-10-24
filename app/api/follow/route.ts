@@ -12,16 +12,16 @@ export async function GET(request: NextRequest) {
 
      const isFollowed = await postgres.follow.findFirst({
           where: {
-               followerId: Number(followerId),
-               followingId: Number(followeeId)
+               followerId: followerId,
+               followingId: followeeId
           }
      })
 
      if (isFollowed) {
           await postgres.follow.deleteMany({
                where: {
-                    followerId: Number(followerId),
-                    followingId: Number(followeeId)
+                    followerId: followerId,
+                    followingId: followeeId
                }
           })
 
@@ -29,8 +29,8 @@ export async function GET(request: NextRequest) {
      } else {
           await postgres.follow.create({
                data: {
-                    followerId: Number(followerId),
-                    followingId: Number(followeeId)
+                    followerId: followerId,
+                    followingId: followeeId
                }
           })
           

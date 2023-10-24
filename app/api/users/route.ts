@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     if (id) {
       const user = await postgres.user.findUnique({
         where: {
-          id: Number(id)
+          id: id
         }
       })
     return NextResponse.json({ user: user }, { status: 200});
