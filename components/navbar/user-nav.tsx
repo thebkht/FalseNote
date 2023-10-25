@@ -20,29 +20,29 @@ import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getUserByUsername } from "../get-user"
+import { getSessionUser } from "../get-session-user"
 
 export function UserNav() {
-     const [isLoading, setLoading] = useState(true)
      const { status } = useSession();
      const user = useSession().data?.user as any;
-     const [username, setUsername] = useState(null);
+     const [username, setUsername] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userData = await getUserByUsername(user?.name);
-        setUsername(userData.username);
-      } catch (error) {
-        // Handle errors
-        console.error('Error:', error);
-      }
-    }
-
-    if (status === "authenticated") {
-          fetchData();
-          setLoading(false);
+useEffect(() => {
+     async function fetchData() {
+          try {
+               const userData = (await getSessionUser())?.username;
+               setUsername(userData ?? null);
+          } catch (error) {
+               // Handle errors
+               console.error('Error:', error);
+          }
      }
-  }, [status, user?.name]);
+
+     if (status === "authenticated") {
+          fetchData();
+     }
+}, [status, user?.name]);
+
      return (
           <DropdownMenu>
                <DropdownMenuTrigger asChild>

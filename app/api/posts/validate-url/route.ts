@@ -4,7 +4,7 @@ import postgres from "@/lib/postgres";
 export async function GET(request: NextRequest) {
      try {
           const url = request.nextUrl.searchParams.get("url");
-          const authorId = request.nextUrl.searchParams.get("authorId")?.toString();
+          const authorId = Number(request.nextUrl.searchParams.get("author"));
 
           if (!url) {
                return new Response("url is required query parameter", { status: 400 });

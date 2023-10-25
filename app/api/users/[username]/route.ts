@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req: Request, { params }: { params: { username: string }}) {
   try {
-    // Get the 'slug' route parameter from the request object
     const username = params.username;
 
     if (username === undefined || username === null) {
@@ -14,19 +13,20 @@ export async function GET(req: Request, { params }: { params: { username: string
     const result = await postgres.user.findFirst({
       include: {
         posts: true,
-        Followers: true,
-        Following: true,
+        Followers: {
+          include: {
+            following: true
+          }
+        },
+        Following: {
+          include: {
+            follower: true
+          }
+        },
         notifications: true,
       },
       where: {
         OR: [{username: username}, {name: username}]        
-      }
-    })
-
-    const posts = await postgres.post.findMany({
-      where: {
-        authorId: result?.id,
-        visibility: "public",
       }
     })
 

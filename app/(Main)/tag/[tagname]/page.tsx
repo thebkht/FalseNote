@@ -5,7 +5,7 @@ import TagDetails from "@/components/tags/details";
 import FollowTagButton from "@/components/tags/follow-btn";
 import TagPosts from "@/components/tags/post";
 import postgres from "@/lib/postgres";
-import { getSession } from "next-auth/react";
+import { getSession,  } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 
@@ -17,6 +17,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           },
           include: {
                followingtag: true,
+               _count: { select: { posts: true, followingtag: true } }
           },
           orderBy: {
                posts: {

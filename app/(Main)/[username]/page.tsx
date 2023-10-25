@@ -14,11 +14,23 @@ export default async function Page({ params }: {
       username: string
    }
  }) {
-  const rows = await postgres.user.findMany({
+  const user = await postgres.user.findFirst({
     include: {
-      posts: true,
-      Followers: true,
-      Following: true
+      posts: {
+        orderBy: {
+          createdAt: "desc"
+        },
+      },
+      Followers: {
+        include: {
+          following: true
+        }
+      },
+      Followings: {
+        include: {
+          follower: true
+        }
+      }
     },
     where: {
       username: params.username
@@ -28,7 +40,6 @@ export default async function Page({ params }: {
 
   const session = await getServerSession();
   console.log(session);
-  const user = rows[0];
   if (!user) redirect("/404");
   
   const posts = user.posts;
@@ -54,56 +65,10 @@ export default async function Page({ params }: {
 
   const sessionUserName = await getSession();
   console.log(sessionUserName);
-  // const [user, setUser] = useState<any | null>(null); // Replace 'any' with the actual type of your user data
-  // const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  // const { status, data: session } = useSession();
-  // 
-  // 
-  // const [sessionUser, setSessionUser] = useState<any | null>(null);
-  // const [deleted, setDeleted] = useState<boolean>(false);
-  // const [posts, setPosts] = useState<any | null>(null);
-  // const router = useRouter();
   
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const userData = await getUserByUsername(params.username);
-  //       setPosts(userData.posts);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, [deleted]);
-
-  // async function handleDelete(posturl: string) {
-  //   await fetch(`/api/posts/${user?.username}?postid=${posturl}`, {
-  //     method: "DELETE",
-  //   });
-  //   setDeleted(true);
-  // }
-
-
-  // if (!isLoaded) {
-  //   // Loading skeleton or spinner while fetching data
-  //   return (
-  //     <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
-  //       {
-  //         minHeight: "calc(100vh - 192px)"
-  //       }
-  //     }>
-  //        <Icons.spinner className="h-10 animate-spin" />
-  //      </div>
-  //   )
-  // }
-
-
-
-
   return (
     <div className="Layout Layout--flowRow-until-md gap-2 lg:gap-6" >
-      <UserDetails user={user} followers={followers} followings={following} className="lg:w-[296px] md:w-64 w-full mx-auto" />
+      <UserDetails user={user} followers={followers} followings={following} />
       <UserPosts posts={posts} className="row-span-2 md:col-span-2" user={user} sessionUser={sessionUserName} />
     </div>
   );

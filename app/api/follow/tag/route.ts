@@ -1,9 +1,9 @@
 import postgres from "@/lib/postgres"
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest){
+export async function GET(request: NextRequest){
      const tagid = Number(request.nextUrl.searchParams.get("tagId"))
-     const userid = request.nextUrl.searchParams.get("userId")
+     const userid = Number(request.nextUrl.searchParams.get("userId"))
 
      try {
           if (!tagid || !userid){

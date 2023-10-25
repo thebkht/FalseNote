@@ -52,7 +52,7 @@ export default function FeaturedDev(
       setIsFollowingLoading(newLoadingStates);
 
       try {
-        const followerId = (await getSessionUser()).id;
+        const followerId = (await getSessionUser())?.id;
         
         await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
           method: "GET",

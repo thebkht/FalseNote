@@ -3,8 +3,8 @@ import postgres from "@/lib/postgres";
 
 export async function GET(request: NextRequest) {
      try{
-          const followeeId = request.nextUrl.searchParams.get("followeeId");
-     const followerId = request.nextUrl.searchParams.get("followerId");
+          const followeeId = Number(request.nextUrl.searchParams.get("followeeId"));
+     const followerId = Number(request.nextUrl.searchParams.get("followerId"));
 
      if (!followeeId || !followerId) {
           return new Response("followeeId and followerId are required query parameters", { status: 400 });
