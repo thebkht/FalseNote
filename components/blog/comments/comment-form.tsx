@@ -21,6 +21,8 @@ import { useRouter } from "next/navigation";
 import LoginDialog from "@/components/login-dialog";
 import UserHoverCard from "@/components/user-hover-card";
 import { getSessionUser } from "@/components/get-session-user";
+import { tr } from "date-fns/locale";
+import { ArrowUp } from "lucide-react";
 
 const sessionUser = async () => {
      const sessionUser = await getSessionUser();
@@ -81,12 +83,12 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
      <Form {...form}>
      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 article__comments-form flex w-full gap-3">
      
-       <div className="w-full">
+       <div className="w-full flex gap-x-3">
        <FormField
          control={form.control}
          name="content"
          render={({ field }) => (
-           <FormItem className="flex gap-3">
+           <FormItem className="flex gap-x-3 w-full">
             <div className="article__comments-form-avatar mt-2">
                {
                 status === "authenticated" ? (
@@ -108,14 +110,14 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
               status === "authenticated" ? (
                 <>
                   <FormControl>
-               <Textarea placeholder="Write a comment..." {...field} className="w-full" onFocus={handleOnFocus} />
+               <Textarea placeholder="Write a comment..." {...field} className="w-full" onFocus={handleOnFocus}  />
              </FormControl>
              <FormMessage />
                 </>
                 ) : (
                   <LoginDialog  className="w-full">
                     <FormControl>
-               <Textarea placeholder="Write a comment..." {...field} className="w-full" onFocus={handleOnFocus} readOnly />
+               <Textarea placeholder="Write a comment..." {...field} className="w-full" readOnly />
              </FormControl>
              <FormMessage />
                   </LoginDialog>
@@ -125,9 +127,11 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
            </FormItem>
          )}
        />
-       <Button type="submit" size={"lg"} className={`mt-2 ${commenting ? "block" : "hidden"}`} disabled={posting}>{
-              posting ? "Posting..." : "Post"
-       }</Button>
+       <Button type="submit" size={"icon"} className={`mt-2 ${commenting ? "block" : "hidden"} ease-in duration-1000 h-10 w-10`} disabled={posting}>
+             <div className="h-10 w-10 flex justify-center items-center">
+             <ArrowUp className="h-[1.2rem] w-[1.2rem] m-auto" />
+             </div>
+       </Button>
        </div>
      </form>
    </Form>

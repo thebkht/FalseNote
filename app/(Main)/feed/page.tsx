@@ -4,10 +4,12 @@ import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef, Key, Suspense } from 'react'
 import { Icons } from '@/components/icon';
 import PopularPosts from '@/components/feed/popular-posts';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import FeaturedDev from '@/components/feed/featured/featured-dev';
 import { Skeleton } from '@/components/ui/skeleton';
 import FeedComponent from '@/components/feed/feed';
+import UserExplore from '@/components/explore/user/details';
+import ExploreTabs from '@/components/explore/navbar/navbar';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -21,6 +23,8 @@ export default function Feed() {
   const [topUsers, setTopUsers] = useState<any | null>([])
   const sentinelRef = useRef(null)
   const route = useRouter()
+
+  const pathname = usePathname()
 
   useEffect(() => {
     async function fetchFeed() {
@@ -86,9 +90,11 @@ export default function Feed() {
   return (
     <>
       <main className="flex flex-col items-center justify-between feed ">
-            <div className="feed__content feed__content-md">
-              
+        <ExploreTabs pathname={pathname} />
+            <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full gap-8 my-8">
+              <UserExplore className='md:w-full lg:w-1/3 pt-4 lg:pt-0 h-fit md:my-4' />
               <Suspense fallback={<Skeleton className='w-full h-28' />}>
+                <div className="md:my-4 md:w-[12.5%] lg:w-2/3">
                 {
                 fetching && (
                   <div className="feed__list_loadmore my-8 h-max">
@@ -99,9 +105,10 @@ export default function Feed() {
                <FeedComponent feed={feed} isLoaded={!fetching}>
                 <div ref={sentinelRef} />
                </FeedComponent>
+                </div>
               </Suspense>
               {/* Popular posts, blogs, and tags  */}
-              <div className="feed__popular space-y-6">
+              <div className="md:my-4 md:w-1/4 lg:w-1/3 space-y-6">
                 <PopularPosts data={popularPosts} isloaded={!fetching} />
                 <FeaturedDev data={topUsers} isloaded={!fetching} />
               </div>

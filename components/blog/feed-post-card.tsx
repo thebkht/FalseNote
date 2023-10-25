@@ -105,7 +105,6 @@ export default function FeedPostCard(
     comments: string;
     id: string;
     authorid: string;
-    session: any;
     likes: string;
     url: string;
   }

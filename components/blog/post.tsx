@@ -50,7 +50,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
 
           // Set a cookie to indicate that the post has been viewed
           const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day from now
-          document.cookie = `${cookieName}=true; expires=${expirationDate.toUTCString()}; path=/`;
+          document.cookie = `${cookieName}=true; expires=${expirationDate.toUTCString()}; path=${window.location.pathname}`;
           }
      }
 
@@ -84,9 +84,9 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
      }
      return (
           <>
-               <div className="article">
+               <div className="article max-w-[100ch] mx-auto">
                     <div className="article__container">
-                         <div className="article__header max-w-[65ch] lg:text-xl mx-auto">
+                         <div className="article__header lg:text-xl">
                          {
                                    post?.cover && (
                                         <Image src={post?.cover} alt={post?.title} fill className="rounded-lg !relative h-auto" />
@@ -95,14 +95,12 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                               <h1 className="article__title">{post?.title}</h1>
                               <div className="article__meta">
                                    <UserHoverCard user={author} >
-                                   <Button variant="link" className="px-0" asChild>
-                                                  <Link href={`/${author?.username}`}>
+                                   <Link href={`/${author?.username}`}>
                                                        <Avatar className="article__author-avatar">
                                                             <AvatarImage src={author?.image} alt={author?.username} />
                                                             <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
                                                        </Avatar>
                                                   </Link>
-                                             </Button>
                                    </UserHoverCard>
 
                                    <div className="flex flex-col">
@@ -151,7 +149,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
 
                          <Separator className="mt-8" />
 
-                         <article className="article__content markdown-body prose lg:prose-xl">
+                         <article className="article__content markdown-body !max-w-full prose lg:prose-xl">
                               <Markdown>{post?.content}</Markdown>
                               {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
                          </article>
@@ -161,7 +159,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                          {
                                    tags && (
                                         <>
-                                             <div className="article__tags space-x-2">
+                                             <div className="article__tags space-x-2 mx-auto">
                                              {tags.map((tag: any) => (
                                                   <Link href={`/tag/${tag.tag.name}`} key={tag.tag.id}>
                                                        <Badge variant={"secondary"} className="h-6 w-auto cursor-pointer font-normal capitalize text-sm px-2 py-4">

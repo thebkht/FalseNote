@@ -95,20 +95,12 @@ export default function PopularPosts(
       )
     ) : (
       content = (
-        <Card className="feed__empty_featured_card">
+        <Card className="feed__empty_featured_card bg-background">
         <CardHeader>
           <Skeleton className="h-6 w-44" />
         </CardHeader>
         <CardContent>
         <div className="space-y-4">
-        <div className="space-y-2 w-full">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-36" />
-          </div>
-        <div className="space-y-2 w-full">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-36" />
-          </div>
         <div className="space-y-2 w-full">
                   <Skeleton className="h-4 w-full" />
                   <Skeleton className="h-4 w-36" />

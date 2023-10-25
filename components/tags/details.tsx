@@ -20,6 +20,7 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
 
      const [isFollowing, setIsFollowing] = useState<boolean>(false);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+     const [isLoaded, setIsLoaded] = useState<boolean>(false);
      const user = session() as any;
 
      async function fetchData() {
@@ -35,6 +36,7 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
 
      useEffect(() => {
           fetchData();
+          setIsLoaded(true);
      }, [sessionStatus]);
 
      const handleFollow = () => async () => {
@@ -61,6 +63,8 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
      }
      
      }
+
+     if(!isLoaded) return null;
 
      return (
           <>

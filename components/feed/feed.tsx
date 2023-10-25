@@ -34,7 +34,7 @@ export default function FeedComponent({ feed, children, isLoaded }: { feed: any;
             thumbnail={post.cover}
             likes={post.likes}
             comments={post.comments || "0"}
-            views={post.views} authorid={post.author?.userid} session={session} url={`/${post.author?.username}/${post.url}`} />
+            views={post.views} authorid={post.author?.userid} url={`/${post.author?.username}/${post.url}`} />
           </Suspense>
         ))}
 

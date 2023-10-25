@@ -95,21 +95,11 @@ export default function UserDetails({ className, children, user, followers, foll
       <div className="user__header flex md:block items-center space-y-4">
         <Avatar className="rounded-full mr-3 lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6">
           <AvatarImage className="rounded-full" src={user?.image} alt={user?.name} />
-          <AvatarFallback className="text-8xl text-foreground">{user?.name === null ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
+          <AvatarFallback className="text-8xl text-foreground">{user?.name ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex items-center py-4">
           {
-            user?.name === null ? (
-              <h1 className="space-y-3 w-full">
-                <span className="font-bold text-xl md:text-2xl block">{user?.username} {user?.verified && (
-                  <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
-                    <Check className="w-3 md:h-4 h-3 md:w-4" />
-                  </Badge>
-                )} {user?.falsemember && (
-                  <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
-                )}</span>
-              </h1>
-            ) : (
+            user?.name ? (
               <h1 className="md:space-y-3 w-full">
                 <span className="font-bold text-xl md:text-2xl block">{user?.name} {user?.verified && (
                   <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
@@ -119,7 +109,18 @@ export default function UserDetails({ className, children, user, followers, foll
                   <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
                 )}</span>
                 <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
-              </h1>)
+              </h1>
+            ) : (
+              <h1 className="space-y-3 w-full">
+                <span className="font-bold text-xl md:text-2xl block">{user?.username} {user?.verified && (
+                  <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
+                    <Check className="w-3 md:h-4 h-3 md:w-4" />
+                  </Badge>
+                )} {user?.falsemember && (
+                  <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
+                )}</span>
+              </h1>
+              )
           }
         </div>
       </div>
@@ -148,7 +149,7 @@ export default function UserDetails({ className, children, user, followers, foll
         )
       }
 
-      {user.bio !== '' && (<div className="w-full">{user?.bio}</div>)}
+      {user.bio && (<div className="w-full">{user?.bio}</div>)}
 
       <div className="py-4 items-center flex gap-2 w-full">
         <Users2 className="h-5 w-5 text-muted-foreground" />

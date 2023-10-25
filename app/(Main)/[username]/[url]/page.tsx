@@ -16,7 +16,10 @@ export default async function PostView({ params }: { params: { username: string,
           include: {
                posts: {
                     where: {
-                         visibility: 'public'
+                         visibility: 'public',
+                         url: {
+                              not: params.url
+                         }
                     },
                     include: {
                          _count: { select: { comments: true } }

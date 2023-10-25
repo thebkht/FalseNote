@@ -46,33 +46,33 @@ export default function UserHoverCard({ user, children, className, ...props }: R
             <AvatarFallback>{user?.name ? user?.name.charAt(0) : user?.username?.charAt(0)}</AvatarFallback>
           </Avatar>
           {
-            user?.name === '' ? (
-              <h4 className="text-sm font-semibold">{user?.username} {user?.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
-            ) : (
+            user?.name ? (
               <div>
                 <h4 className="text-sm font-semibold">{user?.name} {user?.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
-              <h6 className="text-sm text-muted-foreground !mt-0">{user?.username}</h6>
+                <h6 className="text-sm text-muted-foreground !mt-0">{user?.username}</h6>
               </div>
+            ) : (
+              <h4 className="text-sm font-semibold">{user?.username} {user?.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
             )
           }
-            <p className="text-sm">
-              {user?.bio}
-            </p>
-            {/* <div className="flex items-center flex gap-1 w-full">
+          <p className="text-sm">
+            {user?.bio}
+          </p>
+          <div className="flex items-center flex gap-1 w-full">
             <Users2 className="mr-2 h-5 w-5 text-muted-foreground" />
             <Button variant={"link"} size={"sm"} className="pl-0 py-0" asChild>
-              <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user.Followers?.length)}</span> <span className="text-muted-foreground ml-2">Followers</span></span>
+              <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user?.Followers?.length)}</span> <span className="text-muted-foreground ml-2">Followers</span></span>
             </Button>
             <Button variant={"link"} size={"sm"} className="pl-0 py-0" asChild>
-              <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user.Following?.length)}</span> <span className="text-muted-foreground ml-2">Followings</span></span>
+              <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user?.Following?.length)}</span> <span className="text-muted-foreground ml-2">Followings</span></span>
             </Button>
-          </div> */}
-            <div className="flex items-center pt-2">
-              <CalendarDays className="mr-2 h-5 w-5 opacity-70" />{" "}
-              <span className="text-xs text-muted-foreground">
-                {formatDate(user?.createdAt)}
-              </span>
-            </div>
+          </div>
+          <div className="flex items-center pt-2">
+            <CalendarDays className="mr-2 h-5 w-5 opacity-70" />{" "}
+            <span className="text-xs text-muted-foreground">
+              {formatDate(user?.createdAt)}
+            </span>
+          </div>
         </div>
       </HoverCardContent>
     </HoverCard>

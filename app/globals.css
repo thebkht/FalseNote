@@ -82,7 +82,11 @@
   --gutter: 1.5rem;
   grid-gap: var(--gutter);
   grid-auto-flow: column;
-  grid-template-columns: minmax(0, calc(100% - var(--sidebar-width) - var(--gutter))) 0 auto;
+  grid-template-columns: minmax(0, calc(100% - var(--sidebar-width) - var(--gutter))) 0 auto 0 minmax(0, calc(100% - var(--sidebar-width) - var(--gutter)));
+}
+
+.user-details{
+  width: var(--sidebar-width);
 }
 
 .feed__content_title {
@@ -263,7 +267,7 @@
 
 .feed__list_item{
   @apply grid items-start;
-  grid-gap: 1.25rem;
+  grid-gap: 1.5rem;
 }
 
 .feed__list_loadmore{
@@ -299,7 +303,11 @@
 }
 
 .markdown-body{
-  @apply prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto;
+  @apply prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto text-foreground;
+}
+
+.markdown-body span {
+  @apply text-foreground;
 }
 
 .markdown-body p {

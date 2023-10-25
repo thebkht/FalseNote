@@ -2,7 +2,6 @@
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getSessionUser } from "@/components/get-session-user";
 import TagDetails from "@/components/tags/details";
-import FollowTagButton from "@/components/tags/follow-btn";
 import TagPosts from "@/components/tags/post";
 import postgres from "@/lib/postgres";
 import { getSession,  } from "next-auth/react";
@@ -42,14 +41,11 @@ export default async function TagPage({ params }: { params: { tagname: string } 
      });
      const session = await getSession().then((res) => res?.user);
      console.log(session);
-
-
-     console.log(tag);
      return (
           <>
                <div className="flex flex-col space-y-6">
                     <TagDetails tag={tag} post={posts} tagFollowers={tag.followingtag} />
-                    <TagPosts posts={posts} tag={tag} session={session} />
+                    <TagPosts posts={posts} tag={tag} />
                </div>
           </>
      )
