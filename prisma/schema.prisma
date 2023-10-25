@@ -84,16 +84,16 @@ model User {
 
 model Post {
   id        Int      @id @default(autoincrement())
-  title     String?
+  title     String
   //content Text in postgresql
   
-  content   String? @db.Text
-  subtitle  String @db.VarChar(280)
-  cover    String
+  content   String @db.Text
+  subtitle  String? @db.VarChar(280)
+  cover    String?
   views    Int @default(0)
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
-  url       String?   @unique
+  url       String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   visibility String @default("public")

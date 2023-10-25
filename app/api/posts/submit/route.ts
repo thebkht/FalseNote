@@ -121,11 +121,16 @@ export async function POST(req: NextRequest) {
                data: {
                     title: title,
                     content: content,
-                    cover: coverImage || '',
+                    cover: coverImage ? coverImage : null,
                     visibility: visibility,
                     url: url,
-                    subtitle: subtitle,
-                    authorId: authorId,
+                    subtitle: subtitle ? subtitle : null,
+                    authorId: Number(authorId),
+                    author: {
+                         connect: {
+                              id: Number(authorId),
+                         }
+                    }
                }
           })
 
