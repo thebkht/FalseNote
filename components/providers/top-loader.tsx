@@ -6,9 +6,9 @@ function TopLoader() {
   return (
     <NextTopLoader
       color="#1e9cf1"
-      initialPosition={0.08}
+      initialPosition={0.1}
       crawlSpeed={200}
-      height={5}
+      height={8}
       crawl={true}
       showSpinner={false}
       easing="ease"

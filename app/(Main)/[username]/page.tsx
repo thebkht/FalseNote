@@ -23,12 +23,12 @@ export default async function Page({ params }: {
       },
       Followers: {
         include: {
-          following: true
+          follower: true
         }
       },
       Followings: {
         include: {
-          follower: true
+          following: true
         }
       }
     },
@@ -61,7 +61,7 @@ export default async function Page({ params }: {
     }
     )
   const followers = user.Followers;
-  const following = user.Following;
+  const following = user.Followings;
 
   const sessionUserName = await getSession();
   console.log(sessionUserName);

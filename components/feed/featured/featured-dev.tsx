@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, Check, Plus, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { getSessionUser } from "@/components/get-session-user";
@@ -85,7 +85,14 @@ export default function FeaturedDev(
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs?.map(
                   (item: any, index: number) => (
-              <div className="flex gap-4 w-full items-center justify-between" key={item.id}>
+              <Suspense fallback={<div className="flex items-center">
+              <Skeleton className="h-10 w-10 rounded-full mr-4" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-4 w-36" />
+              </div>
+          </div>} key={item.id}>
+                <div className="flex gap-4 w-full items-center justify-between" key={item.id}>
                 <div className="space-y-3">
                 <UserHoverCard user={item} >
                 <Link href={`/${item.username}`} className="flex items-center">
@@ -129,6 +136,7 @@ export default function FeaturedDev(
               }
             </Button>
               </div>
+              </Suspense>
             ))}
           </div>
         </CardContent>
@@ -140,70 +148,42 @@ export default function FeaturedDev(
         </CardHeader>
         <CardContent>
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
-            <div className="flex gap-4 w-full items-center justify-between">
-              <div className="space-y-3">
-              <div className="flex items-center">
+            <div className="flex flex-col gap-y-4 w-full">
+            <div className="flex items-center">
                 <Skeleton className="h-10 w-10 rounded-full mr-4" />
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-48" />
                   <Skeleton className="h-4 w-36" />
                 </div>
-              </div>
-              <Skeleton className="h-4 w-full" />
-              </div>
-              <Skeleton className="h-10 w-32" />
             </div>
-            <div className="flex gap-4 w-full items-center justify-between">
-              <div className="space-y-3">
-              <div className="flex items-center">
+            <div className="flex items-center">
                 <Skeleton className="h-10 w-10 rounded-full mr-4" />
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-48" />
                   <Skeleton className="h-4 w-36" />
                 </div>
-              </div>
-              <Skeleton className="h-4 w-full" />
-              </div>
-              <Skeleton className="h-10 w-32" />
             </div>
-            <div className="flex gap-4 w-full items-center justify-between">
-              <div className="space-y-3">
-              <div className="flex items-center">
+            <div className="flex items-center">
                 <Skeleton className="h-10 w-10 rounded-full mr-4" />
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-48" />
                   <Skeleton className="h-4 w-36" />
                 </div>
-              </div>
-              <Skeleton className="h-4 w-full" />
-              </div>
-              <Skeleton className="h-10 w-32" />
             </div>
-            <div className="flex gap-4 w-full items-center justify-between">
-              <div className="space-y-3">
-              <div className="flex items-center">
+            <div className="flex items-center">
                 <Skeleton className="h-10 w-10 rounded-full mr-4" />
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-48" />
                   <Skeleton className="h-4 w-36" />
                 </div>
-              </div>
-              <Skeleton className="h-4 w-full" />
-              </div>
-              <Skeleton className="h-10 w-32" />
             </div>
-            <div className="flex gap-4 w-full items-center justify-between">
-              <div className="space-y-3">
-              <div className="flex items-center">
+            <div className="flex items-center">
                 <Skeleton className="h-10 w-10 rounded-full mr-4" />
                 <div className="space-y-2">
                   <Skeleton className="h-4 w-48" />
                   <Skeleton className="h-4 w-36" />
                 </div>
-              </div>
-              <Skeleton className="h-4 w-full" />
-              </div>
-              <Skeleton className="h-10 w-32" />
+            </div>
             </div>
           </div>
         </CardContent>
@@ -212,5 +192,5 @@ export default function FeaturedDev(
     content = <div>Loading...</div>;
   }
 
-  return <div className="feed__empty_featured">{content}</div>;
+  return content;
 }

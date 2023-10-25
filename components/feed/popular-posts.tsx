@@ -1,10 +1,11 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { getSessionUser } from "@/components/get-session-user";
 import { useSession } from "next-auth/react";
 import { formatNumberWithSuffix } from "../format-numbers";
+import { Skeleton } from "../ui/skeleton";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -70,7 +71,8 @@ export default function PopularPosts(
 
   if (Array.isArray(popularPosts)) {
     isLoaded ? content = (
-      <Card className="feed__content_featured_card">
+      popularPosts.length !== 0 && (
+        <Card className="feed__content_featured_card">
         <CardHeader className="p-4">
           <CardTitle className="feed__content_featured_card_title text-xl">Trending Now</CardTitle>
         </CardHeader>
@@ -78,22 +80,54 @@ export default function PopularPosts(
           <ol className="flex flex-col items-start justify-between space-y-4 feed__popular-list">
             {popularPosts.map(
                   (item: any, index: number) => (
-              <li key={item.id} className="text-sm">
+              <Suspense fallback={<div className="space-y-2 w-full"><Skeleton className="h-4 w-full" /><Skeleton className="h-4 w-36" /></div>} key={item.id}>
+                <li key={item.id} className="text-sm">
                 <Link href={`/${item.author.username}/${item.url}`} className="text-base font-medium">
                   {item.title}
                 </Link>
                 <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.createdAt)}</span><span>{formatNumberWithSuffix(item.views) } views</span></div>
               </li>
-
+              </Suspense>
             ))}
           </ol>
         </CardContent>
       </Card>
+      )
     ) : (
-      content = null)
+      content = (
+        <Card className="feed__empty_featured_card">
+        <CardHeader>
+          <Skeleton className="h-6 w-44" />
+        </CardHeader>
+        <CardContent>
+        <div className="space-y-4">
+        <div className="space-y-2 w-full">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-36" />
+          </div>
+        <div className="space-y-2 w-full">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-36" />
+          </div>
+        <div className="space-y-2 w-full">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-36" />
+          </div>
+        <div className="space-y-2 w-full">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-36" />
+          </div>
+        <div className="space-y-2 w-full">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-36" />
+          </div>
+        </div>
+        </CardContent>
+      </Card>
+      ))
   } else {
     content = <div>Loading...</div>;
   }
 
-  return <div className="feed__empty_featured">{content}</div>;
+  return content;
 }

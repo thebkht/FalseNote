@@ -154,14 +154,14 @@ export default function UserDetails({ className, children, user, followers, foll
         <Users2 className="h-5 w-5 text-muted-foreground" />
         <Dialog>
           <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
-            <span>{formatNumberWithSuffix(followers.length)} <span className="text-muted-foreground ml-2">Followers</span></span>
+            <span>{formatNumberWithSuffix(followers?.length)} <span className="text-muted-foreground ml-2">Followers</span></span>
           </Button></DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Followers</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {followers.map((follower: any) => (
+              {followers?.map((follower: any) => (
                 <div className="flex gap-4 w-full items-center justify-between" key={follower.id}>
                   <div className="space-y-3">
                     <UserHoverCard user={follower.follower} >
@@ -198,7 +198,7 @@ export default function UserDetails({ className, children, user, followers, foll
               ))
               }
               {
-                followers.length === 0 && (
+                followers?.length === 0 && (
                   <p className="text-sm text-muted-foreground">No followers</p>
                 )
               }
@@ -207,14 +207,14 @@ export default function UserDetails({ className, children, user, followers, foll
         </Dialog>
         <Dialog>
           <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
-            <span>{formatNumberWithSuffix(followings.length)} <span className="text-muted-foreground ml-2">Followings</span></span>
+            <span>{formatNumberWithSuffix(followings?.length)} <span className="text-muted-foreground ml-2">Followings</span></span>
           </Button></DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Followings</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              {followings.map((following: any) => (
+              {followings?.map((following: any) => (
                 <div className="flex gap-4 w-full items-center" key={following.id}>
                   <div className="space-y-3">
                     <UserHoverCard user={following.following} >
@@ -252,7 +252,7 @@ export default function UserDetails({ className, children, user, followers, foll
               }
 
               {
-                followings.length === 0 && (
+                followings?.length === 0 && (
                   <p className="text-sm text-muted-foreground">No followings</p>
                 )
               }

@@ -16,7 +16,8 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
      setDeleted(true);
    }
 
-     const { data: session } = useSession();
+     const { data: session, status } = useSession();
+     if (status !== "authenticated" || !session) return null;
      return (
           <div className={className}>
                <div className="user-articles py-4 md:px-8 space-y-6 w-full">
