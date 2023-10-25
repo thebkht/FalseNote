@@ -40,12 +40,12 @@ export default function Feed() {
           setPopularPosts(data.popular);
           setTopUsers(topUsers.topUsers);
           setFeedLength(data.feedLength);
-          //setFetching(false);
+          setFetching(false);
           setLoading(false);
         } catch (error) {
           console.error('Error fetching feed:', error);
           setLoading(false);
-          //setFetching(false);
+          setFetching(false);
         }
       } else {
         setFetching(false)

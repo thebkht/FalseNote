@@ -88,7 +88,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                     <div className="article__container">
                          <div className="article__header max-w-[65ch] lg:text-xl mx-auto">
                          {
-                                   post?.cover !== '' && (
+                                   post?.cover && (
                                         <Image src={post?.cover} alt={post?.title} fill className="rounded-lg !relative h-auto" />
                                    )
                               }
