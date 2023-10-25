@@ -35,7 +35,11 @@ export async function GET(
       },
       include: {
         comments: true,
-        tags: true,
+        tags: {
+          include: {
+            tag: true,
+          }
+        },
         likes: true,
         savedUsers: true,
         author: {

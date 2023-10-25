@@ -43,6 +43,8 @@ export function PostEditorForm(props: {  post: any }) {
   const sessionUser = useSession().data?.user as any;
   const [user, setUser] = useState<any | null>(null)
   const router = useRouter();
+  const [markdownContent, setMarkdownContent] = useState<string>('');
+  setMarkdownContent(props.post?.content)
 
   useEffect(() => {
     async function fetchData() {
@@ -78,7 +80,7 @@ export function PostEditorForm(props: {  post: any }) {
       )
       .optional(),
     url: z.string(),
-    description: z.string().max(280).optional(),
+    subtitle: z.string().max(280).optional(),
   })
 
   
@@ -90,7 +92,10 @@ const defaultValues: Partial<PostFormValues> = {
   visibility: props.post?.visibility,
   coverImage: props.post?.coverimage || '',
   url: props.post?.url,
-  description: props.post?.description,
+  subtitle: props.post?.subtitle,
+  tags: props.post?.tags?.map((tag: any) => ({
+    value: tag.tag?.name,
+  })),
 }
   
   const form = useForm<PostFormValues>({
@@ -166,7 +171,7 @@ const defaultValues: Partial<PostFormValues> = {
   async function validateUrl(value: string) {
     try {
       // Check if the url is already taken
-      const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${user?.userid}`, {
+      const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${user?.id}`, {
         method: 'GET',
       });
 
@@ -189,10 +194,7 @@ const defaultValues: Partial<PostFormValues> = {
     validateUrl(value);
     // Update the form field value
     form.setValue('url', value);
-  }
-
-  const [markdownContent, setMarkdownContent] = useState<string>('');
-  
+  } 
 
   async function handleContentChange(value: string) {
     form.setValue('content', value); // Update the form field value
@@ -224,7 +226,7 @@ const defaultValues: Partial<PostFormValues> = {
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    form.setValue('description', e.target.value);
+    form.setValue('subtitle', e.target.value);
   }
 
   return (
@@ -388,7 +390,7 @@ const defaultValues: Partial<PostFormValues> = {
 
                 <FormField
                   control={form.control}
-                  name="description"
+                  name="subtitle"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Post Description</FormLabel>

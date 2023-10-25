@@ -8,9 +8,10 @@ import {
      AvatarImage,
 
 } from "@/components/ui/avatar"
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { getUserByUsername } from "../get-user";
+import { getSessionUser } from "../get-session-user";
 
 export default function EditorNavbar() {
      const user = useSession().data?.user as any;
@@ -19,8 +20,8 @@ export default function EditorNavbar() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userData = await getUserByUsername(user?.name);
-        setUsername(userData.username);
+        const userData = await getSessionUser();
+        setUsername(userData?.username);
       } catch (error) {
         // Handle errors
         console.error('Error:', error);
