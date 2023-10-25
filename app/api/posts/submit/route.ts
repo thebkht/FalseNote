@@ -126,11 +126,6 @@ export async function POST(req: NextRequest) {
                     url: url,
                     subtitle: subtitle ? subtitle : null,
                     authorId: Number(authorId),
-                    author: {
-                         connect: {
-                              id: Number(authorId),
-                         }
-                    }
                }
           })
 
