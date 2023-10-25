@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     const topUsers = await postgres.user.findMany({
       include: {
         Followers: true,
-        Following: true,
+        Followings: true,
         posts: true,
       },
       take: 5,
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
         id: {
           not: userid,
         },
-        Following: {
+        Followings: {
           none: {
             followerId: userid,
           },

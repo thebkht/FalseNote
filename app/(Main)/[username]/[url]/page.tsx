@@ -22,9 +22,9 @@ export default async function PostView({ params }: { params: { username: string,
                          _count: { select: { comments: true } }
                     }
                },
-               _count: { select: { posts: true, Followers: true, Following: true } },
+               _count: { select: { posts: true, Followers: true, Followings: true } },
                Followers: true,
-               Following: true
+               Followings: true
           }
                });
      
@@ -40,7 +40,7 @@ export default async function PostView({ params }: { params: { username: string,
                          author: {
                               include: {
                                    Followers: true,
-                                   Following: true
+                                   Followings: true
                               }
                          }
                     }

@@ -18,7 +18,7 @@ export async function GET(req: Request, { params }: { params: { username: string
             following: true
           }
         },
-        Following: {
+        Followings: {
           include: {
             follower: true
           }
