@@ -90,7 +90,7 @@ export default function Feed() {
   return (
     <>
       <main className="flex flex-col items-center justify-between feed ">
-        <ExploreTabs pathname={pathname} />
+        <ExploreTabs />
             <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full gap-8 my-8">
               <UserExplore className='md:w-full lg:w-1/3 pt-4 lg:pt-0 h-fit md:my-4' />
               <Suspense fallback={<Skeleton className='w-full h-28' />}>

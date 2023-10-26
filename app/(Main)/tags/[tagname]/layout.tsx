@@ -10,7 +10,7 @@ const tags = await postgres.tag.findMany({
 });
      //add href to tags
      tags.forEach((tag: any) => {
-          tag.href = `/tag/${tag.name}`;
+          tag.href = `/tags/${tag.name}`;
      }
      )
 
