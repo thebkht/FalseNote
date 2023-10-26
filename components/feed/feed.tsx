@@ -1,16 +1,37 @@
 "use client";
-import React, { Suspense } from "react";
-import { useSession } from "next-auth/react";
-import { Icons } from "../icon";
+import { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { Skeleton } from "../ui/skeleton";
 import FeedPostCard from "../blog/feed-post-card";
+import { fetchFeed } from './get-feed';
+import { Icons } from '../icon';
+import { getSessionUser } from '../get-session-user';
 
-export default function FeedComponent({ feed, children, isLoaded }: { feed: any; children?: React.ReactNode; isLoaded: boolean; }) {
-  const { status, data: session } = useSession();
+export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any }) {
+  const [feed, setFeed] = useState<Array<any>>(initialFeed)
+  const [page, setPage] = useState<number>(0)
+  const [ref, inView] = useInView()
 
-     return (
-      <div className="feed__list">
-      {
+  async function loadMoreFeed() {
+    console.log("Loading more feed")
+    const next = page + 1
+    console.log("Next page", next)
+    const fetchedFeed = await fetch(`/api/feed?page=${next}&user=${(await getSessionUser()).id}`).then(res => res.json())
+    if (fetchedFeed?.feed.length) {
+      setPage(next)
+      setFeed(prev => [...(prev?.length ? prev : []), ...fetchedFeed.feed])
+    }
+  }
+
+  useEffect(() => {
+    if (inView) {
+      loadMoreFeed()
+    }
+  }, [inView])
+
+  return (
+    <div className="feed__list">
+      {/* {
         isLoaded && feed.length === 0 && (
           <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
             <div className="flex flex-col items-center justify-center space-y-4">
@@ -19,12 +40,11 @@ export default function FeedComponent({ feed, children, isLoaded }: { feed: any;
             </div>
           </div>
         )
-      }
+      } */}
 
       <div className="feed__list_item">
         {feed.map((post: any) => (
-          <Suspense fallback={<Skeleton />} key={post.id}>
-            <FeedPostCard
+          <FeedPostCard
             key={post.id}
             id={post.id as string}
             title={post.title}
@@ -32,16 +52,18 @@ export default function FeedComponent({ feed, children, isLoaded }: { feed: any;
             date={post.createdAt}
             author={post.author}
             thumbnail={post.cover}
-            likes={post.likes}
-            comments={post.comments || "0"}
-            views={post.views} authorid={post.author?.userid} url={`/${post.author?.username}/${post.url}`} />
-          </Suspense>
+            likes={post._count.likes || "0"}
+            comments={post._count.comments || "0"}
+            views={post.views}
+            authorid={post.author?.userid}
+            url={`/${post.author?.username}/${post.url}`}
+          />
         ))}
 
-
+        <div className="feed__list_loadmore my-8 h-max" ref={ref}>
+          <Icons.spinner className="h-10 animate-spin mr-2" /> Loading...
+        </div>
       </div>
-
-      {children}
     </div>
-     )
+  )
 }

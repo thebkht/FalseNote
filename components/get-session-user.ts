@@ -4,7 +4,6 @@ import { cache } from "react";
 //Get session user using getSession() from next-auth and return user object
 async function fetchData() {
      const session = await getSession();
-     console.log(session);
      const sessionUser = session?.user as any;
      //If there is no session user return null
      if (!sessionUser) {
