@@ -1,7 +1,8 @@
 import { getSession } from "next-auth/react";
+import { cache } from "react";
 
 //Get session user using getSession() from next-auth and return user object
-export async function getSessionUser() {
+async function fetchData() {
      const session = await getSession();
      console.log(session);
      const sessionUser = session?.user as any;
@@ -24,3 +25,5 @@ export async function getSessionUser() {
           return Promise.reject(null);
      }
 }
+
+export const getSessionUser = cache(fetchData)

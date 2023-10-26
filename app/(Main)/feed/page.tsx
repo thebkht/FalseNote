@@ -1,7 +1,7 @@
 "use client";
 import { getSessionUser } from '@/components/get-session-user';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect, useRef, Key, Suspense } from 'react'
+import { useState, useEffect, useRef, Key, Suspense, useCallback } from 'react'
 import { Icons } from '@/components/icon';
 import PopularPosts from '@/components/feed/popular-posts';
 import { usePathname, useRouter } from 'next/navigation';
@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import FeedComponent from '@/components/feed/feed';
 import UserExplore from '@/components/explore/user/details';
 import ExploreTabs from '@/components/explore/navbar/navbar';
+import { revalidatePath } from 'next/cache';
 
 export default function Feed() {
   const { status, data: session } = useSession()
@@ -26,45 +27,85 @@ export default function Feed() {
 
   const pathname = usePathname()
 
-  useEffect(() => {
-    async function fetchFeed() {
-      if (status !== "unauthenticated") {
-        const user = (await sessionUser)?.id
-        try {
-          const response = await fetch(`/api/feed?user=${user}&page=${page}`);
-          if (!response.ok) {
-            throw new Error(`Fetch failed with status: ${response.status}`);
-          }
-          const topUsers = await fetch(`/api/users/top?user=${user}`, {
-            method: "GET",
-          }).then((res) => res.json());
-          const data = await response.json();
-
-          setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
-          setPopularPosts(data.popular);
-          setTopUsers(topUsers.topUsers);
-          setFeedLength(data.feedLength);
-          setFetching(false);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching feed:', error);
-          setLoading(false);
-          setFetching(false);
+  const fetchFeed = useCallback(async () => {
+    if (status !== "unauthenticated") {
+      const user = (await sessionUser)?.id
+      try {
+        const response = await fetch(`/api/feed?user=${user}&page=${page}`, { next: { revalidate: 3600 } });
+        if (!response.ok) {
+          throw new Error(`Fetch failed with status: ${response.status}`);
         }
-      } else {
-        setFetching(false)
-        route.push('/')
+        const data = await response.json();
+
+        setFeed((prevFeed: any) => [...prevFeed, ...data.feed]);
+        setFeedLength(data.feedLength);
+        setFetching(false);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching feed:', error);
+        setLoading(false);
+        setFetching(false);
+      }
+    } else {
+      setFetching(false)
+      route.push('/')
+    }
+  }, [page])
+
+  const fetchPopularPosts = useCallback(async () => {
+    if(status === "authenticated") {
+      try {
+        const response = await fetch(`/api/posts/popular`, { next: { revalidate: 3600 } });
+        if (!response.ok) {
+          throw new Error(`Fetch failed with status: ${response.status}`);
+        }
+        const data = await response.json();
+        setPopularPosts(data.popular);
+      } catch (error) {
+        console.error('Error fetching popular posts:', error);
       }
     }
+  }, [status])
 
-    fetchFeed()
+      const fetchTopUsers = useCallback(async () => {
+        if(status === "authenticated") {
+          try {
+            const response = await fetch(`/api/users/top?user=${(await sessionUser).id}`, {
+              method: "GET",
+              next: { revalidate: 3600 }
+            });
+            if (!response.ok) {
+              throw new Error(`Fetch failed with status: ${response.status}`);
+            }
+            const data = await response.json();
+            setTopUsers(data.topUsers);
+          } catch (error) {
+            console.error('Error fetching top users:', error);
+          }
+        }
+      }, [status])
+
+    useEffect(() => {
+      if(status === "authenticated") {
+      fetchPopularPosts()
+      fetchTopUsers()
+      }
+    }, [status])
+
+  useEffect(() => {
+    console.log('Feed length:', feedLength, 'Feed:', feed.length)
+    if (feedLength >= 0){
+      if (feed.length <= feedLength) {
+        fetchFeed()
+      }
+    }
   }, [page])
 
   useEffect(() => {
-    if (feedLength !== 0 && feed.length !== feedLength) {
+    if (feed.length < feedLength) {
       const observer = new IntersectionObserver(
         entries => {
-          if (entries[0].isIntersecting && !loading) {
+          if (entries[0].isIntersecting && !loading && feed.length < feedLength) {
             setPage(prevPage => prevPage + 1)
           }
         },

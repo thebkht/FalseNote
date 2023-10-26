@@ -1,4 +1,4 @@
-import { Compass, Hash, Home, Zap } from "lucide-react";
+import { Compass, GalleryVerticalEnd, Hash, Zap } from "lucide-react";
 type Item = {
   label: string;
   icon: React.ElementType;
@@ -8,7 +8,7 @@ type Item = {
 export const items = [
   {
     label: "Feed",
-    icon: Home,
+    icon: GalleryVerticalEnd,
     path: "/feed",
   },
   {

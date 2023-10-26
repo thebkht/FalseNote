@@ -42,12 +42,6 @@ export default function FeedComponent({ feed, children, isLoaded }: { feed: any;
       </div>
 
       {children}
-      {feed.length !== 0 && (
-        <div className="feed__list_loadmore my-8">
-          {children}
-          <Icons.spinner className="h-10 animate-spin mr-2" /> Loading...
-        </div>
-      )}
     </div>
      )
 }

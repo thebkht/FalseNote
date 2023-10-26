@@ -5,13 +5,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
      const user_id = Number(req.nextUrl.searchParams.get('user'))
   let page = parseInt(req.nextUrl.searchParams.get('page')!)
-  let limit = 10
+  let limit = 5
   let offset = 0
-
-  if (page > 0) {
-    limit = 5
-    offset = (page + 1) * limit 
-  }
 
   const userFollowings = await postgres.follow.findMany({
     select: {
@@ -31,9 +26,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
       createdAt: 'desc',
     },
     take: limit,
-    skip: offset,
+    skip: page * limit,
     include: {
-      author: true,
+      author: {
+        include: {
+          Followers: true,
+          Followings: true,
+        }
+      },
       _count: {
         select: {
           likes: true,
@@ -54,25 +54,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       },
   })
 
-  const popular = await postgres.post.findMany({
-    orderBy: {
-      views: 'desc',
-    },
-    take: 5,
-    include: {
-      author: true,
-      _count: {
-        select: {
-          likes: true,
-          comments: true,
-          savedUsers: true,
-        },
-      },
-      tags: true,
-    }
-  })
-
-  return NextResponse.json({ feed, feedLength, popular })
+  return NextResponse.json({ feed, feedLength }, { status: 200 })
   }
      catch (error) {
      console.error(error)
