@@ -1,15 +1,22 @@
+'use server'
 import postgres from "@/lib/postgres";
 import { getSessionUser } from "../get-session-user";
 
-export const fetchFeed = async ({page = 0}: {page?: number | undefined}) => {
-     const user_id = await getSessionUser().then((user) => user?.id);
+export const fetchFeed = async ({page = 0}: {page?: number}) => {
+     const user = await getSessionUser();
+     if (!user) {
+          return null;
+     }
+     console.log(user)
+     const { id } = user;
+     console.log(id)
      try{
           const userFollowings = await postgres.follow.findMany({
                select: {
                     followingId: true,
                },
                where: {
-                    followerId: user_id,
+                    followerId: id,
                },
           });
           const feed = await postgres.post.findMany({
@@ -42,7 +49,7 @@ export const fetchFeed = async ({page = 0}: {page?: number | undefined}) => {
           })
           await new Promise(resolve => setTimeout(resolve, 750))
 
-          return JSON.parse(JSON.stringify(feed));
+          return { feed: JSON.parse(JSON.stringify(feed)) }
      } catch (error) {
           return { error }
      }

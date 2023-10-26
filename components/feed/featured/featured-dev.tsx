@@ -32,9 +32,7 @@ const formatDate = (dateString: string | number | Date) => {
   return formattedDate
 }
 
-export default function FeaturedDev(
-  { data: featuredDevs, isloaded: isLoaded}: { data: any; isloaded: boolean; }
-) {
+export default function FeaturedDev() {
   const [isFollowing, setIsFollowing] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
   );

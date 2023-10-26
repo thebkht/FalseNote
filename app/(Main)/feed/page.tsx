@@ -7,7 +7,8 @@ import { fetchFeed } from '@/components/feed/get-feed';
 import InfinitiveScrollFeed from '@/components/feed/feed';
 
 export default async function Feed() {
-  const feed = await fetchFeed({ page: 0 });
+  const feedData = await fetchFeed({ page: 0 });
+  const feed = feedData?.feed;
 
   return (
     <>
@@ -17,16 +18,19 @@ export default async function Feed() {
           <UserExplore className='md:w-full lg:w-1/3 pt-4 lg:pt-0 md:my-4 h-fit' />
           <div className="md:my-4 md:w-[12.5%] lg:w-2/3">
               {!feed ? (
-                <div className="feed__list_loadmore my-8 h-max">
-                  <Icons.spinner className="h-10 animate-spin mr-2" /> Loading...
+                <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <h1 className="text-2xl font-bold">No posts yet</h1>
+                  <p className="text-muted-foreground">When you follow someone, their posts will show up here.</p>
                 </div>
+              </div>
               ) : (
                 <InfinitiveScrollFeed initialFeed={feed} />
               )}
             </div>
           <div className="md:my-4 md:w-1/4 lg:w-1/3 space-y-6">
             <PopularPosts />
-            {/* <FeaturedDev data={topUsers} isloaded={!fetching} /> */}
+            {/* <FeaturedDev /> */}
           </div>
         </div>
       </main>

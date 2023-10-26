@@ -45,16 +45,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
   })
 
-  // check if there are more posts
-  const feedLength = await postgres.post.count({
-    where: {
-      authorId: {
-        in: userFollowings.map((user) => user.followingId),
-        },
-      },
-  })
-
-  return NextResponse.json({ feed, feedLength }, { status: 200 })
+  return NextResponse.json({ feed }, { status: 200 })
   }
      catch (error) {
      console.error(error)

@@ -25,7 +25,8 @@ const formatDate = (dateString: string | number | Date) => {
 }
 
 export default async function PopularPosts() {
-  const posts = await fetchPosts();
+  const postData = await fetchPosts();
+  const posts = postData?.popular;
   let content = null;
 
   posts ? content = (

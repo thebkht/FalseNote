@@ -22,7 +22,8 @@ export const fetchPosts = async () => {
 
     await new Promise((resolve) => setTimeout(resolve, 750));
 
-    return JSON.parse(JSON.stringify(popular));
+    // return json from array
+     return { popular: JSON.parse(JSON.stringify(popular))}
   } catch (error) {
     return { error };
   }

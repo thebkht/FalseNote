@@ -16,10 +16,10 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
     console.log("Loading more feed")
     const next = page + 1
     console.log("Next page", next)
-    const fetchedFeed = await fetch(`/api/feed?page=${next}&user=${(await getSessionUser()).id}`).then(res => res.json())
-    if (fetchedFeed?.feed.length) {
+    const fetchedFeed = await fetch(`/api/feed?page=${next}&user=${(await getSessionUser())?.id}`).then(res => res.json())
+    if (fetchedFeed?.length) {
       setPage(next)
-      setFeed(prev => [...(prev?.length ? prev : []), ...fetchedFeed.feed])
+      setFeed(prev => [...prev, ...fetchedFeed])
     }
   }
 

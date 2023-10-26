@@ -82,12 +82,6 @@ export const config = {
   
 } satisfies NextAuthConfig
 
-// // Helper function to get session without passing config every time
-// // https://next-auth.js.org/configuration/nextjs#getserversession
-// export function auth(...args: [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]] | [NextApiRequest, NextApiResponse] | []) {
-//   return getServerSession(...args, config)
-// }
-
 // We recommend doing your own environment variable validation
 declare global {
   namespace NodeJS {
