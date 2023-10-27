@@ -2,14 +2,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import postgres from "@/lib/postgres"
-import { tr } from "date-fns/locale"
 import { Hash } from "lucide-react"
 import Link from "next/link"
 
 export default async function TagsPage() {
      let page = 0
      const tags = await postgres.tag.findMany({
-          take: 10,
+          take: 5,
           orderBy: {
                posts: {
                     _count: "desc"
@@ -18,7 +17,7 @@ export default async function TagsPage() {
           include: {
                _count: { select: { posts: true, followingtag: true } },
           },
-          skip: page * 10
+          skip: page * 5
      })
 
      const popularTags = await postgres.tag.findMany({
