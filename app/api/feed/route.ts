@@ -41,7 +41,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
           savedUsers: true,
         },
       },
-      tags: true,
+      tags: {
+        take: 1,
+        include: {
+             tag: true,
+        },
+   },
     }
   })
 

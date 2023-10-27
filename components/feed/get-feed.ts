@@ -44,7 +44,12 @@ export const fetchFeed = async ({page = 0}: {page?: number}) => {
                               savedUsers: true,
                          },
                     },
-                    tags: true,
+                    tags: {
+                         take: 1,
+                         include: {
+                              tag: true,
+                         },
+                    },
                },
           })
           await new Promise(resolve => setTimeout(resolve, 750))
