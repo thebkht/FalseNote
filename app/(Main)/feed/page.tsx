@@ -15,9 +15,8 @@ export default async function Feed() {
       <main className="flex flex-col items-center justify-between feed ">
         <ExploreTabs />
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full gap-8 my-8">
-          <UserExplore className='md:w-full lg:w-1/3 pt-4 lg:pt-0 md:my-4 h-fit' />
           <div className="md:my-4 md:w-[12.5%] lg:w-2/3">
-              {!feed ? (
+              {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <h1 className="text-2xl font-bold">No posts yet</h1>
