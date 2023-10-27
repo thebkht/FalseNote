@@ -9,7 +9,7 @@ export default function TagPosts({ posts, tag }: { posts: any, tag: any }) {
           <>
                <div className="grid md:grid-cols-2 gap-4">
                          {posts.map((post: any) => (
-                              <FeedPostCard key={post.id} author={post.author} authorid={post.id} content={post.subtitle} date={post.createdAt} comments={post._count.comments} id={post.id} likes={post._count.likes} title={post.title} url={`/${post.author.username}/${post.url}`} views={post.views} thumbnail={post.cover} />
+                              <FeedPostCard key={post.id} post={post} />
                          ))}
                     </div>
           </>
