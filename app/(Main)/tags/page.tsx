@@ -69,7 +69,7 @@ export default async function TagsPage() {
                     <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
                          {popularTags.map((tag) => (
                               <Link href={`/tags/${tag.name}`} key={tag.id}>
-                                   <Badge className="bg-primary/30 text-primary px-2.5 my-1 mr-1 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>{tag.name}</Badge>
+                                   <Badge className="bg-primary/20 text-primary px-2.5 my-1 mr-1 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>{tag.name}</Badge>
                               </Link>
                          ))}
                     </div>
