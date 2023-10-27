@@ -162,8 +162,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                              <div className="article__tags space-x-2 mx-auto">
                                              {tags.map((tag: any) => (
                                                   <Link href={`/tags/${tag.tag.name}`} key={tag.tag.id}>
-                                                       <<Link href={`/tags/${tag.name}`} key={tag.id}>
-                                   <Badge className="bg-primary/30 text-primary px-2.5 my-1 mr-1 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>
+                                 <Badge className="bg-primary/30 text-primary px-2.5 my-1 mr-1 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>
                                                             {
                                                                  //replace - with space
                                                                  tag.tag.name.replace(/-/g, " ")
