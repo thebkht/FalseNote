@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { getSessionUser } from "../get-session-user";
 import { useSession } from "next-auth/react";
 import Markdown from "markdown-to-jsx";
+import TagBadge from "../tags/tag";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -162,12 +163,12 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                                              <div className="article__tags mx-auto">
                                              {tags.map((tag: any) => (
                                                   <Link href={`/tags/${tag.tag.name}`} key={tag.tag.id}>
-                                 <Badge className="bg-primary/20 text-primary px-2.5 my-1.5 mr-1.5 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>
+                                 <TagBadge className="my-1.5 mr-1.5" variant={"secondary"}>
                                                             {
                                                                  //replace - with space
                                                                  tag.tag.name.replace(/-/g, " ")
                                                             }
-                                                       </Badge>
+                                                       </TagBadge>
                                                   </Link>
                                              ))}
                                         </div>

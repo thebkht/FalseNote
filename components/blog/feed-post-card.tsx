@@ -17,6 +17,7 @@ import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
+import TagBadge from "../tags/tag";
 
 
 function formatDate(dateString: string | number | Date) {
@@ -147,13 +148,7 @@ export default function FeedPostCard(
                     <h2 className="text-base md:text-xl font-bold">{props.post.title}</h2>
                   </div>
                   <div className="post-subtitle">
-                    {props.post.subtitle && (
-                      props.post.subtitle.length > 150 ? (
-                        <p>{props.post.subtitle.substring(0, 150)}...</p>
-                      ) : (
-                        <p>{props.post.subtitle}</p>
-                      )
-                    )}
+                  <p>{props.post.subtitle.substring(0, 200)}...</p>
                   </div>
                 </div>
                 <div className="py-8">
@@ -164,12 +159,12 @@ export default function FeedPostCard(
                           <div className="flex items-center space-x-1.5">
                             {props.post.tags.map((tag: any) => (
                               <Link href={`/tag/${tag.tag?.name}`} key={tag.tag?.id}>
-                                <Badge className="bg-primary/20 text-primary px-2.5 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>
+                                <TagBadge variant={"secondary"}>
                                   {
                                     //replace - with space
                                     tag.tag?.name.replace(/-/g, " ")
                                   }
-                                </Badge>
+                                </TagBadge>
                               </Link>
                             ))}
                           </div>

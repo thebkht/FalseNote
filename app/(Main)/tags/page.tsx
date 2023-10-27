@@ -1,3 +1,4 @@
+import TagBadge from "@/components/tags/tag"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -69,7 +70,7 @@ export default async function TagsPage() {
                     <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
                          {popularTags.map((tag) => (
                               <Link href={`/tags/${tag.name}`} key={tag.id}>
-                                   <Badge className="bg-primary/20 text-primary px-2.5 my-1 mr-1 hover:text-primary-foreground hover:bg-primary" variant={"secondary"}>{tag.name}</Badge>
+                                   <TagBadge className="my-1 mr-1" variant={"secondary"}>{tag.name}</TagBadge>
                               </Link>
                          ))}
                     </div>

@@ -12,6 +12,7 @@
     --popover-foreground: 240 10% 3.9%;
     --primary: 204 88% 53%;
     --primary-foreground: 0 0% 98%;
+    --primary-muted: 208 100% 97%;
     --secondary: 210 25% 8%;
     --secondary-foreground: 0 0% 100%;
     --muted: 240 4.8% 95.9%;
@@ -35,6 +36,7 @@
     --popover-foreground: 0 0% 98%;
     --primary: 204 88% 53%;
     --primary-foreground: 0 0% 100%;
+    --primary-muted: 210 80% 16%;
     --secondary: 0 0% 100%;
     --secondary-foreground: 210 25% 8%;
     --muted: 240 3.7% 15.9%;
@@ -487,4 +489,8 @@
 
 .markdown-body .article__cover-image figcaption p a:last-child::after{
   content: "";
+}
+
+.bg-badge {
+  background-color: hsl(var(--primary-muted));
 }
