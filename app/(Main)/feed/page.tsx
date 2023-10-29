@@ -15,7 +15,7 @@ export default async function Feed() {
       <main className="flex flex-col items-center justify-between feed px-8">
         <ExploreTabs />
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full gap-8 my-8">
-          <div className="md:my-4 w-[12.5%] lg:w-3/4 pr-20">
+          <div className="md:my-4 w-full lg:w-3/4 pr-20">
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
                 <div className="flex flex-col items-center justify-center space-y-4">
@@ -27,7 +27,7 @@ export default async function Feed() {
                 <InfinitiveScrollFeed initialFeed={feed} />
               )}
             </div>
-          <div className="md:my-4 md:w-1/4 space-y-6">
+          <div className="hidden lg:block md:my-4 md:w-1/4 space-y-6">
             <PopularPosts />
             {/* <FeaturedDev /> */}
           </div>
