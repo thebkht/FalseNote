@@ -12,7 +12,7 @@ export default async function Feed() {
 
   return (
     <>
-      <main className="flex flex-col items-center justify-between feed px-8">
+      <main className="flex flex-col items-center justify-between feed xl:px-8">
         <ExploreTabs />
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full gap-8 my-8">
           <div className="md:my-4 w-full lg:w-3/4 pr-20">
