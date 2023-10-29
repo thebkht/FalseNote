@@ -1,5 +1,5 @@
 import postgrtes from "@/lib/postgres";
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 
 export const runtime = 'edge';
 
