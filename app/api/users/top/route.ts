@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
         id: {
           not: userid,
         },
-        Followings: {
+        Followers: {
           none: {
             followerId: userid,
           },

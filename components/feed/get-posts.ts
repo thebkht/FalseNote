@@ -6,7 +6,7 @@ export const fetchPosts = async () => {
       orderBy: {
         views: "desc",
       },
-      take: 5,
+      take: 3,
       include: {
         author: true,
         _count: {

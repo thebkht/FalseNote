@@ -26,7 +26,7 @@
     --ring: 240 5.9% 10%;
     --radius: 1rem;
   }
- 
+
   .dark {
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
@@ -87,7 +87,7 @@
   grid-template-columns: minmax(0, calc(100% - var(--sidebar-width) - var(--gutter))) 0 auto 0 minmax(0, calc(100% - var(--sidebar-width) - var(--gutter)));
 }
 
-.user-details{
+.user-details {
   width: var(--sidebar-width);
 }
 
@@ -146,7 +146,7 @@
 }
 
 .article__container {
-  @apply  p-0 md:p-4
+  @apply p-0 md:p-4
 }
 
 .article__header {
@@ -181,8 +181,8 @@
   @apply w-full h-auto mb-8 px-4;
 }
 
-.article__content .article__cover-image img{
-  @apply rounded-md ;
+.article__content .article__cover-image img {
+  @apply rounded-md;
 }
 
 .container-5xl {
@@ -208,58 +208,66 @@
   grid-template-columns: auto 0 minmax(0, calc(100% - var(--Layout-sidebar-width) - var(--Layout-gutter)));
 }
 
-@media (min-width: 1012px){
+@media (min-width: 1012px) {
   .Layout {
     --Layout-sidebar-width: 296px;
-    }
-}
-@media (min-width: 768px)
-{.Layout {
---Layout-sidebar-width: 256px;
-}
-.feed__content {
-  --sidebar-width: 16rem;
-  --gutter: 1.5rem;
-}
-}
-@media (min-width: 544px)
-{.Layout {
---Layout-sidebar-width: 220px;
---Layout-gutter: 0;
-}
-.feed__content {
-  --gutter: 0;
-}
-}
-@media (min-width: 1012px)
-{.Layout {
---Layout-gutter: 24px;
-
-}
-.feed__content {
-  --sidebar-width: 18rem;
-  --gutter: 1.5rem;
-}
+  }
 }
 
-@media (min-width: 1440px)
-{
+@media (min-width: 768px) {
+  .Layout {
+    --Layout-sidebar-width: 256px;
+  }
+
+  .feed__content {
+    --sidebar-width: 16rem;
+    --gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 544px) {
+  .Layout {
+    --Layout-sidebar-width: 220px;
+    --Layout-gutter: 0;
+  }
+
+  .feed__content {
+    --gutter: 0;
+  }
+
+  .post__title {
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (min-width: 1012px) {
+  .Layout {
+    --Layout-gutter: 24px;
+
+  }
+
+  .feed__content {
+    --sidebar-width: 18rem;
+    --gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 1440px) {
   .feed__content {
     --sidebar-width: 20rem;
   }
 }
 
-@media (max-width: 767.98px)
-{
+@media (max-width: 767.98px) {
   .Layout.Layout--flowRow-until-md {
-  grid-auto-flow: row;
-  grid-template-columns: 1fr !important;
-}
+    grid-auto-flow: row;
+    grid-template-columns: 1fr !important;
+  }
 
- .feed__content-md{
-  grid-auto-flow: row;
-  grid-template-columns: 1fr !important;
- }
+  .feed__content-md {
+    grid-auto-flow: row;
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .Layout .Layout-sidebar {
@@ -267,21 +275,21 @@
 }
 
 
-.feed__list_item{
+.feed__list_item {
   @apply grid items-start;
   grid-gap: 1.5rem;
 }
 
-.feed__list_loadmore{
+.feed__list_loadmore {
   @apply flex items-center justify-center w-full py-4;
 }
 
-.popular__post-details span::after{
+.popular__post-details span::after {
   content: "·";
-  @apply text-muted-foreground inline-block px-1 ;
+  @apply text-muted-foreground inline-block px-1;
 }
 
-.popular__post-details span:last-child::after{
+.popular__post-details span:last-child::after {
   content: "";
 }
 
@@ -289,22 +297,22 @@
   @apply row-span-2 md:col-span-2
 }
 
-.feed__popular-list{
+.feed__popular-list {
   counter-reset: counter;
 }
 
-.feed__popular-list li{
+.feed__popular-list li {
   @apply relative pl-7;
   counter-increment: counter;
 }
 
-.feed__popular-list li::before{
+.feed__popular-list li::before {
   @apply absolute text-center py-1 px-2.5 text-2xl font-bold text-muted-foreground;
   content: counter(counter);
   left: -10px;
 }
 
-.markdown-body{
+.markdown-body {
   @apply prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto text-foreground;
 }
 
@@ -340,7 +348,12 @@
   @apply text-base font-bold my-4 pb-1.5 text-foreground;
 }
 
-.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
   @apply font-bold border-b-2 border-muted;
 }
 
@@ -393,7 +406,7 @@
 }
 
 .markdown-body table {
-  @apply w-full my-8  border text-card-foreground rounded-lg text-base;
+  @apply w-full my-8 border text-card-foreground rounded-lg text-base;
 }
 
 .markdown-body table th {
@@ -428,69 +441,96 @@
   @apply w-full h-auto mb-8 px-4;
 }
 
-.markdown-body .article__cover-image img{
-  @apply rounded-md ;
+.markdown-body .article__cover-image img {
+  @apply rounded-md;
 }
 
-.markdown-body .article__cover-image figcaption{
+.markdown-body .article__cover-image figcaption {
   @apply text-center text-sm text-muted-foreground;
 }
 
-.markdown-body .article__cover-image figcaption a{
+.markdown-body .article__cover-image figcaption a {
   @apply underline;
 }
 
-.markdown-body .article__cover-image figcaption a:hover{
+.markdown-body .article__cover-image figcaption a:hover {
   @apply text-foreground;
 }
 
-.markdown-body .article__cover-image figcaption p{
+.markdown-body .article__cover-image figcaption p {
   @apply inline;
 }
 
-.markdown-body .article__cover-image figcaption p::after{
+.markdown-body .article__cover-image figcaption p::after {
   content: "·";
-  @apply text-muted-foreground inline-block px-1 ;
+  @apply text-muted-foreground inline-block px-1;
 }
 
-.markdown-body .article__cover-image figcaption p:last-child::after{
+.markdown-body .article__cover-image figcaption p:last-child::after {
   content: "";
 }
 
-.markdown-body .article__cover-image figcaption p a{
+.markdown-body .article__cover-image figcaption p a {
   @apply underline;
 }
 
-.markdown-body .article__cover-image figcaption p a:hover{
+.markdown-body .article__cover-image figcaption p a:hover {
   @apply text-foreground;
 }
 
-.markdown-body .article__cover-image figcaption p a::after{
+.markdown-body .article__cover-image figcaption p a::after {
   content: "·";
-  @apply text-muted-foreground inline-block px-1 ;
+  @apply text-muted-foreground inline-block px-1;
 }
 
-.markdown-body .article__cover-image figcaption p a:last-child::after{
+.markdown-body .article__cover-image figcaption p a:last-child::after {
   content: "";
 }
 
-.markdown-body .article__cover-image figcaption p a{
+.markdown-body .article__cover-image figcaption p a {
   @apply underline;
 }
 
-.markdown-body .article__cover-image figcaption p a:hover{
+.markdown-body .article__cover-image figcaption p a:hover {
   @apply text-foreground;
 }
 
-.markdown-body .article__cover-image figcaption p a::after{
+.markdown-body .article__cover-image figcaption p a::after {
   content: "·";
-  @apply text-muted-foreground inline-block px-1 ;
+  @apply text-muted-foreground inline-block px-1;
 }
 
-.markdown-body .article__cover-image figcaption p a:last-child::after{
+.markdown-body .article__cover-image figcaption p a:last-child::after {
   content: "";
 }
 
 .bg-badge {
   background-color: hsl(var(--primary-muted));
+}
+
+.feedpost__action-btn:hover {
+  @apply text-primary;
+}
+
+.feedpost__action-btn:hover button {
+  @apply text-primary;
+  background-color: hsl(var(--primary-muted))
+}
+
+.post__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (max-width: 544px) {
+  .post__title {
+    -webkit-line-clamp: 2;
+  }
+}
+
+.post__subtitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }

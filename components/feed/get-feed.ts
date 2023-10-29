@@ -45,7 +45,7 @@ export const fetchFeed = async ({page = 0}: {page?: number}) => {
                          },
                     },
                     tags: {
-                         take: 3,
+                         take: 1,
                          include: {
                               tag: true,
                          },

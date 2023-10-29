@@ -3,6 +3,10 @@ import Link from "next/link";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { Skeleton } from "../ui/skeleton";
 import { fetchPosts } from "./get-posts";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import UserHoverCard from "../user-hover-card";
+import { Check } from "lucide-react";
+import { Badge } from "../ui/badge";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -32,19 +36,28 @@ export default async function PopularPosts() {
   posts ? content = (
     posts.length !== 0 && (
       <Card className="feed__content_featured_card">
-        <CardHeader className="p-4">
-          <CardTitle className="feed__content_featured_card_title text-xl">Trending Now</CardTitle>
+        <CardHeader className="p-5">
+          <CardTitle className="feed__content_featured_card_title text-base">Trending Now</CardTitle>
         </CardHeader>
-        <CardContent className="p-4 pt-0">
+        <CardContent className="p-5 pt-0">
           <ol className="flex flex-col items-start justify-between space-y-4 feed__popular-list">
             {posts.map(
               (item: any, index: number) => (
-                <li key={item.id} className="text-sm">
-                    <Link href={`/${item.author.username}/${item.url}`} className="text-base font-medium">
-                      {item.title}
-                    </Link>
-                    <div className="popular__post-details text-muted-foreground"><span>{item.author.username}</span><span>{formatDate(item.createdAt)}</span><span>{formatNumberWithSuffix(item.views)} views</span></div>
-                  </li>
+                <li key={item.id} className="text-sm space-y-2.5">
+
+                  <Link href={`/${item.author.username}`} className="text-xs flex items-center mb-2 font-medium">
+                    <Avatar className="h-5 w-5 mr-1 md:mr-1.5 ">
+                      <AvatarImage src={item.author?.image} alt={item.author?.username} />
+                      <AvatarFallback>{item.author?.name?.charAt(0) || item.author?.username?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    {item.author.name || item.author.username}
+                  </Link>
+
+
+                  <Link href={`/${item.author.username}/${item.url}`} className="text-base font-bold">
+                    {item.title}
+                  </Link>
+                </li>
               ))}
           </ol>
         </CardContent>

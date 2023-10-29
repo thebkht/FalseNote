@@ -42,7 +42,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       },
       tags: {
-        take: 3,
+        take: 1,
         include: {
              tag: true,
         },

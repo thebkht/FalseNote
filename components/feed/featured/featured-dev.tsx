@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { AvatarFallback } from "@radix-ui/react-avatar";
@@ -33,7 +35,7 @@ const formatDate = (dateString: string | number | Date) => {
 }
 
 export default function FeaturedDev(
-  { data: featuredDevs, isloaded: isLoaded}: { data: any; isloaded: boolean; }
+  { data: featuredDevs}: { data: any; }
 ) {
   const [isFollowing, setIsFollowing] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
@@ -76,7 +78,7 @@ export default function FeaturedDev(
   let content = null;
 
   if (Array.isArray(featuredDevs)) {
-    featuredDevs.length && isLoaded ? content = (
+    featuredDevs.length ? content = (
       <Card className="feed__content_featured_card">
         <CardHeader className="p-4">
           <CardTitle className="feed__content_featured_card_title text-xl">Featured Devs</CardTitle>
@@ -149,13 +151,6 @@ export default function FeaturedDev(
         <CardContent>
           <div className="feed__empty_featured_card_content flex flex-col items-start justify-between space-y-4">
             <div className="flex flex-col gap-y-4 w-full">
-            <div className="flex items-center">
-                <Skeleton className="h-10 w-10 rounded-full mr-4" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-48" />
-                  <Skeleton className="h-4 w-36" />
-                </div>
-            </div>
             <div className="flex items-center">
                 <Skeleton className="h-10 w-10 rounded-full mr-4" />
                 <div className="space-y-2">

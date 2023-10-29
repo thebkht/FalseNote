@@ -46,7 +46,7 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
         )
       } */}
 
-      <div className="feed__list_item">
+      <div className="space-y-6">
         {feed.map((post: any) => (
           <FeedPostCard
             key={post.id}
@@ -78,11 +78,6 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
                 <div className="py-8">
                   <div className="flex justify-between">
                     <Skeleton className='w-20 h-3' />
-                    <div className="stats flex items-center justify-around gap-2">
-                      <Skeleton className='w-14 h-3' />
-                      <Skeleton className='w-14 h-3' />
-                      <Skeleton className='w-14 h-3' />
-                    </div>
                   </div>
                 </div>
               </div>

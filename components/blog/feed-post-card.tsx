@@ -11,7 +11,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { CalendarDays, Check, Eye, Heart, MessageCircle, User } from "lucide-react";
+import { Bookmark, CalendarDays, Check, Eye, Heart, MessageCircle, User } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -140,62 +140,105 @@ export default function FeedPostCard(
               </span>
             </div>
           </CardHeader>
-          <div className="flex">
-            <div className="flex">
+          <div className="flex gap-8">
+            <div className="flex flex-1">
               <div>
                 <div>
                   <div className="pb-2">
-                    <h2 className="text-base md:text-xl font-bold">{props.post.title}</h2>
+                    <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title">{props.post.title}</h2>
                   </div>
-                  <div className="post-subtitle">
-                  <p>{props.post.subtitle.substring(0, 200)}...</p>
+                  <div className="post-subtitle hidden md:block">
+                  <p className="text-ellipsis overflow-hidden post__subtitle">{props.post.subtitle}</p>
                   </div>
                 </div>
-                <div className="py-8">
-                  <div className="flex justify-between">
-                    <div className="flex flex-1 items-center">
+                <div className="hidden py-8 md:block">
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-1 items-center space-x-2.5">
                       {
                         props.post.tags.length > 0 && (
-                          <div className="flex items-center space-x-1.5">
-                            {props.post.tags.map((tag: any) => (
-                              <Link href={`/tag/${tag.tag?.name}`} key={tag.tag?.id}>
-                                <TagBadge variant={"secondary"}>
+                            <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
+                                <TagBadge variant={"secondary"} className="flex">
                                   {
                                     //replace - with space
-                                    tag.tag?.name.replace(/-/g, " ")
+                                    props.post.tags[0].tag?.name.replace(/-/g, " ")
                                   }
                                 </TagBadge>
                               </Link>
-                            ))}
-                          </div>
                         )
                       }
+                      <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
                     </div>
                     <div className="stats flex items-center justify-around gap-2">
-                      <p className="card-text inline mb-0 text-muted-foreground flex text-sm"><Eye className="mr-1 w-5 h-5" /> {props.post.views}</p>
-                      <p className="card-text inline mb-0 text-muted-foreground flex text-sm"><MessageCircle className="mr-1 w-5 h-5" /> {props.post._count.comments}</p>
-                      <p className="card-text inline mb-0 text-muted-foreground flex text-sm"><Heart className="mr-1 w-5 h-5" /> {props.post._count.likes}</p>
+                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                      <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
+                      <Heart className="w-4 h-4" />
+                      </Button>
+                      <span>{props.post._count.likes}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                      <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
+                      <Bookmark className="h-4 w-4" />
+                      </Button>
+                      <span>{props.post._count.savedUsers}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            {props.post.cover && (
-              <div className="pl-10">
+            
+              <div className="flex-none">
 
-                <div className="h-28 !relative !pb-0 md:aspect-[4/3] aspect-square" >
+                <div className="h-14 md:h-28 !relative !pb-0 aspect-[4/3] md:aspect-square" >
+                  {props.post.cover ? (
                   <Image
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
                     className="rounded-md object-cover w-full"
                   />
+                  ) : (
+                    <Icons.noThumbnail className="w-full h-full rounded-md" />
+                  )}
                 </div>
 
               </div>
-              )}
-
+              
+              
           </div>
+          <div className="py-8 md:hidden">
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-1 items-center space-x-2.5">
+                      {
+                        props.post.tags.length > 0 && (
+                            <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
+                                <TagBadge variant={"secondary"} className="flex">
+                                  {
+                                    //replace - with space
+                                    props.post.tags[0].tag?.name.replace(/-/g, " ")
+                                  }
+                                </TagBadge>
+                              </Link>
+                        )
+                      }
+                      <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
+                    </div>
+                    <div className="stats flex items-center justify-around gap-2">
+                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                      <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
+                      <Heart className="w-4 h-4" />
+                      </Button>
+                      <span>{props.post._count.likes}</span>
+                      </div>
+                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                      <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
+                      <Bookmark className="h-4 w-4" />
+                      </Button>
+                      <span>{props.post._count.savedUsers}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
         </CardContent>
       </Link>
     </Card>
