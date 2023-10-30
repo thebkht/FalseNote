@@ -52,7 +52,6 @@ export const getFeed = async ({
           _count: {
             select: {
               likes: true,
-              comments: true,
               savedUsers: true,
             },
           },
@@ -80,29 +79,6 @@ export const getFeed = async ({
               })
             ).map((user) => user.followingId),
           },
-          id: {
-            in: (
-              await postgres.postTag.findMany({
-                select: {
-                  postId: true,
-                },
-                where: {
-                  tagId: {
-                    in: (
-                      await postgres.tagFollow.findMany({
-                        select: {
-                          tagId: true,
-                        },
-                        where: {
-                          followerId: id,
-                        },
-                      })
-                    ).map((tagFollow) => tagFollow.tagId),
-                  },
-                },
-              })
-            ).map((postTag) => postTag.postId),
-          },
         },
         orderBy: {
           createdAt: "desc",
@@ -119,7 +95,6 @@ export const getFeed = async ({
           _count: {
             select: {
               likes: true,
-              comments: true,
               savedUsers: true,
             },
           },
