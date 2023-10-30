@@ -64,7 +64,6 @@ export const getFeed = async ({
           },
         },
       });
-      await new Promise((resolve) => setTimeout(resolve, 750));
       return { feed: JSON.parse(JSON.stringify(feed)) };
     } else {
       const feed = await postgres.post.findMany({
@@ -132,7 +131,6 @@ export const getFeed = async ({
           },
         },
       });
-      await new Promise((resolve) => setTimeout(resolve, 750));
 
       return { feed: JSON.parse(JSON.stringify(feed)) };
     }

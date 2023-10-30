@@ -40,7 +40,6 @@ export const fetchUsers = async () => {
       },
     },
   });
-  await new Promise((resolve) => setTimeout(resolve, 750));
 
   if (topUsers.length === 0) {
     return null;

@@ -32,8 +32,6 @@ export const fetchPosts = async () => {
           },
         });
 
-    await new Promise((resolve) => setTimeout(resolve, 750));
-
     // return json from array
      return { user: JSON.parse(JSON.stringify(topUsers))}
   } catch (error) {

@@ -33,7 +33,6 @@ export const fetchTags = async (query?: string) => {
           take: 5
      })
      
-     await new Promise(resolve => setTimeout(resolve, 750))
      return { tags: JSON.parse(JSON.stringify(tags)) }
      }
      } catch (error) {
