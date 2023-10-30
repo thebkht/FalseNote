@@ -25,6 +25,7 @@
     --input: 180 14% 97%;
     --ring: 240 5.9% 10%;
     --radius: 1rem;
+    --overlay: 255, 255, 255;
   }
 
   .dark {
@@ -48,6 +49,7 @@
     --border: 220 12% 9.8%;
     --input: 214 9.9% 13.9%;
     --ring: 240 4.9% 83.9%;
+    --overlay: 0, 0, 0;
   }
 }
 
@@ -533,4 +535,16 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.tab-shadow {
+  pointer-events: none;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    transition: opacity .3s ease;
+    width: 8%;
+    background: linear-gradient(90deg, rgba(var(--overlay), 0) 0%, rgba(var(--overlay), 0.75) 25%, rgba(var(--overlay), 0.9) 50%, rgb(var(--overlay)) 75%);
+    z-index: 1;
 }

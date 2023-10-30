@@ -41,6 +41,7 @@ export default async function Feed({
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
           <div className="md:my-4 w-full lg:w-2/3">
             <FeedTabs tabs={userFollowings} activeTab={tag} />
+              <div className="pt-10">
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
                 <div className="flex flex-col items-center justify-center space-y-4">
@@ -51,8 +52,9 @@ export default async function Feed({
               ) : (
                 <InfinitiveScrollFeed initialFeed={feed} tag={tag} />
               )}
+              </div>
             </div>
-          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 5rem)]" style={
+          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 10rem)]" style={
             {
               minHeight: "calc(100vh - 5rem)"
             }

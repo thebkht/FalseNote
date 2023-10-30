@@ -7,10 +7,14 @@ import { fetchFeed } from './get-feed';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { cn } from '@/lib/utils';
 
-export default function InfinitiveScrollFeed({ initialFeed, tag }: { initialFeed: any, tag: string | undefined }) {
+export default function InfinitiveScrollFeed({ initialFeed, tag }: { initialFeed: any | undefined, tag: string | undefined }) {
   const [feed, setFeed] = useState<Array<any>>(initialFeed)
   const [page, setPage] = useState<number>(0)
   const [ref, inView] = useInView()
+  //when tab change, feed is not updated yet so when when tab change it must be set feed to initialFeed
+  useEffect(() => {
+    setFeed(initialFeed)
+  }, [initialFeed])
 
   async function loadMoreFeed() {
     const next = page + 1
