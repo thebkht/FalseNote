@@ -1,6 +1,5 @@
 import { config } from "@/app/auth";
 import postgres from "@/lib/postgres";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -15,22 +14,12 @@ export async function POST(req: NextRequest) {
                include: {
                     Followers: {
                          include: {
-                              follower: {
-                                   include: {
-                                        Followers: true,
-                                        Followings: true,
-                                   },
-                              },
+                              follower: true,
                               },
                          },
                     Followings: {
                          include: {
-                              following: {
-                                   include: {
-                                        Followers: true,
-                                        Followings: true,
-                                   },
-                              },
+                              following: true,
                          },
                     },
                     bookmarks: {
@@ -42,7 +31,6 @@ export async function POST(req: NextRequest) {
                               }
                          }
                     },
-                    posts: true,
                     notifications: true,
                     settings: true,
                     tagfollower: {

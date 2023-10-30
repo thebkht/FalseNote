@@ -1,11 +1,15 @@
 import postgres from '@/lib/postgres'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(req: NextRequest) {
-  const { page = 0, tag, id } = await req.json()
-  if (!id) {
+export async function GET(req: NextRequest) {
+  const pageString = req.nextUrl.searchParams.get('page') || 0
+  const page = Number(pageString)
+  const tag = req.nextUrl.searchParams.get('tag')
+  const idString = req.nextUrl.searchParams.get('id')
+  if (!idString) {
     return NextResponse.json({ error: 'No user found' }, { status: 500 })
   }
+  const id = Number(idString)
   if (tag) {
     const postTags = await postgres.postTag.findMany({
       select: { postId: true },
