@@ -11,9 +11,12 @@ export async function getSessionUser() {
      }
      try {
           const { user } = session;
-          const result = await fetch(`${process.env.DOMAIN}/api/users/${encodeURIComponent(user?.name as string)}`);
-          const data = await result.json();
-          return data.user;
+          const result = await postgres.user.findFirst({
+               where: {
+                    image: user?.image,
+               }
+          });
+          return JSON.parse(JSON.stringify(result));
      } catch (error) {
           console.error(error);
      }
