@@ -45,7 +45,7 @@ export default async function Feed({
     <>
       <main className="flex flex-col items-center justify-between feed xl:px-8">
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
-          {/* <div className="md:my-4 w-full lg:w-2/3">
+          <div className="md:my-4 w-full lg:w-2/3">
             <FeedTabs tabs={userFollowings} activeTab={tag} />
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
@@ -57,8 +57,8 @@ export default async function Feed({
               ) : (
                 <InfinitiveScrollFeed initialFeed={feed} tag={tag} />
               )}
-            </div> */}
-          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 5rem)]" style={
+            </div>
+          {/* <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 5rem)]" style={
             {
               minHeight: "calc(100vh - 5rem)"
             }
@@ -68,7 +68,6 @@ export default async function Feed({
             <PopularPosts />
             <div className="tags">
             <h2 className="mb-2 font-semibold">Popular tags</h2>
-                    {/* col-sm-6 col-md-4 col-lg-12 list-style-none flex-wrap */}
                     <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
                          {popularTags?.map((tag: any) => (
                               <Link href={`/tags/${tag.name}`} key={tag.id}>
@@ -82,7 +81,7 @@ export default async function Feed({
             )}
             </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
     </>
