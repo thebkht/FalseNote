@@ -16,20 +16,18 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
 
   console.log("Feed", feed)
 
-  
+  async function loadMoreFeed() {
+    console.log("Loading more feed")
+    const next = page + 1
+    console.log("Next page", next)
+    const fetchedFeed = await fetch(`/api/feed?page=${next}&user=${(await getSessionUser())?.id}`).then(res => res.json())
+    if (fetchedFeed?.feed.length) {
+      setPage(next)
+      setFeed(prev => [...prev, ...fetchedFeed.feed])
+    }
+  }
 
   useEffect(() => {
-    async function loadMoreFeed() {
-      console.log("Loading more feed")
-      const next = page + 1
-      console.log("Next page", next)
-      const fetchedFeed = await fetch(`/api/feed?page=${next}&user=${(await getSessionUser())?.id}`).then(res => res.json())
-      if (fetchedFeed?.feed.length) {
-        setPage(next)
-        setFeed(prev => [...prev, ...fetchedFeed.feed])
-      }
-    }
-
     if (inView) {
       loadMoreFeed()
     }
