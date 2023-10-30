@@ -42,7 +42,7 @@ export default async function Feed() {
                 <InfinitiveScrollFeed initialFeed={feed} />
               )}
             </div>
-          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:px-8 md:px-4 border-l min-h-[calc(100vh - 5rem)]" style={
+          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 5rem)]" style={
             {
               minHeight: "calc(100vh - 5rem)"
             }

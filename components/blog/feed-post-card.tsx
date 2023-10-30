@@ -150,6 +150,7 @@ export default function FeedPostCard(
                   <p className="text-ellipsis overflow-hidden post__subtitle">{props.post.subtitle}</p>
                 </div>
               </div>
+              </Link>
               <div className="hidden py-8 md:block">
                 <div className="flex justify-between items-center">
                   <div className="flex flex-1 items-center space-x-2.5">
@@ -183,7 +184,7 @@ export default function FeedPostCard(
                   </div>
                 </div>
               </div>
-            </Link>
+            
           </div>
 
           <div className="flex-none ml-6 md:ml-8">
