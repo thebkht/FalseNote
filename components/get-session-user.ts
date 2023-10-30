@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { cache } from "react";
 
 export async function getSessionUser() {
-     const session = await fetch('/api/auth/session', {
+     const session = await fetch('/api/session', {
           method: 'GET',
           headers: {
                'Content-Type': 'application/json',
