@@ -31,29 +31,5 @@ const nextConfig = {
 };
 
 module.exports = {
-  ...nextConfig, 
-  // cashe control
-  async headers() {
-    //set to no store a cache on /feed and /feed?tag=* pages
-    return [
-      {
-        source: '/feed',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store',
-          },
-        ],
-      },
-      {
-        source: '/feed/:tag',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store',
-          },
-        ],
-      },
-    ];
-  }
+  ...nextConfig
 };
