@@ -140,7 +140,7 @@ export default function FeedPostCard(
           </div>
         </CardHeader>
         <div className="flex">
-          <div className="flex-initial">
+          <div className="flex-initial w-full">
             <Link href={`/${props.post.author?.username}/${props.post.url}`}>
               <div>
                 <div className="pb-2">
@@ -212,7 +212,7 @@ export default function FeedPostCard(
           <div className="flex justify-between items-center">
             <div className="flex flex-1 items-center space-x-2.5">
               {
-                props.post.tags.length > 0 && (
+                props.post.tags?.length > 0 && (
                   <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
                     <TagBadge variant={"secondary"} className="flex">
                       {

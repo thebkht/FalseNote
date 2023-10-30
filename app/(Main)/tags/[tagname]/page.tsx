@@ -36,7 +36,12 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           },
           include: {
                author: true,
-               _count: { select: { comments: true, likes: true, savedUsers: true } }
+               _count: { select: { comments: true, likes: true, savedUsers: true } },
+               tags: {
+                    include: {
+                         tag: true
+                    }
+               }
           }
      });
      const session = await getSession().then((res) => res?.user);

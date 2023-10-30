@@ -8,8 +8,9 @@ import { Icons } from '../icon';
 import { getSessionUser } from '../get-session-user';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
-export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any }) {
+export default function InfinitiveScrollFeed({ initialFeed, tag }: { initialFeed: any, tag: string | undefined }) {
   const [feed, setFeed] = useState<Array<any>>(initialFeed)
   const [page, setPage] = useState<number>(0)
   const [ref, inView] = useInView()
@@ -20,10 +21,10 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
     console.log("Loading more feed")
     const next = page + 1
     console.log("Next page", next)
-    const fetchedFeed = await fetch(`/api/feed?page=${next}&user=${(await getSessionUser())?.id}`).then(res => res.json())
-    if (fetchedFeed?.feed.length) {
+    const fetchedFeed = await fetchFeed({ page: next, tag })
+    if (fetchedFeed?.length) {
       setPage(next)
-      setFeed(prev => [...prev, ...fetchedFeed.feed])
+      setFeed(prev => [...prev, ...fetchedFeed])
     }
   }
 
@@ -32,6 +33,9 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
       loadMoreFeed()
     }
   }, [inView])
+
+  const pathname = usePathname()
+  fetch('/api/revalidate?path=' + pathname, )
 
   return (
     <div className="feed__list">

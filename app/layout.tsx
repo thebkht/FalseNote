@@ -7,6 +7,7 @@ import AuthProvider from '@/components/providers/auth-provider'
 import { Analytics } from '@vercel/analytics/react';
 import { TailwindIndicator } from '@/components/indicator'
 import { Toaster } from '@/components/ui/toaster'
+import { getSessionUser } from '@/components/get-session-user'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -49,10 +50,12 @@ export default async function Rootayout({
 }: {
   children: React.ReactNode
 }) {
+
+  const session = await getSessionUser();
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme={session?.settings?.appearance || 'system'} enableSystem>
           <AuthProvider>
           <TopLoader />
           {children}
