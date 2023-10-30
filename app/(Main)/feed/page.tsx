@@ -26,9 +26,7 @@ export default async function Feed({
   const popularTags = tagsData?.tags;
 
   const session = await getSessionUser();
-  console.log("Feed before revalidate", feed);
   tag ? revalidatePath('/feed?tag='+tag) : revalidatePath('/feed');
-  console.log("Feed after revalidate", feed);
   if(!session) {
     return redirect('/')
   }

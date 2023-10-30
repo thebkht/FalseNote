@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
   const page = Number(pageString)
   const tag = req.nextUrl.searchParams.get('tag')
   const idString = req.nextUrl.searchParams.get('id')
+  console.log("received data: ", pageString, tag, idString)
   if (!idString) {
     return NextResponse.json({ error: 'No user found' }, { status: 500 })
   }
