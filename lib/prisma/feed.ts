@@ -1,118 +1,85 @@
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
 
-export const getFeed = async ({
-  page = 0,
-  tag,
-}: {
-  page?: number;
-  tag?: string | undefined;
-}) => {
+const fetchFeed = async (query: any) => {
+  try {
+    const feed = await postgres.post.findMany(query);
+    await new Promise((resolve) => setTimeout(resolve, 750));
+    return { feed: JSON.parse(JSON.stringify(feed)) };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string | undefined }) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
   }
-  console.log(user);
   const { id } = user;
-  console.log(id);
-  console.log(tag);
-  try {
-    if (tag) {
-      const feed = await postgres.post.findMany({
-        where: {
-          id: {
-            in: (
-              await postgres.postTag.findMany({
-                select: {
-                  postId: true,
-                },
-                where: {
-                  tag: {
-                    name: {
-                      equals: tag,
-                    },
-                  },
-                },
-              })
-            ).map((postTag) => postTag.postId),
+  if (tag) {
+    const postTags = await postgres.postTag.findMany({
+      select: { postId: true },
+      where: { tag: { name: { equals: tag } } },
+    });
+    const postIds = postTags.map((postTag) => postTag.postId);
+    return fetchFeed({
+      where: { id: { in: postIds } },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      skip: page * 5,
+      include: {
+        author: {
+          include: {
+            Followers: true,
+            Followings: true,
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 5,
-        skip: page * 5,
-        include: {
-          author: {
-            include: {
-              Followers: true,
-              Followings: true,
-            },
-          },
-          _count: {
-            select: {
-              likes: true,
-              savedUsers: true,
-            },
-          },
-          tags: {
-            take: 1,
-            include: {
-              tag: true,
-            },
+        _count: {
+          select: {
+            likes: true,
+            savedUsers: true,
           },
         },
-      });
-      await new Promise(resolve => setTimeout(resolve, 750))
-
-      return { feed: JSON.parse(JSON.stringify(feed)) };
-    } else {
-      const feed = await postgres.post.findMany({
-        where: {
-          authorId: {
-            in: (
-              await postgres.follow.findMany({
-                select: {
-                  followingId: true,
-                },
-                where: {
-                  followerId: id,
-                },
-              })
-            ).map((user) => user.followingId),
+        tags: {
+          take: 1,
+          include: {
+            tag: true,
           },
         },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 5,
-        skip: page * 5,
-        include: {
-          author: {
-            include: {
-              Followers: true,
-              Followings: true,
-            },
-          },
-          _count: {
-            select: {
-              likes: true,
-              savedUsers: true,
-            },
-          },
-          tags: {
-            take: 1,
-            include: {
-              tag: true,
-            },
+      },
+    });
+  } else {
+    const following = await postgres.follow.findMany({
+      select: { followingId: true },
+      where: { followerId: id },
+    });
+    const followingIds = following.map((user) => user.followingId);
+    return fetchFeed({
+      where: { authorId: { in: followingIds } },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      skip: page * 5,
+      include: {
+        author: {
+          include: {
+            Followers: true,
+            Followings: true,
           },
         },
-      });
-      await new Promise(resolve => setTimeout(resolve, 750))
-
-      return { feed: JSON.parse(JSON.stringify(feed)) };
-    }
-  } catch (error) {
-    return { error };
+        _count: {
+          select: {
+            likes: true,
+            savedUsers: true,
+          },
+        },
+        tags: {
+          take: 1,
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
   }
 };
