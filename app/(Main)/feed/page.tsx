@@ -20,14 +20,12 @@ export default async function Feed({
   const feed = await fetchFeed({ page: 0, tag });
   
   const topData = await fetchUsers()
-  const topUsers = topData?.topUsers;
+  //const topUsers = topData?.topUsers;
   const tagsData = await fetchTags();
-  const popularTags = tagsData?.tags;
+  //const popularTags = tagsData?.tags;
 
   const session = await getSessionUser();
-  console.log("Feed before revalidate", feed);
   tag ? revalidatePath('/feed?tag='+tag) : revalidatePath('/feed');
-  console.log("Feed after revalidate", feed);
   // if(!session) {
   //   return redirect('/')
   // }
@@ -54,7 +52,7 @@ export default async function Feed({
               )}
               </div>
             </div>
-          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 10rem)]" style={
+          {/* <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 10rem)]" style={
             {
               minHeight: "calc(100vh - 5rem)"
             }
@@ -77,7 +75,7 @@ export default async function Feed({
             )}
             </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
     </>
