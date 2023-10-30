@@ -3,13 +3,10 @@ import postgres from "@/lib/postgres";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
      try {
-          const session = await getServerSession(config)
-          if (!session) {
-               return NextResponse.json({ error: "Not authorized" }, { status: 401 })
-          }
-          const { user } = session
+          const { user } = await req.json();
+          
 
           const result = await postgres.user.findFirst({
                where: {
