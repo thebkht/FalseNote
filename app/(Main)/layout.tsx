@@ -1,6 +1,6 @@
 "use client"
 
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import LandingNavbar from '@/components/navbar/landing-navbar'
 import { useSession } from 'next-auth/react';
 import Navbar from '@/components/navbar/navbar';
@@ -16,11 +16,12 @@ export default function MainLayout({
       {
         status != 'authenticated' ? <LandingNavbar /> : <Navbar />
      }
-            <ScrollArea className='h-screen w-screen xl:px-36 2xl:px-64'>
-              <div className='py-24 px-4 lg:px-8 md:px-6 w-full'>
+            <div className='h-screen w-full xl:px-36 2xl:px-64 overflow-y-scroll'>
+              <div className='py-20 px-4 lg:px-8 md:px-6 w-full'>
                 {children}
+                <div className='flex touch-none select-none transition-colors h-full w-2.5 border-l border-l-transparent p-[1px]' />
               </div>
-            </ScrollArea>
+            </div>
      </>
   )
 }

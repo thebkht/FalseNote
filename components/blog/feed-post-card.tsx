@@ -103,144 +103,144 @@ export default function FeedPostCard(
 ) {
   return (
     <Card {...props} className="rounded-lg feedArticleCard bg-background hover:bg-card max-h-72">
-      <Link href={`/${props.post.author?.username}/${props.post.url}`}>
-        <CardContent className="px-4 md:px-6 py-0">
-          <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
-            <div className="flex items-center space-x-1">
-              <UserHoverCard user={props.post.author} className="mr-1 md:mr-1.5" >
-                <Link href={`/${props.post.author?.username}`} className="flex items-center">
-                  <Avatar className="h-6 w-6 mr-1 md:mr-1.5">
-                    <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
-                    <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  {
-                    props.post.author?.name === null ? (
-                      <div>
-                        <p className="text-sm font-normal leading-none">{props.post.author?.username} {props.post.author?.verified && (
-                          <Badge className="h-3 w-3 !px-0">
-                            <Check className="h-2 w-2 mx-auto" />
-                          </Badge>
-                        )}</p>
-                      </div>
-                    ) : (
-                      <div>
-                        <p className="text-sm font-normal leading-none">{props.post.author?.name} {props.post.author?.verified && (
-                          <Badge className="h-3 w-3 !px-0">
-                            <Check className="h-2 w-2 mx-auto" />
-                          </Badge>
-                        )}</p>
-                      </div>
-                    )
-                  }
-                </Link>
-              </UserHoverCard>
-
-              <span className="!text-muted-foreground text-sm">
-                · {dateFormat(props.post.createdAt)}
-              </span>
-            </div>
-          </CardHeader>
-          <div className="flex gap-8">
-            <div className="flex flex-1">
-              <div>
-                <div>
-                  <div className="pb-2">
-                    <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title">{props.post.title}</h2>
-                  </div>
-                  <div className="post-subtitle hidden md:block">
-                  <p className="text-ellipsis overflow-hidden post__subtitle">{props.post.subtitle}</p>
-                  </div>
-                </div>
-                <div className="hidden py-8 md:block">
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-1 items-center space-x-2.5">
-                      {
-                        props.post.tags.length > 0 && (
-                            <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
-                                <TagBadge variant={"secondary"} className="flex">
-                                  {
-                                    //replace - with space
-                                    props.post.tags[0].tag?.name.replace(/-/g, " ")
-                                  }
-                                </TagBadge>
-                              </Link>
-                        )
-                      }
-                      <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
+      <CardContent className="px-4 md:px-6 py-0">
+        <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
+          <div className="flex items-center space-x-1">
+            <UserHoverCard user={props.post.author} className="mr-1 md:mr-1.5" >
+              <Link href={`/${props.post.author?.username}`} className="flex items-center">
+                <Avatar className="h-6 w-6 mr-1 md:mr-1.5">
+                  <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
+                  <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
+                </Avatar>
+                {
+                  props.post.author?.name === null ? (
+                    <div>
+                      <p className="text-sm font-normal leading-none">{props.post.author?.username} {props.post.author?.verified && (
+                        <Badge className="h-3 w-3 !px-0">
+                          <Check className="h-2 w-2 mx-auto" />
+                        </Badge>
+                      )}</p>
                     </div>
-                    <div className="stats flex items-center justify-around gap-2">
-                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                  ) : (
+                    <div>
+                      <p className="text-sm font-normal leading-none">{props.post.author?.name} {props.post.author?.verified && (
+                        <Badge className="h-3 w-3 !px-0">
+                          <Check className="h-2 w-2 mx-auto" />
+                        </Badge>
+                      )}</p>
+                    </div>
+                  )
+                }
+              </Link>
+            </UserHoverCard>
+
+            <span className="!text-muted-foreground text-sm">
+              · {dateFormat(props.post.createdAt)}
+            </span>
+          </div>
+        </CardHeader>
+        <div className="flex">
+          <div className="flex-initial">
+            <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+              <div>
+                <div className="pb-2">
+                  <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title">{props.post.title}</h2>
+                </div>
+                <div className="post-subtitle hidden md:block">
+                  <p className="text-ellipsis overflow-hidden post__subtitle">{props.post.subtitle}</p>
+                </div>
+              </div>
+              <div className="hidden py-8 md:block">
+                <div className="flex justify-between items-center">
+                  <div className="flex flex-1 items-center space-x-2.5">
+                    {
+                      props.post.tags.length > 0 && (
+                        <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
+                          <TagBadge variant={"secondary"} className="flex">
+                            {
+                              //replace - with space
+                              props.post.tags[0].tag?.name.replace(/-/g, " ")
+                            }
+                          </TagBadge>
+                        </Link>
+                      )
+                    }
+                    <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
+                  </div>
+                  <div className="stats flex items-center justify-around gap-2">
+                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                       <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
-                      <Heart className="w-4 h-4" />
+                        <Heart className="w-4 h-4" />
                       </Button>
                       <span>{props.post._count.likes}</span>
-                      </div>
-                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                    </div>
+                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                       <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
-                      <Bookmark className="h-4 w-4" />
+                        <Bookmark className="h-4 w-4" />
                       </Button>
                       <span>{props.post._count.savedUsers}</span>
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
-              <div className="flex-none">
+            </Link>
+          </div>
 
-                <div className="h-14 md:h-28 !relative !pb-0 aspect-[4/3] md:aspect-square" >
-                  {props.post.cover ? (
+          <div className="flex-none ml-6 md:ml-8">
+            <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+              <div className="h-14 md:h-28 !relative !pb-0 aspect-[4/3] md:aspect-square" >
+                {props.post.cover ? (
                   <Image
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
                     className="rounded-md object-cover w-full"
                   />
-                  ) : (
-                    <Icons.noThumbnail className="w-full h-full rounded-md" />
-                  )}
-                </div>
-
+                ) : (
+                  <Icons.noThumbnail className="w-full h-full rounded-md" />
+                )}
               </div>
-              
-              
+            </Link>
+
+
           </div>
-          <div className="py-8 md:hidden">
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-1 items-center space-x-2.5">
+
+
+        </div>
+        <div className="py-4 md:hidden">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-1 items-center space-x-2.5">
+              {
+                props.post.tags.length > 0 && (
+                  <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
+                    <TagBadge variant={"secondary"} className="flex">
                       {
-                        props.post.tags.length > 0 && (
-                            <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
-                                <TagBadge variant={"secondary"} className="flex">
-                                  {
-                                    //replace - with space
-                                    props.post.tags[0].tag?.name.replace(/-/g, " ")
-                                  }
-                                </TagBadge>
-                              </Link>
-                        )
+                        //replace - with space
+                        props.post.tags[0].tag?.name.replace(/-/g, " ")
                       }
-                      <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
-                    </div>
-                    <div className="stats flex items-center justify-around gap-2">
-                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                      <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
-                      <Heart className="w-4 h-4" />
-                      </Button>
-                      <span>{props.post._count.likes}</span>
-                      </div>
-                      <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                      <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
-                      <Bookmark className="h-4 w-4" />
-                      </Button>
-                      <span>{props.post._count.savedUsers}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-        </CardContent>
-      </Link>
+                    </TagBadge>
+                  </Link>
+                )
+              }
+              <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
+            </div>
+            <div className="stats flex items-center justify-around gap-2">
+              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
+                  <Heart className="w-4 h-4" />
+                </Button>
+                <span>{props.post._count.likes}</span>
+              </div>
+              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                <Button variant="ghost" size={"icon"} className="h-7 w-7 text-muted-foreground">
+                  <Bookmark className="h-4 w-4" />
+                </Button>
+                <span>{props.post._count.savedUsers}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }

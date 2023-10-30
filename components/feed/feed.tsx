@@ -66,11 +66,11 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
           <div className="flex justify-between">
             <div className='w-full'>
               <div>
-                  <div className="pb-3">
-                    <Skeleton className='w-52 h-4' />
+                  <div className="pb-3 space-y-2">
+                    <Skeleton className='w-full h-4' />
+                    <Skeleton className='w-full h-4 md:hidden' />
                   </div>
-                  <div className="space-y-2">
-                  <Skeleton className='w-full h-4' />
+                  <div className="space-y-2 hidden md:block">
                   <Skeleton className='w-full h-4' />
                   <Skeleton className='w-full h-4' />
                   </div>
@@ -81,7 +81,7 @@ export default function InfinitiveScrollFeed({ initialFeed }: { initialFeed: any
                   </div>
                 </div>
               </div>
-              <Skeleton className="h-28 !relative !pb-0 md:aspect-[4/3] aspect-square ml-10" />
+              <Skeleton className="h-14 md:h-28 aspect-[4/3] md:aspect-square ml-6 md:ml-8" />
             </div>
               
         </CardContent>
