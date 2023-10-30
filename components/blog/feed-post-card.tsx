@@ -102,7 +102,7 @@ export default function FeedPostCard(
   }
 ) {
   return (
-    <Card {...props} className="rounded-lg feedArticleCard bg-background hover:bg-card max-h-72">
+    <Card {...props} className="rounded-lg feedArticleCard bg-background hover:bg-card max-h-72 w-full">
       <CardContent className="px-4 md:px-6 py-0">
         <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
           <div className="flex items-center space-x-1">
@@ -155,7 +155,7 @@ export default function FeedPostCard(
                 <div className="flex justify-between items-center">
                   <div className="flex flex-1 items-center space-x-2.5">
                     {
-                      props.post.tags.length > 0 && (
+                      props.post.tags?.length > 0 && (
                         <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
                           <TagBadge variant={"secondary"} className="flex">
                             {

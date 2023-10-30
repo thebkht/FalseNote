@@ -21,7 +21,7 @@ export default function ExploreTabs() {
      }
      console.log(pathname);
      return (
-          <div className="w-full bg-background/70 backdrop-blur-md absolute top-[64px] p-1.5 flex justify-center z-[10]">
+          <div className="w-full bg-background/70 backdrop-blur-md absolute top-[60px] p-1.5 flex justify-center z-[10]">
                <Tabs defaultValue={pathname} className="">
                     <TabsList className="bg-transparent gap-2">
                          {items.map((item: any) => (

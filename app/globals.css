@@ -525,6 +525,10 @@
   -webkit-line-clamp: 3;
 }
 
+.post__title.custom {
+  -webkit-line-clamp: 2;
+}
+
 @media (max-width: 544px) {
   .post__title {
     -webkit-line-clamp: 2;

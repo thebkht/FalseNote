@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 
-export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post: any, tagFollowers: any }) {
+export default function TagDetails({ tag, tagFollowers }: { tag: any, tagFollowers: any }) {
      const session = async () => {
           return await getSessionUser();
      };
@@ -71,7 +71,7 @@ export default function TagDetails({ tag, post, tagFollowers }: { tag: any, post
                <div className="space-y-0.5 px-6 pb-14 w-full">
                     <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name}</h2>
                     <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
-                         Tag<div className="mx-2">·</div>{formatNumberWithSuffix(post.length)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tagFollowers.length)} Followers
+                         Tag<div className="mx-2">·</div>{formatNumberWithSuffix(tag._count.posts)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tagFollowers.length)} Followers
                     </div>
                     <div className="w-full flex justify-center">
                          {

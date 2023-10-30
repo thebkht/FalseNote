@@ -7,11 +7,6 @@ type Item = {
 
 export const items = [
   {
-    label: "Feed",
-    icon: GalleryVerticalEnd,
-    path: "/feed",
-  },
-  {
     label: "Explore",
     icon: Compass,
     path: "/explore",
