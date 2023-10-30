@@ -25,11 +25,13 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
                                    </TabsTrigger>
                               </Link>
                          {tabs?.map((item: any) => (
-                              <Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}>
-                                   <TabsTrigger value={item.tag.name} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
+                              
+                                   <TabsTrigger value={item.tag.name}  className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize" key={item.tag.id}>
+                                        <Link href={`/feed?tag=${item.tag.name}`}>
                                         {item.tag.name.replace(/-/g, " ")}
+                                        </Link>
                                    </TabsTrigger>
-                              </Link>
+                              
                          ))}
                     </TabsList>
                     <ScrollBar orientation="horizontal" />

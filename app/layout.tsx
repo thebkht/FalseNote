@@ -61,7 +61,7 @@ export default async function Rootayout({
           {children}
           <Toaster />
           <TailwindIndicator />
-          <Analytics />
+          {/* <Analytics /> */}
           </AuthProvider>
         </ThemeProvider>
       </body>

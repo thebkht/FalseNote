@@ -1,4 +1,3 @@
-'use se'
 import PopularPosts from '@/components/feed/popular-posts';
 import FeaturedDev from '@/components/feed/featured/featured-dev';
 import { fetchFeed } from '@/components/feed/get-feed';
@@ -7,7 +6,6 @@ import { fetchUsers } from '@/components/feed/fetch-user';
 import Link from 'next/link';
 import TagBadge from '@/components/tags/tag';
 import { fetchTags } from '@/components/feed/get-tags';
-import { redirect } from 'next/navigation';
 import { getSessionUser } from '@/components/get-session-user';
 import FeedTabs from '@/components/feed/navbar/navbar';
 import { revalidatePath, revalidateTag } from 'next/cache';
@@ -19,21 +17,17 @@ export default async function Feed({
 }) {
 
   const tag = typeof searchParams.tag === 'string' ? searchParams.tag : undefined
-
   const feed = await fetchFeed({ page: 0, tag });
-  if (tag) {
-    revalidateTag(`/feed?tag=${tag}`)
-  } else {
-    revalidateTag(`/feed`)
-  }
+  
   const topData = await fetchUsers()
   const topUsers = topData?.topUsers;
   const tagsData = await fetchTags();
   const popularTags = tagsData?.tags;
 
   const session = await getSessionUser();
-
-
+  console.log("Feed before revalidate", feed);
+  tag ? revalidatePath('/feed?tag='+tag) : revalidatePath('/feed');
+  console.log("Feed after revalidate", feed);
   // if(!session) {
   //   return redirect('/')
   // }
@@ -58,7 +52,7 @@ export default async function Feed({
                 <InfinitiveScrollFeed initialFeed={feed} tag={tag} />
               )}
             </div>
-          {/* <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 5rem)]" style={
+          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-[calc(100vh - 5rem)]" style={
             {
               minHeight: "calc(100vh - 5rem)"
             }
@@ -81,7 +75,7 @@ export default async function Feed({
             )}
             </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </main>
     </>

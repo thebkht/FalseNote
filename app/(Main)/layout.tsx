@@ -1,6 +1,5 @@
 "use client"
 
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import LandingNavbar from '@/components/navbar/landing-navbar'
 import { useSession } from 'next-auth/react';
 import Navbar from '@/components/navbar/navbar';

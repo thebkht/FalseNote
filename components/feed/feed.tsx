@@ -4,23 +4,16 @@ import { useInView } from 'react-intersection-observer'
 import { Skeleton } from "../ui/skeleton";
 import FeedPostCard from "../blog/feed-post-card";
 import { fetchFeed } from './get-feed';
-import { Icons } from '../icon';
-import { getSessionUser } from '../get-session-user';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
 
 export default function InfinitiveScrollFeed({ initialFeed, tag }: { initialFeed: any, tag: string | undefined }) {
   const [feed, setFeed] = useState<Array<any>>(initialFeed)
   const [page, setPage] = useState<number>(0)
   const [ref, inView] = useInView()
 
-  console.log("Feed", feed)
-
   async function loadMoreFeed() {
-    console.log("Loading more feed")
     const next = page + 1
-    console.log("Next page", next)
     const fetchedFeed = await fetchFeed({ page: next, tag })
     if (fetchedFeed?.length) {
       setPage(next)
@@ -33,9 +26,6 @@ export default function InfinitiveScrollFeed({ initialFeed, tag }: { initialFeed
       loadMoreFeed()
     }
   }, [inView])
-
-  const pathname = usePathname()
-  fetch('/api/revalidate?path=' + pathname, )
 
   return (
     <div className="feed__list">
