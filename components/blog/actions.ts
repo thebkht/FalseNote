@@ -1,14 +1,22 @@
 import postgres from "@/lib/postgres";
 
 // actions.ts
-export async function incrementPostViews({ post, author} : { post: any, author: any }) {
-     const cookieName = `post_views_${author?.username}_${post?.url}`;
+export async function incrementPostViews({ post, author} : { post: string, author: string }) {
+     const cookieName = `post_views_${author}_${post}`;
 
+     const authorId = await postgres.user.findUnique({
+          where: {
+            username: author,
+          },
+          select: {
+            id: true,
+          },
+        });
      // Make an API request to increment the view count
      await postgres.post.update({
           where: {
-            url: post?.url,
-            authorId: author?.id,
+            url: post,
+            authorId: authorId?.id,
           },
           data: {
             views: {
@@ -22,7 +30,7 @@ export async function incrementPostViews({ post, author} : { post: any, author: 
      return {
           name: cookieName,
           value: "true",
-          path: `/${author?.username}/${post?.url}`,
+          path: `/${author}/${post}`,
           expires: expirationDate,
           secure: true,
      };

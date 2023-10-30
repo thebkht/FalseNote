@@ -85,9 +85,8 @@ export default async function PostView({ params }: { params: { username: string,
 
      
 
-     await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/`, {
+     await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/?url=${post.url}`, {
           method: "POST",
-          body: JSON.stringify({ post: post, author: author }),
      });
 
      return (

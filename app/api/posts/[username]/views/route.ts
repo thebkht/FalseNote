@@ -1,15 +1,33 @@
-// pages/api/some-route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { incrementPostViews } from '@/components/blog/actions';
+import { incrementPostViews } from "@/components/blog/actions";
+import postgres from "@/lib/postgres";
+import { NextRequest, NextResponse } from "next/server";
 
-export default async function POST(req: NextRequest, res: NextResponse) {
-  const { post } = await req.json();
-  const { author } = await req.json();
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { username: string } }
+) {
+  try {
+    // Get the 'slug' route parameter from the request object
+    const username = params.username;
+    const postUrl = req.nextUrl.searchParams.get("url");
 
-  const cookie = await incrementPostViews({ post, author });
+    if (username === undefined || username === null) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+    if (postUrl === undefined || postUrl === null) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
 
-  // Set the cookie
-  res.cookies.set(cookie)
+    const cookie = await incrementPostViews({ author: username, post: postUrl });
 
-  return NextResponse.json({ message: 'Post view incremented' }, { status: 200 });
+    req.cookies.set(cookie)
+    
+    return NextResponse.json({ message: "View added" }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
 }
