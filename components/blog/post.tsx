@@ -55,11 +55,6 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
           }
      }
 
-     useEffect(() => {
-          if(post){
-               incrementPostViews();
-          }
-     }, [post]);
 
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
@@ -85,12 +80,12 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
      }
      return (
           <>
-               <div className="article max-w-[100ch] mx-auto">
+               <div className="article max-w-[680px] mx-auto">
                     <div className="article__container">
                          <div className="article__header lg:text-xl">
                          {
                                    post?.cover && (
-                                        <Image src={post?.cover} alt={post?.title} fill className="rounded-lg !relative h-auto" />
+                                        <Image src={post?.cover} alt={post?.title} fill className="rounded-lg !relative w-full" />
                                    )
                               }
                               <h1 className="article__title">{post?.title}</h1>

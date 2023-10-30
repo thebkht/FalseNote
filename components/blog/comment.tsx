@@ -57,7 +57,7 @@ export default function PostComment({ comments, post, postAuthor }: { comments: 
      }, [submitted])
 
      return (
-          <>                     <div className="article__comments my-8 max-w-[80ch] lg:text-xl mx-auto">
+          <>                     <div className="article__comments my-8 max-w-[680px] lg:text-xl mx-auto">
                                <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
                                {/* commentform prop that inticades comment posted or not */}
                                <CommentForm session={sessionUser} post={post?.postid}  submitted={submitted} />

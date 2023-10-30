@@ -8,7 +8,7 @@ function TopLoader() {
       color="#1e9cf1"
       initialPosition={0.1}
       crawlSpeed={200}
-      height={8}
+      height={3}
       crawl={true}
       showSpinner={false}
       easing="ease"

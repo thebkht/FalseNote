@@ -6,6 +6,8 @@ import Link from "next/link";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { get } from "http";
+import FeedPostCard from "../blog/feed-post-card";
 
 export default function UserPosts({ posts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
      const [deleted, setDeleted] = useState<boolean>(false);
@@ -16,8 +18,8 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
      setDeleted(true);
    }
 
-     const { data: session, status } = useSession();
-     if (status !== "authenticated" || !session) return null;
+     const { status } = useSession();
+     if (status !== "authenticated") return null;
      return (
           <div className={className}>
                <div className="user-articles py-4 md:px-8 space-y-6 w-full">
@@ -29,30 +31,16 @@ export default function UserPosts({ posts, className, user, sessionUser }: { pos
                     <div className="space-y-3 md:space-y-6">
                     <ContextMenuTrigger className="">
                       
-                    <PostCard
-                title={article.title}
-                thumbnail={article.cover}
-                content={article.subtitle}
-                author={user?.username || user?.name}
-                date={article.createdAt}
-                views={formatNumberWithSuffix(article.views)}
-                comments={formatNumberWithSuffix(article.comments || 0)}
-                id={article.id}
-                authorid={user?.id}
-                session={sessionUser}
-                likes={formatNumberWithSuffix(article.likes || 0)}
-                url={`/${user?.username}/${article.url}`}
-                posturl={article.url}
-                className="mt-4" />
+                      <FeedPostCard post={article} />
                       </ContextMenuTrigger>
                     <ContextMenuContent className="w-full">
-                      {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
+                      {sessionUser?.id === user?.id ? (
                         <ContextMenuItem>
                         <Link href={`/editor/${article.url}`}>
                           Edit
                         </Link>
                         </ContextMenuItem>) : (  null )}
-                      {session?.user?.name === user?.name || session?.user?.name === user?.username ? (
+                      {sessionUser?.id === user?.id ? (
                         <ContextMenuItem onClick={() => handleDelete(article.postid)}>
                           Delete
                         </ContextMenuItem>) : (  null )}

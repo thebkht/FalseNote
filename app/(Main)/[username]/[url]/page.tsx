@@ -1,11 +1,12 @@
-
-import React, { use, useEffect, useState } from "react"
+'use server'
 import { getSessionUser } from "@/components/get-session-user"
 import { redirect, useRouter } from "next/navigation"
 import postgres from "@/lib/postgres"
 import Post from "@/components/blog/post"
 import PostComment from "@/components/blog/comment"
 import MoreFromAuthor from "@/components/blog/more-from-author"
+import { cookies } from 'next/headers'
+import { incrementPostViews } from "@/components/blog/actions"
 
 
 export default async function PostView({ params }: { params: { username: string, url: string } }) {
@@ -22,8 +23,18 @@ export default async function PostView({ params }: { params: { username: string,
                          }
                     },
                     include: {
-                         _count: { select: { comments: true } }
-                    }
+                         _count: { select: { comments: true, savedUsers: true, likes: true } },
+                         author: {
+                              include: {
+                                   Followers: true,
+                                   Followings: true
+                              }
+                         },
+                    },
+                    orderBy: {
+                         createdAt: "desc"
+                    },
+                    take: 4
                },
                _count: { select: { posts: true, Followers: true, Followings: true } },
                Followers: true,
@@ -54,7 +65,13 @@ export default async function PostView({ params }: { params: { username: string,
                          tag: true
                     }
                },
-               _count: { select: { savedUsers: true, likes: true } }
+               author: {
+                    include: {
+                         Followers: true,
+                         Followings: true
+                    }
+               },
+               _count: { select: { savedUsers: true, likes: true, comments: true } }
           }
      });
      if (!post) redirect("/404");
@@ -66,34 +83,12 @@ export default async function PostView({ params }: { params: { username: string,
           if (post?.visibility !== "public") redirect("/404");
      }
 
-     // async function handleFollow(followeeId: string) {
-     //      if (status === "authenticated") {
-     //           setIsFollowingLoading(true);
-     //           try {
-     //                const followerId = (await getSessionUser()).userid;
-     //                await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-     //                     method: "GET",
-     //                });
-     //           } catch (error) {
-     //                console.error(error);
-     //           }
-     //      } else {
-     //           return null;
-     //      }
+     
 
-     // }
-
-     // if (!isLoaded || !post) {
-     //      return (
-     //           <div className="w-full max-h-screen flex justify-center items-center bg-background" style={
-     //                {
-     //                  minHeight: "calc(100vh - 192px)"
-     //                }
-     //              }>
-     //                 <Icons.spinner className="h-10 animate-spin" />
-     //               </div>
-     //      )
-     // }
+     await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/`, {
+          method: "POST",
+          body: JSON.stringify({ post: post, author: author }),
+     });
 
      return (
           <>

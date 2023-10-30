@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import LoginDialog from "../login-dialog";
 import { useState } from "react";
 import { getSessionUser } from "../get-session-user";
+import TagPostCard from "../tags/post-card";
 
 export default function MoreFromAuthor({ author, post, sessionUser }: { author: any, post: any, sessionUser: any }) {
      const { status } = useSession();
@@ -47,7 +48,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                     post.length !== 0 && (
                          <>
                               <Separator className="my-8" />
-                              <div className="max-w-[65ch] lg:text-xl mx-auto">
+                              <div className="max-w-[680px] lg:text-xl mx-auto">
                                    <div className="author__details flex flex-col gap-y-4">
                                         <Avatar className="h-20 w-20">
                                              <AvatarImage src={author?.image} alt={author?.username} />
@@ -75,21 +76,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                         <div className="grid md:grid-cols-2 gap-4">
                                              {
                                                   post?.map((p: any) => (
-                                                       <PostCard
-                                                            key={p.id}
-                                                            title={p.title}
-                                                            thumbnail={p.cover}
-                                                            content={p.subtitle}
-                                                            author={author?.username || author?.name}
-                                                            date={p.createdAt}
-                                                            views={formatNumberWithSuffix(p.views)}
-                                                            comments={formatNumberWithSuffix(p.comments || 0)}
-                                                            id={p.id}
-                                                            authorid={author?.userid}
-                                                            session={sessionUser}
-                                                            likes={formatNumberWithSuffix(p.likes || 0)}
-                                                            url={`/${author?.username}/${p.url}`}
-                                                            posturl={p.url} className="bg-transparent !border-none hover:bg-transparent" />
+                                                       <TagPostCard key={p.id} post={p} />
                                                   ))
                                              }
                                         </div>

@@ -9,6 +9,7 @@ import { fetchTags } from '@/components/feed/get-tags';
 import { getSessionUser } from '@/components/get-session-user';
 import FeedTabs from '@/components/feed/navbar/navbar';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export default async function Feed({
   searchParams
@@ -28,9 +29,9 @@ export default async function Feed({
   console.log("Feed before revalidate", feed);
   tag ? revalidatePath('/feed?tag='+tag) : revalidatePath('/feed');
   console.log("Feed after revalidate", feed);
-  // if(!session) {
-  //   return redirect('/')
-  // }
+  if(!session) {
+    return redirect('/')
+  }
 
   const userFollowings = session?.tagfollower;
 

@@ -4,13 +4,13 @@ import { redirect } from 'next/navigation';
 import dynamic from 'next/dynamic'
 
 export default function Home() {
-  const { status, update } = useSession();
+  const { status } = useSession();
 
   const LoadedLanding = dynamic(() => import('@/components/landing/landing'), {
     ssr: false,
   });
 
-  if (status === 'authenticated') {
+  if (status !== 'unauthenticated') {
     redirect('/feed');
   }
   return <LoadedLanding />;

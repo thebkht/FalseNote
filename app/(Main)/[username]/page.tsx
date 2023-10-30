@@ -20,6 +20,20 @@ export default async function Page({ params }: {
         orderBy: {
           createdAt: "desc"
         },
+        include: {
+          _count: {
+            select: {
+              likes: true,
+              savedUsers: true,
+            },
+          },
+          tags: {
+            take: 1,
+            include: {
+              tag: true,
+            },
+          },
+        },
       },
       Followers: {
         include: {
@@ -43,28 +57,15 @@ export default async function Page({ params }: {
   if (!user) redirect("/404");
   
   const posts = user.posts;
-  const postComments = await postgres.comment.findMany({
-    where: {
-      postId: {
-        in: posts.map((post: any) => post.id)
-      }
-    }
-  });
 
   posts?.forEach((post: any) => {
-      postComments?.forEach((comment: any) => {
-        if (comment.postid === post.postid) {
-          post.comments = post.comments + 1;
-        }
-      }
-      )
-    }
-    )
+      post.author = user;
+  })
+
   const followers = user.Followers;
   const following = user.Followings;
 
-  const sessionUserName = await getSession();
-  console.log(sessionUserName);
+  const sessionUserName = await getSessionUser();
   
   return (
     <div className="Layout Layout--flowRow-until-md gap-2 lg:gap-6" >
