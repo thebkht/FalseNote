@@ -6,7 +6,8 @@ import Post from "@/components/blog/post"
 import PostComment from "@/components/blog/comment"
 import MoreFromAuthor from "@/components/blog/more-from-author"
 import { cookies } from 'next/headers'
-import { incrementPostViews } from "@/components/blog/actions"
+import { Separator } from "@/components/ui/separator"
+import RelatedPosts from "@/components/blog/related-posts"
 
 
 export default async function PostView({ params }: { params: { username: string, url: string } }) {
@@ -17,7 +18,6 @@ export default async function PostView({ params }: { params: { username: string,
           include: {
                posts: {
                     where: {
-                         visibility: 'public',
                          url: {
                               not: params.url
                          }
@@ -85,8 +85,45 @@ export default async function PostView({ params }: { params: { username: string,
 
      
 
-     await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/?url=${post.url}`, {
+     const cookkies = cookies()
+     const hasViewed = cookkies.has(`post_views_${author?.username}_${post.url}`)
+
+     if (!hasViewed) {
+          await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/?url=${post.url}`, {
           method: "POST",
+     });
+     }
+
+     //fetch related posts according to tags and dont include the current post
+     //fetch the first 4 posts
+     const relatedPosts = await postgres.post.findMany({
+          where: {
+               tags: {
+                    some: {
+                         tag: {
+                              name: {
+                                   in: post.tags.map((tag: any) => tag.tag.name)
+                              }
+                         }
+                    }
+               },
+               url: {
+                    not: post.url
+               }
+          },
+          include: {
+               _count: { select: { comments: true, savedUsers: true, likes: true } },
+               author: {
+                    include: {
+                         Followers: true,
+                         Followings: true
+                    }
+               },
+          },
+          orderBy: {
+               createdAt: "desc"
+          },
+          take: 4
      });
 
      return (
@@ -94,6 +131,8 @@ export default async function PostView({ params }: { params: { username: string,
                <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
                <PostComment comments={post.comments} post={post} postAuthor={author} />
                <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
+               <Separator className="my-24" />
+               <RelatedPosts posts={relatedPosts} post={post} />
           </>
      )
 }

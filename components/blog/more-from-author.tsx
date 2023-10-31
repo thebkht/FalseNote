@@ -9,6 +9,9 @@ import LoginDialog from "../login-dialog";
 import { useState } from "react";
 import { getSessionUser } from "../get-session-user";
 import TagPostCard from "../tags/post-card";
+import Link from "next/link";
+import { Badge } from "../ui/badge";
+import { Check } from "lucide-react";
 
 export default function MoreFromAuthor({ author, post, sessionUser }: { author: any, post: any, sessionUser: any }) {
      const { status } = useSession();
@@ -48,31 +51,44 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                     post.length !== 0 && (
                          <>
                               <Separator className="my-8" />
-                              <div className="max-w-[680px] lg:text-xl mx-auto">
+                              <div className="max-w-[680px] lg:text-xl mx-auto pt-10">
                                    <div className="author__details flex flex-col gap-y-4">
-                                        <Avatar className="h-20 w-20">
-                                             <AvatarImage src={author?.image} alt={author?.username} />
-                                             <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex">
-                                             <div className="flex flex-col gap-y-2">
-                                                  <span className="text-2xl font-medium">Written by {author?.name || author?.username}</span>
-                                                  <span className="text-sm font-normal">{formatNumberWithSuffix(author?.followers || 0)} Followers</span>
-                                             </div>
-                                             <div className="ml-auto">
-                                                  {
-                                                       status === "authenticated" && sessionUser?.id !== author?.id ? (
-                                                            <Button className="ml-auto" variant={"secondary"} size={"lg"} onClick={() => handleFollow(author.userid)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
-                                                       ) : (
-                                                            <LoginDialog>
-                                                                 <Button className="ml-auto" variant={"secondary"} size={"lg"}>Follow</Button>
-                                                            </LoginDialog>
-                                                       )
-                                                  }
+                                        <div className="mx-6">
+                                             <Avatar className="h-20 w-20 mb-4">
+                                                  <AvatarImage src={author?.image} alt={author?.username} />
+                                                  <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
+                                             </Avatar>
+                                             <div className="flex justify-between">
+                                                  <div className="gap-y-2">
+                                                       <div className="flex">
+                                                            <Link href={`/${author?.username}`}>
+                                                                 <h2 className="text-2xl font-medium">
+                                                                      Written by {author?.name || author?.username}
+                                                                 </h2>
+                                                            </Link>
+                                                            {author?.verified &&
+                                                                 (
+                                                                      <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
+                                                                 )}
+                                                       </div>
+                                                       <span className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?.Followers.length || 0)} Followers</span>
+                                                       {author?.bio && (<span className="text-sm font-normal mt-4">{author?.bio}</span>)}
+                                                  </div>
+                                                  <div>
+                                                       {sessionUser?.id !== author?.id && (
+                                                            status === "authenticated" ? (
+                                                                 <Button variant={"secondary"} onClick={() => handleFollow(author.userid)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
+                                                            ) : (
+                                                                 <LoginDialog>
+                                                                      <Button variant={"secondary"} >Follow</Button>
+                                                                 </LoginDialog>
+                                                            ))
+                                                       }
+                                                  </div>
                                              </div>
                                         </div>
-                                        {author?.bio && (<span className="text-sm font-normal">{author?.bio}</span>)}
-                                        <div className="text-base font-medium mb-4">More From {author?.username}</div>
+                                        <Separator className="my-10" />
+                                        <div className="text-base font-medium mb-8 mx-6">More From {author?.username}</div>
                                         <div className="grid md:grid-cols-2 gap-4">
                                              {
                                                   post?.map((p: any) => (
@@ -80,7 +96,14 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                                   ))
                                              }
                                         </div>
+                                        <Separator className="mb-6" />
+                                        <Button variant={"outline"} className="w-max" size={"lg"} asChild>
+                                                  <Link href={`/${author?.username}`}>
+                                                       See all from {author?.name || author?.username}
+                                                  </Link>
+                                             </Button>
                                    </div>
+                                   
                               </div>
                          </>
                     )
