@@ -8,7 +8,6 @@ import TagBadge from '@/components/tags/tag';
 import { fetchTags } from '@/components/feed/get-tags';
 import { getServerSideProps, getSessionUser } from '@/components/get-session-user';
 import FeedTabs from '@/components/feed/navbar/navbar';
-import { revalidatePath, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { fetchFollowingTags } from '@/components/get-following-tags';
 
@@ -27,10 +26,9 @@ export default async function Feed({
   const tagsData = await fetchTags();
   const popularTags = tagsData?.tags;
 
-  tag ? revalidatePath('/feed?tag='+tag) : revalidatePath('/feed');
-  /* if(session === null ) {
+  if(!session) {
     return redirect('/')
-  } */
+  }
 
   const userFollowings = await fetchFollowingTags({id: session?.id})
   console.log(await getServerSideProps())
@@ -40,7 +38,7 @@ export default async function Feed({
       <main className="flex flex-col items-center justify-between feed xl:px-8">
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
           <div className="md:my-4 w-full lg:w-2/3">
-            <FeedTabs tabs={userFollowings} activeTab={tag} />
+            {userFollowings && <FeedTabs tabs={userFollowings} activeTab={tag} />}
               <div className="pt-10">
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">

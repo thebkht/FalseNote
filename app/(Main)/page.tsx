@@ -10,7 +10,7 @@ export default function Home() {
     ssr: false,
   });
 
-  if (status !== 'unauthenticated') {
+  if (status == 'authenticated') {
     redirect('/feed');
   }
   return <LoadedLanding />;
