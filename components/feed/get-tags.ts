@@ -16,12 +16,11 @@ export const fetchTags = async (query?: string) => {
           await new Promise(resolve => setTimeout(resolve, 750))
           return { tags: JSON.parse(JSON.stringify(tags)) }
      } else {
-     const { userId } = user.id
      const tags = await postgres.tag.findMany({
           where: {
                followingtag: {
                     none: {
-                         followerId: userId
+                         followerId: user.id
                     }
                }
           },
