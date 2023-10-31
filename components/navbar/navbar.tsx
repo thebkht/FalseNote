@@ -21,9 +21,6 @@ import { useRouter } from "next/navigation";
 function Navbar() {
   const { data: session, status } = useSession();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [notifications, setNotifications] = useState<any>([]);
-  const user = session?.user;
-  const router = useRouter();
   useEffect(() => {
     if (status !== "loading") {
       setIsLoaded(true);

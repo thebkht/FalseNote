@@ -16,6 +16,28 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     return null;
   }
   const { id } = user;
+
+  const baseQuery = {
+    orderBy: { createdAt: "desc" },
+    take: 5,
+    skip: page * 5,
+    include: {
+      author: true,
+      _count: {
+        select: {
+          likes: true,
+          savedUsers: true,
+        },
+      },
+      tags: {
+        take: 1,
+        include: {
+          tag: true,
+        },
+      },
+    },
+  };
+
   if (tag) {
     const postTags = await postgres.postTag.findMany({
       select: { postId: true },
@@ -23,25 +45,8 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     });
     const postIds = postTags.map((postTag) => postTag.postId);
     return fetchFeed({
+      ...baseQuery,
       where: { id: { in: postIds } },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      skip: page * 5,
-      include: {
-        author: true,
-        _count: {
-          select: {
-            likes: true,
-            savedUsers: true,
-          },
-        },
-        tags: {
-          take: 1,
-          include: {
-            tag: true,
-          },
-        },
-      },
     });
   } else {
     const following = await postgres.follow.findMany({
@@ -50,27 +55,14 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     });
     const followingIds = following.map((user) => user.followingId);
     return fetchFeed({
+      ...baseQuery,
       where: { authorId: { in: followingIds } },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      skip: page * 5,
       include: {
+        ...baseQuery.include,
         author: {
           include: {
             Followers: true,
             Followings: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            savedUsers: true,
-          },
-        },
-        tags: {
-          take: 1,
-          include: {
-            tag: true,
           },
         },
       },

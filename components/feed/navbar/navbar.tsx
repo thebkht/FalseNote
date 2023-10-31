@@ -1,9 +1,6 @@
 'use client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { items } from "./items"
 import Link from "next/link";
-import { use } from "react";
-import { usePathname } from "next/navigation";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
 
@@ -41,17 +38,17 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
                               </Link>
                          {tabs?.map((item: any, index: number) => (
                               index === tabs.length - 1 ?
-                                   <TabsTrigger value={item.tag.name} ref={lastTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize" key={item.tag.id}>
-                                        <Link href={`/feed?tag=${item.tag.name}`}>
+                                   <Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}><TabsTrigger value={item.tag.name} ref={lastTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
+                                        
                                         {item.tag.name.replace(/-/g, " ")}
-                                        </Link>
-                                   </TabsTrigger>
-                                   :
-                                   <TabsTrigger value={item.tag.name} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize" key={item.tag.id}>
-                                        <Link href={`/feed?tag=${item.tag.name}`}>
+                                        
+                                   </TabsTrigger></Link>
+                                   :<Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}>
+                                   <TabsTrigger value={item.tag.name} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
+                                        
                                         {item.tag.name.replace(/-/g, " ")}
-                                        </Link>
-                                   </TabsTrigger>
+                                        
+                                   </TabsTrigger></Link>
                               
                          ))}
                     </TabsList>

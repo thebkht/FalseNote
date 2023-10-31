@@ -1,7 +1,7 @@
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
 
-export const getFollowingTags = async ({ id }: { id: number }) => {
+export const getFollowingTags = async ({ id }: { id: number | undefined }) => {
   const followingTags = await postgres.user.findFirst({
     where: { id },
     select: {
@@ -20,7 +20,7 @@ export const getFollowingTags = async ({ id }: { id: number }) => {
   };
 };
 
-export const getFollowings = async ({ id }: { id: number }) => {
+export const getFollowings = async ({ id }: { id: number | undefined }) => {
   const followings = await postgres.user.findFirst({
     where: { id },
     select: {

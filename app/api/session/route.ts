@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
           if (!sessionUser) {
                return NextResponse.json({ error: "No session" }, { status: 401 })
           }
-          console.log(sessionUser)
           
           const { user } = sessionUser
           const result = await postgres.user.findFirst({
@@ -25,7 +24,7 @@ export async function GET(req: NextRequest) {
                }
                })
 
-               return NextResponse.json({ user: JSON.parse(JSON.stringify(result)) }, { status: 200 })
+               return NextResponse.json({ user: result }, { status: 200 })
      } catch (error) {
           console.error(error)
           return NextResponse.json({ error: "Something went wrong" }, { status: 500 })

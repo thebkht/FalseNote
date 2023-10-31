@@ -2,7 +2,7 @@ import postgres from "@/lib/postgres";
 import { getSessionUser } from "../get-session-user";
 import { getFollowings } from "@/lib/prisma/session";
 
-export const fetchUsers = async ({id} : {id: number}) => {
+export const fetchUsers = async ({id} : {id: number | undefined}) => {
   const userFollowings = await getFollowings({ id });
 
   const topUsers = await postgres.user.findMany({
