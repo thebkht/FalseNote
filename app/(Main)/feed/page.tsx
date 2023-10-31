@@ -10,6 +10,7 @@ import { getSessionUser } from '@/components/get-session-user';
 import FeedTabs from '@/components/feed/navbar/navbar';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { fetchFollowingTags } from '@/components/get-following-tags';
 
 export default async function Feed({
   searchParams
@@ -19,20 +20,20 @@ export default async function Feed({
 
   const tag = typeof searchParams.tag === 'string' ? searchParams.tag : undefined
   const feed = await fetchFeed({ page: 0, tag });
+  const session = await getSessionUser();
   
-  const topData = await fetchUsers()
+  const topData = await fetchUsers({id: session?.id})
   const topUsers = topData?.topUsers;
   const tagsData = await fetchTags();
   const popularTags = tagsData?.tags;
 
-  const session = await getSessionUser();
   tag ? revalidatePath('/feed?tag='+tag) : revalidatePath('/feed');
-  if(!session) {
+  /* if(session === null ) {
     return redirect('/')
-  }
+  } */
 
-  const userFollowings = session?.tagfollower;
-
+  const userFollowings = await fetchFollowingTags({id: session?.id})
+  console.log(userFollowings)
 
   return (
     <>

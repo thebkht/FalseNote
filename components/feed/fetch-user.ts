@@ -1,21 +1,9 @@
 import postgres from "@/lib/postgres";
 import { getSessionUser } from "../get-session-user";
+import { getFollowings } from "@/lib/prisma/session";
 
-export const fetchUsers = async () => {
-  const user = await getSessionUser();
-  if (!user) {
-    return null;
-  }
-  const { id } = user;
-
-  const userFollowings = await postgres.follow.findMany({
-    select: {
-      followingId: true,
-    },
-    where: {
-      followerId: id,
-    },
-  });
+export const fetchUsers = async ({id} : {id: number}) => {
+  const userFollowings = await getFollowings({ id });
 
   const topUsers = await postgres.user.findMany({
     include: {

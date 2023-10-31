@@ -10,35 +10,7 @@ export async function POST(req: NextRequest) {
           const result = await postgres.user.findFirst({
                where: {
                     image: user?.image,
-               },
-               include: {
-                    Followers: {
-                         include: {
-                              follower: true,
-                              },
-                         },
-                    Followings: {
-                         include: {
-                              following: true,
-                         },
-                    },
-                    bookmarks: {
-                         include: {
-                              post: {
-                                   include: {
-                                        author: true,
-                                   }
-                              }
-                         }
-                    },
-                    notifications: true,
-                    settings: true,
-                    tagfollower: {
-                         include: {
-                              tag: true,
-                         }
-                    },
-                    }
+               }
                })
 
                return NextResponse.json({ user: JSON.parse(JSON.stringify(result)) }, { status: 200 })
