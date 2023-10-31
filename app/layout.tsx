@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { TailwindIndicator } from '@/components/indicator'
 import { Toaster } from '@/components/ui/toaster'
 import { getSessionUser } from '@/components/get-session-user'
+import { getSettings } from '@/lib/prisma/session'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,11 +52,13 @@ export default async function Rootayout({
   children: React.ReactNode
 }) {
 
-  const session = await getSessionUser();
+  const session = await getSessionUser()
+  const { settings } = await getSettings({ id: session?.id})
+  console.log(settings)
   return (
-    <html lang="en">
+    <html lang={settings?.language || 'en'}>
       <body className={`${inter.className}`}>
-        <ThemeProvider attribute="class" defaultTheme={session?.settings?.appearance || 'system'} enableSystem>
+        <ThemeProvider attribute="class" defaultTheme={settings?.appearance || 'system'} enableSystem>
           <AuthProvider>
           <TopLoader />
           {children}

@@ -37,7 +37,7 @@ export const getFollowings = async ({ id }: { id: number | undefined }) => {
   return { followings: JSON.parse(JSON.stringify(followings?.Followings)) };
 };
 
-export const getFollowers = async ({ id }: { id: number }) => {
+export const getFollowers = async ({ id }: { id: number | undefined }) => {
   const followers = await postgres.user.findFirst({
     where: { id },
     select: {
@@ -54,7 +54,7 @@ export const getFollowers = async ({ id }: { id: number }) => {
   return { followers: JSON.parse(JSON.stringify(followers?.Followers)) };
 };
 
-export const getPosts = async ({ id }: { id: number }) => {
+export const getPosts = async ({ id }: { id: number | undefined }) => {
   const posts = await postgres.user.findFirst({
     where: { id },
     select: {
@@ -74,7 +74,7 @@ export const getPosts = async ({ id }: { id: number }) => {
   return { posts: JSON.parse(JSON.stringify(posts?.posts)) };
 };
 
-export const getLikes = async ({ id }: { id: number }) => {
+export const getLikes = async ({ id }: { id: number | undefined }) => {
   const likes = await postgres.user.findFirst({
     where: { id },
     select: {
@@ -91,7 +91,7 @@ export const getLikes = async ({ id }: { id: number }) => {
   return { likes: JSON.parse(JSON.stringify(likes?.likes)) };
 };
 
-export const getComments = async ({ id }: { id: number }) => {
+export const getComments = async ({ id }: { id: number | undefined }) => {
   const comments = await postgres.user.findFirst({
     where: { id },
     select: {
@@ -108,11 +108,17 @@ export const getComments = async ({ id }: { id: number }) => {
   return { comments: JSON.parse(JSON.stringify(comments?.comments)) };
 };
 
-export const getSettings = async ({ id }: { id: number }) => {
+export const getSettings = async ({ id }: { id: number | undefined }) => {
   const settings = await postgres.user.findFirst({
     where: { id },
     select: {
-      settings: true,
+      settings: {
+        select: {
+          appearance: true,
+          language: true,
+          userId: true,
+        }
+      },
       id: true,
     },
   });
@@ -121,7 +127,7 @@ export const getSettings = async ({ id }: { id: number }) => {
   return { settings: JSON.parse(JSON.stringify(settings?.settings)) };
 };
 
-export const getBookmarks = async ({ id }: { id: number }) => {
+export const getBookmarks = async ({ id }: { id: number | undefined }) => {
   const bookmarks = await postgres.user.findFirst({
     where: { id },
     select: {
