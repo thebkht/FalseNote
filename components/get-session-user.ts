@@ -1,37 +1,17 @@
-'use server'
+import { cache } from "react";
 
-import { config } from "@/app/auth"
-import { getServerSession } from "next-auth"
-
-export async function getSessionUser() {
+async function fetchSessionUser() {
      try {
-          const sessionUser = await getServerSession(config)
-     if (!sessionUser) {
-          return null
-     }
-     const { user } = sessionUser
-     const session = await fetch(`${process.env.DOMAIN}/api/session`, {
-          method: 'POST',
-          headers: {
-               'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user })
-     }).then((res) => res.json())
-     if (session.error) {
-          return null
-     }
-     return session.user
+          const session = await fetch(`${process.env.DOMAIN}/api/session`).then((res) => res.json());
+          if (session.error) {
+               return null;
+          }
+          console.log(process.env.DOMAIN);
+          return session.user;
      } catch (error) {
-          console.error('Failed to get session:', error);
+          console.error("Failed to get session:", error);
           return null;
-        }
+     }
 }
 
-export async function getServerSideProps() {
-     const sessionUser = await getSessionUser();
-     return {
-       props: {
-         sessionUser
-       }
-     }
-   }
+export const getSessionUser = cache(() => fetchSessionUser());

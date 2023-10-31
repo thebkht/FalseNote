@@ -1,15 +1,27 @@
 import { config } from "@/app/auth";
 import postgres from "@/lib/postgres";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
      try {
-          const { user } = await req.json();
+          const sessionUser = await getServerSession(config)
+          if (!sessionUser) {
+               return NextResponse.json({ error: "No session" }, { status: 401 })
+          }
+          console.log(sessionUser)
           
-
+          const { user } = sessionUser
           const result = await postgres.user.findFirst({
                where: {
                     image: user?.image,
+               }, 
+               select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    image: true,
+                    username: true,
                }
                })
 

@@ -6,10 +6,11 @@ import { fetchUsers } from '@/components/feed/fetch-user';
 import Link from 'next/link';
 import TagBadge from '@/components/tags/tag';
 import { fetchTags } from '@/components/feed/get-tags';
-import { getServerSideProps, getSessionUser } from '@/components/get-session-user';
+import { getSessionUser } from '@/components/get-session-user';
 import FeedTabs from '@/components/feed/navbar/navbar';
 import { redirect } from 'next/navigation';
 import { fetchFollowingTags } from '@/components/get-following-tags';
+import { getSession } from 'next-auth/react';
 
 export default async function Feed({
   searchParams
@@ -20,18 +21,18 @@ export default async function Feed({
   const tag = typeof searchParams.tag === 'string' ? searchParams.tag : undefined
   const feed = await fetchFeed({ page: 0, tag });
   const session = await getSessionUser();
-  
+
   const topData = await fetchUsers({id: session?.id})
   const topUsers = topData?.topUsers;
   const tagsData = await fetchTags();
   const popularTags = tagsData?.tags;
 
-  if(!session) {
-    return redirect('/')
-  }
+  console.log(session)
+  // if(!session) {
+  //   return redirect('/')
+  // }
 
   const userFollowings = await fetchFollowingTags({id: session?.id})
-  console.log(await getServerSideProps())
 
   return (
     <>

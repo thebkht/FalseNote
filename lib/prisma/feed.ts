@@ -4,7 +4,6 @@ import postgres from "../postgres";
 const fetchFeed = async (query: any) => {
   try {
     const feed = await postgres.post.findMany(query);
-    await new Promise((resolve) => setTimeout(resolve, 750));
     return { feed: JSON.parse(JSON.stringify(feed)) };
   } catch (error) {
     return { error };
