@@ -1,6 +1,6 @@
 "use client"
 import { PostEditorForm } from '@/components/editor/post-editor-form'
-import { getSessionUser } from '@/components/get-session-user';
+import { getSessionUser } from '@/components/get-session';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -15,7 +15,7 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
       try {
         const sessionUser = (await getSessionUser());
         setUser(sessionUser);
-        const postData = await fetch(`/api/posts/${sessionUser.username}/${params.posturl}`, {
+        const postData = await fetch(`/api/posts/${sessionUser?.username}/${params.posturl}`, {
           method: "GET",
      })
      if (!postData.ok) {
@@ -36,10 +36,11 @@ export default function PostEditor({ params }: { params: { posturl: string } }) 
 
     fetchData();
   }, [params.posturl]);
+  if (loading) return null
   return (
     
     <main className="flex min-h-screen flex-col items-center justify-between px-6 py-14 lg:p-20 editor">
-     {!loading && <PostEditorForm post={post} />}
+     <PostEditorForm post={post} />
     </main>
   )
 }
