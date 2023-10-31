@@ -21,7 +21,6 @@ import { useRouter } from "next/navigation";
 import LoginDialog from "@/components/login-dialog";
 import UserHoverCard from "@/components/user-hover-card";
 import { getSessionUser } from "@/components/get-session-user";
-import { tr } from "date-fns/locale";
 import { ArrowUp } from "lucide-react";
 
 const sessionUser = async () => {
@@ -29,7 +28,7 @@ const sessionUser = async () => {
      return sessionUser as any;
 }
 
-export default function CommentForm(props: { post: any, submitted: boolean, session: any}){
+export default function CommentForm(props: { post: any, session: any}){
      const [commenting, setCommenting] = useState<boolean>(false)
      const [posting, setPosting] = useState<boolean>(false)
      const router = useRouter();
@@ -57,10 +56,10 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
           // ✅ This will be type-safe and validated.
           setPosting(true);
           try{
-                const author =( await getSessionUser()).id;
+                const author =( await getSessionUser())?.id;
                 await fetch("/api/comments/create", {
                   method: "POST",
-                  body: JSON.stringify({ ...data, author, post: props.post }),
+                  body: JSON.stringify({ ...data, author, post: props.post.id }),
                   })
                   setPosting(false);
           } catch (error) {
@@ -69,7 +68,11 @@ export default function CommentForm(props: { post: any, submitted: boolean, sess
           }
           setCommenting(false);
           form.setValue("content", "");
-          props.submitted = true as boolean;
+          const path = encodeURIComponent(`/${props.post.author.username}/${props.post.url}`);
+          await fetch(`/api/revalidate?path=${path}`, {
+               method: "GET",
+               }).then((res) => res.json());
+          router.push(`/${props.post.author.username}/${props.post.url}#comments`);
         }
         
 

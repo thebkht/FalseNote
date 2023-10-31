@@ -31,7 +31,7 @@ const formatDate = (dateString: string | number | Date) => {
 export default function PostComment({ comments, post, postAuthor }: { comments: any, post: any, postAuthor: any }) {
      const { status } = useSession();
      const [submitted, setSubmitted] = useState<boolean>(false);
-     const commentsRef = useRef(comments)
+     const [commentsRef, setCommentsRef] = useState<any>(comments)
      const [sessionUser, setSessionUser] = useState<any>(null)
 
      useEffect(() => {
@@ -41,6 +41,8 @@ export default function PostComment({ comments, post, postAuthor }: { comments: 
           }
           fetchData()
      }, [])
+
+     console.log(commentsRef)
 
      useEffect(() => {
           async function fetchData() {
@@ -57,19 +59,19 @@ export default function PostComment({ comments, post, postAuthor }: { comments: 
      }, [submitted])
 
      return (
-          <>                     <div className="article__comments my-8 max-w-[680px] lg:text-xl mx-auto">
+          <>                     <div className="article__comments my-8 max-w-[680px] lg:text-xl mx-auto" id="#comments">
                                <h1 className="article__comments-title text-2xl font-bold mb-4">Comments</h1>
                                {/* commentform prop that inticades comment posted or not */}
-                               <CommentForm session={sessionUser} post={post?.postid}  submitted={submitted} />
+                               <CommentForm session={sessionUser} post={post} />
                                <div className="article__comments-list">
                                     {
-                                         commentsRef.current?.map((comment: any) => (
+                                         commentsRef?.map((comment: any) => (
                                               <div className="article__comments-item flex gap-3 space-y-3" key={comment.id}>
                                                    <div className="article__comments-item-avatar mt-3">
                                                         <UserHoverCard user={comment.author} >
                                                              <Link href={`/${comment.author.username}`} className="inline-block">
                                                                   <Avatar className="h-10 w-10">
-                                                                       <AvatarImage src={comment.author.profilepicture} alt={comment.author.name} />
+                                                                       <AvatarImage src={comment.author.image} alt={comment.author.name} />
                                                                        <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
                                                                   </Avatar>
                                                              </Link>
@@ -81,7 +83,7 @@ export default function PostComment({ comments, post, postAuthor }: { comments: 
                                                                   <span className="article__comments-item-author">{comment.author.name || comment.author.username}</span>
                                                              </Link>
                                                              <span className="mx-1.5 !mt-0"> · </span>
-                                                             <span className="article__comments-item-date text-muted-foreground !mt-0">{formatDate(comment.creationdate)}</span>
+                                                             <span className="article__comments-item-date text-muted-foreground !mt-0">{formatDate(comment.createdAt)}</span>
                                                         </CardHeader>
                                                         <CardContent className="p-4 pt-0">
                                                        

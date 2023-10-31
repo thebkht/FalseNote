@@ -65,6 +65,9 @@ export default function FeaturedDev(
         setIsFollowing(newFollowingStates);
         newLoadingStates[index] = false;
         setIsFollowingLoading(newLoadingStates);
+        await fetch(`/api/revalidate?path=/feed`, {
+          method: "GET",
+        });
       } catch (error) {
         console.error(error);
 
