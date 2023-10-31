@@ -20,7 +20,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                setIsFollowingLoading(true);
                try {
                     setIsFollowing(!isFollowing);
-                    const followerId = (await getSessionUser()).userid;
+                    const followerId = (await getSessionUser())?.id;
                     const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
                     }).then((res) => res.json());
