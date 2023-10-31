@@ -25,7 +25,7 @@ export default function TagPopularPosts({ posts, tag }: { posts: any, tag: any }
                          ))}
                     </div>
                     <div className="mt-20">
-                         <Button variant={"outline"} size={"lg"}>
+                         <Button variant={"outline"} size={"lg"} asChild>
                               <Link href={`/tag/${tag.name}/popular`}>
                                    See more popular posts
                               </Link>

@@ -195,10 +195,10 @@ export default function FeedPostCard(
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
-                    className="rounded-md object-cover w-full"
+                    className="object-cover w-full"
                   />
                 ) : (
-                  <Icons.noThumbnail className="w-full h-full rounded-md" />
+                  <Icons.noThumbnail className="w-full h-full" />
                 )}
               </div>
             </Link>

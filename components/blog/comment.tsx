@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { getSessionUser } from "../get-session-user";
+import Markdown from "markdown-to-jsx";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -87,8 +88,8 @@ export default function PostComment({ comments, post, postAuthor }: { comments: 
                                                         </CardHeader>
                                                         <CardContent className="p-4 pt-0">
                                                        
-                                                        <div className="article__comments-item-body text-sm">
-                                                             <div dangerouslySetInnerHTML={{ __html: comment.content }} className="markdown-body" />
+                                                        <div className="article__comments-item-body text-sm markdown-body">
+                                                             <Markdown>{ comment.content }</Markdown>
                                                         </div>
                                                         </CardContent>
                                                    </Card>

@@ -152,6 +152,7 @@ export function PostForm() {
       toast({
         description: "Post Published!",
       })
+      await fetch(`/api/revalidate?path=/${user?.username}`)
       router.push(`/${user?.username}/${form.getValues('url')}`)
     } catch (error) {
       console.error(error)

@@ -30,34 +30,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ArrowUp } from "lucide-react"
-import { useSession } from "next-auth/react"
 import { ScrollArea } from "../ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
-import { getSessionUser } from "../get-session-user"
 import { useRouter } from "next/navigation"
 import Markdown from "markdown-to-jsx";
 
-export function PostEditorForm(props: {  post: any }) {
-  const sessionUser = useSession().data?.user as any;
-  const [user, setUser] = useState<any | null>(null)
+export function PostEditorForm(props: {  post: any, user: any }) {
   const router = useRouter();
-  const [markdownContent, setMarkdownContent] = useState<string>('');
-  setMarkdownContent(props.post?.content)
+  const [markdownContent, setMarkdownContent] = useState<string>(props.post?.content);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const sessionUser = (await getSessionUser());
-        setUser(sessionUser);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchData();
-  }, [sessionUser?.name!]);
   const postFormSchema = z.object({
     title: z
       .string()
@@ -122,12 +105,12 @@ const defaultValues: Partial<PostFormValues> = {
         // Construct the request body with postId and authorId
         const requestBody = {
           postId: form.getValues('url'),
-          userId: user?.id,
+          userId: props.user?.id,
         };
   
         dataForm.set('body', JSON.stringify(requestBody));
   
-        const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${user?.username}`, {
+        const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
           method: 'POST',
           body: dataForm,
         });
@@ -142,11 +125,11 @@ const defaultValues: Partial<PostFormValues> = {
     }
     try {
       // Submit the form
-    await fetch(`/api/posts/submit?postId=${props.post?.postid}`, {
+    await fetch(`/api/posts/submit?postId=${props.post?.id}`, {
       method: "POST",
       body: JSON.stringify({ ...data }),
     })
-    router.push(`/${user?.username}/${form.getValues('url')}`)
+    router.push(`/${props.user?.username}/${form.getValues('url')}`)
     } catch (error) {
       console.error(error)
       setIsPublishing(false)
@@ -171,7 +154,7 @@ const defaultValues: Partial<PostFormValues> = {
   async function validateUrl(value: string) {
     try {
       // Check if the url is already taken
-      const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${user?.id}`, {
+      const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${props.user?.id}`, {
         method: 'GET',
       });
 
@@ -339,7 +322,7 @@ const defaultValues: Partial<PostFormValues> = {
                     <FormItem>
                       <FormLabel>URL-friendly Link</FormLabel>
                       <FormDescription>
-                        {`falsenotes.app/${user?.username}/`}
+                        {`falsenotes.app/${props.user?.username}/`}
                       </FormDescription>
                       <FormControl>
                         <Input placeholder="URL" {...field} onChange={handleUrlChange} />

@@ -4,12 +4,6 @@ import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
 
-type Item = {
-     label: string;
-     icon: React.ElementType;
-     path: string;
-};
-
 
 export default function FeedTabs({ tabs, activeTab = 'following', children }: { tabs: any, activeTab?: string, children?: React.ReactNode }) {
      const [firstTab, inFView] = useInView();
