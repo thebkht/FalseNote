@@ -4,7 +4,8 @@ import { config } from "@/app/auth"
 import { getServerSession } from "next-auth"
 
 export async function getSessionUser() {
-     const sessionUser = await getServerSession(config)
+     try {
+          const sessionUser = await getServerSession(config)
      if (!sessionUser) {
           return null
      }
@@ -16,9 +17,12 @@ export async function getSessionUser() {
           },
           body: JSON.stringify({ user })
      }).then((res) => res.json())
-     console.log(session)
      if (session.error) {
           return null
      }
      return session.user
+     } catch (error) {
+          console.error('Failed to get session:', error);
+          return null;
+        }
 }

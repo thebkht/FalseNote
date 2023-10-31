@@ -29,12 +29,7 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
       take: 5,
       skip: page * 5,
       include: {
-        author: {
-          include: {
-            Followers: true,
-            Followings: true,
-          },
-        },
+        author: true,
         _count: {
           select: {
             likes: true,

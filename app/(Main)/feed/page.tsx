@@ -33,7 +33,6 @@ export default async function Feed({
   } */
 
   const userFollowings = await fetchFollowingTags({id: session?.id})
-  console.log(userFollowings)
 
   return (
     <>
