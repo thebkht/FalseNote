@@ -79,7 +79,7 @@ export default async function PostView({ params }: { params: { username: string,
 
      const sessionUser = await getSessionUser()
 
-     if (post?.authorId !== sessionUser?.userid) {
+     if (post?.authorId !== sessionUser?.id) {
           if (post?.visibility !== "public") redirect("/404");
      }
 
