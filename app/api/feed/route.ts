@@ -23,12 +23,7 @@ export async function GET(req: NextRequest) {
       take: 5,
       skip: page * 5,
       include: {
-        author: {
-          include: {
-            Followers: true,
-            Followings: true,
-          },
-        },
+        author: true,
         _count: {
           select: {
             likes: true,
@@ -81,6 +76,7 @@ export async function GET(req: NextRequest) {
 const fetchFeed = async (query: any) => {
   try {
     const feed = await postgres.post.findMany(query);
+    console.log("feed: ", feed)
     await new Promise((resolve) => setTimeout(resolve, 750));
     return NextResponse.json({ feed: feed}, { status: 200 });
   } catch (error) {

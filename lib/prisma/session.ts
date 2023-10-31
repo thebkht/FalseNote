@@ -34,7 +34,7 @@ export const getFollowings = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { followings: JSON.parse(JSON.stringify(followings)) };
+  return { followings: JSON.parse(JSON.stringify(followings?.Followings)) };
 };
 
 export const getFollowers = async ({ id }: { id: number }) => {
@@ -51,7 +51,7 @@ export const getFollowers = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { followers: JSON.parse(JSON.stringify(followers)) };
+  return { followers: JSON.parse(JSON.stringify(followers?.Followers)) };
 };
 
 export const getPosts = async ({ id }: { id: number }) => {
@@ -71,7 +71,7 @@ export const getPosts = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { posts: JSON.parse(JSON.stringify(posts)) };
+  return { posts: JSON.parse(JSON.stringify(posts?.posts)) };
 };
 
 export const getLikes = async ({ id }: { id: number }) => {
@@ -88,7 +88,7 @@ export const getLikes = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { likes: JSON.parse(JSON.stringify(likes)) };
+  return { likes: JSON.parse(JSON.stringify(likes?.likes)) };
 };
 
 export const getComments = async ({ id }: { id: number }) => {
@@ -105,7 +105,7 @@ export const getComments = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { comments: JSON.parse(JSON.stringify(comments)) };
+  return { comments: JSON.parse(JSON.stringify(comments?.comments)) };
 };
 
 export const getSettings = async ({ id }: { id: number }) => {
@@ -118,7 +118,7 @@ export const getSettings = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { settings: JSON.parse(JSON.stringify(settings)) };
+  return { settings: JSON.parse(JSON.stringify(settings?.settings)) };
 };
 
 export const getBookmarks = async ({ id }: { id: number }) => {
@@ -131,7 +131,7 @@ export const getBookmarks = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { bookmarks: JSON.parse(JSON.stringify(bookmarks)) };
+  return { bookmarks: JSON.parse(JSON.stringify(bookmarks?.bookmarks)) };
 };
 
 export const getNotifications = async ({ id }: { id: number }) => {
@@ -144,5 +144,5 @@ export const getNotifications = async ({ id }: { id: number }) => {
   });
 
   await new Promise((resolve) => setTimeout(resolve, 750));
-  return { notifications: JSON.parse(JSON.stringify(notifications)) };
+  return { notifications: JSON.parse(JSON.stringify(notifications?.notifications)) };
 };
