@@ -84,7 +84,7 @@ export default function FeaturedDev(
     featuredDevs.length ? content = (
       <Card className="feed__content_featured_card">
         <CardHeader className="p-4">
-          <CardTitle className="feed__content_featured_card_title text-xl">Featured Devs</CardTitle>
+          <CardTitle className="feed__content_featured_card_title text-base">Featured Devs</CardTitle>
         </CardHeader>
         <CardContent className="p-4 pt-0">
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">

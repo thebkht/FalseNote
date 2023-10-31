@@ -36,11 +36,11 @@ export default async function PopularPosts() {
   posts ? content = (
     posts.length !== 0 && (
       <Card className="feed__content_featured_card">
-        <CardHeader className="p-5">
+        <CardHeader className="p-4">
           <CardTitle className="feed__content_featured_card_title text-base">Trending Now</CardTitle>
         </CardHeader>
-        <CardContent className="p-5 pt-0">
-          <ol className="flex flex-col items-start justify-between space-y-4 feed__popular-list">
+        <CardContent className="p-4 pt-0">
+          <ol className="flex flex-col items-start justify-between space-y-4">
             {posts.map(
               (item: any, index: number) => (
                 <li key={item.id} className="text-sm space-y-2.5">

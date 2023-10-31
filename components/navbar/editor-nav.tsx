@@ -15,7 +15,7 @@ import { getSessionUser } from "../get-session-user";
 
 export default function EditorNavbar() {
      const user = useSession().data?.user as any;
-     const [username, setUsername] = useState(null);
+     const [username, setUsername] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     async function fetchData() {

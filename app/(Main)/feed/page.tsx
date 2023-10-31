@@ -11,6 +11,7 @@ import FeedTabs from '@/components/feed/navbar/navbar';
 import { redirect } from 'next/navigation';
 import { fetchFollowingTags } from '@/components/get-following-tags';
 import { getSession } from 'next-auth/react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function Feed({
   searchParams
@@ -39,7 +40,7 @@ export default async function Feed({
       <main className="flex flex-col items-center justify-between feed xl:px-8">
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
           <div className="md:my-4 w-full lg:w-2/3">
-            {userFollowings && <FeedTabs tabs={userFollowings} activeTab={tag} />}
+            {userFollowings.length !== 0 && <FeedTabs tabs={userFollowings} activeTab={tag} />}
               <div className="pt-10">
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
@@ -61,16 +62,22 @@ export default async function Feed({
             <div className="relative w-full h-full inline-block">
             <div className="sticky space-y-6 top-[70px]">
             <PopularPosts />
-            <div className="tags">
-            <h2 className="mb-2 font-semibold">Popular tags</h2>
-                    <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
-                         {popularTags?.map((tag: any) => (
-                              <Link href={`/tags/${tag.name}`} key={tag.id}>
-                                   <TagBadge className="my-1 mr-1" variant={"secondary"}>{tag.name}</TagBadge>
-                              </Link>
-                         ))}
-                    </div>
-            </div>
+            {popularTags && (
+              <Card className="feed__content_featured_card">
+              <CardHeader className="p-4">
+                <CardTitle className="feed__content_featured_card_title text-base">Popular tags</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+              <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
+                           {popularTags?.map((tag: any) => (
+                                <Link href={`/tags/${tag.name}`} key={tag.id}>
+                                     <TagBadge className="my-1 mr-1" variant={"secondary"}>{tag.name}</TagBadge>
+                                </Link>
+                           ))}
+                      </div>
+              </CardContent>
+            </Card>
+            )}
             {topUsers && (
               <FeaturedDev data={topUsers} />
             )}
