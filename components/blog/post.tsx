@@ -61,7 +61,7 @@ export default function Post({ post, author, sessionUser, tags }: { post: any, a
                setIsFollowingLoading(true);
                try {
                     setIsFollowing(!isFollowing);
-                    const followerId = (await getSessionUser()).id;
+                    const followerId = (await getSessionUser())?.id;
                     const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
                     }).then((res) => res.json());
