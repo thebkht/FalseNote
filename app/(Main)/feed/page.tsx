@@ -6,7 +6,7 @@ import { fetchUsers } from '@/components/feed/fetch-user';
 import Link from 'next/link';
 import TagBadge from '@/components/tags/tag';
 import { fetchTags } from '@/components/feed/get-tags';
-import { getSessionUser } from '@/components/get-session-user';
+import { getServerSideProps, getSessionUser } from '@/components/get-session-user';
 import FeedTabs from '@/components/feed/navbar/navbar';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -33,6 +33,7 @@ export default async function Feed({
   } */
 
   const userFollowings = await fetchFollowingTags({id: session?.id})
+  console.log(await getServerSideProps())
 
   return (
     <>

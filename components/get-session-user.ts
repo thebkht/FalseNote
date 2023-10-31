@@ -26,3 +26,12 @@ export async function getSessionUser() {
           return null;
         }
 }
+
+export async function getServerSideProps() {
+     const sessionUser = await getSessionUser();
+     return {
+       props: {
+         sessionUser
+       }
+     }
+   }
