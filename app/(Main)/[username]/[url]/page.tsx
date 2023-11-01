@@ -57,6 +57,9 @@ export default async function PostView({ params }: { params: { username: string,
                                    Followings: true
                               }
                          }
+                    },
+                    orderBy: {
+                         createdAt: "desc"
                     }
                },
                likes: true,
@@ -71,6 +74,7 @@ export default async function PostView({ params }: { params: { username: string,
                          Followings: true
                     }
                },
+               savedUsers: true,
                _count: { select: { savedUsers: true, likes: true, comments: true } }
           }
      });
@@ -129,7 +133,6 @@ export default async function PostView({ params }: { params: { username: string,
      return (
           <>
                <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
-               <PostComment comments={post.comments} post={post} postAuthor={author} />
                <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
                <Separator className="my-24" />
                <RelatedPosts posts={relatedPosts} post={post} />

@@ -64,7 +64,7 @@ export default function UserHoverCard({ user, children, className, ...props }: R
               <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user?.Followers?.length)}</span> <span className="text-muted-foreground ml-2">Followers</span></span>
             </Button>
             <Button variant={"link"} size={"sm"} className="pl-0 py-0" asChild>
-              <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user?.Following?.length)}</span> <span className="text-muted-foreground ml-2">Followings</span></span>
+              <span><span className="font-bold text-card-foreground">{formatNumberWithSuffix(user?.Followings?.length)}</span> <span className="text-muted-foreground ml-2">Followings</span></span>
             </Button>
           </div>
           <div className="flex items-center pt-2">

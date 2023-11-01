@@ -12,6 +12,7 @@ import { redirect } from 'next/navigation';
 import { fetchFollowingTags } from '@/components/get-following-tags';
 import { getSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { fetchForYou } from '@/components/feed/get-foryou';
 
 export default async function Feed({
   searchParams
@@ -28,12 +29,14 @@ export default async function Feed({
   const tagsData = await fetchTags();
   const popularTags = tagsData?.tags;
 
-  console.log(session)
-  // if(!session) {
-  //   return redirect('/')
-  // }
+  console.log(topData)
+  if(!session) {
+    return redirect('/')
+  }
 
   const userFollowings = await fetchFollowingTags({id: session?.id})
+
+  const recommendedPosts = await fetchForYou({page: 0})
 
   return (
     <>

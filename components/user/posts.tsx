@@ -5,9 +5,14 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import FeedPostCard from "../blog/feed-post-card";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function UserPosts({ posts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
+export default function UserPosts({ posts: initialPosts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
   const router = useRouter();
+  const [posts, setPosts] = useState(initialPosts);
+  useEffect(() => {
+    setPosts(initialPosts);
+  }, [initialPosts])
   async function handleDelete(postid: string) {
     await fetch(`/api/posts/${user?.username}?postid=${postid}`, {
       method: "DELETE",

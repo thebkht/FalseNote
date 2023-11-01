@@ -12,7 +12,7 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
      return (
           <>
                
-          <div className="bg-background sticky top-[60px] z-50">
+          <div className="bg-background sticky top-[60px] z-[10]">
                <div className="w-full h-full absolute insert-0 top-0">
                          <div className={`tab-shadow right-auto left-0 ${inFView && 'opacity-0'}`} style={
                               {
@@ -31,13 +31,8 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
                                    </TabsTrigger>
                               </Link>
                          {tabs?.map((item: any, index: number) => (
-                              index === tabs.length - 1 ?
-                                   <Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}><TabsTrigger value={item.tag.name} ref={lastTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
-                                        
-                                        {item.tag.name.replace(/-/g, " ")}
-                                        
-                                   </TabsTrigger></Link>
-                                   :<Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}>
+                              
+                                   <Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}>
                                    <TabsTrigger value={item.tag.name} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
                                         
                                         {item.tag.name.replace(/-/g, " ")}
@@ -45,6 +40,7 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
                                    </TabsTrigger></Link>
                               
                          ))}
+                         <TabsTrigger value="" ref={lastTab} className="bg-transparent w-3" />
                     </TabsList>
                     <ScrollBar orientation="horizontal" />
                     </ScrollArea>

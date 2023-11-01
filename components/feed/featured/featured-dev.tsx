@@ -90,6 +90,7 @@ export default function FeaturedDev(
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs?.map(
                   (item: any, index: number) => (
+                    console.log(item),
               <Suspense fallback={<div className="flex items-center">
               <Skeleton className="h-10 w-10 rounded-full mr-4" />
               <div className="space-y-2">

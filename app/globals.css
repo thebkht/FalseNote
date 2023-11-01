@@ -319,7 +319,7 @@
 }
 
 .markdown-body span {
-  @apply text-foreground;
+  @apply text-foreground text-sm;
 }
 
 .markdown-body p {

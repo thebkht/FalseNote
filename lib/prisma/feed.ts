@@ -1,5 +1,7 @@
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
+import { get } from "http";
+import { getBookmarks, getLikes } from "./session";
 
 const fetchFeed = async (query: any) => {
   try {
@@ -69,3 +71,40 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     });
   }
 };
+
+//fetch recommended posts according to user's interests (likes, bookmarks, reading history)
+// export const getForYou = async ({ page = 0, tag }: { page?: number; tag?: string | undefined }) => {
+//   const user = await getSessionUser();
+//   if (!user) {
+//     return null;
+//   }
+//   const { id } = user;
+
+//   const baseQuery = {
+//     orderBy: { createdAt: "desc" },
+//     take: 5,
+//     skip: page * 5,
+//     include: {
+//       author: true,
+//       _count: {
+//         select: {
+//           likes: true,
+//           savedUsers: true,
+//         },
+//       },
+//       tags: {
+//         take: 1,
+//         include: {
+//           tag: true,
+//         },
+//       },
+//     },
+//   };
+
+//   //get user's interests
+//   const userLikes = await getLikes({id});
+//   const userBookmarks = await getBookmarks({id});
+//   const userHistory = await getHistory({id});
+
+
+// }

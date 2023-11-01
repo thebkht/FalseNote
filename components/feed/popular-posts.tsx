@@ -54,7 +54,7 @@ export default async function PopularPosts() {
                   </Link>
 
 
-                  <Link href={`/${item.author.username}/${item.url}`} className="text-base font-bold post__title overflow-hidden">
+                  <Link href={`/${item.author.username}/${item.url}`} className="text-base font-bold line-clamp-2 overflow-hidden">
                     {item.title}
                   </Link>
                 </li>
