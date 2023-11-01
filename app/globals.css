@@ -115,7 +115,7 @@
 }
 
 .input {
-  @apply rounded-3xl flex items-center justify-start m-0 p-0 border transition duration-200 cursor-text px-2 bg-input;
+  @apply rounded-full flex items-center justify-start m-0 p-0 border transition duration-200 cursor-text px-4 bg-input;
 }
 
 .input__icon {

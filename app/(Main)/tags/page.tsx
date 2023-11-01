@@ -31,7 +31,7 @@ export default async function TagsPage() {
      })
 
      return (
-          <div className="py-8 container !px-20 space-y-6">
+          <div className="container !px-20 space-y-6">
                <div className="header">
                     <div className="header__content text-center py-6 space-y-2">
                          <h1 className="text-3xl font-semibold header__content__title">Tags</h1>
