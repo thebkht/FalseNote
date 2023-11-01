@@ -71,8 +71,8 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                                                       <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
                                                                  )}
                                                        </div>
-                                                       <span className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?.Followers.length || 0)} Followers</span>
-                                                       {author?.bio && (<span className="text-sm font-normal mt-4">{author?.bio}</span>)}
+                                                       <div className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?.Followers.length || 0)} Followers</div>
+                                                       {author?.bio && (<div className="text-sm font-normal mt-4">{author?.bio}</div>)}
                                                   </div>
                                                   <div>
                                                        {sessionUser?.id !== author?.id && (
