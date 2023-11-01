@@ -34,11 +34,16 @@ const formatDate = (dateString: string | number | Date) => {
      return formattedDate
 }
 
-export default function Post({ post, author, sessionUser, tags }: { post: any, author: any, sessionUser: any, tags: any }) {
+export default function Post({ post: initialPost, author, sessionUser, tags }: { post: any, author: any, sessionUser: any, tags: any }) {
      const [isFollowing, setIsFollowing] = useState<boolean>(false);
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
      const { status } = useSession();
      const [session, setSession] = useState<any>(sessionUser);
+     const [post, setPost] = useState<any>(initialPost);
+
+     useEffect(() => {
+          setPost(initialPost);
+     }, [initialPost])
 
      useEffect(() => {
           setSession(sessionUser);

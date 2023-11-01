@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form"
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import LoginDialog from "@/components/login-dialog";
 import UserHoverCard from "@/components/user-hover-card";
 import { getSessionUser } from "@/components/get-session-user";
@@ -32,6 +32,7 @@ export default function CommentForm(props: { post: any, session: any }) {
   const commentFormSchema = z.object({
     content: z.string().min(1, "Please enter some content."),
   })
+  const pathname = usePathname();
 
   type commentFormValues = z.infer<typeof commentFormSchema>
 
@@ -62,8 +63,7 @@ export default function CommentForm(props: { post: any, session: any }) {
     }
     setCommenting(false);
     form.setValue("content", "");
-    const path = encodeURIComponent(`/${props.post.author.username}/${props.post.url}`);
-    await fetch(`/api/revalidate?path=${path}`, {
+    await fetch(`/api/revalidate?path=${pathname}`, {
       method: "GET",
     }).then((res) => res.json());
     router.push(`/${props.post.author.username}/${props.post.url}#comments`);

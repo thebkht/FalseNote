@@ -7,8 +7,13 @@ import ShareList from "../share-list";
 import { usePathname } from "next/navigation";
 import { handlePostLike } from "../like";
 import { handlePostSave } from "../bookmark";
+import { useEffect, useState } from "react";
 
-export default function PostTabs({ post, className, session, author }: { post: any, className?: string, session: any, author: any }) {
+export default function PostTabs({ post: initialPost, className, session, author }: { post: any, className?: string, session: any, author: any }) {
+     const [post, setPost] = useState<any>(initialPost);
+     useEffect(() => {
+          setPost(initialPost);
+     }, [initialPost])
      const pathname = usePathname();
      const like = async (postId: number) => {
           console.log('liking')
