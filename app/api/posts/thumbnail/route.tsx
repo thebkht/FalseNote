@@ -44,13 +44,7 @@ try {
      <div tw="flex flex-col w-full h-full bg-gray-50 justify-end bg-gray-50" >
      <div tw="flex flex-col py-8 px-14">
      <div tw="text-6xl font-bold w-4/5 mb-4">{title}</div>
-     <div tw="text-3xl w-4/5 mb-6">{
-            subtitle !== null && (subtitle.length > 150 ? (
-            subtitle.slice(0, 150) + "..."
-          ) : (
-            subtitle
-          ))
-     }</div>
+     <div tw="text-3xl w-4/5 mb-6 line-clamp-2">{subtitle}</div>
 <div tw="flex space-x-4 items-center w-full justify-between">
 <div tw="flex">
 <img tw="rounded-full w-10 h-10 mr-2 rounded-full" alt="" src={author?.image as string} />

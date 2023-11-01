@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Check, Mail, MapPin, Users2 } from "lucide-react";
+import { CalendarDays, Check, Mail, MapPin, Share, Users2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Icons } from "../icon";
@@ -16,9 +16,10 @@ import { getSessionUser } from "../get-session-user";
 
 import { useRef } from "react";
 import { revalidatePath } from "next/cache";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { is, ro } from "date-fns/locale";
 import { set } from "date-fns";
+import ShareList from "../share-list";
 
 function getRegistrationDateDisplay(registrationDate: string) {
   ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -89,15 +90,18 @@ export default function UserDetails({ className, children, user, followers, foll
 
   }
 
+  const pathname = usePathname();
+
   return (
     isLoaded && (
       <div className={className}>
-      <div className="user__header flex md:block items-center space-y-4">
-        <Avatar className="rounded-full mr-3 lg:w-[296px] md:w-64 w-1/6 lg:h-[296px] md:h-64 h-1/6">
+      <div className="flex lg:flex-col items-center">
+      <div className="user__header flex md:block items-center lg:space-y-4">
+        <Avatar className="rounded-full mr-3 lg:w-[296px] w-1/6 md:w-56 md:h-56 lg:h-[296px] h-1/6">
           <AvatarImage className="rounded-full" src={user?.image} alt={user?.name} />
           <AvatarFallback className="text-8xl text-foreground">{user?.name ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 w-full justify-between">
           {
             user?.name ? (
               <h1 className="md:space-y-3 w-full">
@@ -122,7 +126,11 @@ export default function UserDetails({ className, children, user, followers, foll
               </h1>
               )
           }
+          {/* <ShareList url={pathname} text={`${user.username} ${user?.name ? `(` + user?.name + `)` : `` }`}>
+            <Button variant={"ghost"} size={"icon"} className="h-10 w-10" ><Share className="h-4 w-4" /></Button>
+          </ShareList> */}
         </div>
+      </div>
       </div>
 
       {
@@ -148,8 +156,7 @@ export default function UserDetails({ className, children, user, followers, foll
           </LoginDialog>
         )
       }
-
-      {user.bio && (<div className="w-full">{user?.bio}</div>)}
+      {user.bio && (<div className="w-full mt-5">{user?.bio}</div>)}
 
       <div className="py-4 items-center flex gap-2 w-full">
         <Users2 className="h-5 w-5 text-muted-foreground" />

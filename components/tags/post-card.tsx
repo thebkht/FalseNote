@@ -18,88 +18,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
 import TagBadge from "../tags/tag";
-
-
-function formatDate(dateString: string | number | Date) {
-     const date = new Date(dateString);
-     const currentYear = new Date().getFullYear();
-     const year = date.getFullYear();
-
-     let formattedDate = date.toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: true,
-     });
-
-     if (year !== currentYear) {
-          formattedDate = date.toLocaleDateString('en-US', {
-               year: 'numeric',
-               month: 'short',
-               day: 'numeric',
-               hour: 'numeric',
-               minute: 'numeric',
-               hour12: true,
-          });
-     }
-
-     return formattedDate;
-}
-
-function dateFormat(dateString: string | number | Date) {
-     const date = new Date(dateString)
-     const currentDate = new Date()
-     const currentYear = currentDate.getFullYear()
-     const currentDay = currentDate.getDate()
-     const currentHour = currentDate.getHours()
-     const currentMinute = currentDate.getMinutes()
-     const currentSecond = currentDate.getSeconds()
-
-     const year = date.getFullYear()
-     const month = date.getMonth()
-     const day = date.getDate()
-     const hour = date.getHours()
-     const minute = date.getMinutes()
-     const second = date.getSeconds()
-
-     const dayDifference = currentDay - day
-     const hourDifference = currentHour - hour
-     const minuteDifference = currentMinute - minute
-     const secondDifference = currentSecond - second
-
-     //when posted ex: 1 hour ago 1 day ago
-     if (dayDifference === 0) {
-          if (hourDifference === 0) {
-               if (minuteDifference === 0) {
-                    return `${secondDifference} seconds ago`
-               }
-               return `${minuteDifference} minutes ago`
-          }
-          return `${hourDifference} hours ago`
-     }
-     //if more than 30 days ago, show date ex: Apr 4, 2021
-     if (dayDifference > 30) {
-          if (year !== currentYear) {
-               return `${date.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-               })}`
-          }
-          return `${date.toLocaleDateString('en-US', {
-               month: 'short',
-               day: 'numeric',
-          })}`
-     } else {
-          return `${dayDifference} days ago`
-     }
-}
+import { dateFormat } from "@/lib/format-date";
+import { formatNumberWithSuffix } from "../format-numbers";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
           post: any;
           className?: string;
+          session: any;
      }
 ) {
      return (
@@ -173,7 +99,7 @@ export default function TagPostCard(
                                                   {dateFormat(props.post.createdAt)}
                                              </span>
                                              <span>·</span>
-                                             <span>{props.post.views} views</span>
+                                             <span>{formatNumberWithSuffix(props.post.views)} views</span>
                                         </div>
                                    </div>
                               </div>
@@ -184,22 +110,21 @@ export default function TagPostCard(
                                                   <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                        <Heart className="w-5 h-5" />
                                                   </Button>
-                                                  <span>{props.post._count.likes}</span>
+                                                  <span>{formatNumberWithSuffix(props.post._count.likes)}</span>
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                        <MessageCircle className="w-5 h-5" />
                                                   </Button>
-                                                  <span>{props.post._count.comments}</span>
+                                                  <span>{formatNumberWithSuffix(props.post._count.comments)}</span>
                                              </div>
                                         </div>
                                         <div className="stats flex items-center justify-around gap-2">
 
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                       <BookmarkPlus className="h-5 w-5" />
+                                                       <Bookmark className="h-5 w-5" strokeWidth={2} />
                                                   </Button>
-                                                  <span>{props.post._count.savedUsers}</span>
                                              </div>
                                         </div>
                                    </div>

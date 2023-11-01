@@ -1,7 +1,5 @@
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
-import { get } from "http";
-import { getBookmarks, getLikes } from "./session";
 
 const fetchFeed = async (query: any) => {
   try {
@@ -25,6 +23,7 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     skip: page * 5,
     include: {
       author: true,
+      savedUsers: true,
       _count: {
         select: {
           likes: true,

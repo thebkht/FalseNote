@@ -1,35 +1,52 @@
+import { config } from "@/app/auth";
 import postgres from "@/lib/postgres";
 import { tr } from "date-fns/locale";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest){
-     const tagid = req.nextUrl.searchParams.get("tagId")
+export async function GET(req: NextRequest) {
+  const pageString = req.nextUrl.searchParams.get("page") || 0;
+  const page = Number(pageString);
+  let id;
 
-     if (!tagid){
-          return new NextResponse("Missing tagid or userid", {status: 400})
-     } 
+  try {
+    const session = await getServerSession(config);
+    if (session) {
+      const user = session?.user;
+      const res = await postgres.user.findFirst({
+        where: { image: user?.image },
+        select: { id: true },
+      });
+      id = res?.id;
+    }
 
-     try{
-          const rows = await postgres.tag.findFirst({
-               where: {
-                    id: Number(tagid)
-               },
-               include: {
-                    _count: {
-                         select: { 
-                              posts: true,
-                              followingtag: true
-                         }
-                    },
-                    followingtag: true
-               }
-          })
-          if (!rows){
-               return new NextResponse("Tag not found", {status: 404})
+    const whereClause =
+      id !== undefined
+        ? {
+            followingtag: {
+              none: {
+                followerId: id,
+              },
+            },
           }
+        : {};
 
-          return new NextResponse(JSON.stringify(rows), {status: 200})
-     } catch (error) {
-          return new NextResponse("Failed to get tag", {status: 500})
-     }
+    const tags = await postgres.tag.findMany({
+      where: whereClause,
+      take: 10,
+      skip: page * 10,
+      orderBy: {
+        posts: {
+          _count: "desc",
+        },
+      },
+      include: {
+        _count: { select: { posts: true, followingtag: true } },
+        followingtag: true,
+      },
+    });
+    return NextResponse.json({ tags: tags }, { status: 200 });
+  } catch (error) {
+    return new NextResponse("Failed to get tag", { status: 500 });
+  }
 }

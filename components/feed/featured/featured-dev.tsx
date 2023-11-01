@@ -107,7 +107,7 @@ export default function FeaturedDev(
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                   </Avatar>
                   {
-                    item.name === '' ? (
+                    !item.name ? (
                       <div>
                         <p className="text-sm font-medium leading-none">{item.username} {item?.verified && (
                     <Badge className="h-3 w-3 !px-0">

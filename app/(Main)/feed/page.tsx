@@ -26,8 +26,7 @@ export default async function Feed({
 
   const topData = await fetchUsers({id: session?.id})
   const topUsers = topData?.topUsers;
-  const tagsData = await fetchTags();
-  const popularTags = tagsData?.tags;
+  const popularTags = await fetchTags();
 
   console.log(topData)
   if(!session) {
@@ -53,7 +52,7 @@ export default async function Feed({
                 </div>
               </div>
               ) : (
-                <InfinitiveScrollFeed initialFeed={feed} tag={tag} />
+                <InfinitiveScrollFeed initialFeed={feed} tag={tag} session={session} />
               )}
               </div>
             </div>

@@ -87,7 +87,6 @@ export const getLikes = async ({ id }: { id: number | undefined }) => {
     },
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { likes: JSON.parse(JSON.stringify(likes?.likes)) };
 };
 
@@ -104,7 +103,6 @@ export const getComments = async ({ id }: { id: number | undefined }) => {
     },
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { comments: JSON.parse(JSON.stringify(comments?.comments)) };
 };
 
@@ -123,7 +121,6 @@ export const getSettings = async ({ id }: { id: number | undefined }) => {
     },
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { settings: JSON.parse(JSON.stringify(settings?.settings)) };
 };
 
@@ -136,7 +133,6 @@ export const getBookmarks = async ({ id }: { id: number | undefined }) => {
     },
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { bookmarks: JSON.parse(JSON.stringify(bookmarks?.bookmarks)) };
 };
 
@@ -149,6 +145,5 @@ export const getNotifications = async ({ id }: { id: number }) => {
     },
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { notifications: JSON.parse(JSON.stringify(notifications?.notifications)) };
 };

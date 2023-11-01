@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react";
 import FeedPostCard from "../blog/feed-post-card";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import PostCard from "../tags/post-card-v2";
+import { Separator } from "../ui/separator";
 
 export default function UserPosts({ posts: initialPosts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
   const router = useRouter();
@@ -22,18 +24,20 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
   }
 
   const { status } = useSession();
-  if (status !== "authenticated") return null;
+  if (status == "loading") return null;
   return (
     <div className={className}>
-      <div className="user-articles py-4 md:px-8 space-y-6 w-full">
+      <div className="user-articles lg:px-8 w-full">
+      <Separator className="md:hidden flex mt-4" />
         {posts?.length > 0 ? (
           posts?.map((article: any) => (
             article.visibility === "public" &&
             (
               <ContextMenu key={article.id}>
-                <div className="space-y-3 md:space-y-6">
+                <div className="">
                   <ContextMenuTrigger className="">
-                    <FeedPostCard post={article} />
+                    <PostCard post={article} session={sessionUser} user={true} />
+                    <Separator />
                   </ContextMenuTrigger>
                   <ContextMenuContent className="w-full">
                     {sessionUser?.id === user?.id ? (

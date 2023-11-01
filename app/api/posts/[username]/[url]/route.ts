@@ -34,28 +34,7 @@ export async function GET(
         authorId: authorID,
       },
       include: {
-        comments: true,
-        tags: {
-          include: {
-            tag: true,
-          }
-        },
-        likes: true,
-        savedUsers: true,
-        author: {
-          include: {
-            _count: {
-              select: {
-                posts: true,
-                Followers: true,
-                Followings: true,
-              },
-            },
-            posts: {
-              take: 4,
-            },
-          }
-        },
+        author: true,
       },
     })
 

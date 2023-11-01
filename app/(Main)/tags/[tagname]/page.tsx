@@ -1,13 +1,10 @@
 'use server'
-import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getSessionUser } from "@/components/get-session-user";
 import TagDetails from "@/components/tags/details";
 import TagLatestPosts from "@/components/tags/latest-posts";
 import TagPopularPosts from "@/components/tags/post";
 import { Separator } from "@/components/ui/separator";
 import postgres from "@/lib/postgres";
-import { Tag } from "lucide-react";
-import { getSession,  } from "next-auth/react";
 import { redirect } from "next/navigation";
 
 
@@ -73,6 +70,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                     }
                },
                _count: { select: { comments: true, likes: true, savedUsers: true } },
+               savedUsers: true,
           },
           orderBy: {
                createdAt: 'desc'
@@ -80,15 +78,15 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           take: 5
      });
 
-     const session = await getSession().then((res) => res?.user);
+     const session = await getSessionUser();
      return (
           <>
                <div className="flex flex-col space-y-6 my-8">
                     <TagDetails tag={tag} tagFollowers={tag.followingtag} />
                     <Separator />
-                    <TagPopularPosts posts={popularPosts} tag={tag} />
+                    <TagPopularPosts posts={popularPosts} tag={tag} session={session} />
                     <Separator />
-                    <TagLatestPosts posts={latestPosts} tag={tag} />
+                    <TagLatestPosts posts={latestPosts} tag={tag} session={session} />
                </div>
           </>
      )

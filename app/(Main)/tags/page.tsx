@@ -1,34 +1,19 @@
+import { getSessionUser } from "@/components/get-session-user"
+import TagsList from "@/components/tags/list"
 import TagBadge from "@/components/tags/tag"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import postgres from "@/lib/postgres"
+import { getPopularTags, getTags } from "@/lib/prisma/tags"
 import { Hash } from "lucide-react"
 import Link from "next/link"
 
 export default async function TagsPage() {
-     let page = 0
-     const tags = await postgres.tag.findMany({
-          take: 5,
-          orderBy: {
-               posts: {
-                    _count: "desc"
-               }
-          },
-          include: {
-               _count: { select: { posts: true, followingtag: true } },
-          },
-          skip: page * 5
-     })
+     const session = await getSessionUser()
 
-     const popularTags = await postgres.tag.findMany({
-          take: 10,
-          orderBy: {
-               followingtag: {
-                    _count: "desc"
-               }
-          }
-     })
+     const {tags} = await getTags({id: session?.id})
+     const { tags: popularTags } = await getPopularTags({id: session?.id, take: 10})
 
      return (
           <div className="container !px-20 space-y-6">
@@ -40,35 +25,13 @@ export default async function TagsPage() {
                </div>
                <div className="flex justify-between w-full">
                <div className="lg:w-3/4">
-               <Card className="relative mb-6 lg:pr-5 lg:mr-5 lg:w-3/4 bg-background border-none">
-                    <CardHeader>
-                         <CardTitle>All featured Tags</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                         <div className="flex flex-col gap-2">
-                              {tags.map((tag) => (
-                                   <div className="flex items-center justify-between py-2" key={tag.id}>
-                                        <Link href={`/tags/${tag.name}`} className="w-full">
-                                             <div className="flex items-center">
-                                                  <Badge className="mr-3 h-14 w-14 rounded-md bg-muted" variant={"outline"}><Hash className="h-4 w-4 mx-auto" /></Badge>
-                                                  <div className="space-y-1">
-                                                  <p className="text-xl capitalize">{tag.name}</p>
-                                                  <p className="text-muted-foreground">{tag._count.posts} posts · {tag._count.followingtag} followers</p>
-                                                  </div>
-                                             </div>
-                                        </Link>
-                                        <Button variant="outline" size={"lg"} className="text-muted-foreground">Follow</Button>
-                                   </div>
-                              ))}
-                         </div>
-                    </CardContent>
-               </Card>
+               <TagsList tags={tags} session={session} />
                </div>
                <div className="lg:w-1/4">
                     <h2 className="mb-2 font-semibold">Popular tags</h2>
                     {/* col-sm-6 col-md-4 col-lg-12 list-style-none flex-wrap */}
                     <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
-                         {popularTags.map((tag) => (
+                         {popularTags.map((tag: any) => (
                               <Link href={`/tags/${tag.name}`} key={tag.id}>
                                    <TagBadge className="my-1 mr-1" variant={"secondary"}>{tag.name}</TagBadge>
                               </Link>

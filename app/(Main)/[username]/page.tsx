@@ -27,6 +27,7 @@ export default async function Page({ params }: {
               savedUsers: true,
             },
           },
+          savedUsers: true,
           tags: {
             take: 1,
             include: {
@@ -68,9 +69,9 @@ export default async function Page({ params }: {
   const sessionUserName = await getSessionUser();
   
   return (
-    <div className="Layout Layout--flowRow-until-md gap-2 lg:gap-6" >
-      <UserDetails user={user} followers={followers} followings={following} />
-      <UserPosts posts={posts} className="row-span-2 md:col-span-2" user={user} sessionUser={sessionUserName} />
+    <div className="gap-5 lg:gap-6 py-5 flex flex-col md:flex-row items-start" >
+      <UserDetails user={user} followers={followers} followings={following} className="w-full md:w-1/3" />
+      <UserPosts posts={posts} user={user} sessionUser={sessionUserName} />
     </div>
   );
 }

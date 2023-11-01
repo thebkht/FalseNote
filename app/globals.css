@@ -217,9 +217,9 @@
 }
 
 @media (min-width: 768px) {
-  .Layout {
+  /* .Layout {
     --Layout-sidebar-width: 256px;
-  }
+  } */
 
   .feed__content {
     --sidebar-width: 16rem;
@@ -228,10 +228,10 @@
 }
 
 @media (min-width: 544px) {
-  .Layout {
+  /* .Layout {
     --Layout-sidebar-width: 220px;
     --Layout-gutter: 0;
-  }
+  } */
 
   .feed__content {
     --gutter: 0;
