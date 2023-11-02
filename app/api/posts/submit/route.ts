@@ -89,6 +89,7 @@ export async function POST(req: NextRequest) {
                               url: url,
                               subtitle: subtitle,
                               readingTime: readTime,
+                              updated: true,
                          }
                     })
 
