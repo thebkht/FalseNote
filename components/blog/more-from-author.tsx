@@ -53,7 +53,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                               <Separator className="my-8" />
                               <div className="max-w-[680px] lg:text-xl mx-auto pt-10">
                                    <div className="author__details flex flex-col gap-y-4">
-                                        <div className="mx-6">
+                                        <div className="mx-2 md:mx-6">
                                              <Avatar className="h-20 w-20 mb-4">
                                                   <AvatarImage src={author?.image} alt={author?.username} />
                                                   <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
@@ -88,16 +88,16 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                              </div>
                                         </div>
                                         <Separator className="my-10" />
-                                        <div className="text-base font-medium mb-8 mx-6">More From {author?.username}</div>
+                                        <div className="text-base font-medium mb-8 mx-2 md:mx-6">More From {author?.username}</div>
                                         <div className="grid md:grid-cols-2 gap-4">
                                              {
                                                   post?.map((p: any) => (
-                                                       <TagPostCard key={p.id} post={p} />
+                                                       <TagPostCard key={p.id} post={p} session={sessionUser} />
                                                   ))
                                              }
                                         </div>
                                         <Separator className="mb-6" />
-                                        <Button variant={"outline"} className="w-max" size={"lg"} asChild>
+                                        <Button variant={"outline"} className="w-full md:w-max" size={"lg"} asChild>
                                                   <Link href={`/${author?.username}`}>
                                                        See all from {author?.name || author?.username}
                                                   </Link>

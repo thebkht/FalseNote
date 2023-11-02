@@ -18,9 +18,9 @@ export default async function TagsPage() {
      return (
           <div className="container !px-20 space-y-6">
                <div className="header">
-                    <div className="header__content text-center py-6 space-y-2">
-                         <h1 className="text-3xl font-semibold header__content__title">Tags</h1>
-                         <p className="mx-auto md:w-2/3 text-muted-foreground">Explore popular tags on FalseNotes</p>
+                    <div className="header__content text-center py-10 space-y-2">
+                         <h1 className="text-4xl font-semibold header__content__title">Tags</h1>
+                         <p className="mx-auto md:w-2/3 text-muted-foreground text-lg">Explore popular tags on FalseNotes</p>
                     </div>
                </div>
                <div className="flex justify-between w-full">

@@ -30,6 +30,7 @@ export default async function PostView({ params }: { params: { username: string,
                                    Followings: true
                               }
                          },
+                         savedUsers: true,
                     },
                     orderBy: {
                          createdAt: "desc"
@@ -123,6 +124,7 @@ export default async function PostView({ params }: { params: { username: string,
                          Followings: true
                     }
                },
+               savedUsers: true,
           },
           orderBy: {
                createdAt: "desc"
@@ -135,7 +137,7 @@ export default async function PostView({ params }: { params: { username: string,
                <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
                <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
                <Separator className="my-24" />
-               <RelatedPosts posts={relatedPosts} post={post} />
+               <RelatedPosts posts={relatedPosts} post={post} session={sessionUser} />
           </>
      )
 }

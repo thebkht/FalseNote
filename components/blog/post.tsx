@@ -73,7 +73,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
      }
      return (
           <>
-               <div className="article max-w-[680px] mx-auto">
+               <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
                     <div className="article__container">
                          <div className="article__header lg:text-xl">
                               {
@@ -106,25 +106,25 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
 
                                              {
                                                   session?.id !== post?.authorId && (
-                                                  status === "authenticated" ?
-                                                       (
-                                                            <Button
-                                                                 variant="link"
-                                                                 className="py-0 h-6 px-1.5"
-                                                                 onClick={() => handleFollow(post?.authorId)}
-                                                                 disabled={isFollowingLoading} >
-                                                                 {isFollowing ? "Following" : "Follow"}
-                                                            </Button>
-                                                       ) : (
-                                                            <LoginDialog className="py-0 h-6 px-0">
+                                                       status === "authenticated" ?
+                                                            (
                                                                  <Button
                                                                       variant="link"
-                                                                      className="py-0 h-6 px-3"
+                                                                      className="py-0 h-6 px-1.5"
+                                                                      onClick={() => handleFollow(post?.authorId)}
                                                                       disabled={isFollowingLoading} >
                                                                       {isFollowing ? "Following" : "Follow"}
                                                                  </Button>
-                                                            </LoginDialog>
-                                                       ))
+                                                            ) : (
+                                                                 <LoginDialog className="py-0 h-6 px-0">
+                                                                      <Button
+                                                                           variant="link"
+                                                                           className="py-0 h-6 px-3"
+                                                                           disabled={isFollowingLoading} >
+                                                                           {isFollowing ? "Following" : "Follow"}
+                                                                      </Button>
+                                                                 </LoginDialog>
+                                                            ))
                                              }
 
 
@@ -134,10 +134,9 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                                         <span className="article__date">{!post?.updated ? formatDate(post?.createdAt) : (formatDate(post?.createdAt) + " · Updated on " + formatDate(post?.updatedAt))}</span>
                                    </div>
                               </div>
-                              <PostTabs post={post} session={session} author={author} />
                          </div>
 
-
+                         <PostTabs post={post} session={session} author={author} className="mt-8" />
                          <article className="article__content markdown-body !max-w-full prose lg:prose-xl">
                               <Markdown>{post?.content}</Markdown>
                               {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
@@ -162,7 +161,10 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                                    </>
                               )
                          }
-                         <PostTabs post={post} session={session} author={author} className="border-none" />
+
+                         <div className="sticky top-0 w-full left-0 mt-8">
+                              <PostTabs post={post} session={session} author={author} className="border-none" />
+                         </div>
                     </div>
                </div>
           </>

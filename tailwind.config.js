@@ -23,6 +23,10 @@ module.exports = {
           '2/1': '2 / 1',
           '8/5': '8 / 5',
         },
+        fontFamily: {
+          sans: ['var(--font-geist-sans)'],
+          mono: ['var(--font-geist-mono)'],
+        },
       },
     },
     extend: {

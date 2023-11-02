@@ -11,7 +11,7 @@ import {
 export default function ShareList({ className, children, url, text, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { children: React.ReactNode, className?: string, url: string, text: string }) {
      return (
           <>
-               <DropdownMenu>
+               <DropdownMenu {...props}>
                     <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
                     <DropdownMenuContent>
                          <DropdownMenuItem>Copy link</DropdownMenuItem>

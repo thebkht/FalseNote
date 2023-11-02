@@ -7,7 +7,7 @@ import {
      SheetTrigger,
 } from "@/components/ui/sheet"
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CommentForm from "./comment-form";
 import UserHoverCard from "@/components/user-hover-card";
 import Link from "next/link";
@@ -17,6 +17,7 @@ import Markdown from "markdown-to-jsx";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import useWindowDimensions from "@/components/window-dimensions";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -72,10 +73,12 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
      useEffect(() => {
           setComments(comments);
      }, [comments])
+     const { width, height } = useWindowDimensions();
+
      return (
           <Sheet {...props}>
                <SheetTrigger>{children}</SheetTrigger>
-               <SheetContent className="p-0">
+               <SheetContent className="p-0 md:w-[400px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
                     <ScrollArea className="flex flex-col p-6 w-full h-full">
                     <SheetHeader>
                          <SheetTitle>Comments</SheetTitle>

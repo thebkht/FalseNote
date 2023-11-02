@@ -25,7 +25,7 @@ export default function PostTabs({ post: initialPost, className, session, author
      const isSaved = post?.savedUsers?.some((savedUser: any) => savedUser.userId === session?.id);
      return (
           <>
-               <div className={cn("px-2 py-1 mt-8 border-y flex justify-between w-full sticky top-[60px] z-[10]", className)}>
+               <div className={cn("px-2 py-1 border-y flex justify-between w-full bg-background", className)}>
                     <div className="flex items-center gap-3">
                          <div className="flex items-center">
                               <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} >

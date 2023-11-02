@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import {
      Card,
@@ -20,6 +21,8 @@ import { Icons } from "../icon";
 import TagBadge from "../tags/tag";
 import { dateFormat } from "@/lib/format-date";
 import { formatNumberWithSuffix } from "../format-numbers";
+import { usePathname } from "next/navigation";
+import { handlePostSave } from "../bookmark";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -28,10 +31,15 @@ export default function TagPostCard(
           session: any;
      }
 ) {
+     const pathname = usePathname();
+     const save = async (postId: number) => {
+          await handlePostSave({ postId, path: pathname });
+     }
+     const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (
           <Card {...props} className={cn('rounded-lg feedArticleCard bg-background border-none shadow-none', className)}>
-               <CardContent className="px-4 h-full">
-                    <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-14">
+               <CardContent className="md:p-6 p-2 md:px-4 h-full">
+                    <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6 md:pb-14">
                          <div className="w-full">
                               <Link href={`/${props.post.author?.username}/${props.post.url}`}>
                                    <div className="w-full h-auto !relative !pb-0 aspect-[2/1] md:aspect-[3/2]" >
@@ -48,7 +56,7 @@ export default function TagPostCard(
                                    </div>
                               </Link>
                          </div>
-                         <div className="col-span-12 flex flex-col justify-between space-y-4 h-full">
+                         <div className="col-span-12 flex flex-col justify-between space-y-4 h-full w-full">
                               <div className="flex items-center space-x-1">
                                    <UserHoverCard user={props.post.author} className="mr-1 md:mr-1.5" >
                                         <Link href={`/${props.post.author?.username}`} className="flex items-center">
@@ -123,7 +131,7 @@ export default function TagPostCard(
 
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                       <Bookmark className="h-5 w-5" strokeWidth={2} />
+                                                       <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} strokeWidth={2} />
                                                   </Button>
                                              </div>
                                         </div>

@@ -396,7 +396,8 @@
 }
 
 .markdown-body code {
-  @apply py-1.5 px-1.5 rounded-sm bg-card text-card-foreground font-mono;
+  @apply py-1.5 px-1.5 rounded-sm bg-card text-card-foreground;
+  font-family: var(--font-geist-mono)
 }
 
 .markdown-body pre code {
