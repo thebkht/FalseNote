@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import Markdown from "markdown-to-jsx";
 import TagBadge from "../tags/tag";
 import PostTabs from "./navbar";
+import { dateFormat } from "@/lib/format-date";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -131,7 +132,19 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
 
 
                                         </span>
-                                        <span className="article__date">{!post?.updated ? formatDate(post?.createdAt) : (formatDate(post?.createdAt) + " · Updated on " + formatDate(post?.updatedAt))}</span>
+                                        <div className="article__date">
+                                             <span className="">{post?.readingTime}</span>
+                                             <span className=" mx-1">·</span>
+                                             <span className="">{dateFormat(post?.createdAt)}</span>
+                                             {
+                                                  post?.updated && (
+                                                       <>
+                                                            <span className=" mx-1">·</span>
+                                                            <span className="">Updated on {dateFormat(post?.updatedAt)}</span>
+                                                       </>
+                                                  )
+                                             }
+                                        </div>
                                    </div>
                               </div>
                          </div>

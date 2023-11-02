@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import postgres from "@/lib/postgres"
+import readingTime from "reading-time";
 
 async function insertTag(tags: any, postid: any) {
      if (tags) {
@@ -46,6 +47,8 @@ export async function POST(req: NextRequest) {
           const postid = req.nextUrl.searchParams.get("postId");
 
           const { title, content, coverImage, visibility, tags, url, authorId, subtitle } = data;
+          const stats = readingTime(content);
+          const readTime = stats.text;
 
           if (!title) {
                return new Response("No title provided", { status: 400 });
@@ -85,6 +88,7 @@ export async function POST(req: NextRequest) {
                               visibility: visibility,
                               url: url,
                               subtitle: subtitle,
+                              readingTime: readTime,
                          }
                     })
 
@@ -126,6 +130,7 @@ export async function POST(req: NextRequest) {
                     url: url,
                     subtitle: subtitle ? subtitle : null,
                     authorId: Number(authorId),
+                    readingTime: readTime,
                }
           })
 

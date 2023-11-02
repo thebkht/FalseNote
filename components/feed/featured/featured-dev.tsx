@@ -82,11 +82,11 @@ export default function FeaturedDev(
 
   if (Array.isArray(featuredDevs)) {
     featuredDevs.length ? content = (
-      <Card className="feed__content_featured_card">
-        <CardHeader className="p-4">
+      <Card className="feed__content_featured_card bg-background border-none shadow-none">
+        <CardHeader className="py-4 px-0">
           <CardTitle className="feed__content_featured_card_title text-base">Featured Devs</CardTitle>
         </CardHeader>
-        <CardContent className="p-4 pt-0">
+        <CardContent className="p-0">
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs?.map(
                   (item: any, index: number) => (
@@ -102,7 +102,7 @@ export default function FeaturedDev(
                 <div className="space-y-3">
                 <UserHoverCard user={item} >
                 <Link href={`/${item.username}`} className="flex items-center">
-                  <Avatar className="h-10 w-10 mr-2 md:mr-3 flex items-center justify-center bg-muted">
+                  <Avatar className="mr-1.5 md:mr-2 flex items-center justify-center bg-muted h-8 w-8">
                     <AvatarImage src={item.image} alt={item.username} />
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                   </Avatar>
@@ -129,7 +129,7 @@ export default function FeaturedDev(
                 </Link>
                 </UserHoverCard>
                 </div>
-                <Button variant="secondary" className="flex-shrink-0 h-8 text-sm" onClick={() => {
+                <Button variant={isFollowing[index] ? "secondary" : "outline"} className="flex-shrink-0 h-8 text-sm" onClick={() => {
                           handleFollow(item?.id, index);
                         }}
                         disabled={isFollowingLoading[index]}

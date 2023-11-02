@@ -45,7 +45,7 @@ export const config = {
                 githubprofile: githubProfileURL,
                 location: location,
                 image: avatar_url,
-                password: githubId
+                password: githubId.toString()
               }
             })
 

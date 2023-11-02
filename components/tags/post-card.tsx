@@ -94,7 +94,7 @@ export default function TagPostCard(
                                                        <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title custom">{props.post.title}</h2>
                                                   </div>
                                                   <div className="post-subtitle hidden md:block">
-                                                       <p className="text-ellipsis text-base overflow-hidden post__subtitle">{props.post.subtitle}</p>
+                                                       <p className="text-ellipsis text-base overflow-hidden post__subtitle text-muted-foreground">{props.post.subtitle}</p>
                                                   </div>
                                              </div>
                                         </Link>
@@ -104,10 +104,10 @@ export default function TagPostCard(
                                    <div className="flex justify-between items-center">
                                         <div className="flex flex-1 items-center space-x-1.5 text-muted-foreground text-sm">
                                              <span>
-                                                  {dateFormat(props.post.createdAt)}
+                                                  {props.post.readingTime}
                                              </span>
                                              <span>·</span>
-                                             <span>{formatNumberWithSuffix(props.post.views)} views</span>
+                                             <span>{dateFormat(props.post.createdAt)}</span>
                                         </div>
                                    </div>
                               </div>

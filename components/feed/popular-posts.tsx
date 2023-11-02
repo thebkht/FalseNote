@@ -35,11 +35,11 @@ export default async function PopularPosts() {
 
   posts ? content = (
     posts.length !== 0 && (
-      <Card className="feed__content_featured_card">
-        <CardHeader className="p-4">
+      <Card className="feed__content_featured_card bg-background border-none shadow-none">
+        <CardHeader className="py-4 px-0">
           <CardTitle className="feed__content_featured_card_title text-base">Trending Now</CardTitle>
         </CardHeader>
-        <CardContent className="p-4 pt-0">
+        <CardContent className="p-0">
           <ol className="flex flex-col items-start justify-between space-y-4">
             {posts.map(
               (item: any, index: number) => (
@@ -54,7 +54,7 @@ export default async function PopularPosts() {
                   </Link>
 
 
-                  <Link href={`/${item.author.username}/${item.url}`} className="text-base font-bold line-clamp-2 overflow-hidden">
+                  <Link href={`/${item.author.username}/${item.url}`} className="text-base font-bold line-clamp-2 overflow-hidden leading-tight">
                     {item.title}
                   </Link>
                 </li>

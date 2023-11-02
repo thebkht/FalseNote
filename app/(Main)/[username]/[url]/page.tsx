@@ -8,7 +8,7 @@ import MoreFromAuthor from "@/components/blog/more-from-author"
 import { cookies } from 'next/headers'
 import { Separator } from "@/components/ui/separator"
 import RelatedPosts from "@/components/blog/related-posts"
-
+import readingTime from 'reading-time';
 
 export default async function PostView({ params }: { params: { username: string, url: string } }) {
      const author = await postgres.user.findFirst({
@@ -88,7 +88,9 @@ export default async function PostView({ params }: { params: { username: string,
           if (post?.visibility !== "public") redirect("/404");
      }
 
-     
+     const stats = readingTime(post?.content);
+
+     console.log("reading time", stats.text);
 
      const cookkies = cookies()
      const hasViewed = cookkies.has(`post_views_${author?.username}_${post.url}`)

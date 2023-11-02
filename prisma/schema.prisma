@@ -94,6 +94,7 @@ model Post {
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
   url       String   @unique
+  readingTime String? @db.VarChar(250)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   visibility String @default("public")

@@ -11,7 +11,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark, CalendarDays, Check, Eye, Heart, MessageCircle, Share, User } from "lucide-react";
+import { Bookmark, CalendarDays, Check, Eye, Heart, MessageCircle, MoreHorizontal, Share, User } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -90,7 +90,7 @@ export default function PostCard(
                                              <h2 className={`text-base md:text-xl font-bold text-ellipsis overflow-hidden ${props.user ? "line-clamp-2" : "line-clamp-3"}`}>{props.post.title}</h2>
                                         </div>
                                         <div className="post-subtitle hidden md:block">
-                                             <p className={`text-ellipsis overflow-hidden line-clamp-3`}>{props.post.subtitle}</p>
+                                             <p className={`text-ellipsis overflow-hidden line-clamp-3 text-muted-foreground`}>{props.post.subtitle}</p>
                                         </div>
                                    </div>
                               </Link>
@@ -109,7 +109,7 @@ export default function PostCard(
                                                        </Link>
                                                   )
                                              }
-                                             <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{formatNumberWithSuffix(props.post.views)} views</p>
+                                             <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.readingTime}</p>
                                         </div>
                                         <div className="stats flex items-center justify-around gap-1">
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
@@ -120,7 +120,7 @@ export default function PostCard(
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                        <ShareList url={props.post.url} text={props.post.title}>
-                                                            <Share className="h-5 w-5" />
+                                                            <MoreHorizontal className="h-5 w-5" />
                                                        </ShareList>
                                                   </Button>
                                              </div>
@@ -162,7 +162,7 @@ export default function PostCard(
                                              </Link>
                                         )
                                    }
-                                   <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.views} views</p>
+                                   <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.readingTime}</p>
                               </div>
                               <div className="stats flex items-center justify-around gap-1">
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
@@ -173,7 +173,7 @@ export default function PostCard(
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                         <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                              <ShareList url={props.post.url} text={props.post.title}>
-                                                  <Share className="h-5 w-5" />
+                                                  <MoreHorizontal className="h-5 w-5" />
                                              </ShareList>
                                         </Button>
                                    </div>
