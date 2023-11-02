@@ -14,6 +14,7 @@ import Markdown from "markdown-to-jsx";
 import TagBadge from "../tags/tag";
 import PostTabs from "./navbar";
 import { dateFormat } from "@/lib/format-date";
+import { useRouter } from "next/navigation";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -36,7 +37,7 @@ const formatDate = (dateString: string | number | Date) => {
 }
 
 export default function Post({ post: initialPost, author, sessionUser, tags }: { post: any, author: any, sessionUser: any, tags: any }) {
-     const [isFollowing, setIsFollowing] = useState<boolean>(false);
+     const [isFollowing, setIsFollowing] = useState<boolean>(author.Followers?.some((follower: any) => follower.followerId === sessionUser?.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
      const { status } = useSession();
      const [session, setSession] = useState<any>(sessionUser);
@@ -50,6 +51,8 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
           setSession(sessionUser);
      }, [sessionUser])
 
+     const router = useRouter();
+
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
                setIsFollowingLoading(true);
@@ -62,7 +65,10 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                     if (!result.ok) {
                          setIsFollowing(!isFollowing);
                     }
-
+                    await fetch(`/api/revalidate?page=/${author?.username}/${post?.url}`, {
+                         method: "GET",
+                         }).then((res) => res.json());
+                    router.refresh();
                     setIsFollowingLoading(false);
                } catch (error) {
                     console.error(error);

@@ -66,7 +66,7 @@ export default function CommentForm(props: { post: any, session: any }) {
     await fetch(`/api/revalidate?path=${pathname}`, {
       method: "GET",
     }).then((res) => res.json());
-    router.push(`/${props.post.author.username}/${props.post.url}#comments`);
+    router.refresh();
   }
 
 

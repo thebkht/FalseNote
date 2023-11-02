@@ -6,36 +6,42 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { useSession } from "next-auth/react";
 import LoginDialog from "../login-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSessionUser } from "../get-session-user";
 import TagPostCard from "../tags/post-card";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { Check } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function MoreFromAuthor({ author, post, sessionUser }: { author: any, post: any, sessionUser: any }) {
+export default function MoreFromAuthor({ author: initialAuthor, post, sessionUser }: { author: any, post: any, sessionUser: any }) {
      const { status } = useSession();
-     const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+     const [author, setAuthor] = useState(initialAuthor);
+     useEffect(() => {
+          setAuthor(initialAuthor);
+     }, [initialAuthor])
+     const [isFollowing, setIsFollowing] = useState<boolean | null>(author?.Followers?.some((follower: any) => follower.followerId === sessionUser?.id) || false);
+     useEffect(() => {
+          setIsFollowing(author?.Followers?.some((follower: any) => follower.followerId === sessionUser?.id) || false);
+     }, [author, sessionUser])
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
+     const path = usePathname();
+     const router = useRouter();
 
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
                setIsFollowingLoading(true);
                try {
                     setIsFollowing(!isFollowing);
-                    const followerId = (await getSessionUser())?.id;
+                    const followerId = sessionUser?.id;
                     const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
                          method: "GET",
                     }).then((res) => res.json());
                     if (!result.ok) {
                          setIsFollowing(!isFollowing);
                     }
-                    if (result.message === "followed") {
-                         author.followers = author.followers + 1;
-                    } else if (result.message === "unfollowed") {
-                         author.followers = author.followers - 1;
-                    }
-
+                    await fetch(`/api/revalidate?path=${path}`)
+                    router.refresh();
                     setIsFollowingLoading(false);
                } catch (error) {
                     console.error(error);
@@ -77,7 +83,7 @@ export default function MoreFromAuthor({ author, post, sessionUser }: { author: 
                                                   <div>
                                                        {sessionUser?.id !== author?.id && (
                                                             status === "authenticated" ? (
-                                                                 <Button variant={"secondary"} onClick={() => handleFollow(author.userid)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
+                                                                 <Button variant={"secondary"} onClick={() => handleFollow(author.id)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
                                                             ) : (
                                                                  <LoginDialog>
                                                                       <Button variant={"secondary"} >Follow</Button>
