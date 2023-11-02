@@ -65,24 +65,24 @@ export default function TagsList({ tags: initialTags, session, className, ...pro
 
      return (
           <>
-               <Card className={cn("relative mb-6 lg:pr-5 lg:mr-5 lg:w-3/4 bg-background border-none", className)} {...props}>
-                    <CardHeader>
-                         <CardTitle>All featured Tags</CardTitle>
+               <Card className={cn("relative mb-6 lg:pr-5 lg:mr-5 bg-background border-none shadow-none", className)} {...props}>
+                    <CardHeader className="px-0 md:pr-6 pt-0">
+                         <CardTitle className="text-base">All featured Tags</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-0 md:pr-6">
                          <div className="flex flex-col divide-y">
                               {tags?.map((tag: any, index: number) => (
                                    <div className="flex items-center justify-between py-5" key={tag.id}>
                                         <Link href={`/tags/${tag.name}`} className="w-full">
                                              <div className="flex items-center">
-                                                  <Badge className="mr-3 h-14 w-14 rounded-md bg-muted" variant={"outline"}><Hash className="h-4 w-4 mx-auto" /></Badge>
+                                                  <Badge className="mr-3 h-12 w-12 rounded-md bg-muted" variant={"outline"}><Hash className="h-4 w-4 mx-auto" /></Badge>
                                                   <div className="space-y-1">
-                                                       <p className="text-xl capitalize">{tag.name.replace(/-/g, " ")}</p>
-                                                       <p className="text-muted-foreground">{tag._count.posts} posts · {tag._count.followingtag} followers</p>
+                                                       <p className="text-base capitalize">{tag.name.replace(/-/g, " ")}</p>
+                                                       <p className="text-sm text-muted-foreground">{tag._count.posts} posts · {tag._count.followingtag} followers</p>
                                                   </div>
                                              </div>
                                         </Link>
-                                        <Button variant="outline" size={"lg"} className="text-muted-foreground" onClick={async () => await handleFollow(tag.id, index)} disabled={isFollowLoading[index]}><>{isFollow[index] ? <>Following</> : <>Follow</>}</></Button>
+                                        <Button variant="outline"  className="text-muted-foreground" onClick={async () => await handleFollow(tag.id, index)} disabled={isFollowLoading[index]}><>{isFollow[index] ? <>Following</> : <>Follow</>}</></Button>
                                    </div>
                               ))}
                               <div className="py-5">
