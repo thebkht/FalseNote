@@ -15,12 +15,13 @@ export default function Posts({ initialPosts, search, session }: { initialPosts:
      const [isLast, setIsLast] = useState<boolean>(false)
      useEffect(() => {
           setposts(initialPosts)
+          setIsLast(false)
      }, [initialPosts])
 
      async function loadMorePosts() {
           const next = page + 1
           setIsLoading(true)
-          const result = await fetch(`api/posts?page=${next}${search ? `&search=${search}` : ''}`).then(res => res.json())
+          const result = await fetch(`/api/posts?page=${next}${search ? `&search=${search}` : ''}`).then(res => res.json())
           setIsLoading(false)
           const fetchedposts = result?.posts
           if (fetchedposts?.length) {
