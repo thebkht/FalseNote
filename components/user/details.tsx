@@ -42,28 +42,11 @@ function getRegistrationDateDisplay(registrationDate: string) {
   return formattedDate
 }
 
-export default function UserDetails({ className, children, user, followers, followings }: { children?: React.ReactNode, className?: string, user: any, followers: any, followings: any }) {
-  const { data: session, status } = useSession();
-  const [isFollowing, setIsFollowing] = useState<boolean | null>(null);
+export default function UserDetails({ className, children, user, followers, followings, session }: { children?: React.ReactNode, className?: string, user: any, followers: any, followings: any, session: any }) {
+  const [isFollowing, setIsFollowing] = useState<boolean | null>(followers.find((follower: any) => follower.followerId === session?.id));
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  async function fetchData() {
-    if (status !== "unauthenticated") {
-      try {
-        const followerId = (await getSessionUser())?.id;
-        setIsFollowing(followers.find((follower: any) => follower.followerId === followerId));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-    setIsLoaded(true);
-  }, [status]);
+  const { status } = useSession();
 
   async function handleFollow(followeeId: string) {
     if (status === "authenticated") {
@@ -90,14 +73,13 @@ export default function UserDetails({ className, children, user, followers, foll
 
   }
 
-  const pathname = usePathname();
+  if (status === "loading") return null;
 
   return (
-    isLoaded && (
-      <div className={className}>
+    <div className={className}>
       <div className="flex lg:flex-col items-center">
       <div className="user__header flex md:block items-center lg:space-y-4">
-        <Avatar className="rounded-full mr-3 lg:w-[296px] w-1/6 md:w-56 md:h-56 lg:h-[296px] h-1/6">
+        <Avatar className="rounded-full mr-3 lg:w-[296px] w-1/4 md:w-56 md:h-56 lg:h-[296px] h-1/4">
           <AvatarImage className="rounded-full" src={user?.image} alt={user?.name} />
           <AvatarFallback className="text-8xl text-foreground">{user?.name ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
@@ -113,15 +95,13 @@ export default function UserDetails({ className, children, user, followers, foll
                 <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
               </div>
             ) : (
-              <h1 className="space-y-3 w-full">
-                <span className="font-bold text-xl md:text-2xl block">{user?.username} {user?.verified && (
-                  <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
-                    <Check className="w-3 md:h-4 h-3 md:w-4" />
-                  </Badge>
+              <div className="md:space-y-3 w-full">
+                <h1 className="font-bold text-xl lg:text-2xl flex items-center"><span>{user?.username}</span> {user?.verified && (
+                  <Icons.verified className="h-5 lg:h-6 w-5 lg:w-6 mx-0.5 inline fill-primary align-middle" />
                 )} {user?.falsemember && (
                   <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
-                )}</span>
-              </h1>
+                )}</h1>
+              </div>
               )
           }
           {/* <ShareList url={pathname} text={`${user.username} ${user?.name ? `(` + user?.name + `)` : `` }`}>
@@ -133,7 +113,7 @@ export default function UserDetails({ className, children, user, followers, foll
 
       {
         status === "authenticated" ? (
-          session?.user?.name === user?.name || session?.user?.name === user?.username ? (
+          session?.id === user?.id ? (
             <Button variant={"outline"} className="w-full">Edit Profile</Button>
           ) : (
             <Button className="w-full" onClick={() => {
@@ -180,17 +160,13 @@ export default function UserDetails({ className, children, user, followers, foll
                           follower.follower?.name === null ? (
                             <div>
                               <p className="text-sm font-medium leading-none">{follower.follower?.username} {follower?.follower?.verified && (
-                                <Badge className="h-3 w-3 !px-0">
-                                  <Check className="h-2 w-2 mx-auto" />
-                                </Badge>
+                                <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
                               )}</p>
                             </div>
                           ) : (
                             <div>
                               <p className="text-sm font-medium leading-none">{follower.follower?.name} {follower?.follower?.verified && (
-                                <Badge className="h-3 w-3 !px-0">
-                                  <Check className="h-2 w-2 mx-auto" />
-                                </Badge>
+                                <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
                               )}</p>
                               <p className="text-sm text-muted-foreground">{follower.follower?.username}</p>
                             </div>
@@ -233,17 +209,13 @@ export default function UserDetails({ className, children, user, followers, foll
                           following.following.name === null ? (
                             <div>
                               <p className="text-sm font-medium leading-none">{following.following.username} {following?.following.verified && (
-                                <Badge className="h-3 w-3 !px-0">
-                                  <Check className="h-2 w-2 mx-auto" />
-                                </Badge>
+                                <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
                               )}</p>
                             </div>
                           ) : (
                             <div>
                               <p className="text-sm font-medium leading-none">{following.following.name} {following?.following.verified && (
-                                <Badge className="h-3 w-3 !px-0">
-                                  <Check className="h-2 w-2 mx-auto" />
-                                </Badge>
+                                <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
                               )}</p>
                               <p className="text-sm text-muted-foreground">{following.following.username}</p>
                             </div>
@@ -302,6 +274,6 @@ export default function UserDetails({ className, children, user, followers, foll
           </Button>
         </li>
       </ul>
-    </div>)
+    </div>
   )
 }

@@ -82,7 +82,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
      return (
           <>
                <div className="flex flex-col space-y-6 my-8">
-                    <TagDetails tag={tag} tagFollowers={tag.followingtag} />
+                    <TagDetails tag={tag} tagFollowers={tag.followingtag} session={session} />
                     <Separator />
                     <TagPopularPosts posts={popularPosts} tag={tag} session={session} />
                     <Separator />

@@ -20,7 +20,7 @@ export async function POST(
 
     const cookie = await incrementPostViews({ author: username, post: postUrl });
 
-    req.cookies.set(cookie)
+    req.cookies.set(cookie.name, cookie.value);
     
     return NextResponse.json({ message: "View added" }, { status: 200 });
   } catch (error) {

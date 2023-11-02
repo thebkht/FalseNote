@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PostCard from "../tags/post-card-v2";
 import { Separator } from "../ui/separator";
+import { EmptyPlaceholder } from "../empty-placeholder";
 
 export default function UserPosts({ posts: initialPosts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
   const router = useRouter();
@@ -58,7 +59,17 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
             )
           ))
         ) : (
-          <p className="text-base font-light text-center py-5">This user has no posts</p>
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Icon name="post" strokeWidth={1.25} />
+            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              {user?.id === sessionUser?.id ? (
+                <>You don&apos;t have any posts yet. Start creating content.</>)
+              : (
+                <>The user doesn&apos;t have any posts yet.</>)
+              }
+            </EmptyPlaceholder.Description>
+          </EmptyPlaceholder>
         )}
       </div>
     </div>

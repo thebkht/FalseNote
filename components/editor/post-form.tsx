@@ -250,11 +250,46 @@ export function PostForm() {
   function openDialog() {
     setOpen(true);
   }
+ const [isSaving, setIsSaving] = useState<boolean>(false);
+
+  const saveDraft = async () => {
+    if (form.getValues('title') && form.getValues('content')) {
+      setIsSaving(true);
+      const authorId = user?.id;
+      try {
+        // Submit the form
+        const result = await fetch("/api/posts/draft", {
+          method: "POST",
+          body: JSON.stringify({ ...form.getValues(), authorId }),
+        })
+        if (!result.ok) {
+          toast({
+            description: "Something went wrong. Please try again later.",
+            variant: "destructive",
+            action: <ToastAction altText="Try again">Try again</ToastAction>
+          })
+          return
+        }
+        setIsSaving(false);
+        toast({
+          description: "Draft Saved!",
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  // when value changes, wait 750ms than save it as a draft
+  useEffect(() => {
+    const timeout = setTimeout(saveDraft, 750);
+    return () => clearTimeout(timeout);
+  }, [form.getValues('title'), form.getValues('content'), form.getValues('subtitle'), form.getValues('coverImage'), form.getValues('tags'), form.getValues('url'), form.getValues('visibility')])
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full" id="PostForm">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-[800px]" id="PostForm">
           <FormField
             control={form.control}
             name="title"
@@ -501,7 +536,7 @@ export function PostForm() {
             openDialog();
           }
         }
-      } className="!mt-3.5 absolute right-3 top-0 z-50 xl:right-36 2xl:right-64"><ArrowUp className="h-[1.2rem] w-[1.2rem]" /></Button>
+      } className="!mt-3 absolute right-3.5 top-0 z-50"><ArrowUp className="h-[1.2rem] w-[1.2rem]" /></Button>
     </>
   )
 }

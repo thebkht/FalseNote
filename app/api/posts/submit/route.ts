@@ -46,6 +46,8 @@ export async function POST(req: NextRequest) {
           }
           const postid = req.nextUrl.searchParams.get("postId");
 
+          console.log(data)
+
           const { title, content, coverImage, visibility, tags, url, authorId, subtitle } = data;
           const stats = readingTime(content);
           const readTime = stats.text;
@@ -75,7 +77,7 @@ export async function POST(req: NextRequest) {
                     return new Response("Post does not exist", { status: 400 });
                }
                
-               if (title !== postData.title || content !== postData.content || coverImage !== postData.cover || visibility !== postData.visibility || url !== postData.url || subtitle !== postData.subtitle) {
+               if (title !== postData.title || content !== postData.content || coverImage !== postData.cover || visibility !== postData.visibility || url !== postData.url || subtitle !== postData.subtitle, readTime !== postData.readingTime) {
                     
                     await postgres.post.update({
                          where: {

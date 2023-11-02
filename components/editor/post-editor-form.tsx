@@ -126,9 +126,11 @@ const defaultValues: Partial<PostFormValues> = {
     try {
       // Submit the form
     await fetch(`/api/posts/submit?postId=${props.post?.id}`, {
-      method: "POST",
+      method: "PATCH",
       body: JSON.stringify({ ...data }),
     })
+    // Revalidate the feed and the user's profile
+    await fetch(`/api/revalidate?path=/${props.user?.username}`)
     router.push(`/${props.user?.username}/${form.getValues('url')}`)
     } catch (error) {
       console.error(error)
@@ -214,14 +216,14 @@ const defaultValues: Partial<PostFormValues> = {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full" id="PostForm">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-[800px]" id="PostForm">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title of the post" className="border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 bg-popover" {...field} onChange={handleTitleChange} />
+                <Input placeholder="Title of the post" className="border-none font-bold text-3xl md:text-4xl !font-bold md:leading-snug focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 bg-popover" {...field} onChange={handleTitleChange} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -243,7 +245,7 @@ const defaultValues: Partial<PostFormValues> = {
               <FormItem>
                 <FormControl>
                   <TextareaAutosize
-                    className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
+                    className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm md:text-base text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
                     placeholder="Write your post here..."
                     {...field}
                     onChange={(e) => handleContentChange(e.target.value)}
@@ -267,7 +269,7 @@ const defaultValues: Partial<PostFormValues> = {
 
         <Dialog>
 
-          <DialogTrigger className="!mt-0 absolute right-3 top-0 z-50 p-3 xl:right-36 2xl:right-64"><Button size={"icon"} variant={"secondary"} asChild><div className="h-6 w-6"><ArrowUp /></div></Button></DialogTrigger>
+          <DialogTrigger className="!mt-0 absolute right-3.5 top-0 z-50 p-3"><Button size={"icon"} variant={"secondary"} asChild><div className="h-6 w-6"><ArrowUp /></div></Button></DialogTrigger>
 
           <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
             <ScrollArea className="h-full w-full px-6">

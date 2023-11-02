@@ -20,7 +20,8 @@ export default async function PostView({ params }: { params: { username: string,
                     where: {
                          url: {
                               not: params.url
-                         }
+                         },
+                         visibility: "public",
                     },
                     include: {
                          _count: { select: { comments: true, savedUsers: true, likes: true } },
@@ -116,7 +117,8 @@ export default async function PostView({ params }: { params: { username: string,
                },
                url: {
                     not: post.url
-               }
+               },
+               visibility: "public",
           },
           include: {
                _count: { select: { comments: true, savedUsers: true, likes: true } },
@@ -138,8 +140,14 @@ export default async function PostView({ params }: { params: { username: string,
           <>
                <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
                <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
-               <Separator className="my-24" />
-               <RelatedPosts posts={relatedPosts} post={post} session={sessionUser} />
+               {
+                    relatedPosts?.length > 0 && (
+                         <>
+                              <Separator className="mt-14 mb-8" />
+                              <RelatedPosts posts={relatedPosts} post={post} session={sessionUser} />
+                         </>
+                    )
+               }
           </>
      )
 }

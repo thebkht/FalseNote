@@ -40,7 +40,7 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
                                    </TabsTrigger></Link>
                               
                          ))}
-                         <TabsTrigger value="" ref={lastTab} className="bg-transparent w-3" />
+                         <TabsTrigger value="" ref={lastTab} className="bg-transparent w-3" disabled />
                     </TabsList>
                     <ScrollBar orientation="horizontal" />
                     </ScrollArea>

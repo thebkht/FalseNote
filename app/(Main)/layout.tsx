@@ -11,15 +11,15 @@ export default function MainLayout({
 }) {
   const { status } = useSession();
   return (
-     <>
+    <>
       {
         status != 'authenticated' ? <LandingNavbar /> : <Navbar />
-     }
-            <div className='h-screen w-full xl:px-36 2xl:px-64 overflow-y-scroll'>
-              <div className='pt-14 px-4 lg:px-8 md:px-6 w-full'>
-                {children}
-              </div>
-            </div>
-     </>
+      }
+      <div className='h-screen w-full overflow-y-scroll'>
+        <div className="md:container mx-auto px-4 pt-16">
+          {children}
+        </div>
+      </div>
+    </>
   )
 }

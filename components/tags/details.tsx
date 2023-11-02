@@ -10,42 +10,24 @@ import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
 
-export default function TagDetails({ tag, tagFollowers }: { tag: any, tagFollowers: any }) {
-     const session = async () => {
-          return await getSessionUser();
-     };
+export default function TagDetails({ tag, tagFollowers, session }: { tag: any, tagFollowers: any, session: any }) {
      const router = useRouter();
 
      const { status: sessionStatus } = useSession();
 
-     const [isFollowing, setIsFollowing] = useState<boolean>(false);
+     const [isFollowing, setIsFollowing] = useState<boolean>(tagFollowers.find((user: any) => user.followerId === session.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
-     const [isLoaded, setIsLoaded] = useState<boolean>(false);
-     const user = session() as any;
-
-     async function fetchData() {
-          if (sessionStatus !== "unauthenticated") {
-               try {
-                    const userid = (await getSessionUser())?.id;
-                    setIsFollowing(tagFollowers.find((user: any) => user.followerId === userid))
-               } catch (error) {
-                    console.error(error);
-               }
-          }
-     }
 
      useEffect(() => {
-          fetchData();
-          setIsLoaded(true);
-     }, [sessionStatus]);
+          setIsFollowing(tagFollowers.find((user: any) => user.followerId === session.id));
+     }, [tagFollowers, session]);
 
      const handleFollow = () => async () => {
           if (sessionStatus === "authenticated") {
                setIsFollowingLoading(true);
                try {
                     setIsFollowing(!isFollowing);
-                    const userid = (await getSessionUser())?.id;
-                    const response = await fetch(`/api/follow/tag?tagId=${tag.id}&userId=${userid}`, {
+                    const response = await fetch(`/api/follow/tag?tagId=${tag.id}&userId=${session.id}`, {
                          method: "GET",
                     });
                     if (!response.ok) {
@@ -56,7 +38,7 @@ export default function TagDetails({ tag, tagFollowers }: { tag: any, tagFollowe
                     console.error(error);
                     setIsFollowingLoading(false);
                }
-               await fetch(`/api/revalidate?path=/tag/${tag.id}`, {
+               await fetch(`/api/revalidate?path=/tag/${tag.name}`, {
                     method: "GET",
                     });
                router.refresh();
@@ -64,12 +46,10 @@ export default function TagDetails({ tag, tagFollowers }: { tag: any, tagFollowe
      
      }
 
-     if(!isLoaded) return null;
-
      return (
           <>
                <div className="space-y-0.5 px-6 pb-14 w-full">
-                    <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name}</h2>
+                    <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name.replace(/-/g, " ")}</h2>
                     <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
                          Tag<div className="mx-2">·</div>{formatNumberWithSuffix(tag._count.posts)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tagFollowers.length)} Followers
                     </div>

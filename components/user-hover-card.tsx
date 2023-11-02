@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CalendarDays, Check, Users2 } from "lucide-react";
 import { formatNumberWithSuffix } from "./format-numbers";
 import { Button } from "./ui/button";
+import { Icons } from "./icon";
 
 function formatDate(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -48,11 +49,11 @@ export default function UserHoverCard({ user, children, className, ...props }: R
           {
             user?.name ? (
               <div>
-                <h4 className="text-sm font-semibold">{user?.name} {user?.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
+                <h4 className="text-sm font-semibold">{user?.name} {user?.verified && (<Icons.verified className="h-3 w-3 inline fill-primary align-middle" />)}</h4>
                 <h6 className="text-sm text-muted-foreground !mt-0">{user?.username}</h6>
               </div>
             ) : (
-              <h4 className="text-sm font-semibold">{user?.username} {user?.verified && (<Badge className="h-3 w-3 !px-0"> <Check className="h-2 w-2 mx-auto" /></Badge>)}</h4>
+              <h4 className="text-sm font-semibold">{user?.username} {user?.verified && (<Icons.verified className="h-3 w-3 inline fill-primary align-middle" />)}</h4>
             )
           }
           <p className="text-sm">

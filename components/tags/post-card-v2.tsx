@@ -46,31 +46,16 @@ export default function PostCard(
                               {
                                    !props.user && (
                                         <>
-                                             <UserHoverCard user={props.post.author} className="mr-1 md:mr-1.5" >
-                                                  <Link href={`/${props.post.author?.username}`} className="flex items-center">
-                                                       <Avatar className="h-6 w-6 mr-1 md:mr-1.5">
+                                             <UserHoverCard user={props.post.author} >
+                                                  <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
+                                                       <Avatar className="h-5 w-5 mr-0.5">
                                                             <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
                                                             <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
                                                        </Avatar>
-                                                       {
-                                                            props.post.author?.name === null ? (
-                                                                 <div>
-                                                                      <p className="text-sm font-normal leading-none">{props.post.author?.username} {props.post.author?.verified && (
-                                                                           <Badge className="h-3 w-3 !px-0">
-                                                                                <Check className="h-2 w-2 mx-auto" />
-                                                                           </Badge>
-                                                                      )}</p>
-                                                                 </div>
-                                                            ) : (
-                                                                 <div>
-                                                                      <p className="text-sm font-normal leading-none">{props.post.author?.name} {props.post.author?.verified && (
-                                                                           <Badge className="h-3 w-3 !px-0">
-                                                                                <Check className="h-2 w-2 mx-auto" />
-                                                                           </Badge>
-                                                                      )}</p>
-                                                                 </div>
-                                                            )
-                                                       }
+                                                       <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username}</p>
+                                                       {props.post.author?.verified && (
+                                                            <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
+                                                       )}
                                                   </Link>
                                              </UserHoverCard>
                                              <span className="!text-muted-foreground text-sm mx-1 md:mx-1.5">·</span>

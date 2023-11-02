@@ -1,19 +1,31 @@
+import { config } from '@/app/auth';
 import { PostEditorForm } from '@/components/editor/post-editor-form'
 import { getSessionUser } from '@/components/get-session-user';
 import postgres from '@/lib/postgres';
-import { redirect } from 'next/navigation';
+import { Post, User } from '@prisma/client';
+import { notFound, redirect } from 'next/navigation';
+
+async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
+  return await postgres.post.findFirst({
+    where: {
+      url: postUrl,
+      authorId: userId,
+    },
+  })
+}
 
 export default async function PostEditor({ params }: { params: { posturl: string } }) {
   const session = await getSessionUser();
 
-  const post = await postgres.post.findFirst({
-    where: {
-      url: params.posturl,
-      authorId: session?.id
-    }
-  })
+  if (!session) {
+    redirect('/signin')
+  }
 
-  if (!post || !session) redirect("/404");
+  const post = await getPostForUser(params.posturl, session.id)
+
+  if (!post) {
+    redirect('/404')
+  }
 
   return (
     

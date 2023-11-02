@@ -17,6 +17,7 @@ import { use, useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import SearchBar from "../searchbar";
 import { useRouter } from "next/navigation";
+import { PostCreateButton } from "./post-create-button";
 
 function Navbar() {
   const { data: session, status } = useSession();
@@ -48,7 +49,7 @@ function Navbar() {
       <nav className="menu">
         <div className="menu-backdrop h-[60px] border-b w-screen md:w-full">
         </div>
-        <div className="menu-container h-[60px] px-3.5 xl:px-36 2xl:px-64">
+        <div className="menu-container h-[60px] px-3.5">
           <Link href="/feed" className="flex items-center">
             <Icons.logo />
             <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
@@ -58,9 +59,7 @@ function Navbar() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
-                        <Button key={"New Post"} variant={"ghost"} size={"icon"} asChild>
-                          <Link href={"/editor"}><Plus className="h-[1.2rem] w-[1.2rem]" /></Link>
-                        </Button>
+                        <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
                       </TooltipTrigger>
                       <TooltipContent>
                         New Post

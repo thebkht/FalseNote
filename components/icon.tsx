@@ -1,8 +1,58 @@
 import { cn } from "@/lib/utils";
-
 type IconProps = React.HTMLAttributes<SVGElement>;
 
-export const Icons = {
+import {
+     AlertTriangle,
+     ArrowRight,
+     Check,
+     ChevronLeft,
+     ChevronRight,
+     Command,
+     CreditCard,
+     File,
+     FileText,
+     HelpCircle,
+     Image,
+     Laptop,
+     Loader2,
+     LucideProps,
+     Moon,
+     MoreVertical,
+     Pizza,
+     Plus,
+     Settings,
+     SunMedium,
+     Trash,
+     Twitter,
+     User,
+     X,
+     type LucideIcon,
+   } from "lucide-react"
+   
+   export type Icon = LucideIcon
+   
+   export const Icons = {
+     close: X,
+     spinner: Loader2,
+     chevronLeft: ChevronLeft,
+     chevronRight: ChevronRight,
+     trash: Trash,
+     post: FileText,
+     page: File,
+     media: Image,
+     settings: Settings,
+     billing: CreditCard,
+     ellipsis: MoreVertical,
+     add: Plus,
+     warning: AlertTriangle,
+     user: User,
+     arrowRight: ArrowRight,
+     help: HelpCircle,
+     pizza: Pizza,
+     sun: SunMedium,
+     moon: Moon,
+     laptop: Laptop,
+     check: Check,
      logoIcon: (props: IconProps) => (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466.45 466" {...props} fill="none">
                <path d="M205.57,232.99H68.75L0,113.71h137.48l0.01,0.03L205.57,232.99z M205.57,232.99l-68.41,118.69L201.32,463
@@ -177,22 +227,6 @@ export const Icons = {
                />
           </svg>
      ),
-     spinner: (props: IconProps) => (
-          <svg
-               xmlns="http://www.w3.org/2000/svg"
-               width="24"
-               height="24"
-               viewBox="0 0 24 24"
-               fill="none"
-               stroke="currentColor"
-               strokeWidth="2"
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               {...props}
-          >
-               <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-          </svg>
-     ),
      verified: (props: IconProps) => (
           <svg viewBox="0 0 22 22" aria-label="Verified account" data-testid="icon-verified" className={cn("", props.className)} {...props}>
                <g>
@@ -200,4 +234,4 @@ export const Icons = {
                </g>
           </svg>
      ),
-};
+   }

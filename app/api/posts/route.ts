@@ -1,5 +1,9 @@
+import { config } from "@/app/auth";
+import { getSessionUser } from "@/components/get-session-user";
 import postgres from "@/lib/postgres";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 const baseQuery = {
      orderBy: {
@@ -62,3 +66,39 @@ export async function GET(req: NextRequest) {
           return NextResponse.json({ error: error }, { status: 500 });
      }
 }
+
+export async function POST(req: Request) {
+     try {
+       const session = await getSessionUser()
+   
+       if (!session) {
+         return new Response("Unauthorized", { status: 403 })
+       }
+   
+       // If user is on a free plan.
+       // Check if user has reached limit of 3 posts.
+   
+       const json = await req.json()
+   
+       const post = await postgres.post.create({
+         data: {
+           title: json.title,
+           content: json.content,
+           authorId: session.id,
+           url: json.url,
+           visibility: json.visibility,
+         },
+         select: {
+           url: true,
+         },
+       })
+   
+       return new Response(JSON.stringify(post))
+     } catch (error) {
+       if (error instanceof z.ZodError) {
+         return new Response(JSON.stringify(error.issues), { status: 422 })
+       }
+   
+       return new Response(null, { status: 500 })
+     }
+   }
