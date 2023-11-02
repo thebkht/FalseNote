@@ -47,7 +47,7 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     const postIds = postTags.map((postTag) => postTag.postId);
     return fetchFeed({
       ...baseQuery,
-      where: { id: { in: postIds } },
+      where: { id: { in: postIds }, visibility: "public" },
     });
   } else {
     const following = await postgres.follow.findMany({
@@ -57,7 +57,7 @@ export const getFeed = async ({ page = 0, tag }: { page?: number; tag?: string |
     const followingIds = following.map((user) => user.followingId);
     return fetchFeed({
       ...baseQuery,
-      where: { authorId: { in: followingIds } },
+      where: { authorId: { in: followingIds }, visibility: "public" },
       include: {
         ...baseQuery.include,
         author: {

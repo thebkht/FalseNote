@@ -10,7 +10,7 @@ import PostCard from "../tags/post-card-v2";
 import { Separator } from "../ui/separator";
 import { EmptyPlaceholder } from "../empty-placeholder";
 
-export default function UserPosts({ posts: initialPosts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
+export default function UserPosts({ posts: initialPosts, className, user, sessionUser, children }: { posts: any, className?: string, user?: any, sessionUser?: any, children?: React.ReactNode }) {
   const router = useRouter();
   const [posts, setPosts] = useState(initialPosts);
   useEffect(() => {
@@ -29,6 +29,7 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
   return (
     <div className={className}>
       <div className="user-articles lg:px-8 w-full">
+        {children}
       <Separator className="md:hidden flex mt-4" />
         {posts?.length > 0 ? (
           posts?.map((article: any) => (

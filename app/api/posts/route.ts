@@ -55,7 +55,8 @@ export async function GET(req: NextRequest) {
                          contains: search,
                          mode: "insensitive",
                     },
-               } : undefined,
+                    visibility: "public",
+               } : { visibility: "public" },
                take: limit,
                skip: page * limit,
           });

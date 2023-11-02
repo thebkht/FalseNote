@@ -1,19 +1,22 @@
 import { getSession } from "next-auth/react";
 import { getSessionUser } from "@/components/get-session-user";
-import { redirect, useRouter } from "next/navigation";
+import { notFound, redirect, useRouter } from "next/navigation";
 import postgres from "@/lib/postgres";
 import {
   UserDetails,
   UserPosts,
 } from "@/components/user";
 import { getServerSession } from "next-auth";
+import UserTab from "@/components/user/tabs";
 
 
-export default async function Page({ params }: {
+export default async function Page({ params, searchParams }: {
    params: {
       username: string
-   }
+   },
+   searchParams: { [key: string]: string | string[] | undefined }
  }) {
+  const sessionUserName = await getSessionUser();
   const user = await postgres.user.findFirst({
     include: {
       posts: {
@@ -35,6 +38,17 @@ export default async function Page({ params }: {
             },
           },
         },
+        // if user is a session user, show all posts
+        where: {
+          OR: [
+            {
+              visibility: "public",
+            },
+            {
+              authorId: sessionUserName?.id,
+            },
+          ],
+        },
       },
       Followers: {
         include: {
@@ -53,9 +67,7 @@ export default async function Page({ params }: {
   })
 
 
-  const session = await getServerSession();
-  console.log(session);
-  if (!user) redirect("/404");
+  if (!user) notFound();
   
   const posts = user.posts;
 
@@ -66,12 +78,15 @@ export default async function Page({ params }: {
   const followers = user.Followers;
   const following = user.Followings;
 
-  const sessionUserName = await getSessionUser();
-  
+  const defaultValue = Array.isArray(searchParams.tab) ? searchParams.tab[0] : searchParams.tab;
   return (
     <div className="gap-5 lg:gap-6 py-5 flex flex-col md:flex-row items-start" >
       <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:w-1/3 lg:w-1/4" />
-      <UserPosts posts={posts} user={user} sessionUser={sessionUserName} className="w-full" />
+      <UserPosts posts={posts} user={user} sessionUser={sessionUserName} className="w-full">
+        {sessionUserName?.id === user?.id && (
+          <UserTab user={user} session={sessionUserName} defaultValue={defaultValue} />
+        )}
+      </UserPosts>
     </div>
   );
 }
