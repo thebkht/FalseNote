@@ -39,7 +39,7 @@ export default function FeedPostCard(
   const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
   return (
     <Card {...props} className="rounded-lg feedArticleCard bg-background max-h-72 w-full border-none shadow-none">
-      <CardContent className="px-4 md:px-6 py-0">
+      <CardContent className="py-0 px-0 md:px-4">
         <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
           <div className="flex items-center space-x-1">
             <UserHoverCard user={props.post.author} className="mr-1 md:mr-1.5" >
