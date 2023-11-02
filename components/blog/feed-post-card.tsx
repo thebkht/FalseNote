@@ -42,36 +42,21 @@ export default function FeedPostCard(
       <CardContent className="py-0 px-0 md:px-4">
         <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
           <div className="flex items-center space-x-1">
-            <UserHoverCard user={props.post.author} className="mr-1 md:mr-1.5" >
-              <Link href={`/${props.post.author?.username}`} className="flex items-center">
-                <Avatar className="h-6 w-6 mr-1 md:mr-1.5">
+            <UserHoverCard user={props.post.author} >
+              <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
+                <Avatar className="h-6 w-6 mr-0.5">
                   <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
                   <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                {
-                  props.post.author?.name === null ? (
-                    <div>
-                      <p className="text-sm font-normal leading-none">{props.post.author?.username} {props.post.author?.verified && (
-                        <Badge className="h-3 w-3 !px-0">
-                          <Check className="h-2 w-2 mx-auto" />
-                        </Badge>
-                      )}</p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="text-sm font-normal leading-none">{props.post.author?.name} {props.post.author?.verified && (
-                        <Badge className="h-3 w-3 !px-0">
-                          <Check className="h-2 w-2 mx-auto" />
-                        </Badge>
-                      )}</p>
-                    </div>
-                  )
-                }
+                <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username}</p>
+                {props.post.author?.verified && (
+                        <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
+                      )}
               </Link>
             </UserHoverCard>
-
+            <span>·</span>
             <span className="!text-muted-foreground text-sm">
-              · {dateFormat(props.post.createdAt)}
+              {dateFormat(props.post.createdAt)}
             </span>
           </div>
         </CardHeader>

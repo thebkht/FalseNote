@@ -16,6 +16,7 @@ import { fetchForYou } from '@/components/feed/get-foryou';
 import { getBookmarks } from '@/lib/prisma/session';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { dateFormat } from '@/lib/format-date';
+import { Icons } from '@/components/icon';
 
 export default async function Feed({
   searchParams
@@ -104,7 +105,9 @@ export default async function Feed({
                                   <AvatarImage src={item.post?.author?.image} alt={item.post?.author?.username} />
                                   <AvatarFallback>{item.post?.author?.name?.charAt(0) || item.post?.author?.username?.charAt(0)}</AvatarFallback>
                                 </Avatar>
-                                {item.post?.author.name || item.post?.author.username}
+                                {item.post?.author.name || item.post?.author.username} {item.post.author?.verified && (
+                        <Icons.verified className="h-3 w-3 mx-0.5 inline fill-primary align-middle" />
+                      )}
                               </Link>
 
 

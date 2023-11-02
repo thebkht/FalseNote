@@ -36,7 +36,7 @@ function formatDate(dateString: string | number | Date) {
 export default function UserHoverCard({ user, children, className, ...props }: React.ComponentPropsWithoutRef<typeof HoverCard> & { children: React.ReactNode, className?: string, user: any }) {
   return (
     <HoverCard>
-      <HoverCardTrigger>
+      <HoverCardTrigger className={className}>
         {children}
       </HoverCardTrigger>
       <HoverCardContent>

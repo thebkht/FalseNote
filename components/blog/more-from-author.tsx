@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { Check } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { Icons } from "../icon";
 
 export default function MoreFromAuthor({ author: initialAuthor, post, sessionUser }: { author: any, post: any, sessionUser: any }) {
      const { status } = useSession();
@@ -67,15 +68,15 @@ export default function MoreFromAuthor({ author: initialAuthor, post, sessionUse
                                              <div className="flex justify-between">
                                                   <div className="gap-y-2">
                                                        <div className="flex">
-                                                            <Link href={`/${author?.username}`}>
+                                                            <Link href={`/${author?.username}`} className="flex items-center">
                                                                  <h2 className="text-2xl font-medium">
                                                                       Written by {author?.name || author?.username}
-                                                                 </h2>
-                                                            </Link>
-                                                            {author?.verified &&
+                                                                 </h2>{author?.verified &&
                                                                  (
-                                                                      <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
+                                                                      <Icons.verified className="h-5 w-5 mx-1 inline fill-primary align-middle" />
                                                                  )}
+                                                            </Link>
+                                                            
                                                        </div>
                                                        <div className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?.Followers.length || 0)} Followers</div>
                                                        {author?.bio && (<div className="text-sm font-normal mt-4">{author?.bio}</div>)}

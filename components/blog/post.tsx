@@ -15,6 +15,7 @@ import TagBadge from "../tags/tag";
 import PostTabs from "./navbar";
 import { dateFormat } from "@/lib/format-date";
 import { useRouter } from "next/navigation";
+import { Icons } from "../icon";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -106,7 +107,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                                                        {author?.name || author?.username}
                                                        {author?.verified &&
                                                             (
-                                                                 <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
+                                                                 <Icons.verified className="h-4 w-4 mx-1 inline fill-primary align-middle" />
                                                             )}
                                                   </Link>
                                              </UserHoverCard>

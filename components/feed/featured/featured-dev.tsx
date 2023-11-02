@@ -118,9 +118,7 @@ export default function FeaturedDev(
                     ) : (
                       <div>
                         <p className="text-sm font-medium leading-none">{item.name} {item?.verified && (
-                    <Badge className="h-3 w-3 !px-0">
-                      <Check className="h-2 w-2 mx-auto" />
-                    </Badge>
+                    <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
                   )}</p>
                         <p className="text-sm text-muted-foreground">{item.username}</p>
                       </div>

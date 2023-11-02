@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useWindowDimensions from "@/components/window-dimensions";
+import { Icons } from "@/components/icon";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -91,22 +92,22 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
                                         <div className="article__comments-item flex gap-3 space-y-3" key={comment.id}>
                                              <Card className="article__comments-item-card w-full bg-background border-none shadow-none">
                                                   <CardHeader className="space-y-0 w-full text-sm flex-row items-center p-4">
-                                                       <UserHoverCard user={comment.author} >
+                                                       <UserHoverCard user={comment.author} className="h-6 w-6 mr-1 md:mr-1.5" >
                                                             <Link href={`/${comment.author.username}`} className="inline-block">
-                                                                 <Avatar className="h-6 w-6 mr-1 md:mr-1.5">
+                                                                 <Avatar className="h-6 w-6">
                                                                       <AvatarImage src={comment.author.image} alt={comment.author.name} />
                                                                       <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
                                                                  </Avatar>
                                                             </Link>
                                                        </UserHoverCard>
-                                                       <Link href={`/${comment.author.username}`}>
+                                                       <Link href={`/${comment.author.username}`} className="flex items-center">
                                                             <span className="article__comments-item-author text-sm">{comment.author.name || comment.author.username}</span>
                                                             {comment.author?.verified &&
                                                             (
-                                                                 <Badge className="h-4 w-4 ml-2 !px-0"> <Check className="h-3 w-3 mx-auto" /></Badge>
+                                                                 <Icons.verified className="h-4 w-4 mx-1 inline fill-primary align-middle" />
                                                             )}
                                                             {comment.author?.id === post?.authorId && (
-                                                                 <Badge className="ml-2">Author</Badge>
+                                                                 <Badge className="ml-1 text-[10px] py-0">Author</Badge>
                                                             )}
                                                        </Link>
                                                        <span className="mx-1.5 !mt-0 text-sm">·</span>

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
 import { Check } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { Icons } from "../icon";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -50,7 +51,9 @@ export default async function PopularPosts() {
                       <AvatarImage src={item.author?.image} alt={item.author?.username} />
                       <AvatarFallback>{item.author?.name?.charAt(0) || item.author?.username?.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    {item.author.name || item.author.username}
+                    {item.author.name || item.author.username} {item.author?.verified && (
+                      <Icons.verified className="h-3 w-3 mx-0.5 inline fill-primary align-middle" />
+                    )}
                   </Link>
 
 

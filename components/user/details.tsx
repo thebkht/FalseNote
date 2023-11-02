@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Check, Mail, MapPin, Share, Users2 } from "lucide-react";
+import { BadgeCheck, CalendarDays, Check, Mail, MapPin, Share, Users2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Icons } from "../icon";
@@ -104,16 +104,14 @@ export default function UserDetails({ className, children, user, followers, foll
         <div className="flex items-center py-4 w-full justify-between">
           {
             user?.name ? (
-              <h1 className="md:space-y-3 w-full">
-                <span className="font-bold text-xl md:text-2xl block">{user?.name} {user?.verified && (
-                  <Badge className="h-5 md:h-6 w-5 md:w-6 !px-1">
-                    <Check className="w-3 md:h-4 h-3 md:w-4" />
-                  </Badge>
+              <div className="md:space-y-3 w-full">
+                <h1 className="font-bold text-xl lg:text-2xl flex items-center"><span>{user?.name}</span> {user?.verified && (
+                  <Icons.verified className="h-5 lg:h-6 w-5 lg:w-6 mx-0.5 inline fill-primary align-middle" />
                 )} {user?.falsemember && (
                   <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
-                )}</span>
+                )}</h1>
                 <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
-              </h1>
+              </div>
             ) : (
               <h1 className="space-y-3 w-full">
                 <span className="font-bold text-xl md:text-2xl block">{user?.username} {user?.verified && (
