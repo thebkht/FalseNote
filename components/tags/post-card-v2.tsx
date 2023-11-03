@@ -30,7 +30,7 @@ export default function PostCard(
      props: React.ComponentPropsWithoutRef<typeof Card> & {
           post: any;
           session: any;
-          user?: true
+          user?: boolean,
      }
 ) {
      const pathname = usePathname();
@@ -60,6 +60,15 @@ export default function PostCard(
                                              </UserHoverCard>
                                              <span className="!text-muted-foreground text-sm mx-1 md:mx-1.5">·</span>
                                         </>
+                                   )
+                              }
+                              {
+                                   props.user && (
+                                        props.session.id === props.post.author?.id && (
+                                             <Badge variant={"outline"} className="text-xs font-normal capitalize mr-1">
+                                                  {props.post.visibility}
+                                             </Badge>
+                                        )
                                    )
                               }
                               <span className="!text-muted-foreground text-sm">

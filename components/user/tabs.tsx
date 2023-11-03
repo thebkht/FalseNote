@@ -4,10 +4,10 @@ import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
 
-export default function UserTab({ user, session, ...props }: { user: any, session: any } & React.ComponentPropsWithoutRef<typeof Tabs>) {
+export default function UserTab({ user, session, defaultValue, ...props }: { user: any, session: any } & React.ComponentPropsWithoutRef<typeof Tabs>) {
      return (
           <div>
-               <Tabs {...props} className="">
+               <Tabs {...props} className="" defaultValue={defaultValue || "posts"}>
                     <TabsList className="bg-transparent gap-2">
                          <Link href={`${user.username}/`}>
                               <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">

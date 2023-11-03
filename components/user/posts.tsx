@@ -33,9 +33,7 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
       <Separator className="md:hidden flex mt-4" />
         {posts?.length > 0 ? (
           posts?.map((article: any) => (
-            article.visibility === "public" &&
-            (
-              <ContextMenu key={article.id}>
+            <ContextMenu key={article.id}>
                 <div className="">
                   <ContextMenuTrigger className="">
                     <PostCard post={article} session={sessionUser} user={true} />
@@ -57,7 +55,6 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
                   </ContextMenuContent>
                 </div>
               </ContextMenu>
-            )
           ))
         ) : (
           <EmptyPlaceholder>
