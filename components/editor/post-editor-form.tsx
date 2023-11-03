@@ -125,7 +125,7 @@ const defaultValues: Partial<PostFormValues> = {
     }
     try {
       // Submit the form
-    await fetch(`/api/posts/submit?postId=${props.post?.id}`, {
+    await fetch(`/api/post/${props.post?.id}`, {
       method: "PATCH",
       body: JSON.stringify({ ...data }),
     })
