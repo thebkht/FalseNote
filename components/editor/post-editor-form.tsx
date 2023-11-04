@@ -91,13 +91,15 @@ const defaultValues: Partial<PostFormValues> = {
   title: props.post?.title,
   content: props.post?.content,
   visibility: props.post?.visibility,
-  coverImage: props.post?.coverimage || '',
+  coverImage: props.post?.cover || '',
   url: props.post?.url,
   subtitle: props.post?.subtitle,
   tags: props.post?.tags?.map((tag: any) => ({
     value: tag.tag?.name,
   })),
 }
+
+console.log(defaultValues)
   
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),

@@ -14,21 +14,13 @@ async function insertTag(tags: any, postid: any) {
         },
       });
       if (!tagExists) {
-        await postgres.tag.create({
+        const tagId = await postgres.tag.create({
           data: {
             name: tag.value.replace(/\s+/g, "-").toLowerCase(),
           },
+          select: { id: true }
         });
-      }
-      const tagId = await postgres.tag.findFirst({
-        where: {
-          name: tag.value.replace(/\s+/g, "-").toLowerCase(),
-        },
-        select: {
-          id: true,
-        },
-      });
-      if (tagId) {
+        
         await postgres.postTag.create({
           data: {
             tagId: tagId.id,
@@ -127,6 +119,7 @@ export async function PATCH(
         },
       });
     }
+    
     await insertTag(tags, postid);
 
     return new Response(null, { status: 200 });
