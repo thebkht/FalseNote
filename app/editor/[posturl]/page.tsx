@@ -11,6 +11,13 @@ async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
       url: postUrl,
       authorId: userId,
     },
+    include: {
+      tags: {
+        include: {
+          tag: true,
+        },
+      }
+      },
   })
 }
 

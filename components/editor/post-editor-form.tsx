@@ -36,6 +36,23 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
 import { useRouter } from "next/navigation"
 import Markdown from "markdown-to-jsx";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+const components = {
+  code({className, children,}: { className: string, children: any }) {
+      let lang = 'text'; // default monospaced text
+if (className && className.startsWith('lang-')) {
+lang = className.replace('lang-', '');
+}
+      console.log(lang);
+return (
+ <SyntaxHighlighter style={oneDark} language={lang} >
+      {children}
+ </SyntaxHighlighter>
+)
+}
+}
 
 export function PostEditorForm(props: {  post: any, user: any }) {
   const router = useRouter();
@@ -68,6 +85,7 @@ export function PostEditorForm(props: {  post: any, user: any }) {
 
   
   type PostFormValues = z.infer<typeof postFormSchema>
+  console.log(props.post)
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
   title: props.post?.title,
@@ -261,7 +279,13 @@ const defaultValues: Partial<PostFormValues> = {
           /></TabsContent>
           <TabsContent value="preview" className="px-5 pb-5 bg-popover py-4 text-sm rounded-md">
           <article className="article__content markdown-body">
-                              <Markdown>{markdownContent}</Markdown>
+                              <Markdown options={{
+                                   overrides: {
+                                        code: {
+                                             component: components.code,
+                                        },
+                                   },
+                              }}>{markdownContent}</Markdown>
                               {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
                          </article>
           </TabsContent>
