@@ -318,9 +318,6 @@
   @apply prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto text-foreground;
 }
 
-.markdown-body span {
-  @apply text-foreground text-sm;
-}
 
 .markdown-body p {
   @apply mb-4 text-sm md:text-base text-foreground;
@@ -392,16 +389,31 @@
 }
 
 .markdown-body pre {
-  @apply my-4 rounded-sm bg-card text-card-foreground;
+  @apply !my-4 !rounded-sm !text-card-foreground p-0;
+  background: hsl(220 12% 9.8%) !important;
 }
 
+.markdown-body p pre {
+  @apply my-4 !rounded-sm !text-card-foreground !px-2.5 !py-0.5 w-fit inline-flex;
+  background: hsl(220 12% 9.8%) !important;
+}
+
+.markdown-body pre code {
+  background: hsl(220 12% 9.8%) !important;
+} 
+
 .markdown-body code {
-  @apply py-1.5 px-1.5 rounded-sm bg-card text-card-foreground;
+  @apply py-1.5 px-1.5 !rounded-sm text-card-foreground;
   font-family: var(--font-geist-mono)
 }
 
 .markdown-body pre code {
-  @apply py-0 px-0 rounded-sm bg-card text-card-foreground;
+  @apply py-0 px-0 !rounded-sm text-card-foreground;
+}
+
+.markdown-body pre code.lang-text {
+  @apply py-1.5 px-1.5 !rounded-sm text-card-foreground;
+  font-family: var(--font-geist-mono)
 }
 
 .markdown-body hr {
@@ -552,4 +564,8 @@
     width: 8%;
     background: linear-gradient(90deg, rgba(var(--overlay), 0) 0%, rgba(var(--overlay), 0.75) 25%, rgba(var(--overlay), 0.9) 50%, rgb(var(--overlay)) 75%);
     z-index: 1;
+}
+
+pre code.lang-python {
+  color: #3572A5;
 }

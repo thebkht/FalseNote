@@ -16,28 +16,28 @@ import PostTabs from "./navbar";
 import { dateFormat } from "@/lib/format-date";
 import { useRouter } from "next/navigation";
 import { Icons } from "../icon";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import readingTime from "reading-time";
 
-const formatDate = (dateString: string | number | Date) => {
-     const date = new Date(dateString)
-     const currentYear = new Date().getFullYear()
-     const year = date.getFullYear()
-     const formattedDate = date.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          hour12: true,
-     })
-     if (year !== currentYear) {
-          return date.toLocaleDateString("en-US", {
-               year: "numeric",
-               month: "short",
-               day: "numeric",
-               hour12: true,
-          })
+const components = {
+     code({ className, children, }: { className: string, children: any }) {
+          let lang = 'text'; // default monospaced text
+          if (className && className.startsWith('lang-')) {
+               lang = className.replace('lang-', '');
+          }
+          console.log(lang);
+          return (
+               <SyntaxHighlighter style={oneDark} language={lang} >
+                    {children}
+               </SyntaxHighlighter>
+          )
      }
-     return formattedDate
 }
 
 export default function Post({ post: initialPost, author, sessionUser, tags }: { post: any, author: any, sessionUser: any, tags: any }) {
+
      const [isFollowing, setIsFollowing] = useState<boolean>(author.Followers?.some((follower: any) => follower.followerId === sessionUser?.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
      const { status } = useSession();
@@ -68,7 +68,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                     }
                     await fetch(`/api/revalidate?page=/${author?.username}/${post?.url}`, {
                          method: "GET",
-                         }).then((res) => res.json());
+                    }).then((res) => res.json());
                     router.refresh();
                     setIsFollowingLoading(false);
                } catch (error) {
@@ -79,6 +79,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                return null;
           }
      }
+     const stats = readingTime(post?.content);
      return (
           <>
                <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
@@ -157,8 +158,17 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                          </div>
 
                          <PostTabs post={post} session={session} author={author} className="mt-8" />
-                         <article className="article__content markdown-body !max-w-full prose lg:prose-xl">
-                              <Markdown>{post?.content}</Markdown>
+                         <article className="article__content prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
+                              {/* <Markdown>{post?.content}</Markdown> */}
+                              <Markdown options={{
+                                   overrides: {
+                                        code: {
+                                             component: components.code,
+                                        },
+                                   },
+                              }}>
+                                   {post?.content}
+                              </Markdown>
                               {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
                          </article>
 
@@ -182,9 +192,14 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                               )
                          }
 
-                         <div className="sticky top-0 w-full left-0 mt-8">
-                              <PostTabs post={post} session={session} author={author} className="border-none" />
-                         </div>
+                         {
+                              // if post word count is greater than 1000 show the stats
+                              stats?.words > 1000 && (
+                                   <div className="sticky top-0 w-full left-0 mt-8">
+                                        <PostTabs post={post} session={session} author={author} className="border-none" />
+                                   </div>
+                              )
+                         }
                     </div>
                </div>
           </>

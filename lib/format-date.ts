@@ -11,7 +11,7 @@ export function dateFormat(dateString: string | number | Date) {
          const differenceInMinutes = differenceInTime / (1000 * 60);
          if (differenceInMinutes < 1) {
            const differenceInSeconds = differenceInTime / 1000;
-           return `${Math.floor(differenceInSeconds)} seconds ago`;
+           return differenceInSeconds < 1 ? 'Just now': `${Math.floor(differenceInSeconds)} seconds ago`;
          }
          return `${Math.floor(differenceInMinutes)} minutes ago`;
        }
