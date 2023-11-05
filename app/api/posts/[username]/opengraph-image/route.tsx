@@ -45,11 +45,8 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
   return new ImageResponse(
     (
       post.cover ? (
-        <div tw="flex flex-col w-full h-full justify-end bg-slate-200" style={{
-          backgroundImage: `url(${post.cover})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }} >
+        <div tw="flex flex-col w-full h-full justify-end bg-slate-200" >
+          <img src={post.cover} alt="" tw="object-cover" />
                <div tw="absolute flex flex-col bg-white py-8 px-14 w-full">
                <div tw="text-3xl font-bold w-3/5 mb-4">{post.title}</div>
           <div tw="flex space-x-4 items-center w-full justify-between">
