@@ -3,33 +3,44 @@ import postgres from "@/lib/postgres";
 import readingTime from "reading-time";
 import { z } from "zod";
 
+function sanitizeTagName(tag: string) {
+  return tag.replace(/\s+/g, "-").toLowerCase();
+}
+
 async function insertTag(tags: any, postid: any) {
   if (tags) {
+    console.log(tags);
     for (const tag of tags) {
-      // Check if tag exists
-      // if tag has a scpecial character, replace it with a dash and make it lowercase
+      const sanitizedTagName = sanitizeTagName(tag.value);
       const tagExists = await postgres.tag.findFirst({
-        where: {
-          name: tag.value.replace(/\s+/g, "-").toLowerCase(),
-        },
+        where: { name: sanitizedTagName },
+        select: { id: true },
       });
+      console.log(tagExists);
       if (!tagExists) {
         const tagId = await postgres.tag.create({
-          data: {
-            name: tag.value.replace(/\s+/g, "-").toLowerCase(),
-          },
+          data: { name: sanitizedTagName },
           select: { id: true }
         });
-        
-        await postgres.postTag.create({
-          data: {
-            tagId: tagId.id,
-            postId: Number(postid),
-          },
-        });
+        console.log(tagId);
+        await connectTagToPost(tagId.id, postid);
+      } else {
+        console.log("tag exists and connected to post")
+        await connectTagToPost(tagExists.id, postid);
       }
-    }
+    } 
   }
+}
+
+async function connectTagToPost(tagId: any, postid: any) {
+  console.log(tagId, postid);
+  console.log("connecting tag to post");
+  await postgres.postTag.create({
+    data: {
+      tagId: tagId,
+      postId: Number(postid),
+    },
+  });
 }
 
 export async function PATCH(
@@ -67,60 +78,32 @@ export async function PATCH(
     if (!content) {
       return new Response("No content provided", { status: 400 });
     }
-    const oldPost = await postgres.post.findFirst({
-      where: {
-        id: Number(postid),
-      },
-      select: {
-        visibility: true,
-      },
-    });
 
-    await postgres.post.update({
-      where: {
-        id: Number(postid),
-      },
-      data: {
-        title: title,
-        content: content,
-        cover: coverImage || null,
-        visibility: visibility,
-        url: url,
-        subtitle: subtitle || null,
-        readingTime: readTime,
-        //if the visibility was changed to public, update the published date to now and if it was changed to private, do not nothing or if it was not changed, keep the published date as it is and set the updated date to now
-        ...(oldPost?.visibility === "draft" &&
-          visibility === "public" && { createdAt: new Date() }),
-        ...(oldPost?.visibility === "public" &&
-          visibility === "public" && { updatedAt: new Date(), updated: true }),
-      },
-    });
-
-    //delete all the tags of the post and add the new tags
-    const postTagsData = await postgres.postTag.findMany({
-      where: {
-        postId: Number(postid),
-      },
-      select: {
-        tag: {
-          select: {
-            name: true,
-          },
-        },
-      },
-    });
-    if (postTagsData) {
-      // await sql`
-      //      DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
-      //      `;
-      await postgres.postTag.deleteMany({
+    await postgres.$transaction(async (prisma) => {
+      await prisma.postTag.deleteMany({
         where: {
           postId: Number(postid),
         },
       });
-    }
-    
-    await insertTag(tags, postid);
+
+      await prisma.post.update({
+        where: {
+          id: Number(postid),
+        },
+        data: {
+          title: title,
+          content: content,
+          cover: coverImage || null,
+          visibility: visibility,
+          url: url,
+          subtitle: subtitle || null,
+          readingTime: readTime,
+          ...(visibility === "public" && { createdAt: new Date(), updatedAt: new Date(), updated: true }),
+        },
+      });
+
+      await insertTag(tags, postid);
+    });
 
     return new Response(null, { status: 200 });
   } catch (error) {
@@ -133,13 +116,18 @@ export async function PATCH(
 }
 
 async function verifyCurrentUserHasAccessToPost(postId: number) {
-  const session = await getSessionUser();
-  const count = await postgres.post.count({
-    where: {
-      id: postId,
-      authorId: session?.id,
-    },
-  });
+  try {
+    const session = await getSessionUser();
+    const count = await postgres.post.count({
+      where: {
+        id: postId,
+        authorId: session?.id,
+      },
+    });
 
-  return count > 0;
+    return count > 0;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 }
