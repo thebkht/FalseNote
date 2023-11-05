@@ -565,7 +565,3 @@
     background: linear-gradient(90deg, rgba(var(--overlay), 0) 0%, rgba(var(--overlay), 0.75) 25%, rgba(var(--overlay), 0.9) 50%, rgb(var(--overlay)) 75%);
     z-index: 1;
 }
-
-pre code.lang-python {
-  color: #3572A5;
-}
