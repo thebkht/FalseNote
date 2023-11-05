@@ -80,6 +80,14 @@ export async function PATCH(
     }
 
     await postgres.$transaction(async (prisma) => {
+      const oldData = await prisma.post.findFirst({
+        where: {
+          id: Number(postid),
+        },
+        select: {
+          visibility: true,
+        },
+      });
       await prisma.postTag.deleteMany({
         where: {
           postId: Number(postid),
@@ -98,7 +106,10 @@ export async function PATCH(
           url: url,
           subtitle: subtitle || null,
           readingTime: readTime,
-          ...(visibility === "public" && { createdAt: new Date(), updatedAt: new Date(), updated: true }),
+          ...(oldData?.visibility === "draft" &&
+          visibility === "public" && { createdAt: new Date() }),
+        ...(oldData?.visibility === "public" &&
+          visibility === "public" && { updatedAt: new Date(), updated: true }),
         },
       });
 
