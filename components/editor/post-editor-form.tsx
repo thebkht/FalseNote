@@ -93,7 +93,7 @@ const defaultValues: Partial<PostFormValues> = {
   visibility: props.post?.visibility,
   coverImage: props.post?.cover || '',
   url: props.post?.url,
-  subtitle: props.post?.subtitle,
+  subtitle: props.post?.subtitle || '',
   tags: props.post?.tags?.map((tag: any) => ({
     value: tag.tag?.name,
   })),
