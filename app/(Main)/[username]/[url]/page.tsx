@@ -70,6 +70,7 @@ export default async function PostView({ params }: { params: { username: string,
                          tag: true
                     }
                },
+               readedUsers: true,
                author: {
                     include: {
                          Followers: true,
@@ -100,6 +101,15 @@ export default async function PostView({ params }: { params: { username: string,
           await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/?url=${post.url}`, {
           method: "POST",
      });
+     }
+
+     if(sessionUser) {
+          await postgres.readingHistory.create({
+               data: {
+                    userId: sessionUser.id,
+                    postId: post.id
+               }
+          })
      }
 
      //fetch related posts according to tags and dont include the current post
