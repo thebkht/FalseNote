@@ -115,7 +115,7 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
                                                   </CardHeader>
                                                   <CardContent className="p-4 pt-0">
 
-                                                       <div className="article__comments-item-body text-sm markdown-body">
+                                                       <div className="article__comments-item-body text-sm prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
                                                             <Markdown>{comment.content}</Markdown>
                                                        </div>
                                                   </CardContent>
