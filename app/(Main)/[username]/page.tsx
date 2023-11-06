@@ -8,6 +8,10 @@ import {
 } from "@/components/user";
 import UserTab from "@/components/user/tabs";
 import { getPost } from "@/lib/prisma/posts";
+import { getBookmarks, getHistory } from "@/lib/prisma/session";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
+import UserBookmarks from "@/components/user/bookmark";
 
 
 export default async function Page({ params, searchParams }: {
@@ -80,14 +84,38 @@ export default async function Page({ params, searchParams }: {
   const following = user.Followings;
 
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined;
+  const {bookmarks} = await getBookmarks({ id: sessionUserName?.id })
+  console.log(bookmarks)
+  const {history} = await getHistory({ id: sessionUserName?.id })
+  console.log(history)
   return (
     <div className="gap-5 lg:gap-6 py-5 flex flex-col md:flex-row items-start" >
       <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:w-1/3 lg:w-1/4" />
-      <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full">
-        {sessionUserName?.id === user?.id && (
-          <UserTab user={user} session={sessionUserName} defaultValue={tab} />
+        {sessionUserName?.id === user?.id ? (
+          <Tabs className="w-full" defaultValue={tab || "posts"}>
+          <TabsList className="bg-transparent gap-2">
+          <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                         Posts
+                    </TabsTrigger>
+               <TabsTrigger value="bookmarks" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                         Bookmarks
+                    </TabsTrigger>
+               <TabsTrigger value="reading-history" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                         Reading History
+                    </TabsTrigger>
+          </TabsList>
+          <TabsContent value="posts" className="w-full">
+          <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
+          </TabsContent>
+          <TabsContent value="bookmarks" className="w-full">
+            <UserBookmarks posts={bookmarks} user={user} sessionUser={sessionUserName} className="w-full" />
+          </TabsContent>
+          <TabsContent value="reading-history">
+          <UserBookmarks posts={history} user={user} sessionUser={sessionUserName} className="w-full" />
+          </TabsContent>
+     </Tabs> ) : (
+      <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
         )}
-      </UserPosts>
     </div>
   );
 }

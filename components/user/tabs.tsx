@@ -19,6 +19,11 @@ export default function UserTab({ user, session, defaultValue, ...props }: { use
                                    Bookmarks
                               </TabsTrigger>
                          </Link>
+                         <Link href={`${user.username}/?tab=reading-history`}>
+                              <TabsTrigger value="reading-history" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                                   Reading History
+                              </TabsTrigger>
+                         </Link>
                     </TabsList>
                </Tabs>
 
