@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input"
 import React, { useEffect, useState } from "react"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -29,7 +30,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { ArrowUp } from "lucide-react"
+import { ArrowUp, Check, RefreshCcw, Trash, Trash2 } from "lucide-react"
 import { ScrollArea } from "../ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
@@ -38,6 +39,11 @@ import { useRouter } from "next/navigation"
 import Markdown from "markdown-to-jsx";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Textarea } from "../ui/textarea"
+import { ToastAction } from "../ui/toast"
+import { toast } from "../ui/use-toast"
+import { handleDelete } from "../delete"
+import { dateFormat } from "@/lib/format-date"
 
 const components = {
   code({className, children,}: { className: string, children: any }) {
@@ -45,7 +51,6 @@ const components = {
 if (className && className.startsWith('lang-')) {
 lang = className.replace('lang-', '');
 }
-      console.log(lang);
 return (
  <SyntaxHighlighter style={oneDark} language={lang} >
       {children}
@@ -85,7 +90,6 @@ export function PostEditorForm(props: {  post: any, user: any }) {
 
   
   type PostFormValues = z.infer<typeof postFormSchema>
-  console.log(props.post)
   // This can come from your database or API.
 const defaultValues: Partial<PostFormValues> = {
   title: props.post?.title,
@@ -114,11 +118,13 @@ console.log(defaultValues)
     control: form.control,
   })
 
+  const [open, setOpen] = useState<boolean>(false);
+
   async function onSubmit(data: PostFormValues) {
     setIsPublishing(true);
     // Upload the cover image
 
-    if(file) {
+    if (file) {
       try {
         const dataForm = new FormData()
         dataForm.set('file', file)
@@ -127,9 +133,9 @@ console.log(defaultValues)
           postId: form.getValues('url'),
           userId: props.user?.id,
         };
-  
+
         dataForm.set('body', JSON.stringify(requestBody));
-  
+
         const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
           method: 'POST',
           body: dataForm,
@@ -137,21 +143,35 @@ console.log(defaultValues)
         // get the image url
         const { data: coverUrl } = await res.json()
         data.coverImage = coverUrl.url;
-  
+
       } catch (e: any) {
         // Handle errors here
         console.error(e)
       }
     }
+    // Get the authorId from the session
+    const authorId = props.user?.id;
     try {
       // Submit the form
-    await fetch(`/api/post/${props.post?.id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ ...data }),
-    })
-    // Revalidate the feed and the user's profile
-    await fetch(`/api/revalidate?path=/${props.user?.username}`)
-    router.push(`/${props.user?.username}/${form.getValues('url')}`)
+      const result = await fetch(`/api/post/${props.post?.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ ...data }),
+      })
+      setOpen(false);
+      if (!result.ok) {
+        setIsPublishing(false)
+        toast({
+          description: "Something went wrong. Please try again later.",
+          variant: "destructive",
+          action: <ToastAction altText="Try again">Try again</ToastAction>
+        })
+        return
+      }
+      toast({
+        description: "Post Published!",
+      })
+      await fetch(`/api/revalidate?path=/${props.user?.username}`)
+      router.push(`/${props.user?.username}/${form.getValues('url')}`)
     } catch (error) {
       console.error(error)
       setIsPublishing(false)
@@ -162,6 +182,49 @@ console.log(defaultValues)
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const [cover, setCover] = useState<string>('');
   const [file, setFile] = useState<File>(); // State for the uploaded file
+
+  function openDialog() {
+    setOpen(true);
+  }
+ const [isSaving, setIsSaving] = useState<boolean>(false);
+
+  const saveDraft = async () => {
+    if (form.getValues('title') && form.getValues('content')) {
+      setIsSaving(true);
+      const authorId = props.user?.id;
+      form.setValue('visibility', 'draft');
+      try {
+        // Submit the form
+        const result = await fetch(`/api/post/${props.post?.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({ ...form.getValues(), authorId }),
+        })
+        if (!result.ok) {
+          toast({
+            description: "Something went wrong. Please try again later.",
+            variant: "destructive",
+            action: <ToastAction altText="Try again">Try again</ToastAction>
+          })
+          setIsSaving(false);
+          return
+        }
+        setLastSavedTime(Date.now());
+        setIsSaving(false);
+        toast({
+          description: "Draft Saved!",
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  // when value changes, wait 750ms than save it as a draft
+  const [lastSavedTime, setLastSavedTime] = useState<number>(Date.now());
+  useEffect(() => {
+    const timeout = setTimeout(saveDraft, 15000);
+    return () => clearTimeout(timeout);
+  }, [form.getValues('title'), form.getValues('content'), form.getValues('subtitle'), form.getValues('coverImage'), form.getValues('tags'), form.getValues('url'), form.getValues('visibility')])
 
   useEffect(() => {
     if (form.getValues('coverImage')) {
@@ -195,23 +258,6 @@ console.log(defaultValues)
   // URL-friendly link validation
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    // Replace spaces with dashes and make lowercase of 2 words only
-    validateUrl(value);
-    // Update the form field value
-    form.setValue('url', value);
-  } 
-
-  async function handleContentChange(value: string) {
-    form.setValue('content', value); // Update the form field value
-
-    setMarkdownContent(value);
-  }
-
-  //Set url value from title value
-  function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    form.setValue('title', value);
-    // Replace spaces with dashes and make lowercase of 2 words only
     if (value.split(' ').length > 1) {
       const url = value.split(' ')[0].toLowerCase() + '-' + value.split(' ')[1].toLowerCase();
       validateUrl(url);
@@ -228,6 +274,18 @@ console.log(defaultValues)
         setIsValidUrl(null);
       }
     }
+  } 
+
+  async function handleContentChange(value: string) {
+    form.setValue('content', value); // Update the form field value
+
+    setMarkdownContent(value);
+  }
+
+  //Set url value from title value
+  function handleTitleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const value = e.target.value;
+    form.setValue('title', value);
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -235,15 +293,16 @@ console.log(defaultValues)
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-[800px]" id="PostForm">
+    <>
+      <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full lg:w-[800px]" id="PostForm">
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Title of the post" className="border-none font-bold text-3xl md:text-4xl !font-bold md:leading-snug focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 bg-popover" {...field} onChange={handleTitleChange} />
+                <Textarea placeholder="Title of the post" className="font-bold text-3xl md:text-4xl md:leading-snug bg-popover" {...field} onChange={handleTitleChange} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name. It can be your real name or a
@@ -254,7 +313,7 @@ console.log(defaultValues)
           )}
         />
         <Tabs defaultValue="editor" className="min-h-[250px]">
-          <TabsList className="mb-2 w-full md:w-auto">
+          <TabsList className="mb-2 w-full md:w-auto absolute z-20 m-3 top-0 right-36">
             <TabsTrigger value="editor"  className="w-full md:w-auto">Editor</TabsTrigger>
             <TabsTrigger value="preview" className="w-full md:w-auto">Preview</TabsTrigger>
           </TabsList>
@@ -265,7 +324,7 @@ console.log(defaultValues)
               <FormItem>
                 <FormControl>
                   <TextareaAutosize
-                    className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm md:text-base text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none border-none focus-visible:ring-none focus-visible:ring-offset-0 !ring-0 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
+                    className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm md:text-base text-foreground ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
                     placeholder="Write your post here..."
                     {...field}
                     onChange={(e) => handleContentChange(e.target.value)}
@@ -279,8 +338,8 @@ console.log(defaultValues)
               </FormItem>
             )}
           /></TabsContent>
-          <TabsContent value="preview" className="px-5 pb-5 bg-popover py-4 text-sm rounded-md">
-          <article className="article__content markdown-body">
+          <TabsContent value="preview" className="pb-5 px-3 bg-popover text-sm rounded-md">
+          <article className="article__content markdown-body w-full !m-0">
                               <Markdown options={{
                                    overrides: {
                                         code: {
@@ -293,10 +352,7 @@ console.log(defaultValues)
           </TabsContent>
         </Tabs>
 
-        <Dialog>
-
-          <DialogTrigger className="!mt-0 absolute right-3.5 top-0 z-50 p-3"><Button size={"icon"} variant={"secondary"} asChild><div className="h-6 w-6"><ArrowUp /></div></Button></DialogTrigger>
-
+        <Dialog onOpenChange={setOpen} open={open}>
           <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
             <ScrollArea className="h-full w-full px-6">
               <DialogHeader className="py-6">
@@ -404,7 +460,7 @@ console.log(defaultValues)
                   name="subtitle"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Post Description</FormLabel>
+                      <FormLabel>Post Subtitle</FormLabel>
                       <FormControl>
                         <TextareaAutosize {...field} className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]" rows={1}
                         onChange={handleDescriptionChange}/>
@@ -467,5 +523,89 @@ console.log(defaultValues)
 
       </form>
     </Form>
+    <div className="flex absolute right-3.5 top-0 z-50 gap-1.5">
+      
+      <Dialog>
+  <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Check className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
+  <DialogContent className="flex flex-col justify-center md:w-72">
+    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
+      <RefreshCcw className={"h-10 w-10"} strokeWidth={1.25} />
+    </div>
+    <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
+      <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Auto Saved, {dateFormat(lastSavedTime)}</h1>
+      <p className="text-sm text-muted-foreground text-center">
+        FalseNotes automatically saves your post as a draft every 15 seconds. You can also save it manually by clicking the save button.
+      </p>
+    </div>
+    <DialogFooter>
+      <Button onClick={saveDraft} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
+        isSaving ? (
+          <>
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
+          </>
+        ) : (
+          <>Save</>
+        )
+      
+      }</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+      <Dialog>
+  <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
+  <DialogContent className="flex flex-col justify-center md:w-72">
+    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
+      <Trash className={"h-10 w-10"} strokeWidth={1.25} />
+    </div>
+    <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
+      <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Delete Post</h1>
+      <p className="text-sm text-muted-foreground text-center">
+        Are you sure you want to delete this post? This action cannot be undone.
+      </p>
+    </div>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button className="m-auto" size={"lg"} variant="outline">Cancel</Button>
+      </DialogClose>
+      <Button onClick={
+      async() => {
+        handleDelete(props.post?.id, props.user)
+        await fetch(`/api/revalidate?path=/${props.user?.username}`)
+        router.push(`/${props.user?.username}`)
+      }
+    } className="m-auto" size={"lg"} variant="destructive" disabled={isSaving}>Delete</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
+    
+    <Button size={"icon"} variant={"secondary"} onClick={
+      () => {
+        if (form.getValues('title') === undefined) {
+          toast({
+            description: "Please enter a title for your post!",
+            variant: "destructive",
+          })
+        }
+        if (form.getValues('content') === undefined) {
+          toast({
+            description: "Please enter a content for your post!",
+            variant: "destructive",
+          })
+        }
+        if (form.getValues('content') == undefined && form.getValues('title') == undefined) {
+          toast({
+            description: "Please enter a title and content for your post!",
+            variant: "destructive",
+          })
+        }
+        if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
+          form.setValue('visibility', 'public');
+          openDialog();
+        }
+      }
+    } className="!mt-3">{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button></div>
+    </>
   )
 }

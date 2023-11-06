@@ -32,7 +32,7 @@ export default function EditorNavbar() {
   }, [user?.name]);
      return (
           <nav className="menu">
-               <div className="menu-backdrop h-[60px] border-b w-screen md:w-full">
+               <div className="menu-backdrop h-16 border-b w-screen md:w-full">
                </div>
                <div className="menu-container p-3.5">
                     

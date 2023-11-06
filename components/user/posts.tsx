@@ -37,14 +37,6 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
     }
   }, [inView])
 
-  async function handleDelete(postid: string) {
-    await fetch(`/api/posts/${user?.username}?postid=${postid}`, {
-      method: "DELETE",
-    });
-    await fetch(`/api/revalidate?path=/${user?.username}`)
-    router.refresh();
-  }
-
   const { status } = useSession();
   if (status == "loading") return null;
   return (

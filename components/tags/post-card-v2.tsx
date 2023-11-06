@@ -78,7 +78,7 @@ export default function PostCard(
                     </CardHeader>
                     <div className="flex">
                          <div className="flex-initial w-full">
-                              <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+                              <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.url}` : `/${props.post.author?.username}/${props.post.url}`}>
                                    <div>
                                         <div className="pb-2">
                                              <h2 className={`text-base md:text-xl font-bold text-ellipsis overflow-hidden ${props.user ? "line-clamp-2" : "line-clamp-3"}`}>{props.post.title}</h2>

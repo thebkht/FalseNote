@@ -9,7 +9,6 @@ function sanitizeTagName(tag: string) {
 
 async function insertTag(tags: any, postid: any) {
   if (tags) {
-    console.log(tags);
     for (const tag of tags) {
       const sanitizedTagName = sanitizeTagName(tag.value);
       const tagExists = await postgres.tag.findFirst({
@@ -22,7 +21,6 @@ async function insertTag(tags: any, postid: any) {
           data: { name: sanitizedTagName },
           select: { id: true }
         });
-        console.log(tagId);
         await connectTagToPost(tagId.id, postid);
       } else {
         console.log("tag exists and connected to post")
@@ -33,8 +31,6 @@ async function insertTag(tags: any, postid: any) {
 }
 
 async function connectTagToPost(tagId: any, postid: any) {
-  console.log(tagId, postid);
-  console.log("connecting tag to post");
   await postgres.postTag.create({
     data: {
       tagId: tagId,
@@ -79,49 +75,47 @@ export async function PATCH(
       return new Response("No content provided", { status: 400 });
     }
 
-    await postgres.$transaction(async (prisma) => {
-      const oldData = await prisma.post.findFirst({
-        where: {
-          id: Number(postid),
-        },
-        select: {
-          visibility: true,
-        },
-      });
-      await prisma.postTag.deleteMany({
-        where: {
-          postId: Number(postid),
-        },
-      });
-
-      await prisma.post.update({
-        where: {
-          id: Number(postid),
-        },
-        data: {
-          title: title,
-          content: content,
-          cover: coverImage || null,
-          visibility: visibility,
-          url: url,
-          subtitle: subtitle || null,
-          readingTime: readTime,
-          ...(oldData?.visibility === "draft" &&
-          visibility === "public" && { createdAt: new Date() }),
-        ...(oldData?.visibility === "public" &&
-          visibility === "public" && { updatedAt: new Date(), updated: true }),
-        },
-      });
-
-      await insertTag(tags, postid);
+    const oldData = await postgres.post.findFirst({
+      where: {
+        id: Number(postid),
+      },
+      select: {
+        visibility: true,
+      },
     });
+    await postgres.postTag.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    });
+
+    await postgres.post.update({
+      where: {
+        id: Number(postid),
+      },
+      data: {
+        title: title,
+        content: content,
+        cover: coverImage || null,
+        visibility: visibility,
+        url: url,
+        subtitle: subtitle || null,
+        readingTime: readTime,
+        ...(oldData?.visibility === "draft" &&
+        visibility === "public" && { createdAt: new Date() }),
+      ...(oldData?.visibility === "public" &&
+        visibility === "public" && { updatedAt: new Date(), updated: true }),
+      },
+    });
+
+    await insertTag(tags, postid);
 
     return new Response(null, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 });
     }
-
+    console.error(error);
     return new Response(null, { status: 500 });
   }
 }
