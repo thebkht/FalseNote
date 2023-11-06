@@ -37,9 +37,13 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                },
                _count: { select: { comments: true, likes: true, savedUsers: true } },
           },
-          orderBy: {
-               views: 'desc'
-          }, 
+          orderBy: [
+               { likes: { _count: 'desc' } },
+               { comments: { _count: 'desc' } },
+               { savedUsers: { _count: 'desc' } },
+               { views: 'desc' },
+               { createdAt: 'desc' }
+             ],
           take: 8
      });
      const latestPosts = await postgres.post.findMany({
