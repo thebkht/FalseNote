@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import {
   Dialog,
   DialogClose,
@@ -44,22 +44,26 @@ import { ToastAction } from "../ui/toast"
 import { toast } from "../ui/use-toast"
 import { handleDelete } from "../delete"
 import { dateFormat } from "@/lib/format-date"
+import { debounce } from 'lodash';
+import { Badge } from "../ui/badge"
+import TagBadge from "../tags/tag"
+import { Cross2Icon } from "@radix-ui/react-icons"
 
 const components = {
-  code({className, children,}: { className: string, children: any }) {
-      let lang = 'text'; // default monospaced text
-if (className && className.startsWith('lang-')) {
-lang = className.replace('lang-', '');
-}
-return (
- <SyntaxHighlighter style={oneDark} language={lang} >
-      {children}
- </SyntaxHighlighter>
-)
-}
+  code({ className, children, }: { className: string, children: any }) {
+    let lang = 'text'; // default monospaced text
+    if (className && className.startsWith('lang-')) {
+      lang = className.replace('lang-', '');
+    }
+    return (
+      <SyntaxHighlighter style={oneDark} language={lang} >
+        {children}
+      </SyntaxHighlighter>
+    )
+  }
 }
 
-export function PostEditorForm(props: {  post: any, user: any }) {
+export function PostEditorForm(props: { post: any, user: any }) {
   const router = useRouter();
   const [markdownContent, setMarkdownContent] = useState<string>(props.post?.content);
 
@@ -86,24 +90,23 @@ export function PostEditorForm(props: {  post: any, user: any }) {
       .optional(),
     url: z.string(),
     subtitle: z.string().max(280).optional(),
+    newTag: z.string().optional(),
   })
 
-  const [defaultTab, setDefaultTab] = useState<string>("editor")
-  
   type PostFormValues = z.infer<typeof postFormSchema>
   // This can come from your database or API.
-const defaultValues: Partial<PostFormValues> = {
-  title: props.post?.title,
-  content: props.post?.content,
-  visibility: props.post?.visibility,
-  coverImage: props.post?.cover || '',
-  url: props.post?.url,
-  subtitle: props.post?.subtitle || '',
-  tags: props.post?.tags?.map((tag: any) => ({
-    value: tag.tag?.name,
-  })),
-}
-  
+  const defaultValues: Partial<PostFormValues> = {
+    title: props.post?.title,
+    content: props.post?.content,
+    visibility: props.post?.visibility,
+    coverImage: props.post?.cover || '',
+    url: props.post?.url,
+    subtitle: props.post?.subtitle || '',
+    tags: props.post?.tags?.map((tag: any) => ({
+      value: tag.tag?.name,
+    })),
+  }
+
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues,
@@ -111,7 +114,7 @@ const defaultValues: Partial<PostFormValues> = {
   })
 
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: "tags",
     control: form.control,
   })
@@ -119,75 +122,63 @@ const defaultValues: Partial<PostFormValues> = {
   const [open, setOpen] = useState<boolean>(false);
 
   async function onSubmit(data: PostFormValues) {
-    setIsPublishing(true);
-    // Upload the cover image
+    try {
+      setIsPublishing(true);
 
-    if (file) {
-      try {
-        const dataForm = new FormData()
-        dataForm.set('file', file)
-        // Construct the request body with postId and authorId
+      if (file) {
+        const dataForm = new FormData();
+        dataForm.set('file', file);
+
+        const postId = form.getValues('url');
         const requestBody = {
-          postId: form.getValues('url'),
+          postId,
           userId: props.user?.id,
         };
 
         dataForm.set('body', JSON.stringify(requestBody));
 
-        const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
+        const res = await fetch(`/api/upload?postId=${postId}&authorId=${props.user?.username}`, {
           method: 'POST',
           body: dataForm,
         });
-        // get the image url
-        const { data: coverUrl } = await res.json()
-        data.coverImage = coverUrl.url;
 
-      } catch (e: any) {
-        // Handle errors here
-        console.error(e);
+        const { data: coverUrl } = await res.json();
+        data.coverImage = coverUrl.url;
       }
-    }
-    // Get the authorId from the session
-    const authorId = props.user?.id;
-    try {
-      // Submit the form
+
       const result = await fetch(`/api/post/${props.post?.id}`, {
         method: "PATCH",
         body: JSON.stringify({ ...data }),
-      })
-      setOpen(false);
+      });
+
       if (!result.ok) {
-        setIsPublishing(false)
-        toast({
-          description: "Something went wrong. Please try again later.",
-          variant: "destructive",
-          action: <ToastAction altText="Try again">Try again</ToastAction>
-        })
-        return
+        throw new Error('Failed to update post');
       }
-      toast({
-        description: "Post Published!",
-      })
-      await fetch(`/api/revalidate?path=/${props.user?.username}`)
-      router.push(`/${props.user?.username}/${form.getValues('url')}`)
+
+      await fetch(`/api/revalidate?path=/${props.user?.username}`);
+      router.push(`/${props.user?.username}/${form.getValues('url')}`);
+      toast({ description: "Post Published!" });
     } catch (error) {
-      console.error(error)
-      setIsPublishing(false)
+      console.error(error);
+      setIsPublishing(false);
+      toast({
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+        action: <ToastAction altText="Try again">Try again</ToastAction>
+      });
+    } finally {
+      setOpen(false);
     }
   }
-
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const [cover, setCover] = useState<string>('');
   const [file, setFile] = useState<File>(); // State for the uploaded file
 
-  function openDialog() {
-    setOpen(true);
-  }
- const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const saveDraft = async () => {
-    if(!open) {
+  const saveDraft = useCallback(debounce(async () => {
+    if (!open) {
       if (file) {
         try {
           const dataForm = new FormData()
@@ -197,9 +188,9 @@ const defaultValues: Partial<PostFormValues> = {
             postId: form.getValues('url'),
             userId: props.user?.id,
           };
-  
+
           dataForm.set('body', JSON.stringify(requestBody));
-  
+
           const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
             method: 'POST',
             body: dataForm,
@@ -207,7 +198,7 @@ const defaultValues: Partial<PostFormValues> = {
           // get the image url
           const { data: coverUrl } = await res.json()
           form.setValue('coverImage', coverUrl.url);
-  
+
         } catch (e: any) {
           // Handle errors here
           console.error(e);
@@ -240,70 +231,63 @@ const defaultValues: Partial<PostFormValues> = {
         }
       }
     }
-  }
+  }, 15000), [form, file, props.user, props.post, open])
 
   // when value changes, wait 750ms than save it as a draft
   const [lastSavedTime, setLastSavedTime] = useState<number>(Date.now());
   useEffect(() => {
     setIsSaving(true);
-    const timeout = setTimeout(saveDraft, 15000);
+    saveDraft();
     setIsSaving(false);
-    return () => clearTimeout(timeout);
-  }, [form.getValues('title'), form.getValues('content'), form.getValues('subtitle'), form.getValues('coverImage'), form.getValues('tags'), form.getValues('url'), form.getValues('visibility')])
+  }, [saveDraft]);
 
   useEffect(() => {
-    if (form.getValues('coverImage')) {
-      setCover(form.getValues('coverImage') as string);
+    const newCoverImage = form.getValues('coverImage') as string;
+
+    if (newCoverImage && newCoverImage !== cover) {
+      setCover(newCoverImage);
     }
+
     if (file) {
-      // Create a local URL for this image
-      setCover(URL.createObjectURL(file));
+      const newCoverUrl = URL.createObjectURL(file);
+
+      if (newCoverUrl !== cover) {
+        setCover(newCoverUrl);
+      }
     }
-  }, [file, form.getValues('coverImage')])
+  }, [file, form]);
 
   async function validateUrl(value: string) {
     try {
-      // Check if the url is already taken
       const result = await fetch(`/api/posts/validate-url?url=${value}&authorId=${props.user?.id}`, {
         method: 'GET',
       });
 
-      if (!result.ok) {
-        setIsValidUrl(false);
-        return
-      } else {
-        setIsValidUrl(true);
-        return
-      }
+      setIsValidUrl(result.ok);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setIsValidUrl(false);
+      // Consider showing an error message to the user here
     }
   }
 
   // URL-friendly link validation
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    if (value.split(' ').length > 1) {
-      const url = value.split(' ')[0].toLowerCase() + '-' + value.split(' ')[1].toLowerCase();
-      validateUrl(url);
-      if (isValidUrl) {
-        form.setValue('url', url);
-      } else {
-        setIsValidUrl(null);
-      }
+    const words = value.split(' ');
+    const url = words.length > 1 ? `${words[0].toLowerCase()}-${words[1].toLowerCase()}` : value.toLowerCase();
+
+    validateUrl(url);
+
+    if (isValidUrl) {
+      form.setValue('url', url);
     } else {
-      validateUrl(value.toLowerCase());
-      if (isValidUrl) {
-        form.setValue('url', value.toLowerCase());
-      } else {
-        setIsValidUrl(null);
-      }
+      setIsValidUrl(null);
     }
-  } 
+  }
 
   async function handleContentChange(value: string) {
-    form.setValue('content', value); // Update the form field value
-
+    form.setValue('content', value);
     setMarkdownContent(value);
   }
 
@@ -320,208 +304,209 @@ const defaultValues: Partial<PostFormValues> = {
   return (
     <>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full lg:w-[800px]" id="PostForm">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Textarea placeholder="Title of the post" className="font-bold text-3xl md:text-4xl md:leading-snug bg-popover" {...field} onChange={handleTitleChange} />
-              </FormControl>
-              {/* <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
-              </FormDescription> */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Tabs defaultValue={defaultTab} className="min-h-[250px]">
-          <TabsList className="mb-2 absolute z-20 my-3 top-0 right-36">
-            <TabsTrigger value="editor" ><Pencil className="h-[1.2rem] w-[1.2rem]" /><span className="sr-only">Editor</span></TabsTrigger>
-            <TabsTrigger value="preview"><Eye className="h-[1.2rem] w-[1.2rem]" /> <span className="sr-only">Preview</span></TabsTrigger>
-          </TabsList>
-          <TabsContent value="editor"> <FormField
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full lg:w-[800px]" id="PostForm">
+          <FormField
             control={form.control}
-            name="content"
+            name="title"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <TextareaAutosize
-                    className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm md:text-base text-foreground ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
-                    placeholder="Write your post here..."
-                    {...field}
-                    onChange={(e) => handleContentChange(e.target.value)}
-                  />
+                  <Textarea placeholder="Title of the post" className="font-bold text-3xl md:text-4xl md:leading-snug bg-popover" {...field} onChange={handleTitleChange} />
                 </FormControl>
-                {/* <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}
-          /></TabsContent>
-          <TabsContent value="preview" className="pb-5 px-3 bg-popover text-sm rounded-md">
-          <article className="article__content markdown-body w-full !m-0">
-                              <Markdown options={{
-                                   overrides: {
-                                        code: {
-                                             component: components.code,
-                                        },
-                                   },
-                              }}>{markdownContent}</Markdown>
-                              {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
-                         </article>
-          </TabsContent>
-        </Tabs>
-
-        <Dialog onOpenChange={setOpen} open={open}>
-          <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
-            <ScrollArea className="h-full w-full px-6">
-              <DialogHeader className="py-6">
-                <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 pb-4 m-1">
-                <FormField
-                  control={form.control}
-                  name="visibility"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel>Privacy</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="public" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Public
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="private" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Private
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="draft" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Draft</FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="url"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>URL-friendly Link</FormLabel>
-                      <FormDescription>
-                        {`falsenotes.app/${props.user?.username}/`}
-                      </FormDescription>
-                      <FormControl>
-                        <Input placeholder="URL" {...field} onChange={handleUrlChange} />
-                      </FormControl>
-                      {isValidUrl !== null && (
-                        isValidUrl ? (
-                          <FormMessage className="text-green-500">
-                            This URL is available.
-                          </FormMessage>
-                        ) : (
-                          <FormMessage className="text-red-500">
-                            This URL is unavailable. Please try another one.
-                          </FormMessage>
-                        )
-                      )}
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="coverImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Post Preview</FormLabel>
-                      <FormControl>
-                        <>
-                        {
-                          cover && (
-                            <AspectRatio ratio={16 / 9} className="bg-muted">
-                                <Image
-                                  src={file ? URL.createObjectURL(file) as string : field.value as string}
-                                  alt="Cover Image"
-                                  fill
-                                  className="rounded-md object-cover"
-                                />
-                              </AspectRatio>
-                          )
-                        }
-                          <Input type="file" accept="image/*"  onChange={(e) => setFile(e.target.files?.[0])} />
-
-                        </>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="subtitle"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Post Subtitle</FormLabel>
-                      <FormControl>
-                        <TextareaAutosize {...field} className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]" rows={1}
-                        onChange={handleDescriptionChange}/>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid gap-4 grid-cols-5">
-                  {fields.map((field, index) => (
-                    <FormField
-                      control={form.control}
-                      key={field.id}
-                      name={`tags.${index}.value`}
-                      render={({ field }) => (
-                        <FormItem>
-                          {/* <FormDescription className={cn(index !== 0 && "sr-only")}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription> */}
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+          />
+          <Tabs defaultValue={"editor"} className="min-h-[250px]">
+            <TabsList className="mb-2 absolute z-20 my-3 top-0 right-36">
+              <TabsTrigger value="editor" ><Pencil className="h-[1.2rem] w-[1.2rem]" /><span className="sr-only">Editor</span></TabsTrigger>
+              <TabsTrigger value="preview"><Eye className="h-[1.2rem] w-[1.2rem]" /> <span className="sr-only">Preview</span></TabsTrigger>
+            </TabsList>
+            <TabsContent value="editor"> <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <TextareaAutosize
+                      className="flex rounded-md border border-input bg-popover px-3 py-2 text-sm md:text-base text-foreground ring-offset-background placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]"
+                      placeholder="Write your post here..."
+                      {...field}
+                      onChange={(e) => handleContentChange(e.target.value)}
                     />
-                  ))}
-                  <Button
-                    variant="outline"
-                    className="mt-2 col-span-5"
-                    onClick={() => append({ value: "" })}
-                  >
-                    Add Tag
-                  </Button>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /></TabsContent>
+            <TabsContent value="preview" className="pb-5 px-3 bg-popover text-sm rounded-md">
+              <article className="article__content markdown-body w-full !m-0">
+                <Markdown options={{
+                  overrides: {
+                    code: {
+                      component: components.code,
+                    },
+                  },
+                }}>{markdownContent}</Markdown>
+                {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
+              </article>
+            </TabsContent>
+          </Tabs>
+
+          <Dialog onOpenChange={setOpen} open={open}>
+            <DialogContent className="h-full max-h-[405px] md:max-h-[540px] !p-0">
+              <ScrollArea className="h-full w-full px-6">
+                <DialogHeader className="py-6">
+                  <DialogTitle className="font-bold">Post Settings for publishing</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 pb-4 m-1">
+                  <FormField
+                    control={form.control}
+                    name="visibility"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel>Privacy</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-col space-y-1"
+                          >
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="public" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Public
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="private" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                Private
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-3 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="draft" />
+                              </FormControl>
+                              <FormLabel className="font-normal">Draft</FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>URL-friendly Link</FormLabel>
+                        <FormDescription>
+                          {`falsenotes.app/${props.user?.username}/`}
+                        </FormDescription>
+                        <FormControl>
+                          <Input placeholder="URL" {...field} onChange={handleUrlChange} />
+                        </FormControl>
+                        {isValidUrl !== null && (
+                          isValidUrl ? (
+                            <FormMessage className="text-green-500">
+                              This URL is available.
+                            </FormMessage>
+                          ) : (
+                            <FormMessage className="text-red-500">
+                              This URL is unavailable. Please try another one.
+                            </FormMessage>
+                          )
+                        )}
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="coverImage"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Post Preview</FormLabel>
+                        <FormControl>
+                          <>
+                            {
+                              cover && (
+                                <AspectRatio ratio={16 / 9} className="bg-muted">
+                                  <Image
+                                    src={file ? URL.createObjectURL(file) as string : field.value as string}
+                                    alt="Cover Image"
+                                    fill
+                                    className="rounded-md object-cover"
+                                  />
+                                </AspectRatio>
+                              )
+                            }
+                            <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
+
+                          </>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="subtitle"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Subtitle</FormLabel>
+                        <FormControl>
+                          <TextareaAutosize {...field} className="flex rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full min-h-[40px]" rows={1}
+                            onChange={handleDescriptionChange} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                        control={form.control}
+                        name="newTag"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Tags</FormLabel>
+                            <div className="flex-wrap">
+                    {fields.map((field, index) => (
+                      <TagBadge key={field.id} className="pr-1.5 text-sm font-medium my-1.5 mr-1.5">
+                        {field.value}
+                        <Button variant={'ghost'} onClick={() => remove(index)} className="h-fit w-fit !p-0 ml-2.5 hover:bg-transparent"><Cross2Icon className="h-3 w-3" /></Button>
+                      </TagBadge>
+                    ))}
+                    </div>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        variant="outline"
+                        className="mt-2"
+                        onClick={() => {
+                          const newTag = form.getValues('newTag');
+                          if (newTag?.trim() !== '' && newTag !== undefined) {
+                            append({ value: newTag });
+                            form.setValue('newTag', '');
+                          }
+                        }}
+                      >
+                        Add Topic
+                      </Button>
+                  
                 </div>
-              </div>
               </ScrollArea>
               <DialogFooter className="p-6 border-t">
                 <Button
@@ -534,7 +519,7 @@ const defaultValues: Partial<PostFormValues> = {
                   {
                     isPublishing ? (
                       <>
-                        <Icons.spinner  className="mr-2 h-4 w-4 animate-spin" /> Publishing
+                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Publishing
                       </>
                     ) : (
                       <>Publish</>
@@ -542,106 +527,94 @@ const defaultValues: Partial<PostFormValues> = {
                   }
                 </Button>
               </DialogFooter>
-            
+
+            </DialogContent>
+          </Dialog>
+
+        </form>
+      </Form>
+      <div className="flex absolute right-3.5 top-0 z-50 gap-1.5">
+        <Dialog>
+          <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Check className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
+          <DialogContent className="flex flex-col justify-center md:w-72">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
+              <RefreshCcw className={"h-10 w-10"} strokeWidth={1.25} />
+            </div>
+            <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
+              <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Auto Saved, {dateFormat(lastSavedTime)}</h1>
+              <p className="text-sm text-muted-foreground text-center">
+                FalseNotes automatically saves your post as a draft every 15 seconds. You can also save it manually by clicking the save button.
+              </p>
+            </div>
+            <DialogFooter>
+              <Button onClick={saveDraft} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
+                isSaving ? (
+                  <>
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
+                  </>
+                ) : (
+                  <>Save</>
+                )
+
+              }</Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
 
-      </form>
-    </Form>
-    <div className="flex absolute right-3.5 top-0 z-50 gap-1.5">
-      
-    {/* <Button size={"icon"} variant={"outline"} className="!mt-3" onClick={
-      () => {
-        setDefaultTab(defaultTab === "editor" ? "preview" : "editor")
-      }
-    
-    }>{
-      defaultTab === "editor" && <Pencil className="h-[1.2rem] w-[1.2rem]" />
-    }{
-      defaultTab === "preview" && <Eye className="h-[1.2rem] w-[1.2rem]" />
-    }</Button> */}
-      
-      <Dialog>
-  <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Check className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
-  <DialogContent className="flex flex-col justify-center md:w-72">
-    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
-      <RefreshCcw className={"h-10 w-10"} strokeWidth={1.25} />
-    </div>
-    <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
-      <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Auto Saved, {dateFormat(lastSavedTime)}</h1>
-      <p className="text-sm text-muted-foreground text-center">
-        FalseNotes automatically saves your post as a draft every 15 seconds. You can also save it manually by clicking the save button.
-      </p>
-    </div>
-    <DialogFooter>
-      <Button onClick={saveDraft} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
-        isSaving ? (
-          <>
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
-          </>
-        ) : (
-          <>Save</>
-        )
-      
-      }</Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
+        <Dialog>
+          <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
+          <DialogContent className="flex flex-col justify-center md:w-72">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
+              <Trash2 className={"h-10 w-10"} strokeWidth={1.25} />
+            </div>
+            <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
+              <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Delete Post</h1>
+              <p className="text-sm text-muted-foreground text-center">
+                Are you sure you want to delete this post? This action cannot be undone.
+              </p>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button className="m-auto" size={"lg"} variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button onClick={
+                async () => {
+                  handleDelete(props.post?.id, props.user)
+                  await fetch(`/api/revalidate?path=/${props.user?.username}`)
+                  router.push(`/${props.user?.username}`)
+                }
+              } className="m-auto" size={"lg"} variant="destructive" disabled={isSaving}>Delete</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
-      <Dialog>
-  <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
-  <DialogContent className="flex flex-col justify-center md:w-72">
-    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
-      <Trash2 className={"h-10 w-10"} strokeWidth={1.25} />
-    </div>
-    <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
-      <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Delete Post</h1>
-      <p className="text-sm text-muted-foreground text-center">
-        Are you sure you want to delete this post? This action cannot be undone.
-      </p>
-    </div>
-    <DialogFooter>
-      <DialogClose asChild>
-        <Button className="m-auto" size={"lg"} variant="outline">Cancel</Button>
-      </DialogClose>
-      <Button onClick={
-      async() => {
-        handleDelete(props.post?.id, props.user)
-        await fetch(`/api/revalidate?path=/${props.user?.username}`)
-        router.push(`/${props.user?.username}`)
-      }
-    } className="m-auto" size={"lg"} variant="destructive" disabled={isSaving}>Delete</Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
 
-    
-    <Button size={"icon"} variant={"secondary"} onClick={
-      () => {
-        if (form.getValues('title') === undefined) {
-          toast({
-            description: "Please enter a title for your post!",
-            variant: "destructive",
-          })
-        }
-        if (form.getValues('content') === undefined) {
-          toast({
-            description: "Please enter a content for your post!",
-            variant: "destructive",
-          })
-        }
-        if (form.getValues('content') == undefined && form.getValues('title') == undefined) {
-          toast({
-            description: "Please enter a title and content for your post!",
-            variant: "destructive",
-          })
-        }
-        if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
-          form.setValue('visibility', 'public');
-          openDialog();
-        }
-      }
-    } className="!mt-3">{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button></div>
+        <Button size={"icon"} variant={"secondary"} onClick={
+          () => {
+            if (form.getValues('title') === undefined) {
+              toast({
+                description: "Please enter a title for your post!",
+                variant: "destructive",
+              })
+            }
+            if (form.getValues('content') === undefined) {
+              toast({
+                description: "Please enter a content for your post!",
+                variant: "destructive",
+              })
+            }
+            if (form.getValues('content') == undefined && form.getValues('title') == undefined) {
+              toast({
+                description: "Please enter a title and content for your post!",
+                variant: "destructive",
+              })
+            }
+            if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
+              form.setValue('visibility', 'public');
+              setOpen(true);
+            }
+          }
+        } className="!mt-3">{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button></div>
     </>
   )
 }
