@@ -77,7 +77,7 @@ model User {
   Followers Follow[] @relation("Following")
   tagfollower TagFollow[] @relation("TagFollower")
   bookmarks Bookmark[]
-
+  readinghistory ReadingHistory[]
 
   @@map("users")
 }
@@ -103,6 +103,7 @@ model Post {
   comments  Comment[]
   likes     Like[]
   savedUsers Bookmark[]
+  readedUsers ReadingHistory[]
 
   @@index([createdAt])
   @@map("posts")
@@ -232,4 +233,16 @@ model UserSettings {
   updatedAt DateTime @updatedAt
 
   @@map("usersettings")
+}
+
+model ReadingHistory {
+  id        Int      @id @default(autoincrement())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("readinghistory")
 }
