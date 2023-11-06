@@ -102,8 +102,6 @@ const defaultValues: Partial<PostFormValues> = {
     value: tag.tag?.name,
   })),
 }
-
-console.log(defaultValues)
   
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
@@ -111,7 +109,6 @@ console.log(defaultValues)
     mode: "onChange",
   })
 
-  console.log(form)
 
   const { fields, append } = useFieldArray({
     name: "tags",
@@ -146,7 +143,7 @@ console.log(defaultValues)
 
       } catch (e: any) {
         // Handle errors here
-        console.error(e)
+        console.error(e);
       }
     }
     // Get the authorId from the session
