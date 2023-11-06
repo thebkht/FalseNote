@@ -5,9 +5,8 @@ import TagLatestPosts from "@/components/tags/latest-posts";
 import TagPopularPosts from "@/components/tags/post";
 import { Separator } from "@/components/ui/separator";
 import postgres from "@/lib/postgres";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
-
 
 export default async function TagPage({ params }: { params: { tagname: string } }) {
      const tag = await postgres.tag.findFirst({
@@ -17,11 +16,6 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           include: {
                followingtag: true,
                _count: { select: { posts: true, followingtag: true } }
-          },
-          orderBy: {
-               posts: {
-                    _count: 'desc'
-               }
           }
      })
      if (!tag) redirect("/404");
@@ -42,11 +36,6 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                     }
                },
                _count: { select: { comments: true, likes: true, savedUsers: true } },
-               tags: {
-                    include: {
-                         tag: true
-                    }
-               }
           },
           orderBy: {
                views: 'desc'
@@ -77,6 +66,8 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           }, 
           take: 5
      });
+
+     console.log(popularPosts)
 
      const session = await getSessionUser();
      return (

@@ -190,7 +190,6 @@ console.log(defaultValues)
 
   const saveDraft = async () => {
     if (form.getValues('title') && form.getValues('content')) {
-      setIsSaving(true);
       const authorId = props.user?.id;
       form.setValue('visibility', 'draft');
       try {
@@ -209,7 +208,6 @@ console.log(defaultValues)
           return
         }
         setLastSavedTime(Date.now());
-        setIsSaving(false);
         toast({
           description: "Draft Saved!",
         })
@@ -222,7 +220,9 @@ console.log(defaultValues)
   // when value changes, wait 750ms than save it as a draft
   const [lastSavedTime, setLastSavedTime] = useState<number>(Date.now());
   useEffect(() => {
+    setIsSaving(true);
     const timeout = setTimeout(saveDraft, 15000);
+    setIsSaving(false);
     return () => clearTimeout(timeout);
   }, [form.getValues('title'), form.getValues('content'), form.getValues('subtitle'), form.getValues('coverImage'), form.getValues('tags'), form.getValues('url'), form.getValues('visibility')])
 

@@ -4,8 +4,13 @@ import FeedPostCard from "../blog/feed-post-card";
 import TagPostCard from "./post-card";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default function TagPopularPosts({ posts, tag, session }: { posts: any, tag: any, session: any }) {
+export default function TagPopularPosts({ posts: initialPosts, tag, session }: { posts: any, tag: any, session: any }) {
+     const [posts, setPosts] = useState<Array<any>>(initialPosts);
+     useEffect(() => {
+          setPosts(initialPosts)
+     }, [initialPosts])
      const { status: sessionStatus } = useSession();
      if (sessionStatus !== "authenticated") return null;
      const firstTwoPosts = posts.slice(0, 2);
