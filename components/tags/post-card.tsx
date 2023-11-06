@@ -12,7 +12,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark, BookmarkPlus, CalendarDays, Check, Eye, Heart, MessageCircle, User } from "lucide-react";
+import { Bookmark, BookmarkPlus, CalendarDays, Check, Eye, Heart, MessageCircle, MoreHorizontal, User } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -24,6 +24,7 @@ import { formatNumberWithSuffix } from "../format-numbers";
 import { usePathname } from "next/navigation";
 import { handlePostSave } from "../bookmark";
 import { handlePostLike } from "../like";
+import PostMoreActions from "../blog/post-more-actions";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -119,12 +120,19 @@ export default function TagPostCard(
                                                   <span>{formatNumberWithSuffix(props.post._count.comments)}</span>
                                              </div>
                                         </div>
-                                        <div className="stats flex items-center justify-around gap-2">
+                                        <div className="flex items-center justify-around gap-2">
 
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                        <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} strokeWidth={2} />
                                                   </Button>
+                                             </div>
+                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                             <PostMoreActions post={props.post} session={props.session}>
+                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                            <MoreHorizontal className="h-5 w-5" />
+                                                       </Button>
+                                                  </PostMoreActions>
                                              </div>
                                         </div>
                                    </div>

@@ -25,6 +25,7 @@ import { usePathname } from "next/navigation";
 import { getSessionUser } from "../get-session";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { handlePostLike } from "../like";
+import PostMoreActions from "../blog/post-more-actions";
 
 
 export default function PostCard(
@@ -116,11 +117,11 @@ export default function PostCard(
                                                   </Button>
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                       <ShareList url={props.post.url} text={props.post.title}>
+                                                  <PostMoreActions post={props.post} session={props.session}>
+                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                             <MoreHorizontal className="h-5 w-5" />
-                                                       </ShareList>
-                                                  </Button>
+                                                       </Button>
+                                                  </PostMoreActions>
                                              </div>
                                         </div>
                                    </div>
@@ -169,11 +170,11 @@ export default function PostCard(
                                         </Button>
                                    </div>
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                             <ShareList url={props.post.url} text={props.post.title}>
-                                                  <MoreHorizontal className="h-5 w-5" />
-                                             </ShareList>
-                                        </Button>
+                                   <PostMoreActions post={props.post} session={props.session}>
+                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                            <MoreHorizontal className="h-5 w-5" />
+                                                       </Button>
+                                                  </PostMoreActions>
                                    </div>
                               </div>
                          </div>

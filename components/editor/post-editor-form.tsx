@@ -48,7 +48,7 @@ import { debounce } from 'lodash';
 import { Badge } from "../ui/badge"
 import TagBadge from "../tags/tag"
 import { Cross2Icon } from "@radix-ui/react-icons"
-import PostDeleteDialog from "../post-delete-dialog"
+import PostDeleteDialog from "../blog/post-delete-dialog"
 
 const components = {
   code({ className, children, }: { className: string, children: any }) {

@@ -97,7 +97,7 @@ export default function FeedPostCard(
                   </div>
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                      <ShareList url={props.post.url} text={props.post.title}>
+                      <ShareList url={`https://falsenotes.vercel.app/${props.post.author.username}/${props.post.url}`} text={props.post.title}>
                         <MoreHorizontal className="h-5 w-5" />
                       </ShareList>
                     </Button>
@@ -150,7 +150,7 @@ export default function FeedPostCard(
               </div>
               <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                  <ShareList url={props.post.url} text={props.post.title}>
+                  <ShareList url={`https://falsenotes.vercel.app/${props.post.author.username}/${props.post.url}`} text={props.post.title}>
                     <MoreHorizontal className="h-5 w-5" />
                   </ShareList>
                 </Button>

@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
-import { handleDelete } from "./delete";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogFooter } from "./ui/dialog";
+import { handleDelete } from "../delete";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogFooter } from "../ui/dialog";
 import { Trash2 } from "lucide-react";
 
 

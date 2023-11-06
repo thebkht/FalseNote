@@ -66,6 +66,7 @@
     "net": "^1.0.2",
     "next": "^14.0.1",
     "next-auth": "^4.24.4",
+    "next-share": "^0.27.0",
     "next-themes": "^0.2.1",
     "nextjs-toploader": "^1.4.2",
     "pg": "^8.11.0",

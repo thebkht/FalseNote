@@ -194,7 +194,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags, com
 
                          {
                               // if post word count is greater than 1000 show the stats
-                              stats?.words > 1000 && (
+                              stats?.words > 500 && (
                                    <div className="sticky top-0 w-full left-0 mt-8">
                                         <PostTabs post={post} session={session} author={author} className="border-none" comments={comments} />
                                    </div>
