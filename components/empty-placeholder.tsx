@@ -33,8 +33,9 @@ interface EmptyPlaceholderIconProps
 EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   name,
   className,
+  parentClassName,
   ...props
-}: EmptyPlaceholderIconProps) {
+}: EmptyPlaceholderIconProps & { parentClassName?: string }) {
   const Icon = Icons[name]
 
   if (!Icon) {
@@ -42,7 +43,7 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   }
 
   return (
-    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+    <div className={cn("flex h-20 w-20 items-center justify-center rounded-full bg-muted", parentClassName)}>
       <Icon className={cn("h-10 w-10", className)} {...props} />
     </div>
   )

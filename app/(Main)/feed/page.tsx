@@ -17,6 +17,7 @@ import { getBookmarks } from '@/lib/prisma/session';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { dateFormat } from '@/lib/format-date';
 import { Icons } from '@/components/icon';
+import { EmptyPlaceholder } from '@/components/empty-placeholder';
 
 export default async function Feed({
   searchParams
@@ -89,14 +90,14 @@ export default async function Feed({
                 {topUsers && (
                   <FeaturedDev data={topUsers} />
                 )}
-                {bookmarks.length !== 0 && (
-                  <Card className="feed__content_featured_card bg-background border-none shadow-none">
+                <Card className="feed__content_featured_card bg-background border-none shadow-none">
                     <CardHeader className="py-4 px-0">
                       <CardTitle className="feed__content_featured_card_title text-base">Recently saved</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
-                      <ol className="flex flex-col items-start justify-between space-y-4">
-                        {bookmarks.map(
+                      {bookmarks.length !== 0 ? (
+                        <ol className="flex flex-col items-start justify-between space-y-4">
+                        {bookmarks?.map(
                           (item: any, index: number) => (
                             <li key={item.id} className="text-sm space-y-2.5">
 
@@ -127,9 +128,16 @@ export default async function Feed({
                           </Link>
                         </li>
                       </ol>
+                      ) : (
+                        <EmptyPlaceholder className='min-h-min p-6'>
+                          <EmptyPlaceholder.Icon name='bookmark' className='h-5 w-5' parentClassName='h-10 w-10' />
+                          <EmptyPlaceholder.Description className='!my-2'>
+                            You haven’t saved any posts yet. Click the bookmark icon on a post to save it here.
+                          </EmptyPlaceholder.Description>
+                        </EmptyPlaceholder>
+                      )}
                     </CardContent>
                   </Card>
-                )}
               </div>
             </div>
           </div>

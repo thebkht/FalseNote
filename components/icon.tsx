@@ -27,6 +27,7 @@ import {
      User,
      X,
      type LucideIcon,
+     Bookmark,
    } from "lucide-react"
    
    export type Icon = LucideIcon
@@ -53,6 +54,7 @@ import {
      moon: Moon,
      laptop: Laptop,
      check: Check,
+     bookmark: Bookmark,
      logoIcon: (props: IconProps) => (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466.45 466" {...props} fill="none">
                <path d="M205.57,232.99H68.75L0,113.71h137.48l0.01,0.03L205.57,232.99z M205.57,232.99l-68.41,118.69L201.32,463
