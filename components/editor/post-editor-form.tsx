@@ -86,11 +86,12 @@ export function PostEditorForm(props: { post: any, user: any }) {
         z.object({
           value: z.string(),
         })
-      )
+      ).max(5, {
+        message: "You can select up to 5 tags.",
+      })
       .optional(),
     url: z.string(),
     subtitle: z.string().max(280).optional(),
-    newTag: z.string().optional(),
   })
 
   type PostFormValues = z.infer<typeof postFormSchema>
@@ -120,6 +121,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
   })
 
   const [open, setOpen] = useState<boolean>(false);
+  const [newTag, setNewTag] = useState<string | undefined>(undefined);
 
   async function onSubmit(data: PostFormValues) {
     try {
@@ -177,8 +179,10 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const saveDraft = useCallback(debounce(async () => {
-    if (!open) {
+  const saveDraft = async () => {
+    console.log('saving draft')
+    console.log(open)
+    if(!open) {
       if (file) {
         try {
           const dataForm = new FormData()
@@ -188,9 +192,9 @@ export function PostEditorForm(props: { post: any, user: any }) {
             postId: form.getValues('url'),
             userId: props.user?.id,
           };
-
+  
           dataForm.set('body', JSON.stringify(requestBody));
-
+  
           const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
             method: 'POST',
             body: dataForm,
@@ -198,7 +202,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
           // get the image url
           const { data: coverUrl } = await res.json()
           form.setValue('coverImage', coverUrl.url);
-
+  
         } catch (e: any) {
           // Handle errors here
           console.error(e);
@@ -220,7 +224,6 @@ export function PostEditorForm(props: { post: any, user: any }) {
               action: <ToastAction altText="Try again">Try again</ToastAction>
             })
             setIsSaving(false);
-            return
           }
           setLastSavedTime(Date.now());
           toast({
@@ -231,15 +234,17 @@ export function PostEditorForm(props: { post: any, user: any }) {
         }
       }
     }
-  }, 15000), [form, file, props.user, props.post, open])
+  }
 
   // when value changes, wait 750ms than save it as a draft
   const [lastSavedTime, setLastSavedTime] = useState<number>(Date.now());
   useEffect(() => {
     setIsSaving(true);
-    saveDraft();
+    const timeout = setTimeout(saveDraft, 15000);
     setIsSaving(false);
-  }, [saveDraft]);
+    return () => clearTimeout(timeout);
+  }, [form, file, props.user, props.post, open])
+
 
   useEffect(() => {
     const newCoverImage = form.getValues('coverImage') as string;
@@ -470,42 +475,48 @@ export function PostEditorForm(props: { post: any, user: any }) {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
-                        control={form.control}
-                        name="newTag"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Tags</FormLabel>
-                            <div className="flex-wrap">
-                    {fields.map((field, index) => (
-                      <TagBadge key={field.id} className="pr-1.5 text-sm font-medium my-1.5 mr-1.5">
-                        {field.value}
-                        <Button variant={'ghost'} onClick={() => remove(index)} className="h-fit w-fit !p-0 ml-2.5 hover:bg-transparent"><Cross2Icon className="h-3 w-3" /></Button>
-                      </TagBadge>
-                    ))}
-                    </div>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tags</FormLabel>
+                        <FormDescription>
+                          Add tags (up to 5) to help readers find your post easier.
+                        </FormDescription>
+                        <div className="flex-wrap">
+                          {fields.map((field, index) => (
+                            <TagBadge key={field.id} className="pr-1.5 text-sm font-medium my-1.5 mr-1.5">
+                              {field.value}
+                              <Button variant={'ghost'} onClick={() => remove(index)} className="h-fit w-fit !p-0 ml-2.5 hover:bg-transparent"><Cross2Icon className="h-3 w-3" /></Button>
+                            </TagBadge>
+                          ))}
+                        </div>
+                        {fields.length !== 5 && (
+                          <FormControl>
+                            <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} />
+                          </FormControl>
                         )}
-                      />
-                      <Button
-                        variant="outline"
-                        className="mt-2"
-                        onClick={() => {
-                          const newTag = form.getValues('newTag');
-                          if (newTag?.trim() !== '' && newTag !== undefined) {
-                            append({ value: newTag });
-                            form.setValue('newTag', '');
-                          }
-                        }}
-                      >
-                        Add Topic
-                      </Button>
-                  
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {fields.length !== 5 && (
+                    <Button
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => {
+                        if (newTag?.trim() !== '' && newTag !== undefined) {
+                          append({ value: newTag });
+                          setNewTag('');
+                        }
+                      }}
+                    >
+                      Add Topic
+                    </Button>
+                  )}
+
                 </div>
               </ScrollArea>
               <DialogFooter className="p-6 border-t">
@@ -547,7 +558,8 @@ export function PostEditorForm(props: { post: any, user: any }) {
               </p>
             </div>
             <DialogFooter>
-              <Button onClick={saveDraft} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
+              <DialogClose asChild>
+              <Button onClick={() => saveDraft()} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
                 isSaving ? (
                   <>
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
@@ -557,6 +569,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 )
 
               }</Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -573,7 +586,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 Are you sure you want to delete this post? This action cannot be undone.
               </p>
             </div>
-            <DialogFooter>
+            <DialogFooter className="!flex-row">
               <DialogClose asChild>
                 <Button className="m-auto" size={"lg"} variant="outline">Cancel</Button>
               </DialogClose>
