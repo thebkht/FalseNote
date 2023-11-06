@@ -48,6 +48,7 @@ import { debounce } from 'lodash';
 import { Badge } from "../ui/badge"
 import TagBadge from "../tags/tag"
 import { Cross2Icon } from "@radix-ui/react-icons"
+import PostDeleteDialog from "../post-delete-dialog"
 
 const components = {
   code({ className, children, }: { className: string, children: any }) {
@@ -574,32 +575,9 @@ export function PostEditorForm(props: { post: any, user: any }) {
           </DialogContent>
         </Dialog>
 
-        <Dialog>
-          <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
-          <DialogContent className="flex flex-col justify-center md:w-72">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
-              <Trash2 className={"h-10 w-10"} strokeWidth={1.25} />
-            </div>
-            <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
-              <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Delete Post</h1>
-              <p className="text-sm text-muted-foreground text-center">
-                Are you sure you want to delete this post? This action cannot be undone.
-              </p>
-            </div>
-            <DialogFooter className="!flex-row">
-              <DialogClose asChild>
-                <Button className="m-auto" size={"lg"} variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button onClick={
-                async () => {
-                  handleDelete(props.post?.id, props.user)
-                  await fetch(`/api/revalidate?path=/${props.user?.username}`)
-                  router.push(`/${props.user?.username}`)
-                }
-              } className="m-auto" size={"lg"} variant="destructive" disabled={isSaving}>Delete</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <PostDeleteDialog post={props.post} user={props.user}>
+        <Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button>
+        </PostDeleteDialog>
 
 
         <Button size={"icon"} variant={"secondary"} onClick={
