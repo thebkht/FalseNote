@@ -9,7 +9,7 @@ import { handlePostLike } from "../like";
 import { handlePostSave } from "../bookmark";
 import { useEffect, useState } from "react";
 
-export default function PostTabs({ post: initialPost, className, session, author }: { post: any, className?: string, session: any, author: any }) {
+export default function PostTabs({ post: initialPost, className, session, author, comments }: { post: any, className?: string, session: any, author: any, comments: boolean | undefined }) {
      const [post, setPost] = useState<any>(initialPost);
      useEffect(() => {
           setPost(initialPost);
@@ -21,6 +21,7 @@ export default function PostTabs({ post: initialPost, className, session, author
      const save = async (postId: number) => {
           await handlePostSave({ postId, path: pathname });
      }
+     const [open, setOpen] = useState(comments);
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
      const isSaved = post?.savedUsers?.some((savedUser: any) => savedUser.userId === session?.id);
      return (
@@ -34,7 +35,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                               <span className="text-sm">{post?._count.likes}</span>
                          </div>
 
-                         <CommentsSheet post={post} comments={post?.comments} session={session}>
+                         <CommentsSheet post={post} comments={post?.comments} session={session} open={open} onOpenChange={setOpen} >
                               <div className="flex items-center">
                                    <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
                                         <MessageCircle className="w-5 h-5" strokeWidth={2} />

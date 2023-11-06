@@ -36,7 +36,7 @@ const components = {
      }
 }
 
-export default function Post({ post: initialPost, author, sessionUser, tags }: { post: any, author: any, sessionUser: any, tags: any }) {
+export default function Post({ post: initialPost, author, sessionUser, tags, comments }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined }) {
 
      const [isFollowing, setIsFollowing] = useState<boolean>(author.Followers?.some((follower: any) => follower.followerId === sessionUser?.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
@@ -157,7 +157,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                               </div>
                          </div>
 
-                         <PostTabs post={post} session={session} author={author} className="mt-8" />
+                         <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} />
                          <article className="article__content prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
                               {/* <Markdown>{post?.content}</Markdown> */}
                               <Markdown options={{
@@ -196,7 +196,7 @@ export default function Post({ post: initialPost, author, sessionUser, tags }: {
                               // if post word count is greater than 1000 show the stats
                               stats?.words > 1000 && (
                                    <div className="sticky top-0 w-full left-0 mt-8">
-                                        <PostTabs post={post} session={session} author={author} className="border-none" />
+                                        <PostTabs post={post} session={session} author={author} className="border-none" comments={comments} />
                                    </div>
                               )
                          }

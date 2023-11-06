@@ -24,6 +24,7 @@ import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
 import { getSessionUser } from "../get-session";
 import { formatNumberWithSuffix } from "../format-numbers";
+import { handlePostLike } from "../like";
 
 
 export default function PostCard(
@@ -36,6 +37,9 @@ export default function PostCard(
      const pathname = usePathname();
      const save = async (postId: number) => {
           await handlePostSave({ postId, path: pathname });
+     }
+     const like = async (postId: number) => {
+          await handlePostLike({ postId, path: pathname });
      }
      const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (

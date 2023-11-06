@@ -74,6 +74,7 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
      useEffect(() => {
           setComments(comments);
      }, [comments])
+
      const { width, height } = useWindowDimensions();
 
      return (

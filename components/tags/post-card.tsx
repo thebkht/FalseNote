@@ -23,6 +23,7 @@ import { dateFormat } from "@/lib/format-date";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { usePathname } from "next/navigation";
 import { handlePostSave } from "../bookmark";
+import { handlePostLike } from "../like";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -35,6 +36,10 @@ export default function TagPostCard(
      const save = async (postId: number) => {
           await handlePostSave({ postId, path: pathname });
      }
+     const like = async (postId: number) => {
+          await handlePostLike({ postId, path: pathname });
+     }
+     const isLiked = props.post?.likes?.some((like: any) => like.authorId === props.session?.id);
      const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (
           <Card {...props} className={cn('rounded-lg feedArticleCard bg-background border-none shadow-none', className)}>
@@ -100,15 +105,17 @@ export default function TagPostCard(
                                    <div className="flex justify-between items-center">
                                         <div className="flex flex-1 items-center space-x-2.5">
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                       <Heart className="w-5 h-5" />
+                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)}>
+                                                       <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} />
                                                   </Button>
                                                   <span>{formatNumberWithSuffix(props.post._count.likes)}</span>
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                                  <Link href={`/${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
                                                   <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                        <MessageCircle className="w-5 h-5" />
                                                   </Button>
+                                                  </Link>
                                                   <span>{formatNumberWithSuffix(props.post._count.comments)}</span>
                                              </div>
                                         </div>

@@ -35,6 +35,8 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                          Followings: true,
                     }
                },
+               savedUsers: true,
+               likes: true,
                _count: { select: { comments: true, likes: true, savedUsers: true } },
           },
           orderBy: [

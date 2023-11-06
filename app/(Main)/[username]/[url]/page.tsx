@@ -10,41 +10,20 @@ import { Separator } from "@/components/ui/separator"
 import RelatedPosts from "@/components/blog/related-posts"
 import readingTime from 'reading-time';
 
-export default async function PostView({ params }: { params: { username: string, url: string } }) {
+export default async function PostView({ params, searchParams }: { params: { username: string, url: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
+     const commentsOpen = typeof searchParams.commentsOpen === 'string' ? searchParams.commentsOpen : undefined
+     
+     console.log(commentsOpen);
      const author = await postgres.user.findFirst({
           where: {
                username: params.username
                },
           include: {
-               posts: {
-                    where: {
-                         url: {
-                              not: params.url
-                         },
-                         visibility: "public",
-                    },
-                    include: {
-                         _count: { select: { comments: true, savedUsers: true, likes: true } },
-                         author: {
-                              include: {
-                                   Followers: true,
-                                   Followings: true
-                              }
-                         },
-                         savedUsers: true,
-                    },
-                    orderBy: {
-                         createdAt: "desc"
-                    },
-                    take: 4
-               },
                _count: { select: { posts: true, Followers: true, Followings: true } },
                Followers: true,
                Followings: true
           }
                });
-     
-     const authorPosts = author?.posts;
      const post = await postgres.post.findFirst({
           where: {
                url: params.url,
@@ -132,7 +111,7 @@ export default async function PostView({ params }: { params: { username: string,
 
      return (
           <>
-               <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
+               <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} comments={Boolean(commentsOpen)} />
           </>
      )
 }
