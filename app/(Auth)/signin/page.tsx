@@ -6,10 +6,10 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/auth/user-auth-form"
 import { Icons } from "@/components/icon"
 
-export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
-}
+// export const metadata: Metadata = {
+//   title: "Authentication",
+//   description: "Authentication forms built using the components.",
+// }
 
 export default async function SigninPage() {
   return (
@@ -49,7 +49,7 @@ export default async function SigninPage() {
           </div>
         </div>
       </div>
-      <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      {/* <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
           href="/signin"
           className={cn(
@@ -105,7 +105,7 @@ export default async function SigninPage() {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }

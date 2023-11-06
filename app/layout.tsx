@@ -55,7 +55,6 @@ export default async function Rootayout({
 
   const session = await getSessionUser()
   const { settings } = await getSettings({ id: session?.id})
-  console.log(settings)
   return (
     <html lang={settings?.language || 'en'}>
       <body className={`${GeistSans.className}`}>

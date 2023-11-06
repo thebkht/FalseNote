@@ -10,8 +10,6 @@ function TopLoader() {
       crawl={true}
       showSpinner={false}
       easing="ease"
-      speed={0.5}
-      template="Loading..."
       shadow="0 0 10px #2299DD,0 0 5px #2299DD"
     />
   );

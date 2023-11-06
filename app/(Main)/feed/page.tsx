@@ -123,7 +123,7 @@ export default async function Feed({
                             </li>
                           ))}
                         <li className="text-sm space-y-2.5">
-                          <Link href={`#`} className="text-xs flex items-center mb-2 font-medium">
+                          <Link href={`/${session.username}?tab=bookmarks`} className="text-xs flex items-center mb-2 font-medium">
                             See all ({bookmarksCount})
                           </Link>
                         </li>
@@ -132,7 +132,7 @@ export default async function Feed({
                         <EmptyPlaceholder className='min-h-min p-6'>
                           <EmptyPlaceholder.Icon name='bookmark' className='h-5 w-5' parentClassName='h-10 w-10' />
                           <EmptyPlaceholder.Description className='!my-2'>
-                            You haven’t saved any posts yet. Click the bookmark icon on a post to save it here.
+                            You haven&apos;t saved any posts yet. Click the bookmark icon on a post to save it here.
                           </EmptyPlaceholder.Description>
                         </EmptyPlaceholder>
                       )}

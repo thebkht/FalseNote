@@ -187,30 +187,57 @@ const defaultValues: Partial<PostFormValues> = {
  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const saveDraft = async () => {
-    if (form.getValues('title') && form.getValues('content')) {
-      const authorId = props.user?.id;
-      form.setValue('visibility', 'draft');
-      try {
-        // Submit the form
-        const result = await fetch(`/api/post/${props.post?.id}`, {
-          method: "PATCH",
-          body: JSON.stringify({ ...form.getValues(), authorId }),
-        })
-        if (!result.ok) {
-          toast({
-            description: "Something went wrong. Please try again later.",
-            variant: "destructive",
-            action: <ToastAction altText="Try again">Try again</ToastAction>
-          })
-          setIsSaving(false);
-          return
+    if(!open) {
+      if (file) {
+        try {
+          const dataForm = new FormData()
+          dataForm.set('file', file)
+          // Construct the request body with postId and authorId
+          const requestBody = {
+            postId: form.getValues('url'),
+            userId: props.user?.id,
+          };
+  
+          dataForm.set('body', JSON.stringify(requestBody));
+  
+          const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
+            method: 'POST',
+            body: dataForm,
+          });
+          // get the image url
+          const { data: coverUrl } = await res.json()
+          form.setValue('coverImage', coverUrl.url);
+  
+        } catch (e: any) {
+          // Handle errors here
+          console.error(e);
         }
-        setLastSavedTime(Date.now());
-        toast({
-          description: "Draft Saved!",
-        })
-      } catch (error) {
-        console.error(error)
+      }
+      if (form.getValues('title') && form.getValues('content')) {
+        const authorId = props.user?.id;
+        form.setValue('visibility', 'draft');
+        try {
+          // Submit the form
+          const result = await fetch(`/api/post/${props.post?.id}`, {
+            method: "PATCH",
+            body: JSON.stringify({ ...form.getValues(), authorId }),
+          })
+          if (!result.ok) {
+            toast({
+              description: "Something went wrong. Please try again later.",
+              variant: "destructive",
+              action: <ToastAction altText="Try again">Try again</ToastAction>
+            })
+            setIsSaving(false);
+            return
+          }
+          setLastSavedTime(Date.now());
+          toast({
+            description: "Draft Saved!",
+          })
+        } catch (error) {
+          console.error(error)
+        }
       }
     }
   }
