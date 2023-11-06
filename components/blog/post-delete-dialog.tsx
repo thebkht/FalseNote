@@ -1,18 +1,26 @@
 import { useRouter } from "next/navigation";
 import { handleDelete } from "../delete";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogClose, DialogFooter } from "../ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+
+} from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react";
 
 
-export default function PostDeleteDialog({ post, user, children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog> & { post: any, user: any }) {
+export default function PostDeleteDialog({ post, user, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { post: any, user: any }) {
      const router = useRouter()
      return (
-          <Dialog>
-          <DialogTrigger>
-               {children}
-          </DialogTrigger>
-          <DialogContent className="flex flex-col justify-center md:w-72">
+          <AlertDialog {...props}>
+          <AlertDialogContent className="flex flex-col justify-center !w-72 !rounded-lg">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
               <Trash2 className={"h-10 w-10"} strokeWidth={1.25} />
             </div>
@@ -22,19 +30,19 @@ export default function PostDeleteDialog({ post, user, children, ...props }: Rea
                 Are you sure you want to delete this post? This action cannot be undone.
               </p>
             </div>
-            <DialogFooter className="!flex-row">
-              <DialogClose asChild>
-                <Button className="m-auto" size={"lg"} variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button onClick={
+            <AlertDialogFooter className="!flex-row !justify-center space-x-2">
+              <AlertDialogCancel className="mt-0">
+              Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={
                 async () => {
                   handleDelete(post?.id, user)
                   await fetch(`/api/revalidate?path=/${user?.username}`)
                   router.push(`/${user?.username}`)
                 }
-              } className="m-auto" size={"lg"} variant="destructive">Delete</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              } className="bg-red-600 focus:ring-red-600">Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
      )
 }

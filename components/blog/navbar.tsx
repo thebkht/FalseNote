@@ -10,6 +10,7 @@ import { handlePostSave } from "../bookmark";
 import { useEffect, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
+import PostDeleteDialog from "./post-delete-dialog";
 
 export default function PostTabs({ post: initialPost, className, session, author, comments }: { post: any, className?: string, session: any, author: any, comments: boolean | undefined }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -26,6 +27,7 @@ export default function PostTabs({ post: initialPost, className, session, author
      const [open, setOpen] = useState(comments);
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
      const isSaved = post?.savedUsers?.some((savedUser: any) => savedUser.userId === session?.id);
+     const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false)
      return (
           <>
                <div className={cn("px-2 py-1 border-y flex justify-between w-full bg-background", className)}>
@@ -71,16 +73,18 @@ export default function PostTabs({ post: initialPost, className, session, author
                                                        <span>Edit</span>
                                                   </Link>
                                              </DropdownMenuItem>
-                                             <DropdownMenuItem>
-                                                  <Trash2 className="mr-2 h-4 w-4" />
-                                                  <span>Delete</span>
-                                             </DropdownMenuItem>
+                                             <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+            onSelect={() => setShowDeleteAlert(true)} >
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        <span>Delete</span>
+                                   </DropdownMenuItem>
                                         </DropdownMenuContent>
                                    </DropdownMenu>
                               )
                          }
                     </div>
                </div>
+               <PostDeleteDialog post={post} user={session} open={showDeleteAlert} onOpenChange={setShowDeleteAlert} />
           </>
      )
 }

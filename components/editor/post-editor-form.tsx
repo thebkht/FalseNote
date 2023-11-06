@@ -239,6 +239,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
   // when value changes, wait 750ms than save it as a draft
   const [lastSavedTime, setLastSavedTime] = useState<number>(Date.now());
+  const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   useEffect(() => {
     setIsSaving(true);
     const timeout = setTimeout(saveDraft, 15000);
@@ -575,9 +576,8 @@ export function PostEditorForm(props: { post: any, user: any }) {
           </DialogContent>
         </Dialog>
 
-        <PostDeleteDialog post={props.post} user={props.user}>
-        <Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button>
-        </PostDeleteDialog>
+        <Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving} onClick={() => setShowDeleteAlert(true)}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button>
+        <PostDeleteDialog post={props.post} user={props.user} open={showDeleteAlert} onOpenChange={setShowDeleteAlert}/>
 
 
         <Button size={"icon"} variant={"secondary"} onClick={

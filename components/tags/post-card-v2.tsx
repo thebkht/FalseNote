@@ -69,7 +69,7 @@ export default function PostCard(
                               }
                               {
                                    props.user && (
-                                        props.session.id === props.post.author?.id && (
+                                        props.session?.id === props.post.author?.id && (
                                              <Badge variant={"outline"} className="text-xs font-normal capitalize mr-1">
                                                   {props.post.visibility}
                                              </Badge>

@@ -30,13 +30,20 @@ import {
      LinkedinShareButton
 } from 'next-share'
 import { Icons } from "../icon";
+import React from "react";
+import { handleDelete } from "../delete";
+import { useRouter } from "next/navigation";
+import PostDeleteDialog from "./post-delete-dialog";
 
 export default function PostMoreActions({ post, session, className, children, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { post: any, session: any, className?: string }) {
      const copylink = (link: string) => {
           navigator.clipboard.writeText(link)
      }
+     const router = useRouter()
+     const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
      return (
-          <DropdownMenu>
+          <>
+               <DropdownMenu>
                <DropdownMenuTrigger asChild>
                     {children}
                </DropdownMenuTrigger>
@@ -50,7 +57,8 @@ export default function PostMoreActions({ post, session, className, children, ..
                                              <span>Edit</span>
                                         </Link>
                                    </DropdownMenuItem>
-                                   <DropdownMenuItem>
+                                   <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+            onSelect={() => setShowDeleteAlert(true)} >
                                         <Trash2 className="mr-2 h-4 w-4" />
                                         <span>Delete</span>
                                    </DropdownMenuItem>
@@ -95,5 +103,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                     </DropdownMenuGroup>
                </DropdownMenuContent>
           </DropdownMenu>
+          <PostDeleteDialog post={post} user={session} open={showDeleteAlert} onOpenChange={setShowDeleteAlert} />
+          </>
      )
 }
