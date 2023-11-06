@@ -73,6 +73,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                                                        <span>Edit</span>
                                                   </Link>
                                              </DropdownMenuItem>
+                                             <DropdownMenuSeparator />
                                              <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
             onSelect={() => setShowDeleteAlert(true)} >
                                         <Trash2 className="mr-2 h-4 w-4" />
