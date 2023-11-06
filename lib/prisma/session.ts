@@ -133,6 +133,7 @@ export const getBookmarks = async ({ id }: { id: number | undefined }) => {
           post: {
             include: {
               author: true,
+              savedUsers: true,
             }
           },
         },
@@ -147,6 +148,31 @@ export const getBookmarks = async ({ id }: { id: number | undefined }) => {
 
   return { bookmarks: JSON.parse(JSON.stringify(user?.bookmarks)), bookmarksCount: user?._count?.bookmarks };
 };
+
+export const getHistory = async ({ id }: { id: number | undefined }) => {
+  const user = await postgres.user.findFirst({
+    where: { id },
+    include: {
+      readinghistory: {
+        include: {
+          post: {
+            include: {
+              author: true,
+            }
+          },
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+        take: 3,
+      },
+      _count: { select: { readinghistory: true } },
+    },
+      }
+  );
+
+  return { history: JSON.parse(JSON.stringify(user?.readinghistory)), historyCount: user?._count?.readinghistory };
+}
 
 export const getNotifications = async ({ id }: { id: number }) => {
   const notifications = await postgres.user.findFirst({
