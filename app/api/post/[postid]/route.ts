@@ -120,6 +120,34 @@ export async function PATCH(
   }
 }
 
+export async function DELETE(
+  req: Request,
+  { params }: { params: { postid: string } }
+) {
+  try {
+    const { postid } = params;
+
+    if (!(await verifyCurrentUserHasAccessToPost(parseInt(postid)))) {
+      return new Response(null, { status: 403 });
+    }
+
+    // Delete the post.
+    await postgres.post.delete({
+      where: {
+        id: Number(postid),
+      },
+    })
+
+    return new Response(null, { status: 204 })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return new Response(JSON.stringify(error.issues), { status: 422 })
+    }
+
+    return new Response(null, { status: 500 })
+  }
+}
+
 async function verifyCurrentUserHasAccessToPost(postId: number) {
   try {
     const session = await getSessionUser();
