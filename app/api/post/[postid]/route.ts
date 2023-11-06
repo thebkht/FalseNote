@@ -131,6 +131,36 @@ export async function DELETE(
       return new Response(null, { status: 403 });
     }
 
+    // Disconnect all connections of the post
+    await postgres.postTag.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    })
+
+    await postgres.comment.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    })
+
+    await postgres.like.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    })
+
+    await postgres.bookmark.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    })
+
+    await postgres.readingHistory.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    })
     // Delete the post.
     await postgres.post.delete({
       where: {
@@ -143,7 +173,7 @@ export async function DELETE(
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
     }
-
+    console.error(error)
     return new Response(null, { status: 500 })
   }
 }
