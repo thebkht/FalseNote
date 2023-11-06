@@ -90,10 +90,6 @@ export default async function PostView({ params }: { params: { username: string,
           if (post?.visibility !== "public") redirect("/404");
      }
 
-     const stats = readingTime(post?.content);
-
-     console.log("reading time", stats.text);
-
      const cookkies = cookies()
      const hasViewed = cookkies.has(`post_views_${author?.username}_${post.url}`)
 
@@ -104,60 +100,39 @@ export default async function PostView({ params }: { params: { username: string,
      }
 
      if(sessionUser) {
-          await postgres.readingHistory.create({
-               data: {
-                    userId: sessionUser.id,
-                    postId: post.id
+          //check if the user has readed the post
+          const hasReaded = await postgres.readingHistory.findFirst({
+               where: {
+                    postId: post?.id,
+                    userId: sessionUser?.id
                }
-          })
+          });
+          if (!hasReaded) {
+               await postgres.readingHistory.create({
+                    data: {
+                         postId: post?.id,
+                         userId: sessionUser?.id
+                    }
+               });
+          } else {
+               await postgres.readingHistory.update({
+                    where: {
+                         id: hasReaded?.id
+                    },
+                    data: {
+                         updatedAt: new Date(),
+                         createdAt: new Date()
+                    }
+               });
+          }
      }
 
      //fetch related posts according to tags and dont include the current post
      //fetch the first 4 posts
-     const relatedPosts = await postgres.post.findMany({
-          where: {
-               tags: {
-                    some: {
-                         tag: {
-                              name: {
-                                   in: post.tags.map((tag: any) => tag.tag.name)
-                              }
-                         }
-                    }
-               },
-               url: {
-                    not: post.url
-               },
-               visibility: "public",
-          },
-          include: {
-               _count: { select: { comments: true, savedUsers: true, likes: true } },
-               author: {
-                    include: {
-                         Followers: true,
-                         Followings: true
-                    }
-               },
-               savedUsers: true,
-          },
-          orderBy: {
-               createdAt: "desc"
-          },
-          take: 4
-     });
 
      return (
           <>
                <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} />
-               <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
-               {
-                    relatedPosts?.length > 0 && (
-                         <>
-                              <Separator className="mt-14 mb-8" />
-                              <RelatedPosts posts={relatedPosts} post={post} session={sessionUser} />
-                         </>
-                    )
-               }
           </>
      )
 }

@@ -15,9 +15,14 @@ import { Check } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Icons } from "../icon";
 
-export default function MoreFromAuthor({ author: initialAuthor, post, sessionUser }: { author: any, post: any, sessionUser: any }) {
+export default function MoreFromAuthor({ author: initialAuthor, post: initialPost, sessionUser }: { author: any, post: any, sessionUser: any }) {
      const { status } = useSession();
+
      const [author, setAuthor] = useState(initialAuthor);
+     const [post, setPost] = useState(initialPost);
+     useEffect(() => {
+          setPost(initialPost);
+     }, [initialPost])
      useEffect(() => {
           setAuthor(initialAuthor);
      }, [initialAuthor])
@@ -28,7 +33,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post, sessionUse
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
      const path = usePathname();
      const router = useRouter();
-
+     console.log(post)
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
                setIsFollowingLoading(true);
@@ -72,11 +77,11 @@ export default function MoreFromAuthor({ author: initialAuthor, post, sessionUse
                                                                  <h2 className="text-2xl font-medium">
                                                                       Written by {author?.name || author?.username}
                                                                  </h2>{author?.verified &&
-                                                                 (
-                                                                      <Icons.verified className="h-5 w-5 mx-1 inline fill-primary align-middle" />
-                                                                 )}
+                                                                      (
+                                                                           <Icons.verified className="h-5 w-5 mx-1 inline fill-primary align-middle" />
+                                                                      )}
                                                             </Link>
-                                                            
+
                                                        </div>
                                                        <div className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?.Followers.length || 0)} Followers</div>
                                                        {author?.bio && (<div className="text-sm font-normal mt-4">{author?.bio}</div>)}
@@ -105,12 +110,12 @@ export default function MoreFromAuthor({ author: initialAuthor, post, sessionUse
                                         </div>
                                         <Separator className="mb-6" />
                                         <Button variant={"outline"} className="w-full md:w-max" size={"lg"} asChild>
-                                                  <Link href={`/${author?.username}`}>
-                                                       See all from {author?.name || author?.username}
-                                                  </Link>
-                                             </Button>
+                                             <Link href={`/${author?.username}`}>
+                                                  See all from {author?.name || author?.username}
+                                             </Link>
+                                        </Button>
                                    </div>
-                                   
+
                               </div>
                          </>
                     )
