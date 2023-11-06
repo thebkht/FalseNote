@@ -42,7 +42,7 @@ export default function EditorNavbar() {
                                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
 
                               </Avatar>
-                              <Button variant="ghost" size={"sm"} asChild>
+                              <Button variant="ghost" size={"sm"} className="hidden md:flex" asChild>
                               <div className="font-medium">
                                    { user?.name }
                               </div>

@@ -30,7 +30,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { ArrowUp, Check, RefreshCcw, Trash, Trash2 } from "lucide-react"
+import { ArrowUp, Check, Eye, Pencil, RefreshCcw, Trash, Trash2 } from "lucide-react"
 import { ScrollArea } from "../ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
@@ -88,6 +88,7 @@ export function PostEditorForm(props: {  post: any, user: any }) {
     subtitle: z.string().max(280).optional(),
   })
 
+  const [defaultTab, setDefaultTab] = useState<string>("editor")
   
   type PostFormValues = z.infer<typeof postFormSchema>
   // This can come from your database or API.
@@ -309,10 +310,10 @@ const defaultValues: Partial<PostFormValues> = {
             </FormItem>
           )}
         />
-        <Tabs defaultValue="editor" className="min-h-[250px]">
-          <TabsList className="mb-2 w-full md:w-auto absolute z-20 m-3 top-0 right-36">
-            <TabsTrigger value="editor"  className="w-full md:w-auto">Editor</TabsTrigger>
-            <TabsTrigger value="preview" className="w-full md:w-auto">Preview</TabsTrigger>
+        <Tabs defaultValue={defaultTab} className="min-h-[250px]">
+          <TabsList className="mb-2 absolute z-20 my-3 top-0 right-36">
+            <TabsTrigger value="editor" ><Pencil className="h-[1.2rem] w-[1.2rem]" /><span className="sr-only">Editor</span></TabsTrigger>
+            <TabsTrigger value="preview"><Eye className="h-[1.2rem] w-[1.2rem]" /> <span className="sr-only">Preview</span></TabsTrigger>
           </TabsList>
           <TabsContent value="editor"> <FormField
             control={form.control}
@@ -522,6 +523,17 @@ const defaultValues: Partial<PostFormValues> = {
     </Form>
     <div className="flex absolute right-3.5 top-0 z-50 gap-1.5">
       
+    {/* <Button size={"icon"} variant={"outline"} className="!mt-3" onClick={
+      () => {
+        setDefaultTab(defaultTab === "editor" ? "preview" : "editor")
+      }
+    
+    }>{
+      defaultTab === "editor" && <Pencil className="h-[1.2rem] w-[1.2rem]" />
+    }{
+      defaultTab === "preview" && <Eye className="h-[1.2rem] w-[1.2rem]" />
+    }</Button> */}
+      
       <Dialog>
   <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Check className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
   <DialogContent className="flex flex-col justify-center md:w-72">
@@ -553,7 +565,7 @@ const defaultValues: Partial<PostFormValues> = {
   <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
   <DialogContent className="flex flex-col justify-center md:w-72">
     <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
-      <Trash className={"h-10 w-10"} strokeWidth={1.25} />
+      <Trash2 className={"h-10 w-10"} strokeWidth={1.25} />
     </div>
     <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
       <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Delete Post</h1>
