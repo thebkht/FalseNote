@@ -6,7 +6,7 @@ import { Like } from '@prisma/client';
 import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
-export const getForYou = async ({ page = 0 }: { page?: number }) => {
+const getForYou = async ({ page = 0 }: { page?: number }) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
