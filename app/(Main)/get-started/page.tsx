@@ -4,8 +4,7 @@ import { getTags } from "@/lib/prisma/tags";
 
 export default async function GetStartedPage() {
      const session = await getSessionUser();
-     const { tags } = await getTags({});
-     console.log(tags);
+     const { tags } = await getTags({id: session?.id});
      return (
           <>
                <TagsDialog open tags={tags} session={session} />

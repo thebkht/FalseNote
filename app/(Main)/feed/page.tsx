@@ -12,7 +12,7 @@ import { redirect } from 'next/navigation';
 import { fetchFollowingTags } from '@/components/get-following-tags';
 import { getSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getBookmarks } from '@/lib/prisma/session';
+import { getBookmarks, getFollowings } from '@/lib/prisma/session';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { dateFormat } from '@/lib/format-date';
 import { Icons } from '@/components/icon';
@@ -35,8 +35,12 @@ export default async function Feed({
   if (!session) {
     return redirect('/')
   }
-
-  const userFollowings = await fetchFollowingTags({ id: session?.id })
+  const { followings } = await getFollowings({ id: session?.id })
+  const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
+  
+  if(userFollowingsTags.length === 0 && followings.length === 0) {
+    return redirect('/get-started')
+  }
 
   const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id })
 
@@ -45,7 +49,7 @@ export default async function Feed({
       <main className="flex flex-col items-center justify-between feed xl:px-8">
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
           <div className="md:my-4 w-full lg:w-2/3">
-            <FeedTabs tabs={userFollowings} activeTab={tab} />
+            <FeedTabs tabs={userFollowingsTags} activeTab={tab} />
             <div className="pt-10">
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
