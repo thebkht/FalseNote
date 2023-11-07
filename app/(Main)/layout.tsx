@@ -16,9 +16,7 @@ export default function MainLayout({
         status != 'authenticated' ? <LandingNavbar /> : <Navbar />
       }
       <div className='h-screen w-full overflow-y-scroll'>
-        <div className="md:container mx-auto px-4 pt-16">
-          {children}
-        </div>
+        {children}
       </div>
     </>
   )

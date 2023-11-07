@@ -27,7 +27,6 @@ const components = {
           if (className && className.startsWith('lang-')) {
                lang = className.replace('lang-', '');
           }
-          console.log(lang);
           return (
                <SyntaxHighlighter style={oneDark} language={lang} >
                     {children}

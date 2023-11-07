@@ -26,6 +26,7 @@
     --ring: 240 5.9% 10%;
     --radius: 1rem;
     --overlay: 255, 255, 255;
+    --third: 0, 0%, 98%;
   }
 
   .dark {
@@ -50,6 +51,7 @@
     --input: 214 9.9% 13.9%;
     --ring: 240 4.9% 83.9%;
     --overlay: 0, 0, 0;
+    --third: 0, 0%, 16%;
   }
 }
 
@@ -570,4 +572,8 @@
     width: 8%;
     background: linear-gradient(90deg, rgba(var(--overlay), 0) 0%, rgba(var(--overlay), 0.75) 25%, rgba(var(--overlay), 0.9) 50%, rgb(var(--overlay)) 75%);
     z-index: 1;
+}
+
+.bg-third {
+  background-color: hsl(var(--third));
 }
