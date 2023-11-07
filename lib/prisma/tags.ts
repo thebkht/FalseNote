@@ -4,7 +4,7 @@ export const getTags = async ({
   id,
   page = 0,
 }: {
-  id: number | undefined;
+  id?: number | undefined;
   page?: number | undefined;
 }) => {
   try {

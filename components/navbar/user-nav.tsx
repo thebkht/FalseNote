@@ -21,6 +21,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getUserByUsername } from "../get-user"
 import { getSessionUser } from "../get-session-user"
+import { ArrowDownRight, ArrowRight, ChevronRight } from "lucide-react"
 
 export function UserNav() {
      const { status } = useSession();
@@ -54,21 +55,17 @@ useEffect(() => {
                     </Button>
                </DropdownMenuTrigger>
                <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
+                    <DropdownMenuItem asChild>
+                         <Link href={username !== null ?  `/${username}` : `/`}>
                          <div className="flex flex-col space-y-1">
                               <p className="text-sm font-medium leading-none">{user.name}</p>
-                              <p className="text-xs leading-none text-muted-foreground">
-                                   {user.email}
-                              </p>
+                              {
+                                   user.email && <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                              }
                          </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <Link href={username !== null ?  `/${username}` : `/`}>
-                         <DropdownMenuItem>
-                              Profile
-                              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                         </DropdownMenuItem>
+                         <DropdownMenuShortcut><ChevronRight className="h-5 w-5" /></DropdownMenuShortcut>
                     </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                          <Link href="/settings/profile">

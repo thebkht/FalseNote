@@ -77,7 +77,7 @@ import {
           </svg>
      ),
      logo: (props: IconProps) => (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 689.11 100" {...props} fill="none" className="h-4 w-auto md:h-6">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 689.11 100" {...props} fill="none" className={cn("h-4 w-auto md:h-6", props.className)}>
                <path d="M44.23,49.49H14.79L0,23.82h29.58l0,0.01L44.23,49.49z M44.23,49.49L29.51,75.03l13.81,23.95l14.79-25.66
 	l13.73-23.83v0H44.23z M43.32,0L29.59,23.82h57.05L100.37,0H43.32z M129.86,94.11l1.08-0.9l-8.09-12.81l-1.26,0.53
 	c-1.71,0.72-3.76,1.09-6.1,1.09c-10.12,0-13.38-7.1-14.42-11.33l-0.3-1.22H81.44l0.26,1.84c1.14,7.94,4.63,15.14,9.82,20.26
