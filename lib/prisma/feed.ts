@@ -68,7 +68,10 @@ const posts = await postgres.post.findMany({
   select: { id: true },
 });
 console.log(posts.length, 'for you posts')
-return posts
+return fetchFeed({
+  where: { id: { in: posts.map((post) => post.id) }, visibility: "public" },
+  ...baseQuery,
+});
 };
 
 const fetchFeed = async (query: any) => {
@@ -110,12 +113,8 @@ export const getFeed = async ({ page = 0, tab }: { page?: number; tab?: string |
       },
     },
   };
-  if (tab === undefined) {
-    const posts = await getForYou({ page });
-    return fetchFeed({
-      where: { id: { in: posts?.map((post) => post.id) }, visibility: "public" },
-      ...baseQuery,
-    });
+  if (!tab) {
+    return await getForYou({ page });
   }
 
   if (tab) {
