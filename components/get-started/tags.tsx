@@ -15,24 +15,19 @@ import Link from "next/link"
 import TagBadge from "../tags/tag"
 import { Button } from "../ui/button"
 import { Check, Plus } from "lucide-react"
-import { useEffect, useState } from "react"
+import { forwardRef, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
 
-export default function TagsDialog({ tags: initialTags, session, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { tags: any, session: any }) {
+const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { tags: any, session: any }) => {
      const router = useRouter()
 
      const [tags, setTags] = useState<any[]>(initialTags?.filter((tag: any) => tag.followingtag?.followerId !== session?.id))
      const [followingTags, setFollowingTags] = useState<any[]>(initialTags?.filter((tag: any) => tag.followingtag?.followerId === session?.id));
-
-
-     const [isFollow, setIsFollow] = useState<boolean[]>(tags?.map((tag: any) => tag.followingtag?.followerId === session?.id) || [])
      useEffect(() => {
           // set tags where not in followingTags
           setTags(initialTags?.filter((tag: any) => tag.followingtag?.followerId !== session?.id))
-          setIsFollow(initialTags?.map((tag: any) => tag.followingtag?.followerId === session?.id) || [])
-     }, [initialTags, session]) // Added session?.id to the dependency array
-     const [isFollowLoading, setIsFollowLoading] = useState<boolean[]>(tags?.map(() => false) || [])
+     }, [initialTags, session])
+     
      const [isLast, setIsLast] = useState<boolean>(false)
      const [page, setPage] = useState<number>(0)
 
@@ -50,10 +45,7 @@ export default function TagsDialog({ tags: initialTags, session, ...props }: Rea
      }
 
      const handleFollow = async (tagId: any, index: number) => {
-          const newIsFollow = [...isFollow]
-          const newIsFollowLoading = [...isFollowLoading]
-          newIsFollowLoading[index] = true
-          setIsFollowLoading(newIsFollowLoading)
+          
           try {
                const response = await fetch(`/api/follow/tag?tagId=${tagId}&userId=${session?.id}`, {
                     method: "GET",
@@ -76,8 +68,6 @@ export default function TagsDialog({ tags: initialTags, session, ...props }: Rea
                 }
           } catch (error) {
                console.error(error);
-               newIsFollowLoading[index] = false
-               setIsFollowLoading(newIsFollowLoading)
           }
           await fetch(`/api/revalidate?path=/tags`, {
                method: "GET",
@@ -85,8 +75,8 @@ export default function TagsDialog({ tags: initialTags, session, ...props }: Rea
      }
 
      return (
-          <AlertDialog {...props}>
-               <AlertDialogContent className="">
+          <AlertDialog open={true}>
+               <AlertDialogContent>
                     <AlertDialogHeader className="justify-center">
                          <Link href={'/'} className="mx-auto"><Icons.logo className="md:h-5 mt-5 mb-8" /></Link>
                          <AlertDialogTitle className="mx-auto text-xl">What are you interested in?</AlertDialogTitle>
@@ -103,7 +93,7 @@ export default function TagsDialog({ tags: initialTags, session, ...props }: Rea
                          ))}
                          {tags?.map((tag: any, index: number) => (
                               <TagBadge key={tag.id} className="text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 capitalize">
-                                   <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)}>{isFollow[index] ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}</Button>
+                                   <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)}><Plus className="h-4 w-4" /></Button>
                                    {tag.name?.replace(/-/g, ' ')}
                               </TagBadge>
                          ))}
@@ -128,4 +118,7 @@ export default function TagsDialog({ tags: initialTags, session, ...props }: Rea
                </AlertDialogContent>
           </AlertDialog>
      )
-}
+})
+
+TagsDialog.displayName = 'TagsDialog';
+export default TagsDialog;

@@ -7,7 +7,7 @@ export default async function GetStartedPage() {
      const { tags } = await getTags({id: session?.id});
      return (
           <>
-               <TagsDialog open tags={tags} session={session} />
+               <TagsDialog tags={tags} session={session} />
           </>
      )
 }
