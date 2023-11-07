@@ -58,7 +58,7 @@ function Navbar() {
           <div className="flex items-center gap-2 md:gap-4">
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
+                      <TooltipTrigger asChild>
                         <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
                       </TooltipTrigger>
                       <TooltipContent>
@@ -68,7 +68,7 @@ function Navbar() {
                   </TooltipProvider>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
+                      <TooltipTrigger asChild>
                         <SearchBar />
                       </TooltipTrigger>
                       <TooltipContent>
