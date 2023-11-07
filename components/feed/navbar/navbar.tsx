@@ -5,7 +5,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
 
 
-export default function FeedTabs({ tabs, activeTab = 'following', children }: { tabs: any, activeTab?: string, children?: React.ReactNode }) {
+export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tabs: any, activeTab?: string, children?: React.ReactNode }) {
      const [firstTab, inFView] = useInView();
      const [lastTab, inLView] = useInView();
      
@@ -26,13 +26,18 @@ export default function FeedTabs({ tabs, activeTab = 'following', children }: { 
                     <ScrollArea className="w-full py-2">
                     <TabsList className="bg-transparent gap-2">
                     <Link href={`/feed`}>
+                                   <TabsTrigger value="foryou" ref={firstTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                                        For You
+                                   </TabsTrigger>
+                              </Link>
+                    <Link href={`/feed?tab=following`}>
                                    <TabsTrigger value="following" ref={firstTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
                                         Following
                                    </TabsTrigger>
                               </Link>
                          {tabs?.map((item: any, index: number) => (
                               
-                                   <Link href={`/feed?tag=${item.tag.name}`} key={item.tag.id}>
+                                   <Link href={`/feed?tab=${item.tag.name}`} key={item.tag.id}>
                                    <TabsTrigger value={item.tag.name} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
                                         
                                         {item.tag.name.replace(/-/g, " ")}

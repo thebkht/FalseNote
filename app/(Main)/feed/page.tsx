@@ -12,7 +12,6 @@ import { redirect } from 'next/navigation';
 import { fetchFollowingTags } from '@/components/get-following-tags';
 import { getSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { fetchForYou } from '@/components/feed/get-foryou';
 import { getBookmarks } from '@/lib/prisma/session';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { dateFormat } from '@/lib/format-date';
@@ -25,15 +24,14 @@ export default async function Feed({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
 
-  const tag = typeof searchParams.tag === 'string' ? searchParams.tag : undefined
-  const feed = await fetchFeed({ page: 0, tag });
+  const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
+  const feed = await fetchFeed({ page: 0, tab });
   const session = await getSessionUser();
 
   const topData = await fetchUsers({ id: session?.id })
   const topUsers = topData?.topUsers;
   const popularTags = await fetchTags();
 
-  console.log(topData)
   if (!session) {
     return redirect('/')
   }
@@ -42,14 +40,12 @@ export default async function Feed({
 
   const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id })
 
-  const recommendedPosts = await fetchForYou({ page: 0 })
-
   return (
     <>
       <main className="flex flex-col items-center justify-between feed xl:px-8">
         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
           <div className="md:my-4 w-full lg:w-2/3">
-            {userFollowings.length !== 0 && <FeedTabs tabs={userFollowings} activeTab={tag} />}
+            <FeedTabs tabs={userFollowings} activeTab={tab} />
             <div className="pt-10">
               {!feed || feed.length === 0 ? (
                 <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
@@ -59,7 +55,7 @@ export default async function Feed({
                   </div>
                 </div>
               ) : (
-                <InfinitiveScrollFeed initialFeed={feed} tag={tag} session={session} />
+                <InfinitiveScrollFeed initialFeed={feed} tag={tab} session={session} />
               )}
             </div>
           </div>
