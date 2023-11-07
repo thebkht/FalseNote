@@ -28,7 +28,6 @@ const tags = await postgres.postTag.findMany({
     tagId: true,
   },
 });
-console.log(tags.length, 'tags')
 
 const baseQuery = {
   orderBy: { createdAt: "desc" },
@@ -61,13 +60,10 @@ const tagCounts = tags.reduce((counts, tag) => {
 // Sort the tags by their count in descending order
 const sortedTagIds = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([tagId]) => Number(tagId));
 
-// Fetch the posts that have the tags of the user's main interests
-console.log(sortedTagIds, 'sortedTagIds')
 const posts = await postgres.post.findMany({
   where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
   select: { id: true },
 });
-console.log(posts.length, 'for you posts')
 return fetchFeed({
   where: { id: { in: posts.map((post) => post.id) }, visibility: "public" },
   ...baseQuery,
@@ -89,8 +85,6 @@ export const getFeed = async ({ page = 0, tab }: { page?: number; tab?: string |
     return null;
   }
   const { id } = user;
-
-  console.log(tab, 'tab')
 
   const baseQuery = {
     orderBy: { createdAt: "desc" },

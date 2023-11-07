@@ -84,10 +84,6 @@ export default function TagsDialog({ tags: initialTags, session, ...props }: Rea
           });
      }
 
-     console.log(tags, 'tags')
-     console.log(followingTags, 'followingTags')
-
-
      return (
           <AlertDialog {...props}>
                <AlertDialogContent className="">
