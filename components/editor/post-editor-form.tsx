@@ -504,7 +504,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                       </FormItem>
                     )}
                   />
-                  {fields.length !== 5 && (
+                  {fields.length < 5 && (
                     <Button
                       variant="outline"
                       className="mt-2"
