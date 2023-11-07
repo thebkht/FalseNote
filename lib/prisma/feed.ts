@@ -11,23 +11,27 @@ export const getForYou = async ({ page = 0 }: { page?: number }) => {
   const { id } = user;
 
   //get user's interests
-  const { likes: userLikes } = await getLikes({id});
-  const { bookmarks: userBookmarks } = await getBookmarks({id});
-  const { history: userHistory } = await getHistory({id});
+  const [{ likes: userLikes }, { bookmarks: userBookmarks }, { history: userHistory }] = await Promise.all([
+    getLikes({id}),
+    getBookmarks({id}),
+    getHistory({id})
+  ]);
 
   // Fetch the tags of the posts in parallel
-const tags = await postgres.postTag.findMany({
-  where: {
-    OR: [
-      { postId: { in: userLikes.map((like: Like) => like.postId) } },
-      { postId: { in: userBookmarks.map((bookmark: any) => bookmark.postId) } },
-      { postId: { in: userHistory.map((history: any) => history.postId) } },
-    ]
-  },
-  select: {
-    tagId: true,
-  },
-});
+  const tags = await postgres.postTag.findMany({
+    where: {
+      postId: {
+        in: [
+          ...userLikes.map((like: Like) => like.postId),
+          ...userBookmarks.map((bookmark: any) => bookmark.postId),
+          ...userHistory.map((history: any) => history.postId),
+        ],
+      },
+    },
+    select: {
+      tagId: true,
+    },
+  });
 
 const baseQuery = {
   orderBy: { createdAt: "desc" },
