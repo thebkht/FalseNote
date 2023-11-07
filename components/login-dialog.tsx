@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export default function LoginDialog({ className, children, ...props }: React.ComponentPropsWithoutRef<typeof Dialog> & { children: React.ReactNode, className?: string }) {
      return (
           <Dialog {...props}>
-               <DialogTrigger className={className}>
+               <DialogTrigger className={className} asChild>
                     {children}
                </DialogTrigger>
                <DialogContent className="md:w-auto">

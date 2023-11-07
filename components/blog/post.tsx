@@ -35,7 +35,7 @@ const components = {
      }
 }
 
-export default function Post({ post: initialPost, author, sessionUser, tags, comments }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined }) {
+export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined }) {
 
      const [isFollowing, setIsFollowing] = useState<boolean>(author.Followers?.some((follower: any) => follower.followerId === sessionUser?.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);

@@ -67,10 +67,11 @@ const posts = await postgres.post.findMany({
   where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
   select: { id: true },
 });
-return fetchFeed({
+const response = await fetchFeed({
   where: { id: { in: posts.map((post) => post.id) }, visibility: "public" },
   ...baseQuery,
 });
+return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
 };
 
 export async function GET(req: NextRequest) {
@@ -123,7 +124,7 @@ export async function GET(req: NextRequest) {
         where: { followerId: id },
       });
       const followingIds = following.map((user) => user.followingId);
-      return fetchFeed({
+      const response = await fetchFeed({
         ...baseQuery,
         where: { authorId: { in: followingIds }, visibility: "public" },
         include: {
@@ -136,23 +137,24 @@ export async function GET(req: NextRequest) {
           },
         },
       });
+      return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
     }
     const postTags = await postgres.postTag.findMany({
       select: { postId: true },
       where: { tag: { name: { equals: tag } } },
     });
     const postIds = postTags.map((postTag) => postTag.postId);
-    return fetchFeed({
+    const response = await fetchFeed({
       ...baseQuery,
       where: { id: { in: postIds }, visibility: "public" },
     });
+    return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
   } 
 }
 
 const fetchFeed = async (query: any) => {
   try {
     const feed = await postgres.post.findMany(query);
-    console.log(feed)
     return NextResponse.json({ feed: feed}, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 500 });

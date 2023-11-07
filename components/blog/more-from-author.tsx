@@ -33,7 +33,6 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
      const path = usePathname();
      const router = useRouter();
-     console.log(post)
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
                setIsFollowingLoading(true);
@@ -59,8 +58,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
      }
      return (
           <>
-               <Separator className="my-8" />
-               <div className="max-w-[680px] lg:text-xl mx-auto pt-10">
+               <div className="max-w-[680px] lg:text-xl mx-auto">
                     <div className="author__details flex flex-col gap-y-4">
                          <div className="mx-2 md:mx-6">
                               <Avatar className="h-20 w-20 mb-4">

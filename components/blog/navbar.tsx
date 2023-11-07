@@ -39,14 +39,18 @@ export default function PostTabs({ post: initialPost, className, session, author
                               <span className="text-sm">{post?._count.likes}</span>
                          </div>
 
-                         <CommentsSheet post={post} comments={post?.comments} session={session} open={open} onOpenChange={setOpen} >
+
+                         <>
                               <div className="flex items-center">
-                                   <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
-                                        <MessageCircle className="w-5 h-5" strokeWidth={2} />
-                                   </Button>
+                                   <CommentsSheet post={post} comments={post?.comments} session={session} open={open} onOpenChange={setOpen} >
+                                        <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"}>
+                                             <MessageCircle className="w-5 h-5" strokeWidth={2} />
+                                        </Button>
+                                   </CommentsSheet>
                                    <span className="text-sm">{post?._count.comments}</span>
                               </div>
-                         </CommentsSheet>
+                         </>
+
 
                     </div>
                     <div className="flex items-center gap-1.5">
@@ -75,10 +79,10 @@ export default function PostTabs({ post: initialPost, className, session, author
                                              </DropdownMenuItem>
                                              <DropdownMenuSeparator />
                                              <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            onSelect={() => setShowDeleteAlert(true)} >
-                                        <Trash2 className="mr-2 h-4 w-4" />
-                                        <span>Delete</span>
-                                   </DropdownMenuItem>
+                                                  onSelect={() => setShowDeleteAlert(true)} >
+                                                  <Trash2 className="mr-2 h-4 w-4" />
+                                                  <span>Delete</span>
+                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                    </DropdownMenu>
                               )
