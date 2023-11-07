@@ -7,6 +7,7 @@ import { fetchFeed } from './get-feed';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { cn } from '@/lib/utils';
 import { Separator } from '@radix-ui/react-context-menu';
+import { EmptyPlaceholder } from '../empty-placeholder';
 
 export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { initialFeed: any | undefined, tag: string | undefined, session: any }) {
   const [feed, setFeed] = useState<Array<any>>(initialFeed)
@@ -33,7 +34,7 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
     }
   }, [inView])
 
-  return (
+  return feed.length > 0 ?  (
     <div className="feed__list">
       {/* {
         isLoaded && feed.length === 0 && (
@@ -47,7 +48,7 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
       } */}
 
       <div className="divide-y">
-        {feed.map((post: any) => (
+        {feed?.map((post: any) => (
           <>
             <FeedPostCard
               key={post.id}
@@ -93,5 +94,12 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
         </div>
       </div>
     </div>
+  ) : (
+    <EmptyPlaceholder>
+      <EmptyPlaceholder.Icon name='post' />
+      <EmptyPlaceholder.Title>No posts yet</EmptyPlaceholder.Title>
+      <EmptyPlaceholder.Description>When you follow someone, their posts will show up here.</EmptyPlaceholder.Description>
+
+    </EmptyPlaceholder>
   )
 }
