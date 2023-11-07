@@ -8,7 +8,7 @@ export default async function GetStartedPage() {
      console.log(tags);
      return (
           <>
-               <TagsDialog open tags={tags} />
+               <TagsDialog open tags={tags} session={session} />
           </>
      )
 }
