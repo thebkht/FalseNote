@@ -23,9 +23,9 @@ export default async function Feed({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
-  const feed = await fetchFeed({ page: 0, tab });
+  const {feed} = await fetch(`${process.env.DOMAIN}/api/feed?page=${0}${tab ? `&tag=${tab}` : ''}`).then(res => res.json())
+  console.log(feed)
   const session = await getSessionUser();
 
   const topData = await fetchUsers({ id: session?.id })

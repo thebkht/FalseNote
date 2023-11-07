@@ -2,9 +2,6 @@ const { edges } = require('slate');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -28,6 +25,9 @@ const nextConfig = {
 
     ],
   },
+  env: {
+    DOMAIN: process.env.DOMAIN,
+  }
 };
 
 module.exports = {

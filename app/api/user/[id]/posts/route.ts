@@ -25,9 +25,6 @@ const baseQuery = {
 export async function GET(req: NextRequest, { params } : { params: { id: string } }) {
      const session = await getSessionUser()
      const userId = params.id;
-     if (!session) {
-          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-     }
 
      const pageString = req.nextUrl.searchParams.get("page");
      const page = pageString ? parseInt(pageString) : 0;
