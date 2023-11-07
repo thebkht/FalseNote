@@ -23,9 +23,9 @@ export default async function Feed({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
-  const {feed} = await fetch(`${process.env.DOMAIN}/api/feed?page=${0}${tab ? `&tag=${tab}` : ''}`).then(res => res.json())
-  console.log(feed)
+  const feed = await fetchFeed({ page: 0, tab });
   const session = await getSessionUser();
 
   const topData = await fetchUsers({ id: session?.id })
@@ -35,12 +35,7 @@ export default async function Feed({
   if (!session) {
     return redirect('/')
   }
-  const { followings } = await getFollowings({ id: session?.id })
   const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
-  
-  if(userFollowingsTags.length === 0 && followings.length === 0) {
-    return redirect('/get-started')
-  }
 
   const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id })
 

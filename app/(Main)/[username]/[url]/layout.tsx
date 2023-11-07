@@ -167,12 +167,7 @@ export default async function PostLayout(
           },
           take: 6
      });
-     const foryouPosts = await fetchForYou({});
-
      const sessionUser = await getSessionUser();
-     const posts = relatedPosts?.length === 0 ? foryouPosts : relatedPosts;
-
-     posts.length % 2 === 1 ? posts.pop() : null;
 
      return (
           <>
@@ -183,8 +178,16 @@ export default async function PostLayout(
                <div className="bg-third dark:bg-popover py-16">
                     <div className=' md:container mx-auto px-4'>
                          <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
-                         <Separator className="mt-14 mb-8" />
-                         <RelatedPosts posts={posts} post={post} session={sessionUser} />
+                         {
+                              relatedPosts?.length > 0 &&
+                              (
+                                   <>
+                                        <Separator className="mt-14 mb-8" />
+                                        <RelatedPosts posts={relatedPosts} post={post} session={sessionUser} />
+                                   </>
+                              )
+
+                         }
                     </div>
                </div>
           </>

@@ -1,17 +1,22 @@
-"use client"
-import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation';
 import dynamic from 'next/dynamic'
+import { getFollowings } from '@/lib/prisma/session';
+import { fetchFollowingTags } from '@/components/get-following-tags';
+import { getSessionUser } from '@/components/get-session-user';
+import Landing from '@/components/landing/landing';
 
-export default function Home() {
-  const { status } = useSession();
+export default async function Home() {
 
-  const LoadedLanding = dynamic(() => import('@/components/landing/landing'), {
-    ssr: false,
-  });
+  const session = await getSessionUser();
 
-  if (status == 'authenticated') {
-    redirect('/feed');
-  }
-  return <LoadedLanding />;
+  const { followings } = await getFollowings({ id: session?.id })
+  const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
+  
+  if(userFollowingsTags.length === 0 && followings.length === 0) {
+    redirect('/get-started')
+  } else if (userFollowingsTags.length > 0 && followings.length > 0) {
+    redirect('/feed')
+  } 
+  
+  return <Landing />;
 }
