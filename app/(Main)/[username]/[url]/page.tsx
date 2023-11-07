@@ -77,7 +77,6 @@ export default async function PostView({ params, searchParams }: { params: { use
           method: "POST",
      });
      }
-
      if(sessionUser) {
           //check if the user has readed the post
           const hasReaded = await postgres.readingHistory.findFirst({

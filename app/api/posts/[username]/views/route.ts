@@ -35,13 +35,6 @@ export async function POST(
         id: true,
       }
     });
-
-    const readingHistory = await postgres.readingHistory.create({
-      data: {
-        postId: Number(post?.id),
-        userId: Number(session?.id),
-      },
-    })
     
     return NextResponse.json({ message: "View added" }, { status: 200 });
   } catch (error) {
