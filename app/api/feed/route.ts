@@ -1,6 +1,7 @@
 import { config } from '@/app/auth'
 import { getSessionUser } from '@/components/get-session-user';
 import postgres from '@/lib/postgres'
+import { getFeed } from '@/lib/prisma/feed';
 import { getBookmarks, getHistory, getLikes } from '@/lib/prisma/session';
 import { Like } from '@prisma/client';
 import { getServerSession } from 'next-auth'
@@ -77,7 +78,7 @@ return response || NextResponse.json({ error: 'No data found' }, { status: 404 }
 export async function GET(req: NextRequest) {
   const pageString = req.nextUrl.searchParams.get('page') || 0
   const page = Number(pageString)
-  const tag = req.nextUrl.searchParams.get('tag')
+  const tag = req.nextUrl.searchParams.get('tag') as string | undefined
   const session = await getServerSession(config)
   if (!session) {
     return NextResponse.json({ error: 'No user found' }, { status: 500 })
@@ -113,43 +114,50 @@ export async function GET(req: NextRequest) {
     },
   };
 
-  if (!tag) {
-    return await getForYou({ page });
-  }
+  // if (!tag) {
+  //   return await getForYou({ page });
+  // }
 
-  if (tag) {
-    if (tag == "following") {
-      const following = await postgres.follow.findMany({
-        select: { followingId: true },
-        where: { followerId: id },
-      });
-      const followingIds = following.map((user) => user.followingId);
-      const response = await fetchFeed({
-        ...baseQuery,
-        where: { authorId: { in: followingIds }, visibility: "public" },
-        include: {
-          ...baseQuery.include,
-          author: {
-            include: {
-              Followers: true,
-              Followings: true,
-            },
-          },
-        },
-      });
-      return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
-    }
-    const postTags = await postgres.postTag.findMany({
-      select: { postId: true },
-      where: { tag: { name: { equals: tag } } },
-    });
-    const postIds = postTags.map((postTag) => postTag.postId);
-    const response = await fetchFeed({
-      ...baseQuery,
-      where: { id: { in: postIds }, visibility: "public" },
-    });
-    return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
-  } 
+  // if (tag) {
+  //   if (tag == "following") {
+  //     const following = await postgres.follow.findMany({
+  //       select: { followingId: true },
+  //       where: { followerId: id },
+  //     });
+  //     const followingIds = following.map((user) => user.followingId);
+  //     const response = await fetchFeed({
+  //       ...baseQuery,
+  //       where: { authorId: { in: followingIds }, visibility: "public" },
+  //       include: {
+  //         ...baseQuery.include,
+  //         author: {
+  //           include: {
+  //             Followers: true,
+  //             Followings: true,
+  //           },
+  //         },
+  //       },
+  //     });
+  //     return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
+  //   }
+  //   const postTags = await postgres.postTag.findMany({
+  //     select: { postId: true },
+  //     where: { tag: { name: { equals: tag } } },
+  //   });
+  //   const postIds = postTags.map((postTag) => postTag.postId);
+  //   const response = await fetchFeed({
+  //     ...baseQuery,
+  //     where: { id: { in: postIds }, visibility: "public" },
+  //   });
+  //   return response || NextResponse.json({ error: 'No data found' }, { status: 404 });
+  // } 
+
+  const feed = await getFeed({ page, tab: tag });
+  if (feed?.error) {
+    return NextResponse.json({ error: feed.error }, { status: 500 });
+  } else if (feed?.feed) {
+    return NextResponse.json({ feed: feed.feed }, { status: 200 });
+  }
 }
 
 const fetchFeed = async (query: any) => {
