@@ -81,16 +81,16 @@ export const searchTags = async ({
   limit = 10,
 }: { search: string | undefined; page?: number; limit?: number }) => {
   const tags = await postgres.tag.findMany({
-    where: {
+    where: search !== undefined ? {
       name: {
         contains: search,
         mode: "insensitive",
       },
-    },
+    } : {},
     take: limit,
     skip: page * limit,
     orderBy: {
-      posts: {
+      followingtag: {
         _count: "desc",
       },
     },

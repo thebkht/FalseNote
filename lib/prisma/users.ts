@@ -41,11 +41,26 @@ export const getUsers = async ({
         : {},
     take: limit,
     skip: page * limit,
-    orderBy: {
-      Followers: {
-        _count: "desc",
-      },
+    include: {
+      Followers: true,
+      Followings: true,
+      _count: {
+        select: {
+          Followers: true,
+          Followings: true,
+          posts: true,
+        },
+      }
     },
   });
+  
+  // Sort the results in your application code
+  users.sort((a, b) => {
+    const aCount = a._count.Followers + a._count.posts;
+    const bCount = b._count.Followers + b._count.posts;
+  
+    return bCount - aCount;
+  });
+  
   return { users: JSON.parse(JSON.stringify(users)) };
-};
+}

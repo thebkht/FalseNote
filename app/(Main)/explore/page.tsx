@@ -18,6 +18,9 @@ import UserHoverCard from "@/components/user-hover-card"
 import { searchTags } from "@/lib/prisma/tags"
 import { Badge } from "@/components/ui/badge"
 import ExploreComponent from "@/components/explore/tab-content"
+import ExploreTab from "@/components/explore/tab"
+import Users from "@/components/explore/users"
+import Tags from "@/components/explore/tags"
 
 export default async function Explore({
      searchParams
@@ -27,18 +30,13 @@ export default async function Explore({
 
      const search = typeof searchParams.search === 'string' ? searchParams.search : undefined
      const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
-     if (tab) {
-          if (tab !== 'posts' && tab !== 'users' && tab !== 'tags') {
-               return redirect('/explore/')
-          }
-     }
-
-     const activeTab = tab || 'top'
 
      let { posts } = await getPosts({ search, limit: 3 })
      let { users } = await getUsers({ search, limit: 3 })
      let { tags } = await searchTags({ search, limit: 3 })
-
+     tab === 'posts' && (posts = await getPosts({ search, limit: 5 }).then(res => res.posts))
+     tab === 'users' && (users = await getUsers({ search, limit: 5 }).then(res => res.users))
+     tab === 'tags' && (tags = await searchTags({ search, limit: 5 }).then(res => res.tags))
      const session = await getSessionUser()
      // ...
 
@@ -47,35 +45,21 @@ export default async function Explore({
                <div className="flex flex-col items-center py-10 space-y-8">
                     <h2 className="font-medium text-4xl">Explore</h2>
                     <Search search={search} />
-                    <Tabs defaultValue={activeTab} className="my-6 space-y-8">
-                         <TabsList className="bg-transparent gap-2 justify-center w-full">
-                              <TabsTrigger value={'top'} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Link href={`/explore${search !== undefined ? `?search=${search}` : ''}`}>
-                                   Trending
-                                   </Link>
-                              </TabsTrigger>
-                              <TabsTrigger value={'posts'} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Link href={`/explore?tab=posts${search !== undefined ? `&search=${search}` : ''}`}>
-                                   Posts
-                                   </Link>
-                              </TabsTrigger>
-                              <TabsTrigger value={'users'} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Link href={`/explore?tab=users${search !== undefined ? `&search=${search}` : ''}`}>
-                                   Users
-                                   </Link>
-                              </TabsTrigger>
-                              <TabsTrigger value={'tags'} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Link href={`/explore?tab=tags${search !== undefined ? `&search=${search}` : ''}`}>
-                                   Tags
-                                   </Link>
-                              </TabsTrigger>
-                         </TabsList>
-                         <TabsContent value={'top'}>
-                              <ExploreComponent users={users} posts={posts} tags={tags} session={session} search={search} tab={tab} activeTab={activeTab} searchParams={searchParams} />
-                         </TabsContent>
-                    </Tabs>
-                    <div className="w-full mb-10 space-y-4">
-                         
+                    <ExploreTab activeTab={tab} search={search} />
+                    {tab === undefined && (
+                         <ExploreComponent users={users} posts={posts} tags={tags} session={session} search={search} className="md:w-[600px]" />
+                    )}
+                    {tab === 'posts' && (
+                         <Posts initialPosts={posts} session={session} search={search} />
+                    )}
+                    {tab === 'users' && (
+                         <Users users={users} session={session} search={search} />
+                    )}
+                    {tab === 'tags' && (
+                         <Tags tags={tags} session={session} search={search} />
+                    )}
+                    {/* <div className="w-full mb-10 space-y-4">
+
 
                          {tab === 'posts' && posts.length === 0 && search && (
                               <div className="flex flex-col items-center justify-center w-full">
@@ -89,7 +73,7 @@ export default async function Explore({
                               </div>
                          )
                          }
-                    </div>
+                    </div> */}
                </div>
           </>
      )

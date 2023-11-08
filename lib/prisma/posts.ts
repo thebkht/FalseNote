@@ -10,6 +10,7 @@ const baseQuery = {
       select: {
         likes: true,
         savedUsers: true,
+        readedUsers: true,
       },
     },
     tags: {
@@ -58,41 +59,50 @@ export const getPosts = async ({
         : { visibility: "public" },
     take: limit,
     skip: page * limit,
-    orderBy: {
-     views: "desc" as const,
-   },
   });
+
+  // Sort the results in your application code
+  posts.sort((a, b) => {
+    const aCount = a._count.likes + a._count.savedUsers + a._count.readedUsers;
+    const bCount = b._count.likes + b._count.savedUsers + b._count.readedUsers;
+
+    return bCount - aCount;
+  });
+
   return { posts: JSON.parse(JSON.stringify(posts)) };
 };
 
 export const getPost = async ({
-     search,
-     page = 0,
-     limit = 10,
-     whereQuery,
-     id,
-   }: {
-     search?: string | undefined;
-     page?: number;
-     limit?: number;
-     whereQuery?: any;
-     id: number;
-   }) => {
-     const mainQuery = search !== undefined ? {
-       ...whereQuery,
-       title: {
-         contains: search,
-         mode: "insensitive",
-       },
-     } : { ...whereQuery };
-     const posts = await postgres.post.findMany({
-          ...baseQuery,
-          where: {...mainQuery, authorId: id},
-          take: limit,
-          skip: page * limit,
-          orderBy: {
-               createdAt: "desc",
-          }
-     });
-     return { posts: JSON.parse(JSON.stringify(posts)) };
-   };
+  search,
+  page = 0,
+  limit = 10,
+  whereQuery,
+  id,
+}: {
+  search?: string | undefined;
+  page?: number;
+  limit?: number;
+  whereQuery?: any;
+  id: number;
+}) => {
+  const mainQuery =
+    search !== undefined
+      ? {
+          ...whereQuery,
+          title: {
+            contains: search,
+            mode: "insensitive",
+          },
+        }
+      : { ...whereQuery };
+  const posts = await postgres.post.findMany({
+    ...baseQuery,
+    where: { ...mainQuery, authorId: id },
+    take: limit,
+    skip: page * limit,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return { posts: JSON.parse(JSON.stringify(posts)) };
+};

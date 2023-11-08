@@ -9,62 +9,46 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { useSession } from "next-auth/react"
 import 'swiper/css';
 import 'swiper/css/virtual';
+import React from "react";
 
 export function TagNav({ className, items, ...props }: { className?: string, items: any, props?: any }) {
-  const pathname = usePathname()
+  const path = usePathname()
   const { status } = useSession()
+  // path /tags/[tagname]
+  const pathname = path.split("/")[2]
+  const [tags, setTags] = React.useState(items)
 
-  if (status !== "authenticated") return null;
+  React.useEffect(() => {
+    setTags(items)
+  }, [items])
+
+  if (status == "loading") return null;
   return (
-    <Swiper
-      spaceBetween={0}
-      slidesPerView={25}
-      navigation
-      scrollbar={{ draggable: true }}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
-      className="w-screen"
+    <nav
+      className={cn(
+        "flex justify-center items-center",
+        className
+      )}
+      {...props}
     >
-      {
-        items.map((item: any, index: any) => (
-          <SwiperSlide key={item.id}>
-            <Button
-              variant={pathname === item.href ? "secondary" : "outline"}
-              className={pathname !== item.href ? "bg-background" : ""}
-              asChild
-            >
-              <Link href={item.href} className="capitalize">
-                {item.name.replace(/-/g, " ")}
-              </Link>
-            </Button>
-          </SwiperSlide>
-        ))
-      }
-    </Swiper>
-    // <nav
-    //   className={cn(
-    //     "flex justify-center items-center",
-    //     className
-    //   )}
-    //   {...props}
-    // >
-    //   <ScrollArea className="w-full">
-    //   <div className="flex gap-2 pb-3 justify-center w-full">
-    //   {items.map((item: any) => (
-    //     <Button
-    //       key={item.id}
-    //       variant={pathname === item.href ? "secondary" : "outline"}
-    //       className={pathname !== item.href ? "bg-background" : ""}
-    //       asChild
-    //       >
-    //       <Link href={item.href} className="capitalize">
-    //         {item.name.replace(/-/g, " ")}
-    //       </Link>
-    //       </Button>
-    //   ))}
-    //   </div>
-    //   <ScrollBar orientation="horizontal" />
-    //       </ScrollArea>
-    // </nav>
+      <ScrollArea className="w-full">
+      <div className="flex gap-2 pb-3 justify-center w-full">
+      {items.map((item: any) => (
+        <Button
+          key={item.id}
+          variant={pathname === item.name ? "secondary" : "outline"}
+          className={pathname !== item.name ? "bg-background" : ""}
+          asChild
+          >
+          <Link href={item.name} className="capitalize">
+            {item.name.replace(/-/g, " ")}
+          </Link>
+          </Button>
+      ))}
+      </div>
+      <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+    </nav>
+    
   )
 }

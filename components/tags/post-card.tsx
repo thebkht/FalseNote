@@ -48,7 +48,7 @@ export default function TagPostCard(
                     <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6 md:pb-14">
                          <div className="w-full">
                               <Link href={`/${props.post.author?.username}/${props.post.url}`}>
-                                   <div className="w-full h-auto !relative !pb-0 aspect-[2/1] md:aspect-[3/2]" >
+                                   <div className="w-full h-auto !relative !pb-0 aspect-[2/1]" >
                                         {props.post.cover ? (
                                              <Image
                                                   src={props.post.cover}

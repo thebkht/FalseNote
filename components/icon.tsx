@@ -28,6 +28,9 @@ import {
      X,
      type LucideIcon,
      Bookmark,
+     Hash,
+     SearchX,
+     Cog,
    } from "lucide-react"
    
    export type Icon = LucideIcon
@@ -41,7 +44,7 @@ import {
      post: FileText,
      page: File,
      media: Image,
-     settings: Settings,
+     settings: Cog,
      billing: CreditCard,
      ellipsis: MoreVertical,
      add: Plus,
@@ -54,6 +57,8 @@ import {
      moon: Moon,
      laptop: Laptop,
      check: Check,
+     hash: Hash,
+     notfound: SearchX,
      bookmark: Bookmark,
      logoIcon: (props: IconProps) => (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466.45 466" {...props} fill="none">
