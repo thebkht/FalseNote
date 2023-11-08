@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { Icons } from "@/components/icon";
 import UserHoverCard from "@/components/user-hover-card";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -34,7 +35,7 @@ const formatDate = (dateString: string | number | Date) => {
 }
 
 export default function FeaturedDev(
-  { data: featuredDevs}: { data: any; }
+  { data: featuredDevs, ...props}: { data: any; } & React.ComponentPropsWithoutRef<typeof Card>
 ) {
   const [isFollowing, setIsFollowing] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
@@ -81,7 +82,7 @@ export default function FeaturedDev(
 
   if (Array.isArray(featuredDevs)) {
     featuredDevs.length ? content = (
-      <Card className="feed__content_featured_card bg-background border-none shadow-none">
+      <Card className={cn("feed__content_featured_card bg-background border-none shadow-none", props.className)} {...props}>
         <CardHeader className="py-4 px-0">
           <CardTitle className="feed__content_featured_card_title text-base">Featured Devs</CardTitle>
         </CardHeader>

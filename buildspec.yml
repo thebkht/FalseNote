@@ -1,0 +1,40 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+
+    commands:
+      # install npm
+      - npm install
+
+  build:
+    commands:
+      # run build script
+      - npm build
+
+artifacts:
+  # include all files required to run application
+  # notably excluded is node_modules, as this will cause overwrite error on deploy
+  files:
+    - assets/**/*
+    - components/**/*
+    - containers/**/*
+    - pages/**/*
+    - public/**/*
+    - lib/**/*
+    - prisma/**/*
+    - scripts/**/*
+    - settings/**/*
+    - styles/**/*
+    - jsconfig.json
+    - package.json
+    - .eslintrc.json
+    - components.json
+    - next-env.d.ts
+    - next.config.js
+    - appspec.yml
+    - postcss.config.js
+    - tailwind.config.js
+    - tsconfig.json
