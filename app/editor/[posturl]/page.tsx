@@ -38,6 +38,8 @@ async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
     post.url = draft.url
     post.readingTime = draft.readingTime
   }
+
+  return post
 }
 
 export default async function PostEditor({ params }: { params: { posturl: string } }) {
