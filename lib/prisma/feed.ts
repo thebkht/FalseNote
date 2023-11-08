@@ -1,8 +1,39 @@
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
-import { getBookmarks, getHistory, getLikes } from "./session";
 import { Like } from "@prisma/client";
 
+const getLikes = async ({ id }: { id: number | undefined }) => {
+  const likes = await postgres.like.findMany({
+    where: { authorId: id },
+    select: {
+      postId: true,
+    },
+  });
+
+  return { likes: JSON.parse(JSON.stringify(likes)) };
+}
+
+const getBookmarks = async ({ id }: { id: number | undefined }) => {
+  const bookmarks = await postgres.bookmark.findMany({
+    where: { userId: id },
+    select: {
+      postId: true,
+    },
+  });
+
+  return { bookmarks: JSON.parse(JSON.stringify(bookmarks)) };
+}
+
+const getHistory = async ({ id }: { id: number | undefined }) => {
+  const history = await postgres.readingHistory.findMany({
+    where: { userId: id },
+    select: {
+      postId: true,
+    },
+  });
+
+  return { history: JSON.parse(JSON.stringify(history)) };
+}
 export const getForYou = async ({ page = 0 }: { page?: number }) => {
   const user = await getSessionUser();
   if (!user) {

@@ -79,6 +79,9 @@ export default async function Feed({
                           </Link>
                         ))}
                       </div>
+                      <Link href={`/tags`} className="text-xs flex items-center my-2.5 font-medium">
+                            See more tags
+                          </Link>
                     </CardContent>
                   </Card>
                 )}
