@@ -80,7 +80,7 @@ export default function UserDetails({ className, children, user, followers, foll
     <div className={className}>
       <div className="flex lg:flex-col items-center">
       <div className="user__header flex md:block items-center lg:space-y-4">
-        <Avatar className="rounded-full mr-3 lg:w-[296px] w-1/4 md:w-56 md:h-56 lg:h-[296px] h-1/4">
+        <Avatar className="rounded-full mr-3 lg:w-[296px] w-1/4 md:w-56 md:h-56 lg:h-[296px] border h-1/4">
           <AvatarImage className="rounded-full" src={user?.image} alt={user?.name} />
           <AvatarFallback className="text-8xl text-foreground">{user?.name ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>

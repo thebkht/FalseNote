@@ -43,7 +43,7 @@ export default function UserHoverCard({ user, children, className, ...props }: R
       </HoverCardTrigger>
       <HoverCardContent>
         <div className="flex flex-col space-y-1">
-          <Avatar className="h-14 w-14 mb-1">
+          <Avatar className="h-14 w-14 mb-1 border">
             <AvatarImage src={user?.image} alt={user?.name} />
             <AvatarFallback>{user?.name ? user?.name.charAt(0) : user?.username?.charAt(0)}</AvatarFallback>
           </Avatar>

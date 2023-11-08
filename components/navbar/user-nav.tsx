@@ -48,7 +48,7 @@ useEffect(() => {
           <DropdownMenu>
                <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                         <Avatar className="h-8 w-8">
+                         <Avatar className="h-8 w-8 border">
                               <AvatarImage src={user.image} alt={user.name} />
                               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                          </Avatar>
@@ -56,7 +56,7 @@ useEffect(() => {
                </DropdownMenuTrigger>
                <DropdownMenuContent className="w-72 p-3" align="end" forceMount>
                     <DropdownMenuLabel className="flex items-center">
-                    <Avatar className="mr-2">
+                    <Avatar className="mr-2 border">
                               <AvatarImage src={user.image} alt={user.name} />
                               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                          </Avatar>
@@ -67,8 +67,8 @@ useEffect(() => {
                     <div className="text-muted-foreground font-medium mt-4 mb-3.5 px-2.5">Profile</div>
                     <DropdownMenuItem asChild>
                          
-                         <Link href={username !== null ?  `/${username}` : `/`} className="flex px-2.5 mb-4 py-2 border-2 items-center">
-                         <Avatar className="h-6 w-6 mr-2">
+                         <Link href={username !== null ?  `/${username}` : `/`} className="flex px-2.5 mb-4 py-2 border items-center">
+                         <Avatar className="h-6 w-6 mr-2 border">
                               <AvatarImage src={user.image} alt={user.name} />
                               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                          </Avatar>
