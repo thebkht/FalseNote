@@ -1,6 +1,5 @@
 import MoreFromAuthor from '@/components/blog/more-from-author';
 import RelatedPosts from '@/components/blog/related-posts';
-import { fetchForYou } from '@/components/feed/get-foryou';
 import { getSessionUser } from '@/components/get-session-user';
 import { Separator } from '@/components/ui/separator';
 import postgres from '@/lib/postgres';
