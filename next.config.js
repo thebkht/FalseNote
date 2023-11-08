@@ -21,7 +21,13 @@ const nextConfig = {
         hostname: `falsenotes.vercel.app`,
         port: '',
         pathname: `/**`,
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: `avatars.githubusercontent.com`,
+        port: '',
+        pathname: `/**`,
+      },
 
     ],
   },

@@ -20,6 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { is, ro } from "date-fns/locale";
 import { set } from "date-fns";
 import ShareList from "../share-list";
+import Image from "next/image";
 
 function getRegistrationDateDisplay(registrationDate: string) {
   ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -90,7 +91,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 <h1 className="font-bold text-xl lg:text-2xl flex items-center"><span>{user?.name}</span> {user?.verified && (
                   <Icons.verified className="h-5 lg:h-6 w-5 lg:w-6 mx-0.5 inline fill-primary align-middle" />
                 )} {user?.falsemember && (
-                  <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
+                  <Image src='https://avatars.githubusercontent.com/u/144859178?v=4' alt="False icon" height={30} width={30} className="h-5 lg:h-6 w-5 lg:w-6 inline rounded border align-middle" />
                 )}</h1>
                 <span className="text-lg md:text-xl font-light text-muted-foreground">{user?.username}</span>
               </div>
@@ -99,7 +100,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 <h1 className="font-bold text-xl lg:text-2xl flex items-center"><span>{user?.username}</span> {user?.verified && (
                   <Icons.verified className="h-5 lg:h-6 w-5 lg:w-6 mx-0.5 inline fill-primary align-middle" />
                 )} {user?.falsemember && (
-                  <Icons.logoIcon className="h-4 md:h-5 w-4 md:w-5 inline" />
+                  '⚡️'
                 )}</h1>
               </div>
               )
