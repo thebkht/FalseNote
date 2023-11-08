@@ -1,6 +1,5 @@
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
-import { Like } from "@prisma/client";
 
 const getLikes = async ({ id }: { id: number | undefined }) => {
   const likes = await postgres.like.findMany({
@@ -8,6 +7,10 @@ const getLikes = async ({ id }: { id: number | undefined }) => {
     select: {
       postId: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
   });
 
   return { likes: JSON.parse(JSON.stringify(likes)) };
@@ -19,6 +22,10 @@ const getBookmarks = async ({ id }: { id: number | undefined }) => {
     select: {
       postId: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
   });
 
   return { bookmarks: JSON.parse(JSON.stringify(bookmarks)) };
@@ -30,11 +37,56 @@ const getHistory = async ({ id }: { id: number | undefined }) => {
     select: {
       postId: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
   });
 
   return { history: JSON.parse(JSON.stringify(history)) };
 }
-export const getForYou = async ({ page = 0 }: { page?: number }) => {
+
+const baseQuery = {
+  orderBy: { createdAt: "desc" },
+  select: {
+    id: true,
+    title: true,
+    subtitle: true,
+    url: true,
+    cover: true,
+    visibility: true,
+    createdAt: true,
+    updatedAt: true,
+    readingTime: true,
+    author: {
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        image: true,
+        bio: true,
+        createdAt: true,
+        Followers: true,
+        Followings: true,
+      },
+    },
+    savedUsers: { select: { userId: true } },
+    _count: {
+      select: {
+        likes: true,
+        savedUsers: true,
+      },
+    },
+    tags: {
+      take: 1,
+      select: {
+        tag: true
+      }
+    },
+  },
+};
+
+const getForYou = async ({ page = 0 }: { page?: number }) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
@@ -53,7 +105,7 @@ export const getForYou = async ({ page = 0 }: { page?: number }) => {
     where: {
       postId: {
         in: [
-          ...userLikes.map((like: Like) => like.postId),
+          ...userLikes.map((like: any) => like.postId),
           ...userBookmarks.map((bookmark: any) => bookmark.postId),
           ...userHistory.map((history: any) => history.postId),
         ],
@@ -63,28 +115,6 @@ export const getForYou = async ({ page = 0 }: { page?: number }) => {
       tagId: true,
     },
   });
-
-const baseQuery = {
-  orderBy: { createdAt: "desc" },
-  take: 5,
-  skip: page * 5,
-  include: {
-    author: true,
-    savedUsers: true,
-    _count: {
-      select: {
-        likes: true,
-        savedUsers: true,
-      },
-    },
-    tags: {
-      take: 1,
-      include: {
-        tag: true,
-      },
-    },
-  },
-};
 
 // Count the occurrences of each tag
 const tagCounts = tags.reduce((counts, tag) => {
@@ -102,6 +132,8 @@ const posts = await postgres.post.findMany({
 return fetchFeed({
   where: { id: { in: posts.map((post) => post.id) }, visibility: "public" },
   ...baseQuery,
+  take: 5,
+  skip: page * 5,
 });
 };
 
@@ -114,34 +146,12 @@ const fetchFeed = async (query: any) => {
   }
 };
 
-export const getFeed = async ({ page = 0, tab }: { page?: number; tab?: string | undefined }) => {
+export const getFeed = async ({ page = 0, tab }: { page?: number | undefined; tab?: string | undefined }) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
   }
   const { id } = user;
-
-  const baseQuery = {
-    orderBy: { createdAt: "desc" },
-    take: 5,
-    skip: page * 5,
-    include: {
-      author: true,
-      savedUsers: true,
-      _count: {
-        select: {
-          likes: true,
-          savedUsers: true,
-        },
-      },
-      tags: {
-        take: 1,
-        include: {
-          tag: true,
-        },
-      },
-    },
-  };
   if (!tab) {
     return await getForYou({ page });
   }
@@ -155,9 +165,11 @@ export const getFeed = async ({ page = 0, tab }: { page?: number; tab?: string |
       const followingIds = following.map((user) => user.followingId);
       return fetchFeed({
         ...baseQuery,
+        take: 5,
+        skip: page * 5,
         where: { authorId: { in: followingIds }, visibility: "public" },
-        include: {
-          ...baseQuery.include,
+        select: {
+          ...baseQuery.select,
           author: {
             include: {
               Followers: true,
@@ -174,6 +186,8 @@ export const getFeed = async ({ page = 0, tab }: { page?: number; tab?: string |
     const postIds = postTags.map((postTag) => postTag.postId);
     return fetchFeed({
       ...baseQuery,
+      take: 5,
+      skip: page * 5,
       where: { id: { in: postIds }, visibility: "public" },
     });
   } 
