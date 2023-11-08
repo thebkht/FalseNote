@@ -53,8 +53,9 @@ function Navbar() {
           </Link>
   
           <div className="flex items-center gap-2 md:gap-4">
+            <SearchBar />
           <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
-                  <SearchBar />
+                  
                   {/* <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>

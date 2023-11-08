@@ -12,7 +12,8 @@ export async function GET(request: NextRequest) {
   const pageString = request.nextUrl.searchParams.get('page');
   const page = pageString ? parseInt(pageString) : 0;
   const search = request.nextUrl.searchParams.get('search');
-  const limit = 5;
+  const limitString = request.nextUrl.searchParams.get('limit');
+  const limit = limitString ? parseInt(limitString) : 5;
   try {
     const users = (await postgres.user.findMany({
       ...baseQuery,

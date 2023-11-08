@@ -12,12 +12,13 @@ export async function GET(request: NextRequest) {
   const pageString = request.nextUrl.searchParams.get('page');
   const page = pageString ? parseInt(pageString) : 0;
   const search = request.nextUrl.searchParams.get('search');
-  const limit = 5;
+  const limitString = request.nextUrl.searchParams.get('limit');
+  const limit = limitString ? parseInt(limitString) : 5;
   try {
      const tags = await postgres.tag.findMany({
           where: search != undefined ? {
                name: {
-                 contains: search,
+                 contains: search.replace(/\s+/g, '-').toLowerCase(),
                  mode: "insensitive",
                },
              } : {},

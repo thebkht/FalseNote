@@ -83,7 +83,7 @@ export const searchTags = async ({
   const tags = await postgres.tag.findMany({
     where: search !== undefined ? {
       name: {
-        contains: search,
+        contains: search.replace(/\s+/g, '-').toLowerCase(),
         mode: "insensitive",
       },
     } : {},

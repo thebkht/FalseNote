@@ -38,7 +38,7 @@ export default function Search({search} : {search: string | undefined}) {
                                         <div className="input__icon ml-3">
                                              <SearchIcon className='search__form_icon' />
                                         </div>
-                                        <Input value={text} onChange={e => setText(e.target.value)} placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
+                                        <Input value={text} type="search" onChange={e => setText(e.target.value)} placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
                                    </div>
                               </div>
                          </div>
