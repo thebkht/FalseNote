@@ -6,6 +6,7 @@ import { CalendarDays, Check, Users2 } from "lucide-react";
 import { formatNumberWithSuffix } from "./format-numbers";
 import { Button } from "./ui/button";
 import { Icons } from "./icon";
+import Image from "next/image";
 
 function formatDate(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -49,11 +50,11 @@ export default function UserHoverCard({ user, children, className, ...props }: R
           {
             user?.name ? (
               <div>
-                <h4 className="text-sm font-semibold">{user?.name} {user?.verified && (<Icons.verified className="h-3 w-3 inline fill-primary align-middle" />)}</h4>
+                <h4 className="text-sm font-semibold">{user?.name} {user?.verified && (<Icons.verified className="h-4 w-4 inline fill-primary align-middle" />)} {user?.falsemember && <Image src='https://avatars.githubusercontent.com/u/144859178?v=4' alt="False icon" height={30} width={30} className="h-4 w-4 inline rounded border align-middle" />}</h4>
                 <h6 className="text-sm text-muted-foreground !mt-0">{user?.username}</h6>
               </div>
             ) : (
-              <h4 className="text-sm font-semibold">{user?.username} {user?.verified && (<Icons.verified className="h-3 w-3 inline fill-primary align-middle" />)}</h4>
+              <h4 className="text-sm font-semibold">{user?.username} {user?.verified && (<Icons.verified className="h-4 w-4 inline fill-primary align-middle" />)} {user?.falsemember && <Image src='https://avatars.githubusercontent.com/u/144859178?v=4' alt="False icon" height={30} width={30} className="h-4 w-4 inline rounded border align-middle" />}</h4>
             )
           }
           <p className="text-sm">

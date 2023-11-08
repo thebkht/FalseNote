@@ -100,7 +100,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 <h1 className="font-bold text-xl lg:text-2xl flex items-center"><span>{user?.username}</span> {user?.verified && (
                   <Icons.verified className="h-5 lg:h-6 w-5 lg:w-6 mx-0.5 inline fill-primary align-middle" />
                 )} {user?.falsemember && (
-                  '⚡️'
+                  <Image src='https://avatars.githubusercontent.com/u/144859178?v=4' alt="False icon" height={30} width={30} className="h-5 lg:h-6 w-5 lg:w-6 inline rounded border align-middle" />
                 )}</h1>
               </div>
               )
