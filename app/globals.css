@@ -67,11 +67,11 @@
 }
 
 .menu-backdrop {
-  @apply bg-background fixed z-10 backdrop-blur-md w-full top-0 left-0;
+  @apply bg-popover fixed z-10 backdrop-blur-md w-full top-0 left-0;
 }
 
 .menu-backdrop {
-  background-color: hsl(var(--background) / 0.7);
+  background-color: hsl(var(--popover) / 0.7);
 }
 
 .menu-container {

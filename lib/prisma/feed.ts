@@ -65,6 +65,7 @@ const baseQuery = {
         name: true,
         image: true,
         bio: true,
+        verified: true,
         createdAt: true,
         Followers: true,
         Followings: true,
