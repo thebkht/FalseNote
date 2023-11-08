@@ -85,8 +85,6 @@ model User {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  //content Text in postgresql
-  
   content   String @db.Text
   subtitle  String? @db.VarChar(280)
   cover    String?
@@ -104,11 +102,30 @@ model Post {
   likes     Like[]
   savedUsers Bookmark[]
   readedUsers ReadingHistory[]
-
+  drafts DraftPost[]
   @@index([createdAt])
   @@map("posts")
 }
 
+//draft post model to store autosave drafts of posts in editor
+model DraftPost {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String @db.Text
+  subtitle  String? @db.VarChar(280)
+  cover    String?
+  views    Int @default(0)
+  post      Post     @relation(fields: [postId], references: [id])
+  postId  Int
+  url       String   @unique
+  readingTime String? @db.VarChar(250)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  updated Boolean @default(false)
+
+  @@index([createdAt])
+  @@map("drafts")
+}
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String
