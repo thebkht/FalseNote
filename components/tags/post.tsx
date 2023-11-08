@@ -29,13 +29,13 @@ export default function TagPopularPosts({ posts: initialPosts, tag, session }: {
                               <TagPostCard key={post.id} post={post} session={session} className="lg:col-span-2 md:col-span-3 col-span-6" />
                          ))}
                     </div>
-                    <div className="mt-20">
+                    {/* <div className="mt-20">
                          <Button variant={"outline"} size={"lg"} asChild>
                               <Link href={`/tag/${tag.name}/popular`}>
                                    See more popular posts
                               </Link>
                          </Button>
-                    </div>
+                    </div> */}
                </div>
           </div>
      )

@@ -32,9 +32,7 @@ export default function EditorNavbar() {
   }, [user?.name]);
      return (
           <nav className="menu">
-               <div className="menu-backdrop h-16 border-b w-screen md:w-full">
-               </div>
-               <div className="menu-container p-3.5">
+               <div className="menu-container fixed p-3.5 backdrop-blur-md">
                     
                          <Link href={`/${username}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1">

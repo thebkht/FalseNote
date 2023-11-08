@@ -101,3 +101,53 @@ export const searchTags = async ({
 
   return { tags: JSON.parse(JSON.stringify(tags)) };
 }
+
+export async function getRelatedTags(tagName: string) {
+  // Find all postTags that are related to the specific tag
+  const postTags = await postgres.postTag.findMany({
+    where: {
+      tag: {
+        name: tagName,
+      },
+    },
+    select: {
+      postId: true,
+    }
+  });
+
+  // Find all postTags that are related to these posts
+  const relatedPostTags = await postgres.postTag.findMany({
+    where: {
+      postId: {
+        in: postTags.map((post: any) => post.postId),
+      },
+      NOT: {
+        tag: {
+          name: tagName,
+        },
+      },
+    },
+    select: {
+      tag: {
+        select: {
+          id: true,
+          name: true,
+        },
+      }
+    },
+    orderBy: {
+      postId: "desc",
+    },
+    take: 5,
+  });
+
+  // Extract all tags from these postTags
+  let relatedTags = relatedPostTags.map((postTag: any) => postTag.tag);
+
+  // Remove duplicates
+  relatedTags = relatedTags.filter((tag, index, self) =>
+    index === self.findIndex(t => t.id === tag.id)
+  );
+
+  return { tags: JSON.parse(JSON.stringify(relatedTags))};
+}

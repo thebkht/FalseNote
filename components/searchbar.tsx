@@ -127,7 +127,7 @@ export default function SearchBar() {
                     key={tag.id}
                     value={tag.id}
                   >
-                    <Link href={`/explore?search=${tag.name.replace(/-/g, " ")}`} className="flex items-center">
+                    <Link href={`/tags/${tag.name}`} className="flex items-center">
                     <Hash className="mr-2 h-4 w-4" />
                     <span>{tag.name.replace(/-/g, " ")}</span>
                     </Link>

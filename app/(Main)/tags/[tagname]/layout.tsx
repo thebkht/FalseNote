@@ -1,5 +1,6 @@
 import { TagNav } from "@/components/tags/nav";
 import postgres from "@/lib/postgres";
+import { getRelatedTags } from "@/lib/prisma/tags";
 import { Metadata } from "next";
 
 type Props = {
@@ -73,10 +74,10 @@ const tags = await postgres.tag.findMany({
      }
      )
 
-export default function TagLayout({ children }: { children: React.ReactNode }) {
-
+export default async function TagLayout({ children, params }: Props) {
      return (
           <div className="py-10">
+               <TagNav />
                {children}
           </div>
      )

@@ -27,13 +27,13 @@ export default function TagLatestPosts({ posts, tag, session }: { posts: any, ta
                                         ))
                                    }
                               </div>
-                              <div className="mt-14">
+                              {/* <div className="mt-14">
                                    <Button variant={"outline"} size={"lg"}>
                                         <Link href={`/tag/${tag.name}/posts`}>
                                              See more posts
                                         </Link>
                                    </Button>
-                              </div>
+                              </div> */}
                          </div>
                     </div>
                </div>

@@ -1,4 +1,5 @@
 'use server'
+import { EmptyPlaceholder } from "@/components/empty-placeholder";
 import { getSessionUser } from "@/components/get-session-user";
 import TagDetails from "@/components/tags/details";
 import TagLatestPosts from "@/components/tags/latest-posts";
@@ -45,7 +46,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                { savedUsers: { _count: 'desc' } },
                { views: 'desc' },
                { createdAt: 'desc' }
-             ],
+          ],
           take: 8
      });
      const latestPosts = await postgres.post.findMany({
@@ -69,7 +70,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           },
           orderBy: {
                createdAt: 'desc'
-          }, 
+          },
           take: 5
      });
 
@@ -80,10 +81,29 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           <>
                <div className="flex flex-col space-y-6 my-8">
                     <TagDetails tag={tag} tagFollowers={tag.followingtag} session={session} />
-                    <Separator />
-                    <TagPopularPosts posts={popularPosts} tag={tag} session={session} />
-                    <Separator />
-                    <TagLatestPosts posts={latestPosts} tag={tag} session={session} />
+                    {popularPosts.length > 0 && (
+                         <>
+                              <Separator />
+                              <TagPopularPosts posts={popularPosts} tag={tag} session={session} />
+                         </>
+                    )}
+                    {
+                         latestPosts.length > 0 && (
+                              <>
+                                   <Separator />
+                                   <TagLatestPosts posts={latestPosts} tag={tag} session={session} />
+                              </>
+                         )
+                    }
+                    {
+                         latestPosts.length === 0 && popularPosts.length === 0 && (
+                              <EmptyPlaceholder>
+                                   <EmptyPlaceholder.Icon name="post" strokeWidth={1.25} />
+                                   <EmptyPlaceholder.Title>No posts found</EmptyPlaceholder.Title>
+                                   <EmptyPlaceholder.Description>There is no posts related to this tag</EmptyPlaceholder.Description>
+                              </EmptyPlaceholder>
+                         )
+                    }
                </div>
           </>
      )

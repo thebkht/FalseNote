@@ -181,8 +181,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const saveDraft = async () => {
-    console.log('saving draft')
-    console.log(open)
+    setIsSaving(true);
     if (file) {
       try {
         const dataForm = new FormData()
@@ -232,15 +231,14 @@ export function PostEditorForm(props: { post: any, user: any }) {
         console.error(error)
       }
     }
+    setIsSaving(false);
   }
 
   // when value changes, wait 750ms than save it as a draft
   const [lastSavedTime, setLastSavedTime] = useState<number>(Date.now());
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   useEffect(() => {
-    setIsSaving(true);
     const timeout = setTimeout(saveDraft, 15000);
-    setIsSaving(false);
     return () => clearTimeout(timeout);
   }, [form, file, props.user, props.post, open])
 
