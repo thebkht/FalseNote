@@ -15,7 +15,7 @@ export default async function Home() {
   if(userFollowingsTags.length === 0 && followings.length === 0) {
     redirect('/get-started')
   } else if (userFollowingsTags.length > 0 && followings.length > 0) {
-    redirect('/feed')
+    redirect('/feed?tab=following')
   } 
   
   return <Landing />;

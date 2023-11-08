@@ -26,7 +26,7 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
                     <ScrollArea className="w-full py-2">
                     <TabsList className="bg-transparent gap-2">
                     <Link href={`/feed`}>
-                                   <TabsTrigger value="foryou" ref={firstTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                                   <TabsTrigger disabled value="foryou" ref={firstTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
                                         For You
                                    </TabsTrigger>
                               </Link>
