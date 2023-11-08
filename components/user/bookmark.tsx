@@ -10,7 +10,7 @@ import { Skeleton } from "../ui/skeleton";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function UserBookmarks({ posts: initialPosts, className, user, sessionUser }: { posts: any, className?: string, user?: any, sessionUser?: any }) {
+export default function UserBookmarks({ posts: initialPosts, className, user, sessionUser, tab, search }: { posts: any, className?: string, user?: any, sessionUser?: any, tab?: string, search?: string | undefined }) {
   const router = useRouter();
   const [posts, setPosts] = useState<Array<any>>(initialPosts);
 
@@ -23,8 +23,8 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
 
    async function loadMoreFeed() {
      const next = page + 1
-     const result = await fetch(`api/user/${user.id}/posts?page=${next}${search ? `&search=${search}` : ''}`).then(res => res.json())
-     const fetchedPosts = result?.posts
+     const result = await fetch(`api/user/${user.id}/${tab}?page=${next}${search ? `&search=${search}` : ''}`).then(res => res.json())
+     const fetchedPosts = tab === 'bookmarks' ? result.bookmarks : result.history
      if (fetchedPosts?.length) {
        setPage(next)
        setPosts(prev => [...prev, ...fetchedPosts])

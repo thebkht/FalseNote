@@ -107,10 +107,10 @@ export default async function Page({ params, searchParams }: {
               <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
             </TabsContent>
             <TabsContent value="bookmarks" className="w-full">
-              <UserBookmarks posts={bookmarks} user={user} sessionUser={sessionUserName} className="w-full" />
+              <UserBookmarks posts={bookmarks} user={user} sessionUser={sessionUserName} tab={`bookmarks`} className="w-full" />
             </TabsContent>
             <TabsContent value="reading-history">
-              <UserBookmarks posts={history} user={user} sessionUser={sessionUserName} className="w-full" />
+              <UserBookmarks posts={history} user={user} sessionUser={sessionUserName} tab={`history`} className="w-full" />
             </TabsContent>
           </Tabs>) : (
           <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
