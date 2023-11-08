@@ -21,7 +21,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { getUserByUsername } from "../get-user"
 import { getSessionUser } from "../get-session-user"
-import { ArrowDownRight, ArrowRight, ChevronRight } from "lucide-react"
+import { ArrowDownRight, ArrowRight, ChevronRight, Cog, LogOut, Settings, Settings2 } from "lucide-react"
 
 export function UserNav() {
      const { status } = useSession();
@@ -54,35 +54,49 @@ useEffect(() => {
                          </Avatar>
                     </Button>
                </DropdownMenuTrigger>
-               <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuItem asChild>
-                         <Link href={username !== null ?  `/${username}` : `/`}>
+               <DropdownMenuContent className="w-72 p-3" align="end" forceMount>
+                    <DropdownMenuLabel className="flex items-center">
+                    <Avatar className="mr-2">
+                              <AvatarImage src={user.image} alt={user.name} />
+                              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                         </Avatar>
                          <div className="flex flex-col space-y-1">
-                              <p className="text-sm font-medium leading-none">{user.name}</p>
-                              {
-                                   user.email && <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
-                              }
+                              <p className="text-xl font-bold leading-none">{user.name}</p>
+                         </div>
+                    </DropdownMenuLabel>
+                    <div className="text-muted-foreground font-medium mt-4 mb-3.5 px-2.5">Profile</div>
+                    <DropdownMenuItem asChild>
+                         
+                         <Link href={username !== null ?  `/${username}` : `/`} className="flex px-2.5 mb-4 py-2 border-2 items-center">
+                         <Avatar className="h-6 w-6 mr-2">
+                              <AvatarImage src={user.image} alt={user.name} />
+                              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                         </Avatar>
+                         <div className="flex flex-col space-y-1">
+                              <p className="leading-none">{user.name}</p>
                          </div>
                          <DropdownMenuShortcut><ChevronRight className="h-5 w-5" /></DropdownMenuShortcut>
                     </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                         <Link href="/settings/profile">
-                              <DropdownMenuItem>
+                         
+                              <DropdownMenuItem className="px-2.5 py-2" asChild>
+                                   <Link href="/settings/profile">
+                                   <Cog className="h-5 w-5 mr-2" strokeWidth={1.5} />
                                    Settings
                                    <DropdownMenuShortcut>⇧⌘,</DropdownMenuShortcut>
+                                   </Link>
                               </DropdownMenuItem>
-                         </Link>
-                         <Link href="/signout">
-                         <DropdownMenuItem>
-                              
-                              
-                              
+                         
+                         
+                         <DropdownMenuItem className="px-2.5 py-2" asChild>
+                             <Link href="/signout"> 
+                             <LogOut className="h-5 w-5 mr-2" />
                               Log out
                               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                              </Link>
                          </DropdownMenuItem>
-                         </Link>
+                         
                     </DropdownMenuGroup>
                </DropdownMenuContent>
           </DropdownMenu>
