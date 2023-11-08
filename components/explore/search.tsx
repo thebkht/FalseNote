@@ -25,14 +25,14 @@ export default function Search({search} : {search: string | undefined}) {
    
        if (!query) {
          router.push(`/explore`)
-       } else {
+       } else if (query.length >= 3) {
          router.push(`/explore?search=${query}`)
        }
      }, [query])
      return (
           <>
                <div className="search feed__empty_search">
-                         <div className="search-container my-6">
+                         <div className="search-container">
                               <div className="search__form mx-auto md:w-[540px]">
                                    <div className="input w-full h-14 rounded-full">
                                         <div className="input__icon ml-3">

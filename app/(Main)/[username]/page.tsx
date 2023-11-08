@@ -87,34 +87,36 @@ export default async function Page({ params, searchParams }: {
   const { bookmarks } = await getBookmarks({ id: sessionUserName?.id })
   const { history } = await getHistory({ id: sessionUserName?.id })
   return (
-    <div className="md:container mx-auto px-4 pt-16">
+    <div className="md:container mx-auto px-4">
       <div className="gap-5 lg:gap-6 py-5 flex flex-col md:flex-row items-start" >
-        <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:w-1/3 lg:w-1/4" />
-        {sessionUserName?.id === user?.id ? (
-          <Tabs className="w-full" defaultValue={tab || "posts"}>
-            <TabsList className="bg-transparent gap-2">
-              <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                Posts
-              </TabsTrigger>
-              <TabsTrigger value="bookmarks" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                Bookmarks
-              </TabsTrigger>
-              <TabsTrigger value="reading-history" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                Reading History
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="posts" className="w-full">
-              <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
-            </TabsContent>
-            <TabsContent value="bookmarks" className="w-full">
-              <UserBookmarks posts={bookmarks} user={user} sessionUser={sessionUserName} tab={`bookmarks`} className="w-full" />
-            </TabsContent>
-            <TabsContent value="reading-history">
-              <UserBookmarks posts={history} user={user} sessionUser={sessionUserName} tab={`history`} className="w-full" />
-            </TabsContent>
-          </Tabs>) : (
-          <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
-        )}
+        <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:sticky top-4 md:w-1/3 lg:w-1/4" />
+        <div className="lg:px-8 w-full">
+          {sessionUserName?.id === user?.id ? (
+            <Tabs className="w-full" defaultValue={tab || "posts"}>
+              <TabsList className="bg-background md:w-full w-screen py-4 justify-start h-fit rounded-none gap-2 sticky top-0 z-10">
+                <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                  Posts
+                </TabsTrigger>
+                <TabsTrigger value="bookmarks" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                  Bookmarks
+                </TabsTrigger>
+                <TabsTrigger value="reading-history" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                  Reading History
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="posts" className="w-full">
+                <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
+              </TabsContent>
+              <TabsContent value="bookmarks" className="w-full">
+                <UserBookmarks posts={bookmarks} user={user} sessionUser={sessionUserName} tab={`bookmarks`} className="w-full" />
+              </TabsContent>
+              <TabsContent value="reading-history">
+                <UserBookmarks posts={history} user={user} sessionUser={sessionUserName} tab={`history`} className="w-full" />
+              </TabsContent>
+            </Tabs>) : (
+            <UserPosts posts={posts} user={user} sessionUser={sessionUserName} query={whereQuery} search={search} className="w-full" />
+          )}
+        </div>
       </div>
     </div>
   );

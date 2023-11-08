@@ -74,3 +74,30 @@ export const getPopularTags = async ({
     return { error: 'An error occurred while fetching tags.' };
   }
 };
+
+export const searchTags = async ({
+  search,
+  page = 0,
+  limit = 10,
+}: { search: string | undefined; page?: number; limit?: number }) => {
+  const tags = await postgres.tag.findMany({
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+    take: limit,
+    skip: page * limit,
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+    include: {
+      _count: { select: { posts: true, followingtag: true } },
+    },
+  });
+
+  return { tags: JSON.parse(JSON.stringify(tags)) };
+}

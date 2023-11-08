@@ -41,7 +41,7 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
   if (status == "loading") return null;
   return (
     <div className={className}>
-      <div className="user-articles lg:px-8 w-full">
+      <div className="user-articles">
         {children}
         <Separator className="md:hidden flex mt-4" />
         {posts?.length > 0 ? (

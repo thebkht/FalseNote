@@ -170,7 +170,7 @@ export default async function PostLayout(
 
      return (
           <>
-               <div className='md:container mx-auto px-4 pt-16'>
+               <div className='md:container mx-auto px-4'>
                     {children}
                </div>
 

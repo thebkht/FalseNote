@@ -75,7 +75,7 @@
 }
 
 .menu-container {
-  @apply fixed z-20 flex items-center justify-between w-full;
+  @apply z-20 flex items-center justify-between w-full;
 }
 
 .feed {

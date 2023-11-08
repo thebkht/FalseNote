@@ -46,10 +46,7 @@ function Navbar() {
 
   if (isLoaded) {
     return (
-      <nav className="menu">
-        <div className="menu-backdrop h-[60px] border-b w-screen md:w-full">
-        </div>
-        <div className="menu-container h-[60px] px-3.5">
+      <div className="menu-container h-[60px] px-3.5 fixed md:sticky backdrop-blur-md">
           <Link href="/feed?tab=following" className="flex items-center">
             <Icons.logo />
             <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
@@ -74,7 +71,6 @@ function Navbar() {
   
               </div>
         </div>
-      </nav>
     );
   } else {
     return (
