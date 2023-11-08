@@ -52,6 +52,7 @@ export default async function PostEditor({ params }: { params: { posturl: string
   const post = await getPostForUser(params.posturl, session.id)
 
   if (!post) {
+    return notFound()
     redirect('/404')
   }
 
