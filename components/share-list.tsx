@@ -32,7 +32,9 @@ export default function ShareList({ className, children, url, text, ...props }: 
                          <DropdownMenuItem>
                               <TwitterShareButton
                                    url={url}
-                                   title={text} >
+                                   title={text}
+                                   via="FalseNotesTeam"
+                                   >
                                    <div className="flex">
                                    <Icons.twitter className="mr-2 h-4 w-4 fill-current stroke-none" />
                                    <span>Share on Twitter</span>

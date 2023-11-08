@@ -74,7 +74,8 @@ export default function PostMoreActions({ post, session, className, children, ..
                          <DropdownMenuItem>
                               <TwitterShareButton
                                    url={`https://falsenotes.vercel.app/${post.author.username}/${post.url}`}
-                                   title={post.title} >
+                                   title={post.title}
+                                   via="FalseNotesTeam" >
                                    <div className="flex">
                                    <Icons.twitter className="mr-2 h-4 w-4 fill-current stroke-none" />
                                    <span>Share on Twitter</span>
