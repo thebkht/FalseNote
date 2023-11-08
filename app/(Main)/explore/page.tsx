@@ -93,7 +93,7 @@ export default async function Explore({
                                         </ol>
                                    </CardContent>
                                    <CardFooter className="flex justify-end">
-                                        <Link href={`/explore?tab=posts${search && `&search=${search}`}`} className="flex items-center text-sm text-muted-foreground font-medium">
+                                        <Link href={`/explore?tab=posts${search !== undefined ? `&search=${search}` : ''}`} className="flex items-center text-sm text-muted-foreground font-medium">
                                              More
                                         </Link>
                                    </CardFooter>
@@ -142,7 +142,7 @@ export default async function Explore({
                                              </div>
                                         </CardContent>
                                         <CardFooter className="flex justify-end">
-                                        <Link href={`/explore?tab=users${search && `&search=${search}`}`} className="flex items-center text-sm text-muted-foreground font-medium">
+                                        <Link href={`/explore?tab=users${search !== undefined ? `&search=${search}` : ''}`} className="flex items-center text-sm text-muted-foreground font-medium">
                                              More
                                         </Link>
                                    </CardFooter>
