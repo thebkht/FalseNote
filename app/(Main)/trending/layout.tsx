@@ -2,12 +2,12 @@ import ExploreTabs from "@/components/explore/navbar/navbar";
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-     title: 'Explore topics | FalseNotes',
-     description: 'Explore topics on FalseNotes',
+     title: 'Trending posts | FalseNotes',
+     description: 'There are hot developers and posts',
 }
 
 
-export default function TagsLayout({ children }: { children: React.ReactNode }) {
+export default function TrendingLayout({ children }: { children: React.ReactNode }) {
 
      return (
           <div className="md:container mx-auto px-4 pt-16">

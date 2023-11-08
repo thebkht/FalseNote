@@ -1,4 +1,4 @@
-import { Compass, GalleryVerticalEnd, Hash, Zap } from "lucide-react";
+import { Compass, Flame, GalleryVerticalEnd, Hash, Zap } from "lucide-react";
 type Item = {
   label: string;
   icon: React.ElementType;
@@ -18,7 +18,7 @@ export const items = [
   },
   {
     label: "Trending",
-    icon: Zap,
+    icon: Flame,
     path: "/trending",
   },
 ];

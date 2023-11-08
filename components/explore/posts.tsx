@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { Separator } from '@radix-ui/react-context-menu';
 import { Button } from '../ui/button';
 
-export default function Posts({ initialPosts, search, session }: { initialPosts: any | undefined, search: string | undefined, session: any }) {
+export default function Posts({ initialPosts, search, session }: { initialPosts: any | undefined, search?: string | undefined, session: any }) {
      const [posts, setposts] = useState<Array<any>>(initialPosts)
      const [page, setPage] = useState<number>(0)
      const [isLoading, setIsLoading] = useState<boolean>(false)
