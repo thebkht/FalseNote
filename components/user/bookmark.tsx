@@ -21,21 +21,21 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
     setPosts(initialPosts)
   }, [initialPosts])
 
-//   async function loadMoreFeed() {
-//     const next = page + 1
-//     const result = await fetch(`api/user/${user.id}/posts?page=${next}${search ? `&search=${search}` : ''}`).then(res => res.json())
-//     const fetchedPosts = result?.posts
-//     if (fetchedPosts?.length) {
-//       setPage(next)
-//       setPosts(prev => [...prev, ...fetchedPosts])
-//     }
-//   }
+   async function loadMoreFeed() {
+     const next = page + 1
+     const result = await fetch(`api/user/${user.id}/posts?page=${next}${search ? `&search=${search}` : ''}`).then(res => res.json())
+     const fetchedPosts = result?.posts
+     if (fetchedPosts?.length) {
+       setPage(next)
+       setPosts(prev => [...prev, ...fetchedPosts])
+     }
+   }
 
-//   useEffect(() => {
-//     if (inView) {
-//       loadMoreFeed()
-//     }
-//   }, [inView])
+   useEffect(() => {
+     if (inView) {
+       loadMoreFeed()
+     }
+   }, [inView])
 
   const { status } = useSession();
   if (status == "loading") return null;

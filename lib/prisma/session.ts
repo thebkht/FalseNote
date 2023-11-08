@@ -124,7 +124,7 @@ export const getSettings = async ({ id }: { id: number | undefined }) => {
   return { settings: JSON.parse(JSON.stringify(settings?.settings)) };
 };
 
-export const getBookmarks = async ({ id, limit = 5 }: { id: number | undefined, limit?: number }) => {
+export const getBookmarks = async ({ id, limit = 5, page = 0 }: { id: number | undefined, limit?: number, page?: number }) => {
   const user = await postgres.user.findFirst({
     where: { id },
     include: {
@@ -141,6 +141,7 @@ export const getBookmarks = async ({ id, limit = 5 }: { id: number | undefined, 
           updatedAt: "desc",
         },
         take: limit,
+        skip: page * limit,
       },
       _count: { select: { bookmarks: true } },
     },
@@ -149,7 +150,7 @@ export const getBookmarks = async ({ id, limit = 5 }: { id: number | undefined, 
   return { bookmarks: JSON.parse(JSON.stringify(user?.bookmarks)), bookmarksCount: user?._count?.bookmarks };
 };
 
-export const getHistory = async ({ id }: { id: number | undefined }) => {
+export const getHistory = async ({ id, limit = 5, page = 0 }: { id: number | undefined, limit?: number, page?: number }) => {
   const user = await postgres.user.findFirst({
     where: { id },
     include: {
@@ -164,7 +165,8 @@ export const getHistory = async ({ id }: { id: number | undefined }) => {
         orderBy: {
           updatedAt: "desc",
         },
-        take: 3,
+        take: limit,
+        skip: page * limit,
       },
       _count: { select: { readinghistory: true } },
     },
