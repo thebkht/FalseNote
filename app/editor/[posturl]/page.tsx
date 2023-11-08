@@ -6,7 +6,8 @@ import { Post, User } from '@prisma/client';
 import { notFound, redirect } from 'next/navigation';
 
 async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
-  return await postgres.post.findFirst({
+  // check if post draft exists of post
+  const post =  await postgres.post.findFirst({
     where: {
       url: postUrl,
       authorId: userId,
@@ -19,6 +20,24 @@ async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
       }
       },
   })
+
+  if (!post) {
+    return null
+  }
+  const draft = await postgres.draftPost.findFirst({
+    where: {
+      postId: post?.id,
+    },
+  })
+
+  if (draft) {
+    post.content = draft.content
+    post.title = draft.title
+    post.subtitle = draft.subtitle
+    post.cover = draft.cover
+    post.url = draft.url
+    post.readingTime = draft.readingTime
+  }
 }
 
 export default async function PostEditor({ params }: { params: { posturl: string } }) {

@@ -4,6 +4,7 @@ import readingTime from "reading-time";
 import { z } from "zod";
 
 function sanitizeTagName(tag: string) {
+  //if tag is "hello world" it will be "hello-world" if 'hello world ' it will be 'hello-world' not 'hello-world-'
   return tag.replace(/\s+/g, "-").toLowerCase();
 }
 
