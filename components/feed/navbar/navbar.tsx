@@ -29,7 +29,7 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
                                         <Link href={`/feed`}>For You</Link>
                                    </TabsTrigger>
                                    <Link href={`/feed?tab=following`}>
-                                        <TabsTrigger value="following" ref={firstTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                                        <TabsTrigger value="following" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
                                              Following
                                         </TabsTrigger>
                                    </Link>
