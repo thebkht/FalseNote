@@ -2,15 +2,15 @@ import postgres from "@/lib/postgres";
 import { getSessionUser } from "../get-session-user";
 import { getFollowings } from "@/lib/prisma/session";
 
-export const fetchUsers = async ({id} : {id: number | undefined}) => {
+export const fetchUsers = async ({id, limit = 3} : {id?: number | undefined, limit?: number}) => {
 
   const topUsers = await postgres.user.findMany({
     include: {
       Followers: true,
       Followings: true,
     },
-    take: 3,
-    where: {
+    take: limit,
+    where: id ? {
       id: {
         not: id,
       },
@@ -19,7 +19,7 @@ export const fetchUsers = async ({id} : {id: number | undefined}) => {
           followerId: id,
         },
       },
-    },
+    } : {},
     orderBy: {
       Followers: {
         _count: "desc",
@@ -27,9 +27,5 @@ export const fetchUsers = async ({id} : {id: number | undefined}) => {
     },
   });
 
-  if (topUsers.length === 0) {
-    return null;
-  } else {
-    return { topUsers: JSON.parse(JSON.stringify(topUsers)) };
-  }
+  return { users: JSON.parse(JSON.stringify(topUsers)) };
 };

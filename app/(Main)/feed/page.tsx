@@ -29,7 +29,7 @@ export default async function Feed({
   const session = await getSessionUser();
 
   const topData = await fetchUsers({ id: session?.id })
-  const topUsers = topData?.topUsers;
+  const topUsers = topData?.users;
   const popularTags = await fetchTags();
 
   if (!session) {

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from '../ui/card';
 import { cn } from '@/lib/utils';
 import { Separator } from '@radix-ui/react-context-menu';
 import { Button } from '../ui/button';
+import { EmptyPlaceholder } from '../empty-placeholder';
 
 export default function Posts({ initialPosts, search, session }: { initialPosts: any | undefined, search?: string | undefined, session: any }) {
      const [posts, setposts] = useState<Array<any>>(initialPosts)
@@ -32,7 +33,7 @@ export default function Posts({ initialPosts, search, session }: { initialPosts:
           }
      }
 
-     return (
+     return posts.length > 0 ? (
           <div className="feed__list">
                {/* {
         isLoaded && posts.length === 0 && (
@@ -64,5 +65,15 @@ export default function Posts({ initialPosts, search, session }: { initialPosts:
                     </div>
                </div>
           </div>
+     ) : (
+          <div className="flex flex-col items-center justify-center w-full">
+                              <EmptyPlaceholder>
+                              <EmptyPlaceholder.Icon name="post" strokeWidth={1.25} />
+                              <EmptyPlaceholder.Title>No posts found</EmptyPlaceholder.Title>
+                              <EmptyPlaceholder.Description>
+                                   Try searching for something else.
+                              </EmptyPlaceholder.Description>
+                         </EmptyPlaceholder>
+                         </div>
      )
 }
