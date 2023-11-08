@@ -124,7 +124,7 @@ export const getSettings = async ({ id }: { id: number | undefined }) => {
   return { settings: JSON.parse(JSON.stringify(settings?.settings)) };
 };
 
-export const getBookmarks = async ({ id }: { id: number | undefined }) => {
+export const getBookmarks = async ({ id, limit = 5 }: { id: number | undefined, limit?: number }) => {
   const user = await postgres.user.findFirst({
     where: { id },
     include: {
@@ -140,7 +140,7 @@ export const getBookmarks = async ({ id }: { id: number | undefined }) => {
         orderBy: {
           updatedAt: "desc",
         },
-        take: 3,
+        take: limit,
       },
       _count: { select: { bookmarks: true } },
     },

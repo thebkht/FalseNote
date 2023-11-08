@@ -37,7 +37,7 @@ export default async function Feed({
   }
   const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
 
-  const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id })
+  const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id, limit: 3 })
 
   return (
     <>
