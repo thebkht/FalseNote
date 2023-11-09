@@ -12,7 +12,7 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
      return (
           <>
 
-               <div className="bg-background sticky top-0 z-10">
+               <div className="bg-background sticky top-[60px] z-10">
                     <div className="w-full h-full absolute insert-0 top-0">
                          <div className={`tab-shadow right-auto left-0 ${inFView && 'opacity-0'}`} style={
                               {
