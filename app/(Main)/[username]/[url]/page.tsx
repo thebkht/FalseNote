@@ -37,7 +37,9 @@ export default async function PostView({ params, searchParams }: { params: { use
                                    Followers: true,
                                    Followings: true
                               }
-                         }
+                         },
+                         likes: true,
+                         _count: { select: { likes: true } }
                     },
                     orderBy: {
                          createdAt: "desc"

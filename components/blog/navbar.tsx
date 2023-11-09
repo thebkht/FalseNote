@@ -33,7 +33,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                <div className={cn("px-2 py-1 border-y flex justify-between w-full sticky md:top-[60px] xs:bottom-0 bg-background shadow-sm", className)}>
                     <div className="flex items-center gap-3">
                          <div className="flex items-center">
-                              <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} >
+                              <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
                                    <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
                               </Button>
                               <span className="text-sm">{post?._count.likes}</span>
