@@ -60,7 +60,7 @@ export default async function Feed({
           </div>
           <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-screen">
             <div className="relative w-full h-full inline-block">
-              <div className="sticky space-y-4 top-0">
+              <div className="sticky space-y-4 top-16">
                 <PopularPosts />
                 {popularTags.length !== 0 && (
                   <Card className="feed__content_featured_card bg-background border-none shadow-none">
