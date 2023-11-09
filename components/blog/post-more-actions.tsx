@@ -67,13 +67,13 @@ export default function PostMoreActions({ post, session, className, children, ..
                          )
                     }
                     <DropdownMenuGroup>
-                         <DropdownMenuItem onClick={() => copylink(`https://falsenotes.vercel.app/${post.author.username}/${post.url}`)}>
+                         <DropdownMenuItem onClick={() => copylink(`https://falsenotes.netlify.app/${post.author.username}/${post.url}`)}>
                               <Link2 className="mr-2 h-4 w-4" />
                               <span>Copy link</span>
                          </DropdownMenuItem>
                          <DropdownMenuItem>
                               <TwitterShareButton
-                                   url={`https://falsenotes.vercel.app/${post.author.username}/${post.url}`}
+                                   url={`https://falsenotes.netlify.app/${post.author.username}/${post.url}`}
                                    title={post.title}
                                    via="FalseNotesTeam" >
                                    <div className="flex">
@@ -84,7 +84,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                          </DropdownMenuItem>
                          <DropdownMenuItem>
                               <FacebookShareButton
-                                   url={`https://falsenotes.vercel.app/${post.author.username}/${post.url}`}
+                                   url={`https://falsenotes.netlify.app/${post.author.username}/${post.url}`}
                                    quote={post.title} >
                                    <div className="flex">
                                    <Facebook className="mr-2 h-4 w-4 fill-current stroke-none" />
@@ -94,7 +94,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                          </DropdownMenuItem>
                          <DropdownMenuItem>
                               <LinkedinShareButton
-                                   url={`https://falsenotes.vercel.app/${post.author.username}/${post.url}`} >
+                                   url={`https://falsenotes.netlify.app/${post.author.username}/${post.url}`} >
                                    <div className="flex">
                                    <Linkedin className="mr-2 h-4 w-4 fill-current stroke-none" />
                                    <span>Share on LinkedIn</span>

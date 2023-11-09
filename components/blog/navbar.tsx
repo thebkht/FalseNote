@@ -57,7 +57,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                          <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
                               <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(post.id)} />
                          </Button>
-                         <ShareList url={`https://falsenotes.vercel.app/${author?.username}/${post.url}`} text={post.title} >
+                         <ShareList url={`https://falsenotes.netlify.app/${author?.username}/${post.url}`} text={post.title} >
                               <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
                                    <ShareIcon className="w-5 h-5" strokeWidth={2} />
                               </Button>
