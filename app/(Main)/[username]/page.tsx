@@ -89,11 +89,11 @@ export default async function Page({ params, searchParams }: {
   return (
     <div className="md:container mx-auto px-4">
       <div className="gap-5 lg:gap-6 py-5 flex flex-col md:flex-row items-start" >
-        <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:sticky top-4 md:w-1/3 lg:w-1/4" />
+        <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:sticky top-16 md:w-1/3 lg:w-1/4" />
         <div className="lg:px-8 w-full">
           {sessionUserName?.id === user?.id ? (
             <Tabs className="w-full" defaultValue={tab || "posts"}>
-              <TabsList className="bg-background md:w-full w-screen py-4 justify-start h-fit rounded-none gap-2 sticky top-0 z-10">
+              <TabsList className="bg-background md:w-full w-screen py-4 justify-start h-fit rounded-none gap-2 sticky top-[60px] z-10">
                 <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
                   Posts
                 </TabsTrigger>
