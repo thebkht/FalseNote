@@ -1,3 +1,4 @@
+'use client'
 import { Icons } from "@/components/icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -17,11 +18,18 @@ import {
      DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import React from "react";
+import { usePathname } from "next/navigation";
+import { handleCommentLike } from "@/components/like";
 
 
 export default function CommentCard({ comment, post, session, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { comment: any, post: any, session: any }) {
+     const pathname = usePathname();
+     const like = async (commentId: number) => {
+          await handleCommentLike({ commentId, path: pathname });
+     }
      const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
-     const isLiked = comment.likes.find((like: any) => like.userId === session?.id)
+     const isLiked = comment.likes.find((like: any) => like.authorId === session?.id)
+     console.log(comment);
      return (
           <Card className="article__comments-item-card w-full bg-background border-none shadow-none">
                <CardHeader className="space-y-0 w-full text-sm flex-row items-center p-4 px-0">
@@ -48,6 +56,23 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                               <span className="mx-1.5 !mt-0 text-sm">·</span>
                               <span className="article__comments-item-date text-muted-foreground text-sm !mt-0">{dateFormat(comment.createdAt)}</span>
                          </div>
+                         {
+                              session?.id === post.authorId && (
+                                   <DropdownMenu>
+                                        <DropdownMenuTrigger>
+                                             <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                             <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+                                                  onSelect={() => setShowDeleteAlert(true)} >
+                                                  <Trash2 className="mr-2 h-4 w-4" />
+                                                  <span>Delete</span>
+                                             </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                   </DropdownMenu>
+
+                              )
+                         }
                          {
                               session?.id === comment.authorId && (
                                    <DropdownMenu>
@@ -79,10 +104,10 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                </CardContent>
                <CardFooter className="flex-row items-center justify-between p-4 px-0">
                     <div className="flex items-center">
-                         <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"}  >
+                         <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} disabled={session.id == comment.authorId} onClick={() => like(comment.id)} >
                               <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
                          </Button>
-                         <span className="text-sm">{post?._count.likes}</span>
+                         <span className="text-sm">{comment?._count.likes}</span>
                     </div>
                </CardFooter>
           </Card>

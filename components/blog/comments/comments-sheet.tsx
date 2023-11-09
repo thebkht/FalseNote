@@ -20,6 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import useWindowDimensions from "@/components/window-dimensions";
 import { Icons } from "@/components/icon";
 import CommentCard from "./comment-card";
+import { formatNumberWithSuffix } from "@/components/format-numbers";
 
 const formatDate = (dateString: string | number | Date) => {
      const date = new Date(dateString)
@@ -84,7 +85,7 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
                <SheetContent className="p-0 md:w-[500px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
                     <ScrollArea className="flex flex-col p-6 w-full h-full">
                     <SheetHeader>
-                         <SheetTitle>Comments</SheetTitle>
+                         <SheetTitle>Comments ({formatNumberWithSuffix(comments.length)})</SheetTitle>
                     </SheetHeader>
                     <div className="flex flex-col">
                          <CommentForm session={session} post={post} />

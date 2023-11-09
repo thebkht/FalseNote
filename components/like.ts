@@ -39,3 +39,40 @@ export const handlePostLike = async ({ postId, path} : {postId: number, path: st
           console.log(error)
      }
 }
+
+export const handleCommentLike = async ({ commentId, path} : {commentId: number, path: string}) => {
+     const sessionUser = await getSessionUser()
+     if (!sessionUser) {
+          console.log("No session user")
+     }
+     console.log(path, commentId)
+     try {
+          const liked = await postgres.commentLike.findFirst({
+               where: {
+                    commentId,
+                    authorId: Number(sessionUser?.id)
+               }
+          })
+
+          if (liked) {
+               await postgres.commentLike.delete({
+                    where: {
+                         id: liked.id
+                    }
+               })
+               console.log("unliked")
+          } else {
+               await postgres.commentLike.create({
+                    data: {
+                         authorId: Number(sessionUser?.id),
+                         commentId
+                    }
+               })
+               console.log("liked")
+          }
+
+          revalidatePath(path)
+     } catch (error) {
+          console.log(error)
+     }
+}
