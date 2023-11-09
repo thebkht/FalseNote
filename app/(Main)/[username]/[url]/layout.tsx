@@ -167,7 +167,7 @@ export default async function PostLayout(
           take: 6
      });
      const sessionUser = await getSessionUser();
-
+     relatedPosts.length % 2 !== 0 && relatedPosts.pop();
      return (
           <>
                <div className='md:container mx-auto px-4'>

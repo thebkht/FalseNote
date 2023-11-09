@@ -41,7 +41,7 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
   if (status == "loading") return null;
   return (
     <div className={className}>
-      <div className="user-articles lg:px-8 w-full">
+      <div className="user-articles w-full">
         <Separator className="md:hidden flex mt-4" />
         {posts?.length > 0 ? (
           <>

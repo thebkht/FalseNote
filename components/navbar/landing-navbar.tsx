@@ -22,7 +22,7 @@ function LandingNavbar() {
   if (isLoaded) {
     return (
       <nav className="menu">
-        <div className="menu-container sticky p-3.5 backdrop-blur-md">
+        <div className="menu-container sticky p-3.5 bg-background/60 backdrop-blur-md">
           <Link href="/" className="flex items-center">
             <Icons.logo />
             <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
