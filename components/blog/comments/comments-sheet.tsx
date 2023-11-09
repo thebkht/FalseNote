@@ -82,7 +82,7 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
      return (
           <Sheet {...props}>
                <SheetTrigger asChild>{children}</SheetTrigger>
-               <SheetContent className="p-0 md:w-[500px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
+               <SheetContent className="p-0 md:w-[600px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
                     <ScrollArea className="flex flex-col p-6 w-full h-full">
                     <SheetHeader>
                          <SheetTitle>Comments ({formatNumberWithSuffix(comments.length)})</SheetTitle>

@@ -11,11 +11,11 @@ export function dateFormat(dateString: string | number | Date) {
          const differenceInMinutes = differenceInTime / (1000 * 60);
          if (differenceInMinutes < 1) {
            const differenceInSeconds = differenceInTime / 1000;
-           return differenceInSeconds < 1 ? 'Just now': `${Math.floor(differenceInSeconds)} seconds ago`;
+           return differenceInSeconds < 1 ? 'Just now': `${Math.floor(differenceInSeconds)}s`;
          }
-         return `${Math.floor(differenceInMinutes)} minutes ago`;
+         return `${Math.floor(differenceInMinutes)}m`;
        }
-       return `${Math.floor(differenceInHours)} hours ago`;
+       return `${Math.floor(differenceInHours)}h`;
      }
    
      if (differenceInDays > 30) {
@@ -25,6 +25,6 @@ export function dateFormat(dateString: string | number | Date) {
          day: 'numeric',
        })}`;
      } else {
-       return `${Math.floor(differenceInDays)} days ago`;
+       return `${Math.floor(differenceInDays)}d`;
      }
 }

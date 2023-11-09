@@ -38,19 +38,24 @@ export default async function PostView({ params, searchParams }: { params: { use
                                    Followings: true
                               }
                          },
+                         replies: {
+                              include:{
+                                   parent: {
+                                        include: {
+                                             
+                                        }
+                                   }
+                              }
+                         },
+                         _count: { select: { replies: true, likes: true } },
                          likes: true,
-                         _count: { select: { likes: true } }
                     },
                     orderBy: {
                          createdAt: "desc"
                     }
                },
                likes: true,
-               tags: {
-                    include: {
-                         tag: true
-                    }
-               },
+               
                readedUsers: true,
                author: {
                     include: {
@@ -58,12 +63,17 @@ export default async function PostView({ params, searchParams }: { params: { use
                          Followings: true
                     }
                },
+               tags: {
+                    include: {
+                         tag: true
+                    }
+               },
                savedUsers: true,
                _count: { select: { savedUsers: true, likes: true, comments: true } }
           }
      });
+
      if (!post) redirect("/404");
-     console.log(post);
 
      const sessionUser = await getSessionUser()
 
