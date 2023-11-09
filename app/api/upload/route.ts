@@ -14,9 +14,9 @@ export async function POST(req: NextRequest) {
   const buffer = Buffer. from(bytes)
 
   AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+    region: process.env.REGION,
   });
 
   // Extract postId and authorId from searchParams
@@ -33,12 +33,12 @@ export async function POST(req: NextRequest) {
   const s3path = `blogs/covers/${authorId}/${postId}.${file.name.split('.').pop()}`;
 
   const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
+    Bucket: process.env.BUCKET_NAME,
     Key: s3path,
     Body: buffer,
   };
 
-  const url = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3path}`;
+  const url = `https://${process.env.BUCKET_NAME}.s3.${process.env.REGION}.amazonaws.com/${s3path}`;
 
   s3.upload(params, function (err: any, data: any) {
     if (err) {
