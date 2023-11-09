@@ -21,8 +21,7 @@ function LandingNavbar() {
   
   if (isLoaded) {
     return (
-      <nav className="menu">
-        <div className="menu-container sticky p-3.5 bg-background/60 backdrop-blur-md">
+      <div className="menu-container sticky top-0 p-3.5 bg-background/60 backdrop-blur-md xl:px-36 2xl:px-64 border-b">
           <Link href="/" className="flex items-center">
             <Icons.logo />
             <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
@@ -33,8 +32,7 @@ function LandingNavbar() {
                   <Link href={"/signin"}>Join</Link>
               </Button>
               </div>
-        </div>
-      </nav>)
+        </div>)
   }
 }
 

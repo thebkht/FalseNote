@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.DOMAIN!),
-  title: 'FalseNotes',
+  title: '🚀 FalseNotes - Start Your Journey',
   description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
   openGraph: {
     title: 'FalseNotes',
