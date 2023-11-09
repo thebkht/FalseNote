@@ -15,7 +15,7 @@ export default function MainLayout({
       {
         status != 'authenticated' ? <LandingNavbar /> : <Navbar />
       }
-      <div className='xs:py-16'>
+      <div className=''>
       {children}
       </div>
     </>

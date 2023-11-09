@@ -11,19 +11,49 @@ import { Button } from "../ui/button";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { dateFormat } from "@/lib/format-date";
+
+export function dateFormat(dateString: string | number | Date) {
+  const date = new Date(dateString);
+  const currentDate = new Date();
+
+  const differenceInTime = currentDate.getTime() - date.getTime();
+  const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+  if (differenceInDays < 1) {
+    const differenceInHours = differenceInTime / (1000 * 3600);
+    if (differenceInHours < 1) {
+      const differenceInMinutes = differenceInTime / (1000 * 60);
+      if (differenceInMinutes < 1) {
+        const differenceInSeconds = differenceInTime / 1000;
+        return differenceInSeconds < 1 ? 'Just now': `${Math.floor(differenceInSeconds)}s`;
+      }
+      return `${Math.floor(differenceInMinutes)}m`;
+    }
+    return `${Math.floor(differenceInHours)}h`;
+  }
+
+  if (differenceInDays > 30) {
+    return `${date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })}`;
+  } else {
+    return `${Math.floor(differenceInDays)}d`;
+  }
+}
 
 export default function Landing({ latest, tags, popular }: { latest: any, tags: any, popular: any }) {
   return (
     <>
-      <main className="landing mx-auto ">
-        <div className="landing__hero h-screen xl:px-36 2xl:px-64 border-b">
-          <div className="landing__hero_content flex flex-col md:my-24 my-16 space-y-16 md:space-y-24 items-center justify-center">
+      <main className="landing mx-auto w-full overflow-hidden">
+        <div className="landing__hero h-screen px-8 xl:px-36 2xl:px-64 border-b">
+          <div className="landing__hero_content flex flex-col md:my-24 my-8 space-y-8 md:space-y-24 items-center justify-center">
             <div className="landing_hero-image w-[120vw] md:w-full">
               <Image src="https://falsenotescontent.s3.ap-northeast-2.amazonaws.com/header/header-img.png" sizes="100vw" width={1200} height={600}
                 // Make the image display full width
                 style={{
-                  width: '100vw',
+                  width: '120vw',
                   height: 'auto',
                 }} alt="" />
             </div>
@@ -33,15 +63,15 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
             </div>
           </div>
         </div>
-        <div className="bg-third dark:bg-popover xl:px-36 2xl:px-64 divide-y">
+        <div className="bg-third dark:bg-popover px-8 xl:px-36 2xl:px-64 divide-y">
           <div className="pt-10 pb-4">
             <div className="flex flex-row items-center">
               <h2 className="font-medium mb-4">Treanding on FalseNotes</h2>
             </div>
             <div className="w-full">
-              <div className="flex flex-row flex-wrap items-start">
+              <div className="grid grid-cols-6 w-full">
                 {popular?.map((post: any, index: number) => (
-                  <div className="w-1/2 md:w-1/3 px-4" key={post.id}>
+                  <div className="col-span-6 md:col-span-3 lg:col-span-2 px-4" key={post.id}>
                     <div className="h-full w-full">
                       <div className="flex items-start mb-6 w-full h-full">
                         <div className="w-10 flex-none relative -top-1.5 mr-4">
@@ -78,20 +108,16 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
               </div>
             </div>
           </div>
-          <div className="grid-cols-12 grid pt-14 grid-rows-1">
-            <div style={{ 'gridColumn': '1 / span 7' }}>
+          <div className="grid-cols-12 lg:grid flex flex-col-reverse pt-14 grid-rows-1 ">
+            <div style={{ 'gridColumn': '1 / span 7' }} className="mt-10 lg:mt-0">
               {latest.length > 0 ? (
                 <div className="feed__list">
-                  <div className="divide-y">
-                    {latest?.map((post: any) => (
-                      <div key={post.id}>
-                        <LandingPostCard
-                          post={post}
-                        />
-                        <Separator />
-                      </div>
+                  {latest?.map((post: any) => (
+                      <LandingPostCard
+                      post={post}
+                      key={post.id}
+                    />
                     ))}
-                  </div>
                 </div>
               ) : (
                 <EmptyPlaceholder>
@@ -103,14 +129,14 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
               )}
             </div>
             <div style={{ 'gridColumn': '9 / span 4' }}>
-              <div className="sticky top-20">
+              <div className="sticky top-20 border-b lg:border-b-0">
                 {tags.length !== 0 && (
                   <Card className="feed__content_featured_card bg-transparent border-none shadow-none">
                     <CardHeader className="py-4 px-0">
                       <CardTitle className="feed__content_featured_card_title text-base">Discover more of what matchs you</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
-                      <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
+                      <div className="w-full flex-wrap">
                         {tags?.map((tag: any) => (
                           <Link href={`/tags/${tag.name}`} key={tag.id}>
                             <TagBadge className="my-2.5 mr-2 py-2 px-4 text-sm font-medium capitalize" variant={"secondary"}>{tag.name.replace(/-/g, " ")}</TagBadge>
