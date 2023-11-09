@@ -4,7 +4,12 @@ import { Prisma } from "@prisma/client";
 
 const baseQuery = {
   include: {
-    author: true,
+    author: {
+      include: {
+        Followers: true,
+        Followings: true,
+      }
+    },
     savedUsers: true,
     _count: {
       select: {

@@ -129,7 +129,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
               )}
             </div>
             <div style={{ 'gridColumn': '9 / span 4' }}>
-              <div className="sticky top-20 border-b lg:border-b-0">
+              <div className="sticky lg:top-20 border-b lg:border-b-0">
                 {tags.length !== 0 && (
                   <Card className="feed__content_featured_card bg-transparent border-none shadow-none">
                     <CardHeader className="py-4 px-0">
