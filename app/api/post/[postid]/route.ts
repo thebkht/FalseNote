@@ -162,6 +162,11 @@ export async function DELETE(
         postId: Number(postid),
       },
     })
+    await postgres.draftPost.deleteMany({
+      where: {
+        postId: Number(postid),
+      },
+    })
     // Delete the post.
     await postgres.post.delete({
       where: {

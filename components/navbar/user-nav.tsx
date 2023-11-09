@@ -50,7 +50,7 @@ useEffect(() => {
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                          <Avatar className="h-8 w-8 border">
                               <AvatarImage src={user.image} alt={user.name} />
-                              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                              <AvatarFallback>{user.name?.charAt(0) || user.username?.charAt(0)}</AvatarFallback>
                          </Avatar>
                     </Button>
                </DropdownMenuTrigger>
@@ -58,7 +58,7 @@ useEffect(() => {
                     <DropdownMenuLabel className="flex items-center">
                     <Avatar className="mr-2 border">
                               <AvatarImage src={user.image} alt={user.name} />
-                              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                              <AvatarFallback>{user.name?.charAt(0) || user.username?.charAt(0)}</AvatarFallback>
                          </Avatar>
                          <div className="flex flex-col space-y-1">
                               <p className="text-xl font-bold leading-none">{user.name}</p>
@@ -70,7 +70,7 @@ useEffect(() => {
                          <Link href={username !== null ?  `/${username}` : `/`} className="flex px-2.5 mb-4 py-2 border items-center">
                          <Avatar className="h-6 w-6 mr-2 border">
                               <AvatarImage src={user.image} alt={user.name} />
-                              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                              <AvatarFallback>{user.name?.charAt(0) || user.username?.charAt(0)}</AvatarFallback>
                          </Avatar>
                          <div className="flex flex-col space-y-1">
                               <p className="leading-none">{user.name}</p>
