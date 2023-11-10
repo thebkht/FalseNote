@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
 import PostDeleteDialog from "./post-delete-dialog";
+import LoginDialog from "../login-dialog";
 
 export default function PostTabs({ post: initialPost, className, session, author, comments }: { post: any, className?: string, session: any, author: any, comments: boolean | undefined }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -33,30 +34,48 @@ export default function PostTabs({ post: initialPost, className, session, author
                <div className={cn("px-2 py-1 border-y flex justify-between w-full sticky md:top-[60px] xs:bottom-0 bg-background shadow-sm", className)}>
                     <div className="flex items-center gap-3">
                          <div className="flex items-center">
-                              <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
-                                   <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
-                              </Button>
+                              {
+                                   session ? (
+                                        <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
+                                             <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
+                                        </Button>
+                                   ) : (
+                                        <LoginDialog>
+                                             <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                                  <Heart className={`w-5 h-5`} strokeWidth={2} />
+                                             </Button>
+                                        </LoginDialog>
+                                   )
+                              }
                               <span className="text-sm">{post?._count.likes}</span>
                          </div>
 
 
-                         <>
+                         <CommentsSheet post={post} comments={post?.comments} session={session} open={open} onOpenChange={setOpen}>
                               <div className="flex items-center">
-                                   <CommentsSheet post={post} comments={post?.comments} session={session} open={open} onOpenChange={setOpen} >
-                                        <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"}>
-                                             <MessageCircle className="w-5 h-5" strokeWidth={2} />
-                                        </Button>
-                                   </CommentsSheet>
+                                   <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"}>
+                                        <MessageCircle className="w-5 h-5" strokeWidth={2} />
+                                   </Button>
                                    <span className="text-sm">{post?._count.comments}</span>
                               </div>
-                         </>
+                         </CommentsSheet>
 
 
                     </div>
                     <div className="flex items-center gap-1.5">
-                         <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
-                              <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(post.id)} />
-                         </Button>
+                         {
+                              session ? (
+                                   <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                        <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(post.id)} />
+                                   </Button>
+                              ) : (
+                                   <LoginDialog>
+                                        <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                             <Bookmark className={`w-5 h-5`} strokeWidth={2} />
+                                        </Button>
+                                   </LoginDialog>
+                              )
+                         }
                          <ShareList url={`https://falsenotes.netlify.app/${author?.username}/${post.url}`} text={post.title} >
                               <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
                                    <ShareIcon className="w-5 h-5" strokeWidth={2} />

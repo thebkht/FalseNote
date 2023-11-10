@@ -139,7 +139,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                       <div className="w-full flex-wrap">
                         {tags?.map((tag: any) => (
                           <Link href={`/tags/${tag.name}`} key={tag.id}>
-                            <TagBadge className="my-2.5 mr-2 py-2 px-4 text-sm font-medium capitalize" variant={"secondary"}>{tag.name.replace(/-/g, " ")}</TagBadge>
+                            <TagBadge className="my-1.5 mr-1.5 py-2 px-4 text-sm font-medium capitalize" variant={"secondary"}>{tag.name.replace(/-/g, " ")}</TagBadge>
                           </Link>
                         ))}
                       </div>

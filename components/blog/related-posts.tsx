@@ -16,12 +16,19 @@ export default function RelatedPosts({ posts, post, session }: { posts: any, pos
                                    ))
                               }
                          </div>
-                         <Separator className="mb-6" />
-                         <Button variant={"outline"} className="w-full md:w-max" size={"lg"} asChild>
-                              <Link href={`/feed`}>
-                                   See more recommendations
-                              </Link>
-                         </Button>
+                         
+                         {
+                              session && (
+                                   <>
+                                        <Separator className="mb-6" />
+                                   <Button variant={"outline"} className="w-full md:w-max" size={"lg"} asChild>
+                                        <Link href={`/feed`}>
+                                             See more recommendations
+                                        </Link>
+                                   </Button>
+                                   </>
+                              )
+                         }
                     </div>
                </div>
           </>

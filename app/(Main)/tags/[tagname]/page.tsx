@@ -74,8 +74,6 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           take: 5
      });
 
-     console.log(popularPosts)
-
      const session = await getSessionUser();
      return (
           <>
@@ -96,7 +94,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                          )
                     }
                     {
-                         latestPosts.length === 0 && popularPosts.length === 0 && (
+                         tag._count.posts === 0 && (
                               <EmptyPlaceholder>
                                    <EmptyPlaceholder.Icon name="post" strokeWidth={1.25} />
                                    <EmptyPlaceholder.Title>No posts found</EmptyPlaceholder.Title>

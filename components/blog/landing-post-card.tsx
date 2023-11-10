@@ -22,6 +22,7 @@ import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
 import { getSessionUser } from "../get-session";
 import { formatNumberWithSuffix } from "../format-numbers";
+import LoginDialog from "../login-dialog";
 
 export function dateFormat(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -115,9 +116,11 @@ export default function LandingPostCard(
                 </div>
                 <div className="stats flex items-center justify-around gap-1">
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                    <LoginDialog>
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                       <Bookmark className={`h-5 w-5 `} strokeWidth={2} />
                     </Button>
+                    </LoginDialog>
                   </div>
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                   </div>

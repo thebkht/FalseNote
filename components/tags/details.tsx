@@ -15,11 +15,11 @@ export default function TagDetails({ tag, tagFollowers, session }: { tag: any, t
 
      const { status: sessionStatus } = useSession();
 
-     const [isFollowing, setIsFollowing] = useState<boolean>(tagFollowers.find((user: any) => user.followerId === session.id));
+     const [isFollowing, setIsFollowing] = useState<boolean>(tagFollowers.find((user: any) => user.followerId === session?.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
 
      useEffect(() => {
-          setIsFollowing(tagFollowers.find((user: any) => user.followerId === session.id));
+          setIsFollowing(tagFollowers.find((user: any) => user.followerId === session?.id));
      }, [tagFollowers, session]);
 
      const handleFollow = () => async () => {

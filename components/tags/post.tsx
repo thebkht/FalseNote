@@ -12,7 +12,7 @@ export default function TagPopularPosts({ posts: initialPosts, tag, session }: {
           setPosts(initialPosts)
      }, [initialPosts])
      const { status: sessionStatus } = useSession();
-     if (sessionStatus !== "authenticated") return null;
+     if (sessionStatus == "loading") return null;
      const firstTwoPosts = posts.slice(0, 2);
      const restPosts = posts.slice(2, posts.length);
      return (

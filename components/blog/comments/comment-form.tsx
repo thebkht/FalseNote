@@ -68,13 +68,6 @@ export default function CommentForm(props: { post: any, session: any }) {
     }).then((res) => res.json());
     router.refresh();
   }
-
-
-  function handleOnFocus() {
-    if (status === "authenticated") {
-      setCommenting(true);
-    }
-  }
   return (
     <div className="my-4">
       <Form {...form}>
@@ -117,9 +110,8 @@ export default function CommentForm(props: { post: any, session: any }) {
                       ) : (
                         <LoginDialog className="w-full">
                           <FormControl>
-                            <Textarea placeholder="Write a comment..." {...field} className="w-full" readOnly />
-                          </FormControl>
-                          <FormMessage />
+                              <Textarea placeholder="Write a comment..." className="w-full" readOnly />
+                            </FormControl>
                         </LoginDialog>
                       )
                     }

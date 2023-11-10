@@ -7,6 +7,7 @@ import { Badge } from "../ui/badge"
 import { Hash } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { cn } from "@/lib/utils"
+import LoginDialog from "../login-dialog";
 
 export default function TagsList({ tags: initialTags, session, className, ...props }: { tags: any, session: any, className?: string } & React.ComponentPropsWithoutRef<typeof Card>) {
      const [tags, setTags] = useState<any>(initialTags)
@@ -82,7 +83,15 @@ export default function TagsList({ tags: initialTags, session, className, ...pro
                                                   </div>
                                              </div>
                                         </Link>
-                                        <Button variant="outline"  className="text-muted-foreground" onClick={async () => await handleFollow(tag.id, index)} disabled={isFollowLoading[index]}><>{isFollow[index] ? <>Following</> : <>Follow</>}</></Button>
+                                        {
+                                             session ? (
+                                                  <Button variant="outline"  className="text-muted-foreground" onClick={async () => await handleFollow(tag.id, index)} disabled={isFollowLoading[index]}><>{isFollow[index] ? <>Following</> : <>Follow</>}</></Button>
+                                             ) : (
+                                                  <LoginDialog>
+                                                       <Button variant="outline"  className="text-muted-foreground">Follow</Button>
+                                                  </LoginDialog>
+                                             )
+                                        }
                                    </div>
                               ))}
                               <div className="py-5">

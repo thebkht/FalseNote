@@ -25,6 +25,7 @@ import { usePathname } from "next/navigation";
 import { handlePostSave } from "../bookmark";
 import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
+import LoginDialog from "../login-dialog";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -106,16 +107,26 @@ export default function TagPostCard(
                                    <div className="flex justify-between items-center">
                                         <div className="flex flex-1 items-center space-x-2.5">
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)}>
-                                                       <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} />
-                                                  </Button>
+                                                  {
+                                                       props.session ? (
+                                                            <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)}>
+                                                                 <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} />
+                                                            </Button>
+                                                       ) : (
+                                                            <LoginDialog>
+                                                                 <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
+                                                                      <Heart className={`w-5 h-5`} />
+                                                                 </Button>
+                                                            </LoginDialog>
+                                                       )
+                                                  }
                                                   <span>{formatNumberWithSuffix(props.post._count.likes)}</span>
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Link href={`/${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
-                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                       <MessageCircle className="w-5 h-5" />
-                                                  </Button>
+                                                       <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
+                                                            <MessageCircle className="w-5 h-5" />
+                                                       </Button>
                                                   </Link>
                                                   <span>{formatNumberWithSuffix(props.post._count.comments)}</span>
                                              </div>
@@ -123,12 +134,22 @@ export default function TagPostCard(
                                         <div className="flex items-center justify-around gap-2">
 
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                       <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} strokeWidth={2} />
-                                                  </Button>
+                                                  {
+                                                       props.session ? (
+                                                            <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
+                                                                 <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} strokeWidth={2} />
+                                                            </Button>
+                                                       ) : (
+                                                            <LoginDialog>
+                                                                 <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
+                                                                      <Bookmark className={`h-5 w-5`} strokeWidth={2} />
+                                                                 </Button>
+                                                            </LoginDialog>
+                                                       )
+                                                  }
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                             <PostMoreActions post={props.post} session={props.session}>
+                                                  <PostMoreActions post={props.post} session={props.session}>
                                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                             <MoreHorizontal className="h-5 w-5" />
                                                        </Button>

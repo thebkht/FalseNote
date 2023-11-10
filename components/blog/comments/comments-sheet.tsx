@@ -9,16 +9,8 @@ import {
 
 import React, { useEffect, useState } from "react";
 import CommentForm from "./comment-form";
-import UserHoverCard from "@/components/user-hover-card";
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import Markdown from "markdown-to-jsx";
-import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import useWindowDimensions from "@/components/window-dimensions";
-import { Icons } from "@/components/icon";
 import CommentCard from "./comment-card";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 
