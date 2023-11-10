@@ -20,6 +20,7 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import readingTime from "reading-time";
+import CommentsSheet from "./comments/comments-sheet";
 
 const components = {
      code({ className, children, }: { className: string, children: any }) {
@@ -42,6 +43,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
      const { status } = useSession();
      const [session, setSession] = useState<any>(sessionUser);
      const [post, setPost] = useState<any>(initialPost);
+     const [openComments, setOpenComments] = useState<boolean>(comments || false);
 
      useEffect(() => {
           setPost(initialPost);
@@ -78,7 +80,6 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                return null;
           }
      }
-     const stats = readingTime(post?.content);
      return (
           <>
                <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
@@ -156,7 +157,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                               </div>
                          </div>
 
-                         <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} />
+                         <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
                          <article className="article__content prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
                               {/* <Markdown>{post?.content}</Markdown> */}
                               <Markdown options={{
@@ -193,10 +194,11 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
 
                          {
                               // if post word count is greater than 1000 show the stats
-                              <PostTabs post={post} session={session} author={author} className="border-none" comments={comments} />
+                              <PostTabs post={post} session={session} author={author} className="border-none" comments={post?.comments} onClicked={() => setOpenComments(!openComments)} />
                          }
                     </div>
                </div>
+               <CommentsSheet post={post} comments={post?.comments} session={session} open={openComments} onOpenChange={setOpenComments} />
           </>
      )
 }

@@ -13,7 +13,7 @@ import Link from "next/link";
 import PostDeleteDialog from "./post-delete-dialog";
 import LoginDialog from "../login-dialog";
 
-export default function PostTabs({ post: initialPost, className, session, author, comments }: { post: any, className?: string, session: any, author: any, comments: boolean | undefined }) {
+export default function PostTabs({ post: initialPost, className, session, author, comments, onClicked }: { post: any, className?: string, session: any, author: any, comments: boolean | undefined, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
      useEffect(() => {
           setPost(initialPost);
@@ -25,7 +25,6 @@ export default function PostTabs({ post: initialPost, className, session, author
      const save = async (postId: number) => {
           await handlePostSave({ postId, path: pathname });
      }
-     const [open, setOpen] = useState(comments);
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
      const isSaved = post?.savedUsers?.some((savedUser: any) => savedUser.userId === session?.id);
      const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false)
@@ -51,14 +50,14 @@ export default function PostTabs({ post: initialPost, className, session, author
                          </div>
 
 
-                         <CommentsSheet post={post} comments={post?.comments} session={session} open={open} onOpenChange={setOpen}>
+                         
                               <div className="flex items-center">
-                                   <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"}>
+                              <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={onClicked}>
                                         <MessageCircle className="w-5 h-5" strokeWidth={2} />
                                    </Button>
                                    <span className="text-sm">{post?._count.comments}</span>
                               </div>
-                         </CommentsSheet>
+                         
 
 
                     </div>

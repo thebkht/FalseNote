@@ -63,7 +63,7 @@ const formatDate = (dateString: string | number | Date) => {
   }
 }
 
-export default function CommentsSheet({ post, comments, children, session, ...props }: React.ComponentPropsWithoutRef<typeof Sheet> & { post: any, comments: any, children: React.ReactNode, session: any }) {
+export default function CommentsSheet({ post, comments, session,  ...props }: React.ComponentPropsWithoutRef<typeof Sheet> & { post: any, comments: any, session: any }) {
      const [commentsRef, setComments] = React.useState<any>(comments);
      useEffect(() => {
           setComments(comments);
@@ -73,7 +73,6 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
 
      return (
           <Sheet {...props}>
-               <SheetTrigger asChild>{children}</SheetTrigger>
                <SheetContent className="p-0 md:w-[600px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
                     <ScrollArea className="flex flex-col p-6 w-full h-full">
                     <SheetHeader>
