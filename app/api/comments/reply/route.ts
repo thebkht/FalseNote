@@ -16,14 +16,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
     //   VALUES (${post}, ${content}, ${author})
     //   RETURNING *
     // `;
-    await postgres.response.create({
+    await postgres.comment.create({
       data: {
         content: content,
-        authorId: Number(author),
-        commentId: Number(comment),
+        authorId: author,
+        postId: post,
+        parentId: comment,
       },
     });
-
     // const authorDetails = await postgres.user.findFirst({
     //   where: {
     //     id: author,

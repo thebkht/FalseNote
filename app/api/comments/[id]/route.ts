@@ -85,12 +85,27 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
                     commentId: Number(params.id),
                },
           })
-          await postgres.response.deleteMany({
+          await postgres.commentLike.deleteMany({
                where: {
-                    commentId: Number(params.id),
+                    commentId: {
+                         in: await postgres.comment.findMany({
+                              where: {
+                                   parentId: Number(params.id),
+                              },
+                              select: {
+                                   id: true,
+                              },
+                         }).then((comments) => comments.map((comment) => comment.id)),
+                    },
+               },
+          })
+          await postgres.comment.deleteMany({
+               where: {
+                    parentId: Number(params.id),
                },
           })
           await postgres.comment.delete({
+
                where: {
                     id: Number(params.id),
                },

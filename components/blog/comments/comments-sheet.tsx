@@ -85,7 +85,7 @@ export default function CommentsSheet({ post, comments, children, session, ...pr
                <SheetContent className="p-0 md:w-[600px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
                     <ScrollArea className="flex flex-col p-6 w-full h-full">
                     <SheetHeader>
-                         <SheetTitle>Comments ({formatNumberWithSuffix(comments.length)})</SheetTitle>
+                         <SheetTitle>Comments {post._count.comments > 0 && `(${formatNumberWithSuffix(post._count.comments)})`}</SheetTitle>
                     </SheetHeader>
                     <div className="flex flex-col">
                          <CommentForm session={session} post={post} />

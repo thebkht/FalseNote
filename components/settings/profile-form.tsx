@@ -26,43 +26,35 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 const profileFormSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
-    }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      })
-    )
-    .optional(),
-})
-
+  email: z.string().email().nullable().optional(),
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }).max(30, {
+    message: "Username must not be longer than 30 characters.",
+  }),
+  name: z.string().nullable().optional(),
+  bio: z.string().max(160).min(4).nullable().optional(),
+  image: z.string().url().nullable().optional(),
+  githubprofile: z.string().optional(),
+  location: z.string().max(30).nullable().optional(),
+});
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
-}
 
-export function ProfileForm() {
+export function ProfileForm({ data }: { data: Partial<ProfileFormValues>}) {
+  // This can come from your database or API.
+const defaultValues: Partial<ProfileFormValues> = {
+    name: data.name,
+    username: data.username,
+    email: data.email,
+    bio: data.bio,
+    image: data.image,
+    githubprofile: data.githubprofile,
+    location: data.location,
+}
   const { toast } = useToast()
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -70,10 +62,7 @@ export function ProfileForm() {
     mode: "onChange",
   })
 
-  const { fields, append } = useFieldArray({
-    name: "urls",
-    control: form.control,
-  })
+  console.log("data", form.formState.defaultValues)
 
   function onSubmit(data: ProfileFormValues) {
     console.log("submitted", data)
@@ -90,6 +79,48 @@ export function ProfileForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <FormField
+  control={form.control}
+  name="image"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Profile Image</FormLabel>
+      <FormControl>
+        
+        <div>
+        {field.value && 
+        <Avatar>
+              <AvatarImage src={field.value} alt="Profile" />
+              <AvatarFallback>{field.value}</AvatarFallback>
+              </Avatar>}
+            <Input type="file" {...field} value={undefined} />
+        </div>
+          </FormControl>
+          <FormDescription>
+            Click on the image to select a new profile image.
+          </FormDescription>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Name" {...field}
+                  value={field.value ?? ''} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name. It can be your real name or a
+                pseudonym. You can only change this once every 30 days.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="username"
@@ -113,7 +144,7 @@ export function ProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value || ''}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a verified email to display" />
@@ -142,8 +173,9 @@ export function ProfileForm() {
               <FormControl>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
                   {...field}
+                  value={field.value ?? ''}
+                  className="resize-none"
                 />
               </FormControl>
               <FormDescription>
@@ -154,7 +186,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <div>
+        {/* <div>
           {fields.map((field, index) => (
             <FormField
               control={form.control}
@@ -185,7 +217,7 @@ export function ProfileForm() {
           >
             Add URL
           </Button>
-        </div>
+        </div> */}
         <Button type="submit">Update profile</Button>
       </form>
     </Form>

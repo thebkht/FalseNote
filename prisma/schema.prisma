@@ -136,22 +136,11 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   likes     CommentLike[]
-  replies   Reply[]  @relation("Comment")
-  replyTo   Reply?   @relation("Reply")
+  replies   Comment[]  @relation("CommenttoComment")
+  parentId   Int?   
+  parent    Comment?  @relation("CommenttoComment", fields: [parentId], references: [id])
   @@index([createdAt])
   @@map("comments")
-}
-
-model Reply {
-  id        Int      @id @default(autoincrement())
-  parent    Comment  @relation("Comment", fields: [parentId], references: [id])
-  parentId  Int
-  reply     Comment  @relation("Reply", fields: [replyId], references: [id])
-  replyId   Int      @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@index([createdAt])
-  @@map("replies")
 }
 
 model Like {

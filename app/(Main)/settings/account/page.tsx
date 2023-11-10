@@ -1,7 +1,13 @@
 import { Separator } from "@/components/ui/separator"
 import { AccountForm } from "@/components/settings/account/account-form"
+import { getSessionUser } from "@/components/get-session-user"
+import postgres from "@/lib/postgres"
 
-export default function SettingsAccountPage() {
+export default async function SettingsAccountPage() {
+  const user = await getSessionUser()
+  const userData = await postgres.user.findUnique({
+    where: { id: user?.id },
+  })
   return (
     <div className="space-y-6">
       <div>
@@ -12,7 +18,7 @@ export default function SettingsAccountPage() {
         </p>
       </div>
       <Separator />
-      <AccountForm />
+      <AccountForm data={userData} />
     </div>
   )
 }

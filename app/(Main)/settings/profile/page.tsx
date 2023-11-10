@@ -1,7 +1,17 @@
 import { Separator } from "@/components/ui/separator"
 import { ProfileForm } from "@/components/settings/profile-form"
+import { getSessionUser } from "@/components/get-session-user"
+import postgres from "@/lib/postgres"
+import { notFound } from "next/navigation"
 
-export default function SettingsProfilePage() {
+export default async function SettingsProfilePage() {
+  const user = await getSessionUser()
+  const userData = await postgres.user.findUnique({
+    where: { id: user?.id },
+  })
+  if (!userData) {
+    return notFound()
+  }
   return (
     <div className="space-y-6">
       <div>
@@ -11,7 +21,7 @@ export default function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
-      <ProfileForm />
+      <ProfileForm data={userData} />
     </div>
   )
 }

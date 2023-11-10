@@ -31,6 +31,7 @@ export default async function PostView({ params, searchParams }: { params: { use
           },
           include: {
                comments: {
+                    where: { parentId: null },
                     include: {
                          author: {
                               include: {
@@ -39,13 +40,25 @@ export default async function PostView({ params, searchParams }: { params: { use
                               }
                          },
                          replies: {
-                              include:{
-                                   parent: {
-                                        include: {
-                                             
+                              select: {
+                                   id: true,
+                                   content: true,
+                                   createdAt: true,
+                                   updatedAt: true,
+                                   authorId: true,
+                                   author: {
+                                        select: {
+                                             username: true,
+                                             name: true,
+                                             image: true,
+                                             id: true,
+                                             Followers: true,
+                                             Followings: true
                                         }
-                                   }
-                              }
+                                   },
+                                   likes: true,
+                                   _count: { select: { likes: true } },
+                              },
                          },
                          _count: { select: { replies: true, likes: true } },
                          likes: true,
