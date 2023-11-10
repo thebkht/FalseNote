@@ -64,15 +64,35 @@ export const getPosts = async ({
         : { visibility: "public" },
     take: limit,
     skip: page * limit,
+    orderBy: [
+    {
+      readedUsers: {
+        _count: "desc",
+      },
+    },
+    {
+      savedUsers: {
+        _count: "desc",
+      },
+    },
+    {
+      likes: {
+        _count: "desc",
+      },
+    },
+    {
+      views: "desc",
+    },
+  ],
   });
 
-  // Sort the results in your application code
-  posts.sort((a, b) => {
-    const aCount = a._count.likes + a._count.savedUsers + a._count.readedUsers;
-    const bCount = b._count.likes + b._count.savedUsers + b._count.readedUsers;
+  // // Sort the results in your application code
+  // posts.sort((a, b) => {
+  //   const aCount = a._count.likes + a._count.savedUsers + a._count.readedUsers;
+  //   const bCount = b._count.likes + b._count.savedUsers + b._count.readedUsers;
 
-    return bCount - aCount;
-  });
+  //   return bCount - aCount;
+  // });
 
   return { posts: JSON.parse(JSON.stringify(posts)) };
 };
