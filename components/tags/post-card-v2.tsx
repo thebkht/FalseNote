@@ -26,6 +26,7 @@ import { getSessionUser } from "../get-session";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
+import LoginDialog from "../login-dialog";
 
 
 export default function PostCard(
@@ -112,9 +113,19 @@ export default function PostCard(
                                         </div>
                                         <div className="stats flex items-center justify-around gap-1">
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                  {
+                                                       props.session ? (
+                                                            <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                        <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
                                                   </Button>
+                                                       ) : (
+                                                            <LoginDialog>
+                                                                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                                      <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                                                 </Button>
+                                                            </LoginDialog>
+                                                       )
+                                                  }
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <PostMoreActions post={props.post} session={props.session}>
@@ -165,9 +176,19 @@ export default function PostCard(
                               </div>
                               <div className="stats flex items-center justify-around gap-1">
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                             <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
-                                        </Button>
+                                   {
+                                                       props.session ? (
+                                                            <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                       <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
+                                                  </Button>
+                                                       ) : (
+                                                            <LoginDialog>
+                                                                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                                      <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                                                 </Button>
+                                                            </LoginDialog>
+                                                       )
+                                                  }
                                    </div>
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                    <PostMoreActions post={props.post} session={props.session}>
