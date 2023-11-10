@@ -66,7 +66,7 @@
     "marked": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "net": "^1.0.2",
-    "next": "^14.0.1",
+    "next": "^14.0.2",
     "next-auth": "^4.24.4",
     "next-share": "^0.27.0",
     "next-themes": "^0.2.1",
