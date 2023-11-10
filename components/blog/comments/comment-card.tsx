@@ -37,7 +37,6 @@ export default function CommentCard({ comment, post, session, ...props }: React.
      const [isReplying, setIsReplying] = React.useState<boolean>(false)
      const [isEditing, setIsEditing] = React.useState<boolean>(false)
      const [openReply, setOpenReply] = React.useState<boolean>(false)
-     console.log(comment);
      return (
           <div className="flex flex-col w-full">
                {
