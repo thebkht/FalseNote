@@ -6,7 +6,7 @@ import { notFound } from "next/navigation"
 
 export default async function SettingsProfilePage() {
   const user = await getSessionUser()
-  const userData = await postgres.user.findUnique({
+  const userData = await postgres.user.findFirst({
     where: { id: user?.id },
   })
   if (!userData) {

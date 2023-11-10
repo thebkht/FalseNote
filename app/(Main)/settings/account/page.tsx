@@ -5,7 +5,7 @@ import postgres from "@/lib/postgres"
 
 export default async function SettingsAccountPage() {
   const user = await getSessionUser()
-  const userData = await postgres.user.findUnique({
+  const userData = await postgres.user.findFirst({
     where: { id: user?.id },
   })
   return (
