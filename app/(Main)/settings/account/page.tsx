@@ -18,7 +18,7 @@ export default async function SettingsAccountPage() {
         </p>
       </div>
       <Separator />
-      <AccountForm data={userData} />
+      <AccountForm />
     </div>
   )
 }
