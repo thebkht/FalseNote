@@ -27,6 +27,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { User } from "lucide-react"
+import { Icons } from "../icon"
 
 const profileFormSchema = z.object({
   email: z.string().email().nullable().optional(),
@@ -36,7 +38,7 @@ const profileFormSchema = z.object({
     message: "Username must not be longer than 30 characters.",
   }),
   name: z.string().nullable().optional(),
-  bio: z.string().max(160).min(4).nullable().optional(),
+  bio: z.string().max(160).nullable().optional(),
   image: z.string().url().nullable().optional(),
   githubprofile: z.string().optional(),
   location: z.string().max(30).nullable().optional(),
@@ -48,9 +50,8 @@ export function ProfileForm({ data }: { data: Partial<ProfileFormValues>}) {
   // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
     name: data.name,
-    username: data.username,
-    email: data.email,
-    bio: data.bio,
+    email: data.email ?? "",
+    bio: data.bio ?? "",
     image: data.image,
     githubprofile: data.githubprofile,
     location: data.location,
@@ -65,7 +66,6 @@ const defaultValues: Partial<ProfileFormValues> = {
   console.log("data", form.formState.defaultValues)
 
   function onSubmit(data: ProfileFormValues) {
-    console.log("submitted", data)
     toast({
       title: "You submitted the following values:",
       description: (
@@ -78,8 +78,10 @@ const defaultValues: Partial<ProfileFormValues> = {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <FormField
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full justify-between gap-8 flex flex-row-reverse items-start">
+      <div className="w-1/3 px-4"
+      >
+        <FormField
   control={form.control}
   name="image"
   render={({ field }) => (
@@ -89,21 +91,20 @@ const defaultValues: Partial<ProfileFormValues> = {
         
         <div>
         {field.value && 
-        <Avatar>
+        <Avatar className="w-48 h-48" onClick={() => document.getElementById('image')?.click()}>
               <AvatarImage src={field.value} alt="Profile" />
-              <AvatarFallback>{field.value}</AvatarFallback>
+              <AvatarFallback><Icons.user className="h-20 w-20" /></AvatarFallback>
               </Avatar>}
-            <Input type="file" {...field} value={undefined} />
+            <Input type="file" {...field} value={undefined} className="hidden" id="image" />
         </div>
           </FormControl>
-          <FormDescription>
-            Click on the image to select a new profile image.
-          </FormDescription>
       <FormMessage />
     </FormItem>
   )}
 />
-        <FormField
+      </div>
+      <div className="w-2/3 space-y-8 px-4">
+      <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
@@ -123,42 +124,27 @@ const defaultValues: Partial<ProfileFormValues> = {
         />
         <FormField
           control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value || ''}>
+              <Select onValueChange={field.onChange} defaultValue={field.value ?? ''}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a verified email to display" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
+                  {field.value && (
+                    <SelectItem value={field.value}>
+                      {field.value}
+                    </SelectItem>
+                  )}
                 </SelectContent>
               </Select>
               <FormDescription>
                 You can manage verified email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
+                <Link href="#">email settings</Link>.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -181,6 +167,23 @@ const defaultValues: Partial<ProfileFormValues> = {
               <FormDescription>
                 You can <span>@mention</span> other users and organizations to
                 link to them.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input placeholder="Location" {...field}
+                  value={field.value ?? ''} />
+              </FormControl>
+              <FormDescription>
+                Add your location to your profile.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -219,6 +222,7 @@ const defaultValues: Partial<ProfileFormValues> = {
           </Button>
         </div> */}
         <Button type="submit">Update profile</Button>
+      </div>
       </form>
     </Form>
   )
