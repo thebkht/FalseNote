@@ -80,6 +80,39 @@ export const config = {
       }
       return true; // Continue sign-in process
     },
+    async jwt({ token, user }) {
+      const dbUser = await postgres.user.findFirst({
+        where: {
+          email: token.email,
+          image: token.picture,
+        },
+      })
+
+      if (!dbUser) {
+        if (user) {
+          token.id = user?.id
+        }
+        return token
+      }
+
+      return {
+        id: dbUser.id,
+        name: dbUser.name,
+        username: dbUser.username,
+        email: dbUser.email,
+        picture: dbUser.image,
+      }
+    },
+    async session({ token, session }) {
+      if (token) {
+        session.user = session.user ?? {};
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.image = token.picture as string;
+      }
+
+      return session;
+    },
   },
   
 } satisfies NextAuthConfig
