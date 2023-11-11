@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import UserHoverCard from "../user-hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
-import { Check } from "lucide-react";
+import { Check, MoreHorizontal } from "lucide-react";
 import LoginDialog from "../login-dialog";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -21,6 +21,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import readingTime from "reading-time";
 import CommentsSheet from "./comments/comments-sheet";
+import MobilePostTabs from "./mobile-navbar";
+import PostMoreActions from "./post-more-actions";
 
 const components = {
      code({ className, children, }: { className: string, children: any }) {
@@ -83,7 +85,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
      return (
           <>
                <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
-                    <div className="article__container">
+                    <div className="article__container space-y-8">
                          <div className="article__header lg:text-xl">
                               {
                                    post?.cover && (
@@ -154,7 +156,13 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                              }
                                         </div>
                                    </div>
+                                   <PostMoreActions post={post} session={session} >
+                              <Button className="h-10 w-10 mr-0.5 ml-auto flex md:hidden" size={"icon"} variant={"outline"}  >
+                                   <MoreHorizontal className="w-5 h-5" strokeWidth={1.75} />
+                              </Button>
+                         </PostMoreActions>
                               </div>
+                              
                          </div>
 
                          <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
@@ -195,7 +203,9 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                          {
                               // if post word count is greater than 1000 show the stats
                               <PostTabs post={post} session={session} author={author} className="border-none" comments={post?.comments} onClicked={() => setOpenComments(!openComments)} />
+                              
                          }
+                         <MobilePostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
                     </div>
                </div>
                <CommentsSheet post={post} comments={post?.comments} session={session} open={openComments} onOpenChange={setOpenComments} />

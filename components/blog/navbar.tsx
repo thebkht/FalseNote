@@ -30,7 +30,7 @@ export default function PostTabs({ post: initialPost, className, session, author
      const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false)
      return (
           <>
-               <div className={cn("px-2 py-1 border-y flex justify-between w-full sticky md:top-[60px] xs:bottom-0 bg-background shadow-sm", className)}>
+               <div className={cn("px-2 py-1 border-y hidden md:flex justify-between w-full sticky top-[60px] bg-background", className)}>
                     <div className="flex items-center gap-3">
                          <div className="flex items-center">
                               {

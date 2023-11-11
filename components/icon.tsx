@@ -61,7 +61,7 @@ import {
      notfound: SearchX,
      bookmark: Bookmark,
      logoIcon: (props: IconProps) => (
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466.45 466" {...props} fill="none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466.45 466" {...props} fill="none" className={cn("h-5 w-auto ", props.className)}>
                <path d="M205.57,232.99H68.75L0,113.71h137.48l0.01,0.03L205.57,232.99z M205.57,232.99l-68.41,118.69L201.32,463
    l68.74-119.26l63.83-110.73v-0.01H205.57z M201.32,3L137.5,113.71h265.13L466.45,3H201.32z" fill="currentColor" />
           </svg>

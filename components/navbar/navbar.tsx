@@ -18,6 +18,7 @@ import { Badge } from "../ui/badge";
 import SearchBar from "../searchbar";
 import { useRouter } from "next/navigation";
 import { PostCreateButton } from "./post-create-button";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 function Navbar() {
   const { data: session, status } = useSession();
@@ -48,13 +49,16 @@ function Navbar() {
     return (
       <div className="menu-container h-[60px] px-3.5 fixed md:sticky top-0 bg-background/60 backdrop-blur-md">
           <Link href="/feed?tab=following" className="flex items-center">
-            <Icons.logo />
+            <Icons.logo className="" />
             <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
           </Link>
   
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-1 md:gap-4">
+          <Button variant="ghost" size={"icon"} className="h-6 w-6 md:h-9 md:w-9">
+               <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
+          </Button>
             <SearchBar />
-          <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
+          <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} className="h-6 w-6 md:h-9 md:w-9" />
                   
                   {/* <TooltipProvider>
                     <Tooltip>
@@ -79,8 +83,9 @@ function Navbar() {
         <div className="menu-backdrop h-[60px] border-b w-full">
         </div>
         <div className="menu-container p-3 xl:px-36 2xl:px-64">
-          <Link href="/" className="font-bold">
+        <Link href="/" className="flex items-center">
             <Icons.logo />
+            <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
           </Link>
           <div className="flex items-center gap-4">
                 <ModeToggle />

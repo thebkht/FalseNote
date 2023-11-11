@@ -158,7 +158,7 @@
 }
 
 .article__title {
-  @apply font-bold text-3xl md:text-4xl !font-bold md:leading-snug
+  @apply font-bold text-3xl md:text-4xl md:leading-snug
 }
 
 .article__meta {

@@ -57,7 +57,7 @@ export function PostCreateButton({
                {isLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                ) : (
-                    <Plus className="h-[1.2rem] w-[1.2rem]" />
+                    <Plus className="h-[1.2rem] w-[1.2rem]" strokeWidth={1.75} />
                )}
           </Button>
      )
