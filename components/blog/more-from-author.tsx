@@ -61,33 +61,35 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                <div className="max-w-[680px] lg:text-xl mx-auto">
                     <div className="author__details flex flex-col gap-y-4">
                          <div className="mx-2 md:mx-6">
-                              <Avatar className="h-20 w-20 mb-4">
-                                   <AvatarImage src={author?.image} alt={author?.username} />
-                                   <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
-                              </Avatar>
+                              <Link href={`/${author?.username}`} className="flex items-center">
+                                   <Avatar className="h-20 w-20 mb-4">
+                                        <AvatarImage src={author?.image} alt={author?.username} />
+                                        <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
+                                   </Avatar>
+                              </Link>
                               <div className="flex justify-between">
                                    <div className="gap-y-2">
                                         <div className="flex">
                                              <Link href={`/${author?.username}`} className="flex items-center">
                                                   <h2 className="text-2xl font-medium">
-                                                       Written by {author?.name || author?.username}
-                                                  </h2>{author?.verified &&
-                                                       (
-                                                            <Icons.verified className="h-5 w-5 mx-1 inline fill-primary align-middle" />
-                                                       )}
+                                                       {author?.name || author?.username} {author?.verified &&
+                                                            (
+                                                                 <Icons.verified className="h-5 w-5 mx-0.5 inline fill-primary align-middle" />
+                                                            )}
+                                                  </h2>
                                              </Link>
 
                                         </div>
-                                        <div className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?.Followers.length || 0)} Followers</div>
+                                        <div className="text-sm font-normal mt-2">{formatNumberWithSuffix(author?._count.Followers || 0)} Followers</div>
                                         {author?.bio && (<div className="text-sm font-normal mt-4">{author?.bio}</div>)}
                                    </div>
                                    <div>
                                         {sessionUser?.id !== author?.id && (
                                              status === "authenticated" ? (
-                                                  <Button variant={"secondary"} onClick={() => handleFollow(author.id)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
+                                                  <Button onClick={() => handleFollow(author.id)} disabled={isFollowingLoading}>{isFollowing ? "Following" : "Follow"}</Button>
                                              ) : (
                                                   <LoginDialog>
-                                                       <Button variant={"secondary"} >Follow</Button>
+                                                       <Button >Follow</Button>
                                                   </LoginDialog>
                                              ))
                                         }
@@ -99,7 +101,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                          post.length !== 0 && (
                               <>
                                    <Separator className="my-10" />
-                                   <div className="text-base font-medium mb-8 mx-2 md:mx-6">More From {author?.username}</div>
+                                   <div className="text-base font-medium mb-8 mx-2 md:mx-6">More From {author?.name || author?.username}</div>
                                    <div className="grid md:grid-cols-2 gap-4">
                                         {
                                              post?.map((p: any) => (
