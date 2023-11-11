@@ -131,7 +131,7 @@ export default function LandingPostCard(
 
           <div className="flex-none ml-5">
             <Link href={`/${props.post.author?.username}/${props.post.url}`}>
-              <div className="h-[100px] md:h-36 !relative !pb-0 md:aspect-[4/3] aspect-square" >
+              <div className="h-[100px] md:h-36 bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square" >
                 {props.post.cover ? (
                   <Image
                     src={props.post.cover}

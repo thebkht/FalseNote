@@ -111,7 +111,7 @@ export default function FeedPostCard(
 
           <div className="flex-none ml-6 md:ml-8">
             <Link href={`/${props.post.author?.username}/${props.post.url}`}>
-              <div className="h-14 md:h-28 !relative !pb-0 aspect-[4/3] md:aspect-square" >
+              <div className="h-14 md:h-28 bg-muted !relative !pb-0 aspect-[4/3] md:aspect-square" >
                 {props.post.cover ? (
                   <Image
                     src={props.post.cover}
