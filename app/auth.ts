@@ -106,7 +106,7 @@ export const config = {
     async session({ token, session }) {
       if (token) {
         session.user = session.user ?? {};
-        session.user.name = token.name as string;
+        session.user.name = token.username as string;
         session.user.email = token.email as string;
         session.user.image = token.picture as string;
       }
