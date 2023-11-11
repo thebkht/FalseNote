@@ -54,11 +54,13 @@ function Navbar() {
           </Link>
   
           <div className="flex items-center gap-1 md:gap-4">
-          <Button variant="ghost" size={"icon"} className="h-6 w-6 md:h-9 md:w-9">
-               <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
+          <Button variant="ghost" size={"icon"} className="flex md:hidden" asChild>
+               <Link href="/explore">
+               <MagnifyingGlassIcon className="md:h-[1.2rem] md:w-[1.2rem]" />
+                </Link>
           </Button>
             <SearchBar />
-          <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} className="h-6 w-6 md:h-9 md:w-9" />
+          <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
                   
                   {/* <TooltipProvider>
                     <Tooltip>

@@ -181,7 +181,8 @@ export function PostEditorForm(props: { post: any, user: any }) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const saveDraft = async () => {
-    setIsSaving(true);
+    if(!isPublishing) {
+      setIsSaving(true);
     if (file) {
       try {
         const dataForm = new FormData()
@@ -232,6 +233,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
       }
     }
     setIsSaving(false);
+    }
   }
 
   // when value changes, wait 750ms than save it as a draft
@@ -575,7 +577,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
         <PostDeleteDialog post={props.post} user={props.user} open={showDeleteAlert} onOpenChange={setShowDeleteAlert}/>
 
 
-        <Button size={"icon"} variant={"secondary"} onClick={
+        <Button size={"icon"} variant={"secondary"} disabled={isSaving} onClick={
           () => {
             if (form.getValues('title') === undefined) {
               toast({
