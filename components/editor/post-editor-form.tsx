@@ -248,7 +248,6 @@ export function PostEditorForm(props: { post: any, user: any }) {
         }
       }
       if (form.getValues('title') && form.getValues('content')) {
-        form.setValue('visibility', 'draft');
         try {
           // Submit the form
           const result = await fetch(`/api/post/${props.post?.id}/drafts`, {
