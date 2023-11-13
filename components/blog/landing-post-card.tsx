@@ -117,6 +117,7 @@ export default function LandingPostCard(
                     <LoginDialog>
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                       <Bookmark className={`h-5 w-5 `} strokeWidth={2} />
+                      <span className="sr-only">Save</span>
                     </Button>
                     </LoginDialog>
                   </div>

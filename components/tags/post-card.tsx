@@ -111,11 +111,13 @@ export default function TagPostCard(
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)}>
                                                                  <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} />
+                                                                 <span className="sr-only">Like</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                                       <Heart className={`w-5 h-5`} />
+                                                                      <span className="sr-only">Like</span>
                                                                  </Button>
                                                             </LoginDialog>
                                                        )
@@ -126,6 +128,7 @@ export default function TagPostCard(
                                                   <Link href={`/${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
                                                        <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                             <MessageCircle className="w-5 h-5" />
+                                                            <span className="sr-only">Comment</span>
                                                        </Button>
                                                   </Link>
                                                   <span>{formatNumberWithSuffix(props.post._count.comments)}</span>
@@ -138,11 +141,13 @@ export default function TagPostCard(
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                                  <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} strokeWidth={2} />
+                                                                 <span className="sr-only">Save</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                                       <Bookmark className={`h-5 w-5`} strokeWidth={2} />
+                                                                      <span className="sr-only">Save</span>
                                                                  </Button>
                                                             </LoginDialog>
                                                        )
@@ -152,6 +157,7 @@ export default function TagPostCard(
                                                   <PostMoreActions post={props.post} session={props.session}>
                                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                             <MoreHorizontal className="h-5 w-5" />
+                                                            <span className="sr-only">More</span>
                                                        </Button>
                                                   </PostMoreActions>
                                              </div>

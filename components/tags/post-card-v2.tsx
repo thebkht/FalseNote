@@ -117,11 +117,13 @@ export default function PostCard(
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                        <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
+                                                       <span className="sr-only">Save</span>
                                                   </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                                       <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                                                      <span className="sr-only">Save</span>
                                                                  </Button>
                                                             </LoginDialog>
                                                        )
@@ -131,6 +133,7 @@ export default function PostCard(
                                                   <PostMoreActions post={props.post} session={props.session}>
                                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                             <MoreHorizontal className="h-5 w-5" />
+                                                            <span className="sr-only">More</span>
                                                        </Button>
                                                   </PostMoreActions>
                                              </div>
@@ -142,7 +145,7 @@ export default function PostCard(
 
                          <div className="flex-none ml-6 md:ml-8">
                               <Link href={`/${props.post.author?.username}/${props.post.url}`}>
-                                   <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
+                                   <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user == 'true≈' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                         {props.post.cover ? (
                                              <Image
                                                   src={props.post.cover}
