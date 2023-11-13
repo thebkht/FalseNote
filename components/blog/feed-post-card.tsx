@@ -100,8 +100,10 @@ export default function FeedPostCard(
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                       <ShareList url={`https://falsenotes.netlify.app/${props.post.author.username}/${props.post.url}`} text={props.post.title}>
-                        <MoreHorizontal className="h-5 w-5" />
-                        <span className="sr-only">Share</span>
+                        <div>
+                          <MoreHorizontal className="h-5 w-5" />
+                          <span className="sr-only">Share</span>
+                        </div>
                       </ShareList>
                     </Button>
                   </div>
@@ -155,8 +157,10 @@ export default function FeedPostCard(
               <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                   <ShareList url={`https://falsenotes.netlify.app/${props.post.author.username}/${props.post.url}`} text={props.post.title}>
-                    <MoreHorizontal className="h-5 w-5" />
-                    <span className="sr-only">Share</span>
+                    <div>
+                      <MoreHorizontal className="h-5 w-5" />
+                      <span className="sr-only">Share</span>
+                    </div>
                   </ShareList>
                 </Button>
               </div>
