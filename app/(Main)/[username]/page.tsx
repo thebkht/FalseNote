@@ -88,7 +88,7 @@ export default async function Page({ params, searchParams }: {
   const { history } = await getHistory({ id: sessionUserName?.id })
   return (
     <div className="md:container mx-auto px-4">
-      <div className="gap-5 lg:gap-6 py-5 flex flex-col md:flex-row items-start" >
+      <div className="gap-5 lg:gap-6 flex flex-col md:flex-row items-start" >
         <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:sticky top-16 md:w-1/3 lg:w-1/4" />
         <div className="lg:px-8 w-full">
           {sessionUserName?.id === user?.id ? (

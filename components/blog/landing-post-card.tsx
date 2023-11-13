@@ -64,7 +64,7 @@ export default function LandingPostCard(
   return (
     <Card {...props} className={cn("rounded-lg feedArticleCard bg-transparent max-h-72 w-full border-none shadow-none", props.className)}>
       <CardContent className="py-0 px-0 md:px-4">
-        <div className="flex items-start mb-8 md:mb-12">
+        <div className="flex items-start mb-8 md:mb-12 justify-between gap-3 md:gap-5">
           <div className="flex-initial w-full">
           <div className="flex items-center space-x-1 mb-2">
             <UserHoverCard user={props.post.author} >
@@ -73,10 +73,9 @@ export default function LandingPostCard(
                   <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
                   <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username}</p>
-                {props.post.author?.verified && (
+                <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username} {props.post.author?.verified && (
                   <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
-                )}
+                )}</p>
               </Link>
             </UserHoverCard>
           </div>
@@ -99,10 +98,10 @@ export default function LandingPostCard(
                   </span>
                   <span>·</span>
                   <p className="card-text mb-0 text-muted-foreground text-xs">{props.post.readingTime}</p>
-                  <span>·</span>
+                  <span className="hidden md:inline">·</span>
                   {
                     props.post.tags?.length > 0 && (
-                      <Link href={`/tags/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
+                      <Link href={`/tags/${props.post.tags[0].tag?.name}`} className="hidden md:block" key={props.post.tags[0].tag?.id}>
                         <TagBadge variant={"secondary"} className="flex">
                           {
                             //replace - with space
@@ -129,7 +128,7 @@ export default function LandingPostCard(
             </div>
           </div>
 
-          <div className="flex-none ml-5">
+          <div className="flex-none">
             <Link href={`/${props.post.author?.username}/${props.post.url}`}>
               <div className="h-[100px] md:h-36 bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square" >
                 {props.post.cover ? (
