@@ -11,58 +11,82 @@ type Props = {
      children: React.ReactNode
 }
 
-export async function generateMetadata(
-     { params }: Props
-): Promise<Metadata> {
-     try {
-          const response = await fetch(`${process.env.DOMAIN}/api/posts/${params.username}?url=${params.url}`);
-          if (!response.ok) {
-               throw new Error(`Error fetching post data: ${response.statusText}`);
-          }
-          const data = await response.json();
-          const post = data;
-          return {
-               metadataBase: new URL(`${process.env.DOMAIN}/${post.author.username}/${post.url}`),
-               title: `${post.title} - FalseNotes`,
-               description: post.subtitle,
-               keywords: post.tags.map((tag: any) => tag.tag.name).join(', '),
-               openGraph: {
-                    title: `${post.title} - FalseNotes`,
-                    description: post.subtitle,
-                    url: `${process.env.DOMAIN}/${post.author.username}/${post.url}`,
-                    images: [
-                         {
-                              url: `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
-                              width: 1200,
-                              height: 630,
-                              alt: `${post.title} - FalseNotes`,
-                         }
-                    ],
-               },
-               twitter: {
-                    card: 'summary_large_image',
-                    title: `${post.title} - FalseNotes`,
-                    description: post.subtitle,
-               },
-          }
-     } catch (error) {
-          console.error('Error:', error);
-          return {
-               title: `Not Found - FalseNotes`,
-               description: `The page you were looking for doesn't exist.`,
-               openGraph: {
-                    title: `Not Found - FalseNotes`,
-                    description: `The page you were looking for doesn't exist.`,
+async function getPostData(username: string, url: string) {
+     const post = await postgres.post.findFirst({
+       where: {
+         url: url,
+         author: {
+           username: username
+         }
+       },
+       include: {
+         tags: {
+           include: {
+             tag: true
+           }
+         },
+         author: true,
+       }
+     });
+     return post;
+   }
 
-               },
-               twitter: {
-                    card: 'summary_large_image',
-                    title: `Not Found - FalseNotes`,
-                    description: `The page you were looking for doesn't exist.`,
-               },
-          }
+   //markdown to text
+   function markdownToText(markdown: string) {
+     return markdown.replace(/!\[(.*?)\]\((.*?)\)/g, '$1') .replace(/\[(.*?)\]\((.*?)\)/g, '$1').replace(/<\/?[^>]+(>|$)/g, '');
+   }
+   
+   export async function generateMetadata(
+     { params }: Props
+   ): Promise<Metadata> {
+     try {
+       const post = await getPostData(params.username, params.url);
+       if (!post) {
+         throw new Error('Post not found');
+       }
+       return {
+         metadataBase: new URL(`${process.env.DOMAIN}/${post.author.username}/${post.url}`),
+         title: `${post.title} - FalseNotes`,
+         description: post.subtitle,
+         keywords: post.tags.map((tag: any) => tag.tag.name).join(', '),
+         openGraph: {
+           title: `${post.title} - FalseNotes`,
+           description: post.subtitle || markdownToText(post.content.slice(0, 100)),
+           url: `${process.env.DOMAIN}/${post.author.username}/${post.url}`,
+           images: [
+             {
+               url: `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
+               width: 1200,
+               height: 630,
+               alt: `${post.title} - FalseNotes`,
+             }
+           ],
+         },
+         twitter: {
+           card: 'summary_large_image',
+           title: `${post.title} - FalseNotes`,
+           description: post.subtitle || markdownToText(post.content.slice(0, 100)),
+               
+         },
+       }
+     } catch (error) {
+       console.error('Error:', error);
+       return {
+         title: `Not Found - FalseNotes`,
+         description: `The page you were looking for doesn't exist.`,
+         openGraph: {
+           title: `Not Found - FalseNotes`,
+           description: `The page you were looking for doesn't exist.`,
+   
+         },
+         twitter: {
+           card: 'summary_large_image',
+           title: `Not Found - FalseNotes`,
+           description: `The page you were looking for doesn't exist.`,
+         },
+       }
      }
-}
+   }
 
 export default async function PostLayout(
      { children, params }: Props
