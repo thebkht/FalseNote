@@ -23,19 +23,23 @@ export default async function Feed({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+  const session = await getSessionUser();
+  const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
+
+  if (session) {
+    if(userFollowingsTags.length === 0) {
+      redirect('/get-started')
+    } 
+  } else {
+    return redirect('/')
+  }
 
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
   const feed = await fetchFeed({ page: 0, tab });
-  const session = await getSessionUser();
 
   const topData = await fetchUsers({ id: session?.id })
   const topUsers = topData?.users;
   const popularTags = await fetchTags();
-
-  if (!session) {
-    return redirect('/')
-  }
-  const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
 
   const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id, limit: 3 })
 

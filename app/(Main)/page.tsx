@@ -10,15 +10,13 @@ import { getPosts } from '@/lib/prisma/posts';
 export default async function Home() {
 
   const session = await getSessionUser();
-
-  const { followings } = await getFollowings({ id: session?.id })
   const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
   
   if (session) {
-    if(userFollowingsTags.length === 0 && followings.length === 0) {
+    if(userFollowingsTags.length === 0) {
       redirect('/get-started')
-    } else if (userFollowingsTags.length > 0 && followings.length > 0) {
-      redirect('/feed?tab=following')
+    } else if (userFollowingsTags.length > 0) {
+      redirect('/feed')
     } 
   }
 
