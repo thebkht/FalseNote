@@ -283,7 +283,6 @@ export default function UserDetails({ className, children, user, followers, foll
         </li>
       </ul>
       </div>
-      <SiteFooter className="!px-0 text-[10px] lg:text-xs hidden md:flex" />
     </div>
   )
 }

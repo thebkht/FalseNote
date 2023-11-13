@@ -12,6 +12,7 @@ import { getBookmarks, getHistory } from "@/lib/prisma/session";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import UserBookmarks from "@/components/user/bookmark";
+import { SiteFooter } from "@/components/footer";
 
 
 export default async function Page({ params, searchParams }: {
@@ -89,7 +90,10 @@ export default async function Page({ params, searchParams }: {
   return (
     <div className="md:container mx-auto px-4 mt-4">
       <div className="gap-5 lg:gap-6 flex flex-col md:flex-row items-start" >
-        <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} className="w-full md:sticky top-16 md:w-1/3 lg:w-1/4" />
+        <div className="w-full md:sticky top-16 md:w-1/3 lg:w-1/4">
+          <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} />
+          <SiteFooter className="!px-0 text-[10px] sticky bottom-0 lg:text-xs hidden md:flex" />
+        </div>
         <div className="lg:px-8 w-full">
           {sessionUserName?.id === user?.id ? (
             <Tabs className="w-full" defaultValue={tab || "posts"}>
