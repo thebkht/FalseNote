@@ -15,26 +15,12 @@ import { getSessionUser } from "../get-session-user";
 
 export default function EditorNavbar() {
      const user = useSession().data?.user as any;
-     const [username, setUsername] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userData = await getSessionUser();
-        setUsername(userData?.username);
-      } catch (error) {
-        // Handle errors
-        console.error('Error:', error);
-      }
-    }
-
-    fetchData();
-  }, [user?.name]);
      return (
           <nav className="menu">
                <div className="menu-container fixed p-3.5 bg-background/60 backdrop-blur-md">
                     
-                         <Link href={`/${username}`} className="flex align-items-center">
+                         <Link href={`/${user.name}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1">
                                    <AvatarImage src={ user?.image } alt={ user?.name } />
                                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
