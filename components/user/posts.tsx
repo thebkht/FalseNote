@@ -47,10 +47,10 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
         {posts?.length > 0 ? (
           <>
             {posts?.map((article: any) => (
-              <>
-                <PostCard post={article} session={sessionUser} user={true} />
+              <div  key={article.id}>
+                <PostCard post={article} session={sessionUser} user={true.toString()} />
                 <Separator />
-              </>
+              </div>
             ))}
 
 

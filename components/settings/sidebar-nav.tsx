@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSelectedLayoutSegment } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -9,13 +9,14 @@ import { buttonVariants } from "@/components/ui/button"
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
     href: string
-    title: string
+    title: string,
+    disabled?: boolean
   }[]
 }
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const pathname = usePathname()
-
+  const segment = useSelectedLayoutSegment()
   return (
     <nav
       className={cn(
@@ -24,20 +25,21 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       )}
       {...props}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            pathname === item.href
+        key={index}
+        href={item.disabled ? "#" : item.href}
+        className={cn(
+          buttonVariants({ variant: "ghost" }),
+          pathname === item.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
-            "justify-start"
-          )}
-        >
-          {item.title}
-        </Link>
+            "justify-start",
+          item.disabled && "cursor-not-allowed opacity-80"
+        )}
+      >
+        {item.title}
+      </Link>
       ))}
     </nav>
   )

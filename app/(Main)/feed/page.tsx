@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { dateFormat } from '@/lib/format-date';
 import { Icons } from '@/components/icon';
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
+import { SiteFooter } from '@/components/footer';
 
 export default async function Feed({
   searchParams
@@ -136,6 +137,7 @@ export default async function Feed({
                       )}
                     </CardContent>
                   </Card>
+                  <SiteFooter className='text-xs !px-0' />
               </div>
             </div>
           </div>

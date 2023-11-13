@@ -1,4 +1,5 @@
 import ExploreTabs from "@/components/explore/navbar/navbar"
+import { SiteFooter } from "@/components/footer"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function ExploreLayout({
           <main className="flex flex-col items-center justify-between">
                {children}
           </main>
+          <SiteFooter className='px-6 xl:px-36 2xl:px-64' />
         </div>
       
      </>

@@ -73,7 +73,6 @@ function Navbar() {
                     </Tooltip>
                   </TooltipProvider> */}
                 
-                <ModeToggle />
                   <UserNav />
   
               </div>

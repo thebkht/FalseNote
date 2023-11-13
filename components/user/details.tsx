@@ -21,6 +21,8 @@ import { is, ro } from "date-fns/locale";
 import { set } from "date-fns";
 import ShareList from "../share-list";
 import Image from "next/image";
+import { SiteFooter } from "../footer";
+import { cn } from "@/lib/utils";
 
 function getRegistrationDateDisplay(registrationDate: string) {
   ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -77,7 +79,8 @@ export default function UserDetails({ className, children, user, followers, foll
   if (status === "loading") return null;
 
   return (
-    <div className={className}>
+    <div className={cn("flex flex-col items-stretch justify-between", className)} style={{height: "calc(100vh - 64px)"}}>
+      <div>
       <div className="flex lg:flex-col items-start">
       <div className="user__header flex md:block md:items-start lg:space-y-4 space-y-2 pb-4">
         <Avatar className="rounded-full mr-3 lg:w-64 xl:w-[296px] w-1/4 md:w-56 md:h-56 lg:h-64 xl:h-[296px] border h-1/4">
@@ -279,6 +282,8 @@ export default function UserDetails({ className, children, user, followers, foll
           </Button>
         </li>
       </ul>
+      </div>
+      <SiteFooter className="!px-0 text-xs" />
     </div>
   )
 }

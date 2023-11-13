@@ -1,5 +1,6 @@
 import MoreFromAuthor from '@/components/blog/more-from-author';
 import RelatedPosts from '@/components/blog/related-posts';
+import { SiteFooter } from '@/components/footer';
 import { getSessionUser } from '@/components/get-session-user';
 import { Separator } from '@/components/ui/separator';
 import postgres from '@/lib/postgres';
@@ -174,7 +175,7 @@ export default async function PostLayout(
                     {children}
                </div>
 
-               <div className="bg-third dark:bg-popover py-16">
+               <div className="bg-third dark:bg-popover space-y-16 pt-16 mt-4">
                     <div className=' md:container mx-auto px-4'>
                          <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
                          {
@@ -188,6 +189,7 @@ export default async function PostLayout(
 
                          }
                     </div>
+                    <SiteFooter />
                </div>
           </>
      )

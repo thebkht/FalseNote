@@ -33,7 +33,7 @@ export default function PostCard(
      props: React.ComponentPropsWithoutRef<typeof Card> & {
           post: any;
           session: any;
-          user?: boolean,
+          user?: string,
      }
 ) {
      const pathname = usePathname();
@@ -50,7 +50,7 @@ export default function PostCard(
                     <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
                          <div className="flex items-center space-x-1">
                               {
-                                   !props.user && (
+                                   props.user != 'true' && (
                                         <>
                                              <UserHoverCard user={props.post.author} >
                                                   <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
@@ -69,7 +69,7 @@ export default function PostCard(
                                    )
                               }
                               {
-                                   props.user && (
+                                   props.user == 'true' && (
                                         props.session?.id === props.post.author?.id && (
                                              <Badge variant={"outline"} className="text-xs font-normal capitalize mr-1">
                                                   {props.post.visibility}
@@ -87,7 +87,7 @@ export default function PostCard(
                               <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.url}` : `/${props.post.author?.username}/${props.post.url}`}>
                                    <div>
                                         <div className="pb-2">
-                                             <h2 className={`text-base md:text-xl font-bold text-ellipsis overflow-hidden ${props.user ? "line-clamp-2" : "line-clamp-3"}`}>{props.post.title}</h2>
+                                             <h2 className={`text-base md:text-xl font-bold text-ellipsis overflow-hidden ${props.user == 'true' ? "line-clamp-2" : "line-clamp-3"}`}>{props.post.title}</h2>
                                         </div>
                                         <div className="post-subtitle hidden md:block">
                                              <p className={`text-ellipsis overflow-hidden line-clamp-3 text-muted-foreground`}>{props.post.subtitle}</p>
@@ -142,7 +142,7 @@ export default function PostCard(
 
                          <div className="flex-none ml-6 md:ml-8">
                               <Link href={`/${props.post.author?.username}/${props.post.url}`}>
-                                   <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
+                                   <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                         {props.post.cover ? (
                                              <Image
                                                   src={props.post.cover}
