@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import useWindowDimensions from "../window-dimensions";
 
 export function dateFormat(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -44,13 +45,15 @@ export function dateFormat(dateString: string | number | Date) {
 }
 
 export default function Landing({ latest, tags, popular }: { latest: any, tags: any, popular: any }) {
+  const { width, height } = useWindowDimensions();
+  console.log(width)
   return (
     <>
       <main className="landing mx-auto w-full overflow-hidden">
         <div className="landing__hero px-6 xl:px-36 2xl:px-64 border-b">
           <div className="landing__hero_content flex flex-col md:my-24 my-4 space-y-8 md:space-y-24 items-center justify-center">
             <div className="landing_hero-image w-[120vw] md:w-full">
-              <Image src="https://falsenotescontent.s3.ap-northeast-2.amazonaws.com/header/header-img.png" sizes="100vw"
+              <Image src="https://falsenotescontent.s3.ap-northeast-2.amazonaws.com/header/header-img.png" sizes="100vw" width={width || 1200} height={100} layout="responsive"
                 // Make the image display full width
                 style={{
                   width: '120vw',
