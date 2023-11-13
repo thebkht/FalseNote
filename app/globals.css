@@ -577,3 +577,9 @@
 .bg-third {
   background-color: hsl(var(--third));
 }
+
+@media screen and (max-width: 1024px) {
+  .details{
+    min-height: calc(100vh - 44rem);
+  }
+}

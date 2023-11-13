@@ -79,8 +79,8 @@ export default function UserDetails({ className, children, user, followers, foll
   if (status === "loading") return null;
 
   return (
-    <div className={cn("flex flex-col items-stretch justify-between", className)} style={{height: "calc(100vh - 64px)"}}>
-      <div>
+    <div className={cn("flex flex-col items-stretch justify-between xs:h-fit details", className)}>
+      <div className="flex-1">
       <div className="flex lg:flex-col items-start">
       <div className="user__header flex md:block md:items-start lg:space-y-4 space-y-2 pb-4">
         <Avatar className="rounded-full mr-3 lg:w-64 xl:w-[296px] w-1/4 md:w-56 md:h-56 lg:h-64 xl:h-[296px] border h-1/4">
@@ -283,7 +283,7 @@ export default function UserDetails({ className, children, user, followers, foll
         </li>
       </ul>
       </div>
-      <SiteFooter className="!px-0 text-xs" />
+      <SiteFooter className="!px-0 text-[10px] lg:text-xs hidden md:flex" />
     </div>
   )
 }
