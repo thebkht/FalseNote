@@ -58,7 +58,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                 }} alt="" />
             </div>
             <div>
-              <h1 className="landing__hero_title max-w-[1200px] font-black leading-snug text-5xl md:text-7xl text-center">Start Your Journey with FalseNotes!</h1>
+              <h1 className="landing__hero_title max-w-[1200px] font-black leading-snug text-4xl md:text-7xl text-center">Start Your Journey with FalseNotes!</h1>
               <p className="landing__hero_description mt-6 mx-auto max-w-[960px] font-medium test-lg md:text-2xl leading-relaxed text-center">🚀 FalseNotes — a platform for Developers to Spark Discussions, Share Expertise, and Shape Coding Journeys.</p>
             </div>
           </div>
