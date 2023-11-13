@@ -51,6 +51,7 @@ function Navbar() {
         <Button variant="ghost" size={"icon"} className="flex md:hidden" asChild>
           <Link href="/explore">
             <MagnifyingGlassIcon className="md:h-[1.2rem] md:w-[1.2rem]" />
+            <span className="sr-only">Search</span>
           </Link>
         </Button>
         <SearchBar />
