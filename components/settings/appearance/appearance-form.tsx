@@ -18,29 +18,40 @@ import {
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/components/ui/use-toast"
+import { useTheme } from "next-themes"
+import React from "react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark"], {
     required_error: "Please select a theme.",
   }),
-  font: z.enum(["inter", "manrope", "system"], {
-    invalid_type_error: "Select a font",
-    required_error: "Please select a font.",
+  option: z.enum(["custom", "system"], {
+    required_error: "Please select an option.",
   }),
 })
 
 type AppearanceFormValues = z.infer<typeof appearanceFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<AppearanceFormValues> = {
-  theme: "light",
-}
+export function AppearanceForm({ data }: { data: any }) {
+  const { themes, theme, setTheme, systemTheme } = useTheme()
+  // This can come from your database or API.
+  const defaultValues: Partial<AppearanceFormValues> = {
+    theme: theme === 'light' ? 'light' : 'dark',
+    option: data.appearance === 'system' ? 'system' : 'custom',
+  }
 
-export function AppearanceForm() {
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
   })
+
+  React.useEffect(() => {
+    if (form.getValues('option') === 'system') {
+      setTheme('system');
+      form.setValue('theme', systemTheme as any);
+    }
+  }, [form.getValues('option'), setTheme]);
 
   function onSubmit(data: AppearanceFormValues) {
     toast({
@@ -56,7 +67,7 @@ export function AppearanceForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
+        {/* <FormField
           control={form.control}
           name="font"
           render={({ field }) => (
@@ -84,6 +95,40 @@ export function AppearanceForm() {
               <FormMessage />
             </FormItem>
           )}
+        /> */}
+        <FormField
+          control={form.control}
+          name="option"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Theme mode</FormLabel>
+              <Select
+                    {...field}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value ?? ''}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-48">
+                        <SelectValue placeholder="Select a theme mode" />
+                      </SelectTrigger>
+                      </FormControl>
+                  <SelectContent>
+                    <SelectItem value="custom">
+                      Custom
+                    </SelectItem>
+                    <SelectItem value="system">
+                      System
+                    </SelectItem>
+                  </SelectContent>
+                  </Select>
+              <FormDescription>
+                {
+                  field.value === "custom" ? "FalseNotes will use your selected theme" : "FalseNotes will match your system theme"
+                }
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <FormField
           control={form.control}
@@ -96,14 +141,21 @@ export function AppearanceForm() {
               </FormDescription>
               <FormMessage />
               <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
+                disabled={form.getValues("option") === "system"}
+                onValueChange={
+                  (value) => {
+                    field.onChange(value)
+                    setTheme(value)
+                  }
+                }
+                {...field}
+                defaultValue={theme}
                 className="grid max-w-md grid-cols-2 gap-8 pt-2"
               >
                 <FormItem>
                   <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
                     <FormControl>
-                      <RadioGroupItem value="light" className="sr-only" />
+                      <RadioGroupItem disabled={form.getValues("option") === "system"} value="light" className="sr-only" onSelect={() => setTheme("light")} />
                     </FormControl>
                     <div className="items-center rounded-md border-2 border-muted p-1 hover:border-accent">
                       <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
@@ -129,7 +181,7 @@ export function AppearanceForm() {
                 <FormItem>
                   <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
                     <FormControl>
-                      <RadioGroupItem value="dark" className="sr-only" />
+                      <RadioGroupItem disabled={form.getValues("option") === "system"} value="dark" className="sr-only" onSelect={() => setTheme("dark")} />
                     </FormControl>
                     <div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground">
                       <div className="space-y-2 rounded-sm bg-slate-950 p-2">
@@ -157,7 +209,7 @@ export function AppearanceForm() {
           )}
         />
 
-        <Button type="submit">Update preferences</Button>
+        <Button type="submit">Save changes</Button>
       </form>
     </Form>
   )

@@ -21,7 +21,7 @@ export default async function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
-      <ProfileForm data={userData} />
+      <ProfileForm data={userData as any} />
     </div>
   )
 }

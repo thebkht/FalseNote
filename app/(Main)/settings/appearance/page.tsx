@@ -1,7 +1,11 @@
 import { Separator } from "@/components/ui/separator"
 import { AppearanceForm } from "@/components/settings/appearance/appearance-form"
+import { getSessionUser } from "@/components/get-session-user"
+import { getSettings } from "@/lib/prisma/session"
 
-export default function SettingsAppearancePage() {
+export default async function SettingsAppearancePage() {
+  const session = await getSessionUser()
+  const data = await getSettings({id: session?.id})
   return (
     <div className="space-y-6">
       <div>
@@ -12,7 +16,7 @@ export default function SettingsAppearancePage() {
         </p>
       </div>
       <Separator />
-      <AppearanceForm />
+      <AppearanceForm data={data.settings} />
     </div>
   )
 }

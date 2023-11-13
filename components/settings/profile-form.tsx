@@ -29,31 +29,29 @@ import { useToast } from "@/components/ui/use-toast"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { User } from "lucide-react"
 import { Icons } from "../icon"
+import { useRouter } from "next/navigation"
+import { ToastAction } from "../ui/toast"
 
 const profileFormSchema = z.object({
+  id: z.number(),
+  username: z.string().nullable().optional(),
   email: z.string().email().nullable().optional(),
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }).max(30, {
-    message: "Username must not be longer than 30 characters.",
-  }),
   name: z.string().nullable().optional(),
   bio: z.string().max(160).nullable().optional(),
-  image: z.string().url().nullable().optional(),
-  githubprofile: z.string().optional(),
   location: z.string().max(30).nullable().optional(),
 });
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 
 export function ProfileForm({ data }: { data: Partial<ProfileFormValues>}) {
+  const router = useRouter()
   // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
+    id: data.id,
+    username: data.username,
     name: data.name,
     email: data.email ?? "",
     bio: data.bio ?? "",
-    image: data.image,
-    githubprofile: data.githubprofile,
     location: data.location,
 }
   const { toast } = useToast()
@@ -63,47 +61,40 @@ const defaultValues: Partial<ProfileFormValues> = {
     mode: "onChange",
   })
 
-  console.log("data", form.formState.defaultValues)
 
-  function onSubmit(data: ProfileFormValues) {
+  async function onSubmit(data: ProfileFormValues) {
+    const response = await fetch(`/api/user/${data.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    })
+
+    if (!response?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your name was not updated. Please try again.",
+        variant: "destructive",
+      })
+    }
+
     toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
+      description: "Profile updated successfully.",
+      action: (
+        <ToastAction
+          altText="View profile"
+          onClick={() => router.push(`/user/${data.username}`)}
+          className="hover:text-secondary-foreground"
+        >
+          View profile
+        </ToastAction>
       ),
     })
+
+    router.refresh()
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full justify-between gap-8 flex flex-row-reverse items-start">
-      <div className="w-1/3 px-4"
-      >
-        <FormField
-  control={form.control}
-  name="image"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Profile Image</FormLabel>
-      <FormControl>
-        
-        <div>
-        {field.value && 
-        <Avatar className="w-48 h-48" onClick={() => document.getElementById('image')?.click()}>
-              <AvatarImage src={field.value} alt="Profile" />
-              <AvatarFallback><Icons.user className="h-20 w-20" /></AvatarFallback>
-              </Avatar>}
-            <Input type="file" {...field} value={undefined} className="hidden" id="image" />
-        </div>
-          </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-      </div>
-      <div className="w-2/3 space-y-8 px-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full justify-between gap-8 flex flex-col items-start">
       <FormField
           control={form.control}
           name="name"
@@ -112,11 +103,12 @@ const defaultValues: Partial<ProfileFormValues> = {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="Name" {...field}
-                  value={field.value ?? ''} />
+                  value={field.value ?? ''}
+                   />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                pseudonym.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -134,7 +126,7 @@ const defaultValues: Partial<ProfileFormValues> = {
                     <SelectValue placeholder="Select a verified email to display" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className='w-96'>
                   {field.value && (
                     <SelectItem value={field.value}>
                       {field.value}
@@ -143,8 +135,7 @@ const defaultValues: Partial<ProfileFormValues> = {
                 </SelectContent>
               </Select>
               <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <Link href="#">email settings</Link>.
+                Your public email address on GitHub.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -161,12 +152,11 @@ const defaultValues: Partial<ProfileFormValues> = {
                   placeholder="Tell us a little bit about yourself"
                   {...field}
                   value={field.value ?? ''}
-                  className="resize-none"
+                  className="resize-none w-96"
                 />
               </FormControl>
               <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
+                Briefly describe yourself in 160 characters or less.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -180,7 +170,8 @@ const defaultValues: Partial<ProfileFormValues> = {
               <FormLabel>Location</FormLabel>
               <FormControl>
                 <Input placeholder="Location" {...field}
-                  value={field.value ?? ''} />
+                  value={field.value ?? ''} className='w-96'
+                   />
               </FormControl>
               <FormDescription>
                 Add your location to your profile.
@@ -222,7 +213,6 @@ const defaultValues: Partial<ProfileFormValues> = {
           </Button>
         </div> */}
         <Button type="submit">Update profile</Button>
-      </div>
       </form>
     </Form>
   )

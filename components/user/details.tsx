@@ -115,7 +115,11 @@ export default function UserDetails({ className, children, user, followers, foll
       {
         status === "authenticated" ? (
           session?.id === user?.id ? (
-            <Button variant={"outline"} className="w-full">Edit Profile</Button>
+            <Button variant={"outline"} className="w-full">
+              <Link href="/settings/profile">
+                Edit Profile
+              </Link>
+            </Button>
           ) : (
             <Button className="w-full" onClick={() => {
               handleFollow(user?.id);

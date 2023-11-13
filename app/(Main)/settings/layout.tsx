@@ -6,8 +6,8 @@ import { SidebarNav } from "@/components/settings/sidebar-nav"
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: "Settings - FalseNotes",
+  description: "Manage your account settings",
 }
 
 const sidebarNavItems = [
@@ -18,18 +18,11 @@ const sidebarNavItems = [
   {
     title: "Account",
     href: "/settings/account",
+    disabled: true,
   },
   {
     title: "Appearance",
     href: "/settings/appearance",
-  },
-  {
-    title: "Notifications",
-    href: "/settings/notifications",
-  },
-  {
-    title: "Display",
-    href: "/settings/display",
   },
 ]
 
@@ -44,7 +37,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">
-            Manage your account settings and set e-mail preferences.
+            Manage your account.
           </p>
         </div>
         <Separator className="my-6" />
@@ -52,7 +45,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 lg:w-1/5">
             <SidebarNav items={sidebarNavItems} className="sticky top-20" />
           </aside>
-          <div className="flex-1 lg:max-w-full">{children}</div>
+          <div className="flex-1">{children}</div>
           <Toaster />
         </div>
       </div>
