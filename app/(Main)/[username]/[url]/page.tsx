@@ -94,6 +94,10 @@ export default async function PostView({ params, searchParams }: { params: { use
           if (post?.visibility !== "public") redirect("/404");
      }
 
+     const published = sessionUser?.id === post?.authorId && (
+          searchParams.published === 'true' ? true : false
+     )
+
      const cookkies = cookies()
      const hasViewed = cookkies.has(`post_views_${author?.username}_${post.url}`)
 
@@ -135,7 +139,7 @@ export default async function PostView({ params, searchParams }: { params: { use
 
      return (
           <>
-               <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} comments={Boolean(commentsOpen)} />
+               <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} comments={Boolean(commentsOpen)} published={published} />
           </>
      )
 }

@@ -35,7 +35,6 @@ async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
     post.title = draft.title
     post.subtitle = draft.subtitle
     post.cover = draft.cover
-    post.url = draft.url
     post.readingTime = draft.readingTime
   }
 

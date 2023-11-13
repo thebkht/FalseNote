@@ -23,6 +23,7 @@ import readingTime from "reading-time";
 import CommentsSheet from "./comments/comments-sheet";
 import MobilePostTabs from "./mobile-navbar";
 import PostMoreActions from "./post-more-actions";
+import PublishDialog from "./publish-dialog";
 
 const components = {
      code({ className, children, }: { className: string, children: any }) {
@@ -38,7 +39,7 @@ const components = {
      }
 }
 
-export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined }) {
+export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
 
      const [isFollowing, setIsFollowing] = useState<boolean>(author.Followers?.some((follower: any) => follower.followerId === sessionUser?.id));
      const [isFollowingLoading, setIsFollowingLoading] = useState<boolean>(false);
@@ -46,6 +47,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
      const [session, setSession] = useState<any>(sessionUser);
      const [post, setPost] = useState<any>(initialPost);
      const [openComments, setOpenComments] = useState<boolean>(comments || false);
+     const [openPublishDialog, setOpenPublishDialog] = useState<boolean>(published || false);
 
      useEffect(() => {
           setPost(initialPost);
@@ -82,8 +84,12 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                return null;
           }
      }
+     if(openPublishDialog === false && published === true){
+          router.replace(`/${author?.username}/${post?.url}`)
+     }
      return (
           <>
+               <PublishDialog post={post} user={post.author} open={openPublishDialog} onOpenChange={setOpenPublishDialog} />
                <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
                     <div className="article__container space-y-8">
                          <div className="article__header lg:text-xl">
@@ -157,12 +163,12 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                         </div>
                                    </div>
                                    <PostMoreActions post={post} session={session} >
-                              <Button className="h-10 w-10 mr-0.5 ml-auto flex md:hidden" size={"icon"} variant={"outline"}  >
-                                   <MoreHorizontal className="w-5 h-5" strokeWidth={1.75} />
-                              </Button>
-                         </PostMoreActions>
+                                        <Button className="h-10 w-10 mr-0.5 ml-auto flex md:hidden" size={"icon"} variant={"outline"}  >
+                                             <MoreHorizontal className="w-5 h-5" strokeWidth={1.75} />
+                                        </Button>
+                                   </PostMoreActions>
                               </div>
-                              
+
                          </div>
 
                          <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
@@ -203,7 +209,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                          {
                               // if post word count is greater than 1000 show the stats
                               <PostTabs post={post} session={session} author={author} className="border-none" comments={post?.comments} onClicked={() => setOpenComments(!openComments)} />
-                              
+
                          }
                          <MobilePostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
                     </div>

@@ -118,7 +118,6 @@ export async function PATCH(
           content,
           cover: coverImage || null,
           readingTime: readTime,
-          url,
           subtitle: subtitle || null,
         },
       });

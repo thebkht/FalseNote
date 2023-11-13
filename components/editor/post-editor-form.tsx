@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -16,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Dialog,
   DialogClose,
@@ -38,14 +37,11 @@ import { Icons } from "../icon"
 import { useRouter } from "next/navigation"
 import Markdown from "markdown-to-jsx";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Textarea } from "../ui/textarea"
 import { ToastAction } from "../ui/toast"
 import { toast } from "../ui/use-toast"
-import { handleDelete } from "../delete"
 import { dateFormat } from "@/lib/format-date"
-import { debounce } from 'lodash';
-import { Badge } from "../ui/badge"
 import TagBadge from "../tags/tag"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import PostDeleteDialog from "../blog/post-delete-dialog"
@@ -148,7 +144,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
   const [open, setOpen] = useState<boolean>(false);
   const [commandOpen, setCommandOpen] = useState<boolean>(false);
   const [newTag, setNewTag] = useState<string | undefined>(undefined);
-  const [query] = useDebounce(newTag, 750)
+  const [query] = useDebounce(newTag, 1000)
   const [suggestions, setSuggestions] = useState<any>([])
 
   useEffect(() => {
@@ -196,8 +192,12 @@ export function PostEditorForm(props: { post: any, user: any }) {
       }
 
       await fetch(`/api/revalidate?path=/${props.user?.username}`);
-      router.push(`/${props.user?.username}/${form.getValues('url')}`);
-      toast({ description: "Post Published!" });
+      if (form.getValues('visibility') === 'public') {
+        await fetch(`/api/revalidate?path=/${props.user?.username}/${form.getValues('url')}`);
+        router.push(`/${props.user?.username}/${form.getValues('url')}?published=true`);
+        toast({ description: "Post Published!" });
+      }
+      
     } catch (error) {
       console.error(error);
       setIsPublishing(false);
@@ -310,6 +310,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
       setIsValidUrl(false);
       // Consider showing an error message to the user here
     }
+    return isValidUrl;
   }
 
   // URL-friendly link validation
@@ -333,9 +334,21 @@ export function PostEditorForm(props: { post: any, user: any }) {
   }
 
   //Set url value from title value
-  function handleTitleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  async function handleTitleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const value = e.target.value;
     form.setValue('title', value);
+    // Replace spaces with dashes and make lowercase, if the title has more than 2 words, less than 100 characters and don't have any special characters if it has any special characters remove them, if less than 2 words, change the url to random string
+    //if title has less than 2 words, change the url to random string
+    if (value.length < 100) {
+      if (value.split(' ').length < 2) {
+        const url = Math.random().toString(36).substring(2, 15)
+        if(await validateUrl(url)) form.setValue('url', url);
+      } else {
+        // Replace spaces with dashes and make lowercase of 2 words only and remove special characters
+        const url = value.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, '-').toLowerCase().split(' ').slice(0, 2).join('-')
+        if(await validateUrl(url)) form.setValue('url', url);
+      }
+    }
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -542,38 +555,27 @@ export function PostEditorForm(props: { post: any, user: any }) {
                                     {suggestions?.length === 0 && (
                                       <CommandEmpty>No results found.</CommandEmpty>
                                     )}
-                                    <CommandGroup>
-                                      {
-                                        newTag !== undefined && newTag?.trim() !== '' && suggestions.includes(newTag) && (
-                                          <CommandItem value={newTag} >
-                                        <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
-                                          if (newTag?.trim() !== '' && newTag !== undefined) {
-                                            append({ value: newTag });
-                                            setNewTag(undefined);
-                                            setCommandOpen(false);
-                                          }
-                                        }}>
-                                        <Hash className="mr-2 h-4 w-4" />
-                                        <span>{newTag}</span>
-                                        </Button>
-                                      </CommandItem>
-                                        )
-                                      }
-                                      {suggestions?.map((tag: any) => (
-                                        <CommandItem key={tag.id} value={tag.name} >
-                                          <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
-                                          if (tag.name?.trim() !== '' && tag.name !== undefined) {
-                                            append({ value: tag.name });
-                                            setNewTag(undefined);
-                                            setCommandOpen(false);
-                                          }
-                                        }}>
-                                          <Hash className="mr-2 h-4 w-4" />
-                                          <span>{tag.name.replace(/-/g, " ")}</span>
-                                        </Button>
-                                        </CommandItem>
-                                      ))}
-                                    </CommandGroup>
+                                    {
+                                      suggestions.length > 0 && (
+                                        <CommandGroup>
+
+                                          {suggestions?.map((tag: any) => (
+                                            <CommandItem key={tag.id} value={tag.name} >
+                                              <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
+                                                if (tag.name?.trim() !== '' && tag.name !== undefined) {
+                                                  append({ value: tag.name });
+                                                  setNewTag(undefined);
+                                                  setCommandOpen(false);
+                                                }
+                                              }}>
+                                                <Hash className="mr-2 h-4 w-4" />
+                                                <span>{tag.name.replace(/-/g, " ")}</span>
+                                              </Button>
+                                            </CommandItem>
+                                          ))}
+                                        </CommandGroup>
+                                      )
+                                    }
                                   </Command>
                                 </PopoverContent>
                               </Popover>
