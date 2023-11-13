@@ -112,6 +112,7 @@ export const getSettings = async ({ id }: { id: number | undefined }) => {
     select: {
       settings: {
         select: {
+          id: true,
           appearance: true,
           language: true,
           userId: true,

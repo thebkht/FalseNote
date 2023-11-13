@@ -21,8 +21,10 @@ import { toast } from "@/components/ui/use-toast"
 import { useTheme } from "next-themes"
 import React from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ToastAction } from "@radix-ui/react-toast"
 
 const appearanceFormSchema = z.object({
+  id: z.number(),
   theme: z.enum(["light", "dark"], {
     required_error: "Please select a theme.",
   }),
@@ -37,6 +39,7 @@ export function AppearanceForm({ data }: { data: any }) {
   const { themes, theme, setTheme, systemTheme } = useTheme()
   // This can come from your database or API.
   const defaultValues: Partial<AppearanceFormValues> = {
+    id: data.id,
     theme: theme === 'light' ? 'light' : 'dark',
     option: data.appearance === 'system' ? 'system' : 'custom',
   }
@@ -53,15 +56,25 @@ export function AppearanceForm({ data }: { data: any }) {
     }
   }, [form.getValues('option'), setTheme]);
 
-  function onSubmit(data: AppearanceFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  async function onSubmit(data: AppearanceFormValues) {
+    const response = await fetch(`/api/user/${data.id}/theme`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
     })
+
+    if (!response?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your name was not updated. Please try again.",
+        variant: "destructive",
+      })
+    }
+    {
+      toast({
+        title: "Success!",
+        description: "Your name was updated.",
+      })
+    }
   }
 
   return (
