@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/footer";
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-     title: 'Explore topics | FalseNotes',
+     title: 'Explore topics on FalseNotes',
      description: 'Explore topics on FalseNotes',
 }
 

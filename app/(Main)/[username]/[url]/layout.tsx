@@ -23,10 +23,11 @@ export async function generateMetadata(
           const post = data;
           return {
                metadataBase: new URL(`${process.env.DOMAIN}/${post.author.username}/${post.url}`),
-               title: `${post.title} | FalseNotes`,
+               title: `${post.title} - FalseNotes`,
                description: post.subtitle,
+               keywords: post.tags.map((tag: any) => tag.tag.name).join(', '),
                openGraph: {
-                    title: `${post.title} | FalseNotes`,
+                    title: `${post.title} - FalseNotes`,
                     description: post.subtitle,
                     url: `${process.env.DOMAIN}/${post.author.username}/${post.url}`,
                     images: [
@@ -34,29 +35,29 @@ export async function generateMetadata(
                               url: `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
                               width: 1200,
                               height: 630,
-                              alt: `${post.title} | FalseNotes`,
+                              alt: `${post.title} - FalseNotes`,
                          }
                     ],
                },
                twitter: {
                     card: 'summary_large_image',
-                    title: `${post.title} | FalseNotes`,
+                    title: `${post.title} - FalseNotes`,
                     description: post.subtitle,
                },
           }
      } catch (error) {
           console.error('Error:', error);
           return {
-               title: `Not Found | FalseNotes`,
+               title: `Not Found - FalseNotes`,
                description: `The page you were looking for doesn't exist.`,
                openGraph: {
-                    title: `Not Found | FalseNotes`,
+                    title: `Not Found - FalseNotes`,
                     description: `The page you were looking for doesn't exist.`,
 
                },
                twitter: {
                     card: 'summary_large_image',
-                    title: `Not Found | FalseNotes`,
+                    title: `Not Found - FalseNotes`,
                     description: `The page you were looking for doesn't exist.`,
                },
           }

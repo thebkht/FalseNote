@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/footer"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-     title: 'Explore | FalseNotes',
+     title: 'Explore - FalseNotes',
 }
 
 export default function ExploreLayout({

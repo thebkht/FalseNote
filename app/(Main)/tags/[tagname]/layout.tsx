@@ -30,10 +30,10 @@ export async function generateMetadata(
           title = title?.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
           return {
                metadataBase: new URL(`${process.env.DOMAIN}/tags/${params.tagname}`),
-               title: `The most insightful posts about ${title} | FalseNotes`,
+               title: `The most insightful posts about ${title} - FalseNotes`,
                description: `Read posts about ${tag?.name?.charAt(0)?.toUpperCase() ?? ''}${tag?.name?.slice(1)} on FalseNotes, the largest publishing community for young writers.`,
                openGraph: {
-                    title: `The most insightful posts about ${title} | FalseNotes`,
+                    title: `The most insightful posts about ${title} - FalseNotes`,
                     description: `Read posts about ${tag?.name?.charAt(0)?.toUpperCase() ?? ''}${tag?.name?.slice(1)} on FalseNotes, the largest publishing community for young writers.`,
                     url: `${process.env.DOMAIN}/tags/${params.tagname}`,
                },
@@ -46,16 +46,16 @@ export async function generateMetadata(
      } catch (error) {
           console.error('Error:', error);
           return {
-               title: `Not Found | FalseNotes`,
+               title: `Not Found - FalseNotes`,
                description: `The page you were looking for doesn't exist.`,
                openGraph: {
-                    title: `Not Found | FalseNotes`,
+                    title: `Not Found - FalseNotes`,
                     description: `The page you were looking for doesn't exist.`,
 
                },
                twitter: {
                     card: 'summary_large_image',
-                    title: `Not Found | FalseNotes`,
+                    title: `Not Found - FalseNotes`,
                     description: `The page you were looking for doesn't exist.`,
                },
           }
