@@ -12,6 +12,7 @@ import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import useWindowDimensions from "../window-dimensions";
+import { SiteFooter } from "../footer";
 
 export function dateFormat(dateString: string | number | Date) {
   const date = new Date(dateString);
@@ -66,7 +67,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
             </div>
           </div>
         </div>
-        <div className="bg-third dark:bg-popover px-6 xl:px-36 2xl:px-64 divide-y">
+        <div className="bg-third dark:bg-popover xl:px-36 2xl:px-64 divide-y">
           <div className="pt-10 pb-4">
             <div className="flex flex-row items-center">
               <h2 className="font-medium mb-4">Trending on FalseNotes</h2>
@@ -159,8 +160,10 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
               </div>
             </div>
           </div>
+          
         </div>
       </main>
+      <SiteFooter />
     </>
   )
 }

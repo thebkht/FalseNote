@@ -23,11 +23,6 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 function Navbar() {
   const { data: session, status } = useSession();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  useEffect(() => {
-    if (status !== "loading") {
-      setIsLoaded(true);
-    }
-  }, [status]);
 
   /* useEffect(() => {
     async function getNotifications(){
@@ -45,58 +40,38 @@ function Navbar() {
     getNotifications();
       }, [session]) */
 
-  if (isLoaded) {
-    return (
-      <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background">
-          <Link href="/feed" className="flex items-center">
-            <Icons.logo className="" />
-            <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
+  return (
+    <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background">
+      <Link href={ session ? "/feed" : "" } className="flex items-center">
+        <Icons.logo className="" />
+        <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
+      </Link>
+
+      <div className="flex items-center gap-1 md:gap-4">
+        <Button variant="ghost" size={"icon"} className="flex md:hidden" asChild>
+          <Link href="/explore">
+            <MagnifyingGlassIcon className="md:h-[1.2rem] md:w-[1.2rem]" />
           </Link>
-  
-          <div className="flex items-center gap-1 md:gap-4">
-          <Button variant="ghost" size={"icon"} className="flex md:hidden" asChild>
-               <Link href="/explore">
-               <MagnifyingGlassIcon className="md:h-[1.2rem] md:w-[1.2rem]" />
-                </Link>
-          </Button>
-            <SearchBar />
-          <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
-                  
-                  {/* <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Notifications notifications={notifications} />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        Notifications
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider> */}
-                
-                  <UserNav />
-  
-              </div>
-        </div>
-    );
-  } else {
-    return (
-      <nav className="menu">
-        <div className="menu-backdrop h-[60px] border-b w-full">
-        </div>
-        <div className="menu-container p-3 xl:px-36 2xl:px-64">
-        <Link href="/" className="flex items-center">
-            <Icons.logo />
-            <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
-          </Link>
-          <div className="flex items-center gap-4">
-                <ModeToggle />
-              <Button onClick={() => signIn("github")}>
-                  Join
+        </Button>
+        <SearchBar />
+        {
+          session ? (
+            <>
+              <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
+              <UserNav />
+            </>
+          ) : (
+            <div className="flex items-center gap-2 md:gap-4">
+              <Button asChild>
+                <Link href={"/signin"}>Join</Link>
               </Button>
-              </div>
-        </div>
-      </nav>)
-  }
+            </div>
+          )
+        }
+
+      </div>
+    </div>
+  );
 }
 
 export default Navbar;
