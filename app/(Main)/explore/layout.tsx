@@ -17,9 +17,9 @@ export default function ExploreLayout({
           <main className="flex flex-col items-center justify-between">
                {children}
           </main>
-          <SiteFooter className='px-6 xl:px-36 2xl:px-64' />
+          
         </div>
-      
+      <SiteFooter className="px-3.5" />
      </>
   )
 }
