@@ -79,7 +79,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                     <div className="h-full w-full">
                       <div className="flex items-start mb-6 w-full h-full">
                         <div className="w-10 flex-none relative -top-1.5 mr-4">
-                          <span className="font-medium text-3xl text-muted-foreground/50">{index < 9 ? `0${index + 1}` : index + 1}</span>
+                          <span className="font-medium text-3xl text-muted-foreground">{index < 9 ? `0${index + 1}` : index + 1}</span>
                         </div>
                         <div className="flex flex-col space-y-2">
                           <UserHoverCard user={post.author} >

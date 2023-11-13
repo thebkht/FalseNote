@@ -20,8 +20,9 @@ export default async function Home() {
     } 
   }
 
-  //latest post of the day
-  const latestPosts = await postgres.post.findMany({
+  // Use Promise.all to run both fetch operations in parallel
+const [latestPosts, tags, popularPosts] = await Promise.all([
+  postgres.post.findMany({
     where: {
       visibility: 'public',
     },
@@ -59,17 +60,19 @@ export default async function Home() {
       },
     },
     take: 10
-  });
-
-  const tags = await postgres.tag.findMany({
+  }),
+  postgres.tag.findMany({
     select: {
       name: true,
       id: true,
     },
     take: 10,
-  })
+  }),
+  getPosts({limit: 6})
+]);
 
-  const { posts: popularPosts } = await getPosts({limit: 6})
+//latest post of the day
+const { posts: popular } = popularPosts;
 
-  return <Landing latest={latestPosts} tags={tags} popular={popularPosts} />;
+  return <Landing latest={latestPosts} tags={tags} popular={popular} />;
 }
