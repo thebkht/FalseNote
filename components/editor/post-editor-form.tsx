@@ -30,7 +30,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { ArrowUp, Check, Eye, Pencil, RefreshCcw, Trash, Trash2 } from "lucide-react"
+import { ArrowUp, Check, Eye, Hash, Pencil, RefreshCcw, Trash, Trash2 } from "lucide-react"
 import { ScrollArea } from "../ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
@@ -49,6 +49,19 @@ import { Badge } from "../ui/badge"
 import TagBadge from "../tags/tag"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import PostDeleteDialog from "../blog/post-delete-dialog"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { useDebounce } from "use-debounce"
 
 const components = {
   code({ className, children, }: { className: string, children: any }) {
@@ -62,6 +75,17 @@ const components = {
       </SyntaxHighlighter>
     )
   }
+}
+
+async function fetchSuggestions(query: string) {
+  const tagResponse = await fetch(`/api/tags/search?search=${encodeURIComponent(query)}&limit=5`);
+
+  if (!tagResponse.ok) {
+    throw new Error(`Tag API request failed: ${tagResponse.status}`);
+  }
+  const { tags } = await tagResponse.json();
+
+  return tags;
 }
 
 export function PostEditorForm(props: { post: any, user: any }) {
@@ -122,10 +146,23 @@ export function PostEditorForm(props: { post: any, user: any }) {
   })
 
   const [open, setOpen] = useState<boolean>(false);
+  const [commandOpen, setCommandOpen] = useState<boolean>(false);
   const [newTag, setNewTag] = useState<string | undefined>(undefined);
+  const [query] = useDebounce(newTag, 750)
+  const [suggestions, setSuggestions] = useState<any>([])
+
+  useEffect(() => {
+    if (newTag !== undefined) {
+      fetchSuggestions(newTag).then((result) => setSuggestions(result));
+      setCommandOpen(true)
+    } else {
+      setSuggestions([]);
+    }
+  }, [query]);
 
   async function onSubmit(data: PostFormValues) {
     try {
+      await saveDraft();
       setIsPublishing(true);
 
       if (file) {
@@ -181,58 +218,58 @@ export function PostEditorForm(props: { post: any, user: any }) {
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const saveDraft = async () => {
-    if(!isPublishing) {
+    if (!isPublishing) {
       setIsSaving(true);
-    if (file) {
-      try {
-        const dataForm = new FormData()
-        dataForm.set('file', file)
-        // Construct the request body with postId and authorId
-        const requestBody = {
-          postId: form.getValues('url'),
-          userId: props.user?.id,
-        };
+      if (file) {
+        try {
+          const dataForm = new FormData()
+          dataForm.set('file', file)
+          // Construct the request body with postId and authorId
+          const requestBody = {
+            postId: form.getValues('url'),
+            userId: props.user?.id,
+          };
 
-        dataForm.set('body', JSON.stringify(requestBody));
+          dataForm.set('body', JSON.stringify(requestBody));
 
-        const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
-          method: 'POST',
-          body: dataForm,
-        });
-        // get the image url
-        const { data: coverUrl } = await res.json()
-        form.setValue('coverImage', coverUrl.url);
+          const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
+            method: 'POST',
+            body: dataForm,
+          });
+          // get the image url
+          const { data: coverUrl } = await res.json()
+          form.setValue('coverImage', coverUrl.url);
 
-      } catch (e: any) {
-        // Handle errors here
-        console.error(e);
-      }
-    }
-    if (form.getValues('title') && form.getValues('content')) {
-      form.setValue('visibility', 'draft');
-      try {
-        // Submit the form
-        const result = await fetch(`/api/post/${props.post?.id}/drafts`, {
-          method: "PATCH",
-          body: JSON.stringify({ ...form.getValues() }),
-        })
-        if (!result.ok) {
-          toast({
-            description: "Something went wrong. Please try again later.",
-            variant: "destructive",
-            action: <ToastAction altText="Try again">Try again</ToastAction>
-          })
-          setIsSaving(false);
+        } catch (e: any) {
+          // Handle errors here
+          console.error(e);
         }
-        setLastSavedTime(Date.now());
-        toast({
-          description: "Draft Saved!",
-        })
-      } catch (error) {
-        console.error(error)
       }
-    }
-    setIsSaving(false);
+      if (form.getValues('title') && form.getValues('content')) {
+        form.setValue('visibility', 'draft');
+        try {
+          // Submit the form
+          const result = await fetch(`/api/post/${props.post?.id}/drafts`, {
+            method: "PATCH",
+            body: JSON.stringify({ ...form.getValues() }),
+          })
+          if (!result.ok) {
+            toast({
+              description: "Something went wrong. Please try again later.",
+              variant: "destructive",
+              action: <ToastAction altText="Try again">Try again</ToastAction>
+            })
+            setIsSaving(false);
+          }
+          setLastSavedTime(Date.now());
+          toast({
+            description: "Draft Saved!",
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      }
+      setIsSaving(false);
     }
   }
 
@@ -494,7 +531,53 @@ export function PostEditorForm(props: { post: any, user: any }) {
                         </div>
                         {fields.length !== 5 && (
                           <FormControl>
-                            <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} />
+                            <>
+
+                              <Popover open={commandOpen} onOpenChange={setCommandOpen}>
+                                <PopoverTrigger className="w-full">
+                                  <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} />
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0" align="start">
+                                  <Command className="w-full">
+                                    {suggestions?.length === 0 && (
+                                      <CommandEmpty>No results found.</CommandEmpty>
+                                    )}
+                                    <CommandGroup>
+                                      {
+                                        newTag !== undefined && newTag?.trim() !== '' && suggestions.includes(newTag) && (
+                                          <CommandItem value={newTag} >
+                                        <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
+                                          if (newTag?.trim() !== '' && newTag !== undefined) {
+                                            append({ value: newTag });
+                                            setNewTag(undefined);
+                                            setCommandOpen(false);
+                                          }
+                                        }}>
+                                        <Hash className="mr-2 h-4 w-4" />
+                                        <span>{newTag}</span>
+                                        </Button>
+                                      </CommandItem>
+                                        )
+                                      }
+                                      {suggestions?.map((tag: any) => (
+                                        <CommandItem key={tag.id} value={tag.name} >
+                                          <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
+                                          if (tag.name?.trim() !== '' && tag.name !== undefined) {
+                                            append({ value: tag.name });
+                                            setNewTag(undefined);
+                                            setCommandOpen(false);
+                                          }
+                                        }}>
+                                          <Hash className="mr-2 h-4 w-4" />
+                                          <span>{tag.name.replace(/-/g, " ")}</span>
+                                        </Button>
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
+                            </>
                           </FormControl>
                         )}
                         <FormMessage />
@@ -558,23 +641,23 @@ export function PostEditorForm(props: { post: any, user: any }) {
             </div>
             <DialogFooter>
               <DialogClose asChild>
-              <Button onClick={() => saveDraft()} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
-                isSaving ? (
-                  <>
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
-                  </>
-                ) : (
-                  <>Save</>
-                )
+                <Button onClick={() => saveDraft()} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
+                  isSaving ? (
+                    <>
+                      <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
+                    </>
+                  ) : (
+                    <>Save</>
+                  )
 
-              }</Button>
+                }</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
         <Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving} onClick={() => setShowDeleteAlert(true)}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button>
-        <PostDeleteDialog post={props.post} user={props.user} open={showDeleteAlert} onOpenChange={setShowDeleteAlert}/>
+        <PostDeleteDialog post={props.post} user={props.user} open={showDeleteAlert} onOpenChange={setShowDeleteAlert} />
 
 
         <Button size={"icon"} variant={"secondary"} disabled={isSaving} onClick={

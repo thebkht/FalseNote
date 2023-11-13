@@ -25,9 +25,7 @@ export async function GET(request: NextRequest) {
           take: limit,
           skip: page * limit,
           orderBy: {
-            followingtag: {
-              _count: "desc",
-            },
+            name: 'asc',
           },
           include: {
             _count: { select: { posts: true, followingtag: true } },
