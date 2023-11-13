@@ -3,7 +3,7 @@ import EditorNavbar from '@/components/navbar/editor-nav'
 import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 
-export const metaData: Metadata = {
+export const metadata: Metadata = {
   title: 'New Post - FalseNotes',
   description: 'Create a new post on FalseNotes',
 }
