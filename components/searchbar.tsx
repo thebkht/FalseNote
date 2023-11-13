@@ -23,6 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import Link from "next/link";
+import { Icons } from "./icon";
 
 
 
@@ -106,7 +107,7 @@ export default function SearchBar() {
                       <AvatarImage src={user.image} alt={user.username} />
                       <AvatarFallback>{user.username}</AvatarFallback>
                     </Avatar>
-                    <span>{user.name || user.username}</span>
+                    <span>{user.name || user.username} {user.verified && <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />}</span>
                     </Link>
                   </CommandItem>
                 ))}
