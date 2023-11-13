@@ -69,12 +69,6 @@ export function AppearanceForm({ data }: { data: any }) {
         variant: "destructive",
       })
     }
-    {
-      toast({
-        title: "Success!",
-        description: "Your name was updated.",
-      })
-    }
   }
 
   return (
