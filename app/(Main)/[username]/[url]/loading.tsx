@@ -14,6 +14,15 @@ export default function Loading() {
         <Skeleton className="h-[20px] w-2/3" />
         <Skeleton className="h-[20px] w-full" />
         <Skeleton className="h-[20px] w-full mb-10" />
+        <Skeleton className="h-[20px] w-2/3" />
+        <Skeleton className="h-[20px] w-full" />
+        <Skeleton className="h-[20px] w-full mb-10" />
+        <Skeleton className="h-[20px] w-2/3" />
+        <Skeleton className="h-[20px] w-full" />
+        <Skeleton className="h-[20px] w-full mb-10" />
+        <Skeleton className="h-[20px] w-2/3" />
+        <Skeleton className="h-[20px] w-full" />
+        <Skeleton className="h-[20px] w-full mb-10" />
       </div>
     </div>
   )
