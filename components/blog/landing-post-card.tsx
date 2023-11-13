@@ -113,17 +113,13 @@ export default function LandingPostCard(
                   }
 
                 </div>
-                <div className="stats flex items-center justify-around gap-1">
-                  <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                     <LoginDialog>
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                       <Bookmark className={`h-5 w-5 `} strokeWidth={2} />
                     </Button>
                     </LoginDialog>
                   </div>
-                  <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                  </div>
-                </div>
               </div>
             </div>
           </div>
