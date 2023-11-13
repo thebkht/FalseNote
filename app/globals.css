@@ -570,7 +570,7 @@
     right: 0;
     transition: opacity .3s ease;
     width: 8%;
-    background: linear-gradient(90deg, rgba(var(--overlay), 0) 0%, rgba(var(--overlay), 0.75) 25%, rgba(var(--overlay), 0.9) 50%, rgb(var(--overlay)) 75%);
+    background: linear-gradient(90deg, rgba(var(--overlay), 0) 0%, rgba(var(--overlay), 0.75) 25%, rgba(var(--overlay), 0.9) 50%, rgba(var(--overlay), ) 75%);
     z-index: 1;
 }
 

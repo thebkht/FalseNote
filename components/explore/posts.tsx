@@ -39,7 +39,7 @@ export default function Posts({ initialPosts, search, session }: { initialPosts:
                     <CardHeader className="pb-0">
                          <CardTitle className="feed__content_featured_card_title text-base">Posts</CardTitle>
                     </CardHeader>
-                    <CardContent className="px-2">
+                    <CardContent className="px-6">
                          {posts?.map((post: any) => (
                               <>
                                    <FeedPostCard

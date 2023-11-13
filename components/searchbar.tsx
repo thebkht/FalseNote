@@ -95,10 +95,7 @@ export default function SearchBar() {
           )}
           {
             suggestions.users?.length > 0 && (
-              <CommandGroup>
-            <div className="text-muted-foreground font-medium rounded-sm px-2 py-1.5 text-sm">
-              Users
-            </div>
+              <CommandGroup heading="Users">
             {suggestions.users?.map((user: any) => (
                   <CommandItem
                     key={user.id}
@@ -118,10 +115,7 @@ export default function SearchBar() {
           }
           {
             suggestions.tags?.length > 0 && (
-              <CommandGroup>
-            <div className="text-muted-foreground font-medium rounded-sm px-2 py-1.5 text-sm">
-              Tags
-            </div>
+              <CommandGroup heading="Tags">
             {suggestions.tags?.map((tag: any) => (
                   <CommandItem
                     key={tag.id}

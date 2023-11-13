@@ -13,11 +13,18 @@ export default function MainLayout({
   return (
     <>
       {
-        status != 'authenticated' ? <LandingNavbar /> : <Navbar />
+        status != 'authenticated' ? (
+          <>
+            <LandingNavbar />
+            {children}
+          </>
+        ) : (
+          <>
+            <Navbar />
+            {children}
+          </>
+        )
       }
-      <div className='mt-16 md:mt-0'>
-      {children}
-      </div>
     </>
   )
 }
