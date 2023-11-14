@@ -16,9 +16,10 @@ import { LinkedInLogoIcon, FaceIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "next-share";
 import { cn } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
+import PostCard from "../tags/post-card-v2";
 
 
-export default function PublishDialog({ post, user, ...props }: { post: Post, user: User } & React.ComponentPropsWithoutRef<typeof Dialog>) {
+export default function PublishDialog({ post, user, session, ...props }: { post: Post, user: User, session?: any } & React.ComponentPropsWithoutRef<typeof Dialog>) {
      const copylink = (link: string) => {
           navigator.clipboard.writeText(link)
           toast({
@@ -30,51 +31,62 @@ export default function PublishDialog({ post, user, ...props }: { post: Post, us
      return (
           <>
                <Dialog {...props} >
-                    <DialogContent>
+                    <DialogContent className="md:w-1/2">
                          <DialogHeader className="!text-center">
                               <DialogTitle>Your post is published!</DialogTitle>
                               <DialogDescription>
                                    Your post is now published and live on your profile. You can share it with the world now!
                               </DialogDescription>
                          </DialogHeader>
-                         <div className="flex flex-col items-center gap-2 w-56 mx-auto my-5">
-                              <TwitterShareButton
-                                   url={url}
-                                   title={text}
-                                   style={{ width: '100%' }}
-                              >
-                                   <div className={cn('flex justify-between w-full gap-2 !px-4', buttonVariants({ variant: 'outline', size: 'lg' }))}>
-                                        <Icons.twitter className="h-5 w-5 fill-current stroke-none" />
-                                        <span className="w-full">Share on Twitter</span>
-                                        <div className="h-5 w-5 fill-current stroke-none" />
+                         <div className="flex flex-col gap-2">
+                              <PostCard post={post} session={session} className="w-full" />
+                              <div className="flex flex-row flex-wrap items-center gap-2 w-full mx-auto my-5">
+                                   <div className="w-56">
+                                        <TwitterShareButton
+                                             url={url}
+                                             title={text}
+                                             style={{ width: '100%' }}
+                                        >
+                                             <div className={cn('flex justify-between w-full gap-2 !px-4', buttonVariants({ variant: 'outline', size: 'lg' }))}>
+                                                  <Icons.twitter className="h-5 w-5 fill-current stroke-none" />
+                                                  <span className="w-full">Share on Twitter</span>
+                                                  <div className="h-5 w-5 fill-current stroke-none" />
+                                             </div>
+                                        </TwitterShareButton>
                                    </div>
-                              </TwitterShareButton>
-                              <FacebookShareButton
-                                   url={url}
-                                   quote={text}
-                                   style={{ width: '100%' }}
-                              >
-                                   <div className={cn('flex justify-between w-full gap-2 !px-4', buttonVariants({ variant: 'outline', size: 'lg' }))}>
-                                        <Facebook className="h-5 w-5 fill-current stroke-none" />
-                                        <span className="w-full">Share on Facebook</span>
-                                        <div className="h-5 w-5 fill-current stroke-none" />
+                                   <div className="w-56">
+                                        <FacebookShareButton
+                                             url={url}
+                                             quote={text}
+                                             style={{ width: '100%' }}
+                                        >
+                                             <div className={cn('flex justify-between w-full gap-2 !px-4', buttonVariants({ variant: 'outline', size: 'lg' }))}>
+                                                  <Facebook className="h-5 w-5 fill-current stroke-none" />
+                                                  <span className="w-full">Share on Facebook</span>
+                                                  <div className="h-5 w-5 fill-current stroke-none" />
+                                             </div>
+                                        </FacebookShareButton>
                                    </div>
-                              </FacebookShareButton>
-                              <LinkedinShareButton
-                                   url={url}
-                                   style={{ width: '100%' }}
-                              >
-                                   <div className={cn('flex justify-between w-full gap-2 !px-4', buttonVariants({ variant: 'outline', size: 'lg' }))}>
-                                        <Linkedin className="h-5 w-5 fill-current stroke-none" />
-                                        <span className="w-full">Share on LinkedIn</span>
-                                        <div className="h-5 w-5 fill-current stroke-none" />
+                                   <div className="w-56">
+                                        <LinkedinShareButton
+                                             url={url}
+                                             style={{ width: '100%' }}
+                                        >
+                                             <div className={cn('flex justify-between w-full gap-2 !px-4', buttonVariants({ variant: 'outline', size: 'lg' }))}>
+                                                  <Linkedin className="h-5 w-5 fill-current stroke-none" />
+                                                  <span className="w-full">Share on LinkedIn</span>
+                                                  <div className="h-5 w-5 fill-current stroke-none" />
+                                             </div>
+                                        </LinkedinShareButton>
                                    </div>
-                              </LinkedinShareButton>
-                              <Button onClick={() => copylink(url)} variant={'outline'} size={'lg'} className="w-full justify-between gap-2 !px-4" >
-                                   <Link2 className="h-5 w-5" />
-                                   <span className="w-full">Copy link</span>
-                                   <div className="h-5 w-5 fill-current stroke-none" />
-                              </Button>
+                                   <div className="w-56">
+                                        <Button onClick={() => copylink(url)} variant={'outline'} size={'lg'} className="w-full justify-between gap-2 !px-4" >
+                                             <Link2 className="h-5 w-5" />
+                                             <span className="w-full">Copy link</span>
+                                             <div className="h-5 w-5 fill-current stroke-none" />
+                                        </Button>
+                                   </div>
+                              </div>
                          </div>
                     </DialogContent>
                </Dialog>

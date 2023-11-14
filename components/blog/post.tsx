@@ -89,7 +89,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
      }
      return (
           <>
-               <PublishDialog post={post} user={post.author} open={openPublishDialog} onOpenChange={setOpenPublishDialog} />
+               <PublishDialog post={post} user={post.author} open={openPublishDialog} onOpenChange={setOpenPublishDialog} session={session} />
                <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
                     <div className="article__container space-y-8">
                          <div className="article__header lg:text-xl">
