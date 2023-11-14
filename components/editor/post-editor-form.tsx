@@ -150,7 +150,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
   const [suggestions, setSuggestions] = useState<any>([])
 
   useEffect(() => {
-    if (newTag !== undefined) {
+    if (newTag !== undefined && newTag !== '') {
       fetchSuggestions(newTag).then((result) => setSuggestions(result));
       setCommandOpen(true)
     } else {
@@ -200,11 +200,11 @@ export function PostEditorForm(props: { post: any, user: any }) {
         router.push(`/${props.user?.username}/${form.getValues('url')}?published=true`);
         toast({ description: "Post Published!" });
       }
-       else {
+      else {
         router.push(`/${props.user?.username}/`);
         toast({ description: "Post Updated!" });
       }
-      
+
     } catch (error) {
       console.error(error);
       setIsPublishing(false);
@@ -348,11 +348,11 @@ export function PostEditorForm(props: { post: any, user: any }) {
     if (value.length < 100) {
       if (value.split(' ').length < 2) {
         const url = Math.random().toString(36).substring(2, 15)
-        if(await validateUrl(url)) form.setValue('url', url);
+        if (await validateUrl(url)) form.setValue('url', url);
       } else {
         // Replace spaces with dashes and make lowercase of 2 words only and remove special characters
         const url = value.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, '-').toLowerCase().split(' ').slice(0, 2).join('-')
-        if(await validateUrl(url)) form.setValue('url', url);
+        if (await validateUrl(url)) form.setValue('url', url);
       }
     }
   }
@@ -508,17 +508,17 @@ export function PostEditorForm(props: { post: any, user: any }) {
                               )
                             }
                             <Input type="file" accept="image/*" onChange={(e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast({description: "File size should not exceed 2MB.", variant: "destructive"});
-      } else if (!['image/png', 'image/jpeg'].includes(file.type)) {
-        toast({description:"File type must be PNG or JPEG.", variant: "destructive"});
-      } else {
-        setFile(file);
-      }
-    }
-  }}  />
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                if (file.size > 2 * 1024 * 1024) {
+                                  toast({ description: "File size should not exceed 2MB.", variant: "destructive" });
+                                } else if (!['image/png', 'image/jpeg'].includes(file.type)) {
+                                  toast({ description: "File type must be PNG or JPEG.", variant: "destructive" });
+                                } else {
+                                  setFile(file);
+                                }
+                              }
+                            }} />
 
                           </>
                         </FormControl>
@@ -568,14 +568,10 @@ export function PostEditorForm(props: { post: any, user: any }) {
                                   <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} />
                                 </PopoverTrigger>
                                 <PopoverContent className="w-full p-0" align="start">
-                                  <Command className="w-full">
-                                    {suggestions?.length === 0 && (
-                                      <CommandEmpty>No results found.</CommandEmpty>
-                                    )}
-                                    {
-                                      suggestions.length > 0 && (
+                                  {
+                                    suggestions.length > 0 && (
+                                      <Command className="w-full">
                                         <CommandGroup>
-
                                           {suggestions?.map((tag: any) => (
                                             <CommandItem key={tag.id} value={tag.name} >
                                               <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
@@ -589,9 +585,9 @@ export function PostEditorForm(props: { post: any, user: any }) {
                                             </CommandItem>
                                           ))}
                                         </CommandGroup>
-                                      )
-                                    }
-                                  </Command>
+                                      </Command>
+                                    )
+                                  }
                                 </PopoverContent>
                               </Popover>
                             </>
@@ -620,23 +616,23 @@ export function PostEditorForm(props: { post: any, user: any }) {
               </ScrollArea>
               <DialogFooter className="p-6 border-t">
                 <DialogClose asChild>
-                <Button
-                  type="submit"
-                  className="ml-auto w-full"
-                  size={"lg"}
-                  form="PostForm"
-                  disabled={isPublishing}
-                >
-                  {
-                    isPublishing ? (
-                      <>
-                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Publishing
-                      </>
-                    ) : (
-                      <>Publish</>
-                    )
-                  }
-                </Button>
+                  <Button
+                    type="submit"
+                    className="ml-auto w-full"
+                    size={"lg"}
+                    form="PostForm"
+                    disabled={isPublishing}
+                  >
+                    {
+                      isPublishing ? (
+                        <>
+                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Publishing
+                        </>
+                      ) : (
+                        <>Publish</>
+                      )
+                    }
+                  </Button>
                 </DialogClose>
               </DialogFooter>
 
