@@ -36,19 +36,19 @@ export default function LandingPostCard(
       <CardContent className="py-0 px-0 md:px-4">
         <div className="flex items-start mb-8 md:mb-12 justify-between gap-3 md:gap-5">
           <div className="flex-initial w-full">
-          <div className="flex items-center space-x-1 mb-2">
-            <UserHoverCard user={props.post.author} >
-              <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
-                <Avatar className="h-6 w-6 mr-0.5">
-                  <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
-                  <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username} {props.post.author?.verified && (
-                  <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
-                )}</p>
-              </Link>
-            </UserHoverCard>
-          </div>
+            <div className="flex items-center space-x-1 mb-2">
+              <UserHoverCard user={props.post.author} >
+                <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
+                  <Avatar className="h-6 w-6 mr-0.5">
+                    <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
+                    <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username} {props.post.author?.verified && (
+                    <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
+                  )}</p>
+                </Link>
+              </UserHoverCard>
+            </div>
             <Link href={`/${props.post.author?.username}/${props.post.url}`}>
               <div>
                 <div className="pb-2">
@@ -84,19 +84,19 @@ export default function LandingPostCard(
 
                 </div>
                 <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                    <LoginDialog>
+                  <LoginDialog>
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                       <Bookmark className={`h-5 w-5 `} strokeWidth={2} />
                       <span className="sr-only">Save</span>
                     </Button>
-                    </LoginDialog>
-                  </div>
+                  </LoginDialog>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="flex-none">
-            <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+            <Link href={`/${props.post.author?.username}/${props.post.url}`} aria-label={`Link to ${props.post.title} by ${props.post.author?.username}`}>
               <div className="h-[100px] md:h-36 bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square" >
                 {props.post.cover ? (
                   <Image
