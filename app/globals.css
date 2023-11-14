@@ -359,15 +359,19 @@
 }
 
 .markdown-body ul {
-  @apply list-disc list-inside text-foreground;
+  @apply list-disc list-outside text-foreground text-base;
 }
 
 .markdown-body ol {
-  @apply list-decimal ml-6 my-4 text-foreground;
+  @apply list-decimal ml-1.5 my-1 text-foreground text-base;
 }
 
 .markdown-body li {
-  @apply mb-2;
+  @apply mb-1;
+}
+
+.markdown-body ul li::marker {
+  @apply text-muted-foreground !m-0 !pr-2;
 }
 
 .markdown-body li p {
