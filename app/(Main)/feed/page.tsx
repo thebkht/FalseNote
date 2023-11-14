@@ -36,7 +36,7 @@ export default async function Feed({
   }
 
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
-  const feed = await fetchFeed({ page: 0, tab });
+  const feed = await fetchFeed({ page: 0, tab, limit: 10 });
 
   const topData = await fetchUsers({ id: session?.id })
   const topUsers = topData?.users;

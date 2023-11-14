@@ -87,7 +87,7 @@ const baseQuery = {
   },
 };
 
-const getForYou = async ({ page = 0 }: { page?: number }) => {
+const getForYou = async ({ page = 0, limit = 5 }: { page?: number, limit?: number | undefined}) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
@@ -130,11 +130,14 @@ const posts = await postgres.post.findMany({
   where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
   select: { id: true },
 });
+
+// remove duplicates
+const uniquePosts = posts.filter((post, index) => posts.findIndex((p) => p.id === post.id) === index);
 return fetchFeed({
-  where: { id: { in: posts.map((post) => post.id) }, visibility: "public" },
+  where: { id: { in: uniquePosts.map((post) => post.id) }, visibility: "public" },
   ...baseQuery,
-  take: 5,
-  skip: page * 5,
+  take: limit,
+  skip: page * limit,
 });
 };
 
@@ -147,7 +150,7 @@ const fetchFeed = async (query: any) => {
   }
 };
 
-export const getFeed = async ({ page = 0, tab }: { page?: number | undefined; tab?: string | undefined }) => {
+export const getFeed = async ({ page = 0, tab, limit = 5 }: { page?: number | undefined; tab?: string | undefined, limit?: number | undefined }) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
@@ -166,8 +169,8 @@ export const getFeed = async ({ page = 0, tab }: { page?: number | undefined; ta
       const followingIds = following.map((user) => user.followingId);
       return fetchFeed({
         ...baseQuery,
-        take: 5,
-        skip: page * 5,
+        take: limit,
+        skip: page * limit,
         where: { authorId: { in: followingIds }, visibility: "public" },
         select: {
           ...baseQuery.select,
@@ -187,8 +190,8 @@ export const getFeed = async ({ page = 0, tab }: { page?: number | undefined; ta
     const postIds = postTags.map((postTag) => postTag.postId);
     return fetchFeed({
       ...baseQuery,
-      take: 5,
-      skip: page * 5,
+      take: limit,
+      skip: page * limit,
       where: { id: { in: postIds }, visibility: "public" },
     });
   } 
