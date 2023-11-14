@@ -92,7 +92,6 @@ export default async function Page({ params, searchParams }: {
       <div className="gap-5 lg:gap-6 flex flex-col md:flex-row items-start" >
         <div className="w-full md:sticky top-16 md:w-1/3 lg:w-1/4">
           <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} />
-          <SiteFooter className="!px-0 text-[10px] sticky bottom-0 lg:text-xs hidden md:flex" />
         </div>
         <div className="lg:px-8 w-full">
           {sessionUserName?.id === user?.id ? (

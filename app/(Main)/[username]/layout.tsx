@@ -1,3 +1,4 @@
+import { SiteFooter } from '@/components/footer';
 import { formatNumberWithSuffix } from '@/components/format-numbers';
 import type { Metadata } from 'next'
 
@@ -63,6 +64,6 @@ export default function UserLayout(
 
   return (<>
     {children}
-    
+    <SiteFooter />
   </>)
 }
