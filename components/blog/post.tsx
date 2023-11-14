@@ -57,6 +57,10 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
           setSession(sessionUser);
      }, [sessionUser])
 
+     useEffect(() => {
+          setIsFollowing(author.Followers?.some((follower: any) => follower.followerId === sessionUser?.id));
+     }, [author])
+
      const router = useRouter();
 
      async function handleFollow(followeeId: string) {

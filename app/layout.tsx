@@ -4,7 +4,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import TopLoader from '@/components/providers/top-loader'
 import AuthProvider from '@/components/providers/auth-provider'
-import { Analytics } from '@vercel/analytics/react';
 import { TailwindIndicator } from '@/components/indicator'
 import { Toaster } from '@/components/ui/toaster'
 import { getSessionUser } from '@/components/get-session-user'
@@ -64,7 +63,6 @@ export default async function Rootayout({
           {children}
           <Toaster />
           <TailwindIndicator />
-          <Analytics />
           </AuthProvider>
         </ThemeProvider>
       </body>
