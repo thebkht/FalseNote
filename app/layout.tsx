@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.DOMAIN!),
   title: '🚀 FalseNotes - Start Your Journey',
   description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
+  keywords: ['FalseNotes', 'False Notes', 'FalseNotes Blog', 'FalseNotes Blogging', 'FalseNotes Blogging Platform', 'FalseNotes Platform', 'FalseNotes Blogging Platform', 'FalseNotes Blogging Platform'],
+  robots: 'follow, index',
   openGraph: {
     title: 'FalseNotes',
     description: '🚀 FalseNotes is a developer-focused blogging platform where individual developers can ignite discussions, share expertise, and craft their coding journeys.',
@@ -56,6 +58,9 @@ export default async function Rootayout({
   const { settings } = await getSettings({ id: session?.id})
   return (
     <html lang={settings?.language || 'en'}>
+      <head>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className={`${GeistSans.className}`}>
         <ThemeProvider attribute="class" defaultTheme={settings?.appearance || 'system'} enableSystem>
           <AuthProvider>
