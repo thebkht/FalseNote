@@ -84,38 +84,40 @@ async function fetchSuggestions(query: string) {
   return tags;
 }
 
+const postFormSchema = z.object({
+  title: z
+    .string()
+    .min(2, {
+      message: "Title must be at least 2 characters long.",
+    })
+    .max(100, {
+      message: "Username must not be longer than 100 characters.",
+    }),
+  visibility: z.enum(["public", "private", "draft"], {
+    required_error: "Please select a visibility option",
+  }),
+  content: z.string(),
+  coverImage: z.string().optional(),
+  tags: z
+    .array(
+      z.object({
+        value: z.string(),
+      })
+    ).max(5, {
+      message: "You can select up to 5 tags.",
+    })
+    .optional(),
+  url: z.string(),
+  subtitle: z.string().max(280).optional(),
+})
+
+type PostFormValues = z.infer<typeof postFormSchema>
+
 export function PostEditorForm(props: { post: any, user: any }) {
+  const [previousStatus, setPreviousStatus] = useState<string>(props.post?.visibility);
   const router = useRouter();
   const [markdownContent, setMarkdownContent] = useState<string>(props.post?.content);
 
-  const postFormSchema = z.object({
-    title: z
-      .string()
-      .min(2, {
-        message: "Title must be at least 2 characters long.",
-      })
-      .max(100, {
-        message: "Username must not be longer than 100 characters.",
-      }),
-    visibility: z.enum(["public", "private", "draft"], {
-      required_error: "Please select a visibility option",
-    }),
-    content: z.string(),
-    coverImage: z.string().optional(),
-    tags: z
-      .array(
-        z.object({
-          value: z.string(),
-        })
-      ).max(5, {
-        message: "You can select up to 5 tags.",
-      })
-      .optional(),
-    url: z.string(),
-    subtitle: z.string().max(280).optional(),
-  })
-
-  type PostFormValues = z.infer<typeof postFormSchema>
   // This can come from your database or API.
   const defaultValues: Partial<PostFormValues> = {
     title: props.post?.title,
@@ -502,7 +504,18 @@ export function PostEditorForm(props: { post: any, user: any }) {
                                 </AspectRatio>
                               )
                             }
-                            <Input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0])} />
+                            <Input type="file" accept="image/*" onChange={(e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        toast({description: "File size should not exceed 2MB.", variant: "destructive"});
+      } else if (!['image/png', 'image/jpeg'].includes(file.type)) {
+        toast({description:"File type must be PNG or JPEG.", variant: "destructive"});
+      } else {
+        setFile(file);
+      }
+    }
+  }}  />
 
                           </>
                         </FormControl>
@@ -563,11 +576,9 @@ export function PostEditorForm(props: { post: any, user: any }) {
                                           {suggestions?.map((tag: any) => (
                                             <CommandItem key={tag.id} value={tag.name} >
                                               <Button variant="ghost" className="h-fit w-fit !p-0" onClick={() => {
-                                                if (tag.name?.trim() !== '' && tag.name !== undefined) {
-                                                  append({ value: tag.name });
-                                                  setNewTag(undefined);
-                                                  setCommandOpen(false);
-                                                }
+                                                append({ value: tag.name });
+                                                setNewTag('');
+                                                setCommandOpen(false);
                                               }}>
                                                 <Hash className="mr-2 h-4 w-4" />
                                                 <span>{tag.name.replace(/-/g, " ")}</span>
@@ -605,6 +616,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 </div>
               </ScrollArea>
               <DialogFooter className="p-6 border-t">
+                <DialogClose asChild>
                 <Button
                   type="submit"
                   className="ml-auto w-full"
@@ -622,6 +634,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                     )
                   }
                 </Button>
+                </DialogClose>
               </DialogFooter>
 
             </DialogContent>
