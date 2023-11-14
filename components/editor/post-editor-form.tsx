@@ -160,7 +160,9 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
   async function onSubmit(data: PostFormValues) {
     try {
-      await saveDraft();
+      if (lastSavedTime > Date.now() - 15000) {
+        await saveDraft();
+      }
       setIsPublishing(true);
 
       if (file) {
