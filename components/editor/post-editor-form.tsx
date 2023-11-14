@@ -194,12 +194,13 @@ export function PostEditorForm(props: { post: any, user: any }) {
       }
 
       await fetch(`/api/revalidate?path=/${props.user?.username}`);
-      if (data.visibility === 'public') {
-        await fetch(`/api/revalidate?path=/${props.user?.username}/${form.getValues('url')}`);
+      if (data.visibility === 'public' && previousStatus !== 'public') {
         router.push(`/${props.user?.username}/${form.getValues('url')}?published=true`);
         toast({ description: "Post Published!" });
-      } else {
+      }
+       else {
         router.push(`/${props.user?.username}/`);
+        toast({ description: "Post Updated!" });
       }
       
     } catch (error) {

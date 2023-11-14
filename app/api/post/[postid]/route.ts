@@ -3,23 +3,22 @@ import postgres from "@/lib/postgres";
 import readingTime from "reading-time";
 import { z } from "zod";
 
-function sanitizeTagName(tag: string) {
+function sanitizeTagName(tag: string): string {
   //if tag is "hello world" it will be "hello-world" if 'hello world ' it will be 'hello-world' not 'hello-world-'
-  return tag.replace(/\s+/g, "-").toLowerCase();
+  return tag.replace(/\s+/g, "-").toLowerCase().toString();
 }
 
 async function insertTag(tags: any, postid: any) {
   if (tags) {
-    for (const tag of tags) {
-      const sanitizedTagName = sanitizeTagName(tag.value);
+    const uniqueTags = new Set<string>(tags.map((tag: any) => sanitizeTagName(tag.value)));
+    for (const tag of uniqueTags) {
       const tagExists = await postgres.tag.findFirst({
-        where: { name: sanitizedTagName },
+        where: { name: tag },
         select: { id: true },
       });
-      console.log(tagExists);
       if (!tagExists) {
         const tagId = await postgres.tag.create({
-          data: { name: sanitizedTagName },
+          data: { name: tag },
           select: { id: true }
         });
         await connectTagToPost(tagId.id, postid);
