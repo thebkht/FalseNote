@@ -1,43 +1,8 @@
 import { getSessionUser } from "@/components/get-session-user";
+import { insertTag } from "@/lib/insert-tag";
 import postgres from "@/lib/postgres";
 import readingTime from "reading-time";
 import { z } from "zod";
-
-function sanitizeTagName(tag: string): string {
-  //if tag is "hello world" it will be "hello-world" if 'hello world ' it will be 'hello-world' not 'hello-world-'
-  return tag.replace(/\s+/g, "-").toLowerCase().toString();
-}
-
-async function insertTag(tags: any, postid: any) {
-  if (tags) {
-    const uniqueTags = new Set<string>(tags.map((tag: any) => sanitizeTagName(tag.value)));
-    for (const tag of uniqueTags) {
-      const tagExists = await postgres.tag.findFirst({
-        where: { name: tag },
-        select: { id: true },
-      });
-      if (!tagExists) {
-        const tagId = await postgres.tag.create({
-          data: { name: tag },
-          select: { id: true }
-        });
-        await connectTagToPost(tagId.id, postid);
-      } else {
-        console.log("tag exists and connected to post")
-        await connectTagToPost(tagExists.id, postid);
-      }
-    } 
-  }
-}
-
-async function connectTagToPost(tagId: any, postid: any) {
-  await postgres.postTag.create({
-    data: {
-      tagId: tagId,
-      postId: Number(postid),
-    },
-  });
-}
 
 export async function PATCH(
   req: Request,
