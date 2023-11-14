@@ -61,7 +61,9 @@ export default function UserLayout(
   { children, params }: Props
 ) {
 
-  return (<>
-    {children}
-  </>)
+  return (
+    <>
+      {children}
+    </>
+  )
 }

@@ -53,7 +53,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                         <div className="flex flex-col space-y-2">
                           <UserHoverCard user={post.author} >
                             <Link href={`/${post.author?.username}`} className="flex items-center space-x-0.5">
-                              <Avatar className="h-5 w-5">
+                              <Avatar className="h-5 w-5 border">
                                 <AvatarImage src={post.author?.image} alt={post.author?.username} />
                                 <AvatarFallback>{post.author?.name?.charAt(0) || post.author?.username?.charAt(0)}</AvatarFallback>
                               </Avatar>

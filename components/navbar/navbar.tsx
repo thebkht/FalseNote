@@ -41,7 +41,7 @@ function Navbar() {
       }, [session]) */
 
   return (
-    <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background">
+    <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background border-b">
       <Link href={ session ? "/feed" : "/" } className="flex items-center">
         <Icons.logo className="" />
         <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>

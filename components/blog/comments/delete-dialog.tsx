@@ -39,7 +39,7 @@ export default function CommentDeleteDialog({ comment, user, ...props }: React.C
               <AlertDialogAction onClick={
                 async () => {
                     await handleDeleteComment(comment?.id, pathname)
-                    router.refresh()
+                    router.push('/feed')
                 }
               } className="bg-red-600 focus:ring-red-600">Delete</AlertDialogAction>
             </AlertDialogFooter>

@@ -84,7 +84,7 @@ export default function CommentForm(props: { post: any, session: any }) {
                       status === "authenticated" ? (
                         <UserHoverCard user={props.session} >
                           <div className="flex items-center gap-2">
-                            <Avatar className="h-10 w-10">
+                            <Avatar className="h-10 w-10 border">
                               <AvatarImage src={props.session?.image} alt={props.session?.name} />
                               <AvatarFallback>{props.session?.name ? props.session?.name?.charAt(0) : props.session?.username?.charAt(0)}</AvatarFallback>
                             </Avatar>

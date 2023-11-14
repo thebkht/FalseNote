@@ -42,7 +42,7 @@ export default function UserExplore({ className, ...props }: { className?: strin
                     !isLoading ? (
                          <Card className={`flex flex-col space-y-4 ${className}`}>
                     <CardHeader >
-                         <Avatar className="h-24 w-24 mx-auto">
+                         <Avatar className="h-24 w-24 mx-auto border">
                               <AvatarImage src={user?.image} alt={user.name} />
                               <AvatarFallback>{user.name ? user.name?.charAt(0) : user.username?.charAt(0)}</AvatarFallback>
                          </Avatar>

@@ -45,7 +45,7 @@ export default function FeedPostCard(
           <div className="flex items-center space-x-1">
             <UserHoverCard user={props.post.author} >
               <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
-                <Avatar className="h-6 w-6 mr-0.5">
+                <Avatar className="h-6 w-6 mr-0.5 border">
                   <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
                   <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
                 </Avatar>

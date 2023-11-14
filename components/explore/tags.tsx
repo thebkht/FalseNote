@@ -45,9 +45,10 @@ export default function Tags({ tags: initialTags, search, session }: { tags: any
                     <CardHeader className="">
                          <CardTitle className="feed__content_featured_card_title text-base">Tags</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                    {tags?.map((tag: any, index: number) => (
-                                        <div className="flex items-center justify-between" key={tag.id}>
+                    <CardContent>
+                    <div className="flex flex-col divide-y">
+                                   {tags?.map((tag: any, index: number) => (
+                                        <div className="flex items-center justify-between py-4" key={tag.id}>
                                              <Link href={`/tags/${tag.name}`} className="w-full">
                                                   <div className="flex items-center">
                                                        <div className="space-y-1">
@@ -58,6 +59,7 @@ export default function Tags({ tags: initialTags, search, session }: { tags: any
                                              </Link>
                                         </div>
                                    ))}
+                              </div>
                     </CardContent>
                     <CardFooter>
                          <div className="w-full">

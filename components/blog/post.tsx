@@ -106,7 +106,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                               <div className="article__meta">
                                    <UserHoverCard user={author} >
                                         <Link href={`/${author?.username}`}>
-                                             <Avatar className="article__author-avatar">
+                                             <Avatar className="article__author-avatar border">
                                                   <AvatarImage src={author?.image} alt={author?.username} />
                                                   <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
                                              </Avatar>

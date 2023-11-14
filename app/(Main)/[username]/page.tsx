@@ -57,12 +57,22 @@ export default async function Page({ params, searchParams }: {
       },
       Followers: {
         include: {
-          follower: true
+          follower: {
+            include: {
+              Followers: true,
+              Followings: true,
+            }
+          }
         }
       },
       Followings: {
         include: {
-          following: true
+          following: {
+            include: {
+              Followers: true,
+              Followings: true,
+            }
+          }
         }
       }
     },

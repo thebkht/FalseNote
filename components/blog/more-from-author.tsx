@@ -62,7 +62,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                     <div className="author__details flex flex-col gap-y-4">
                          <div className="mx-2 md:mx-6">
                               <Link href={`/${author?.username}`} className="flex items-center">
-                                   <Avatar className="h-20 w-20 mb-4">
+                                   <Avatar className="h-20 w-20 mb-4 border">
                                         <AvatarImage src={author?.image} alt={author?.username} />
                                         <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
                                    </Avatar>

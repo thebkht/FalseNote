@@ -48,7 +48,7 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                                              <div className="w-full flex">
                                                   <UserHoverCard user={comment.author} className="h-6 w-6 mr-1 md:mr-1.5" >
                                                        <Link href={`/${comment.author.username}`} className="inline-block">
-                                                            <Avatar className="h-6 w-6">
+                                                            <Avatar className="h-6 w-6 border">
                                                                  <AvatarImage src={comment.author.image} alt={comment.author.name} />
                                                                  <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
                                                             </Avatar>

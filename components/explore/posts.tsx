@@ -46,7 +46,7 @@ export default function Posts({ initialPosts, search, session }: { initialPosts:
                                         key={post.id}
                                         post={post}
                                         session={session}
-                                        className='bg-transparent border-none shadow-none'
+                                        className='bg-transparent border-none shadow-none md:-px-4'
                                    />
                                    <Separator />
                               </>

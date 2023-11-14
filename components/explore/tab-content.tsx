@@ -24,7 +24,7 @@ export default function ExploreComponent({ users, posts, tags, search, className
                                              <li key={item.id} className="text-sm space-y-2.5">
 
                                                   <Link href={`/${item.author.username}`} className="text-xs flex items-center mb-2 font-medium">
-                                                       <Avatar className="h-5 w-5 mr-1 md:mr-1.5 ">
+                                                       <Avatar className="h-5 w-5 mr-1 md:mr-1.5 border">
                                                             <AvatarImage src={item.author?.image} alt={item.author?.username} />
                                                             <AvatarFallback>{item.author?.name?.charAt(0) || item.author?.username?.charAt(0)}</AvatarFallback>
                                                        </Avatar>
@@ -57,7 +57,7 @@ export default function ExploreComponent({ users, posts, tags, search, className
                                                   <div className="space-y-3">
                                                        <UserHoverCard user={item} >
                                                             <Link href={`/${item.username}`} className="flex items-center">
-                                                                 <Avatar className="mr-1.5 md:mr-2 flex items-center justify-center bg-muted h-8 w-8">
+                                                                 <Avatar className="mr-1.5 md:mr-2 flex items-center border justify-center bg-muted h-8 w-8">
                                                                       <AvatarImage src={item.image} alt={item.username} />
                                                                       <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>
                                                                  </Avatar>
@@ -93,9 +93,9 @@ export default function ExploreComponent({ users, posts, tags, search, className
                               <CardTitle className="text-base">Tags</CardTitle>
                          </CardHeader>
                          <CardContent>
-                              <div className="flex flex-col divide-y space-y-4">
+                              <div className="flex flex-col divide-y">
                                    {tags?.map((tag: any, index: number) => (
-                                        <div className="flex items-center justify-between" key={tag.id}>
+                                        <div className="flex items-center justify-between py-4" key={tag.id}>
                                              <Link href={`/tags/${tag.name}`} className="w-full">
                                                   <div className="flex items-center">
                                                        <div className="space-y-1">
