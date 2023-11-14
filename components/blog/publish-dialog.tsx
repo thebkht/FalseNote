@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/dialog"
 import { Button, buttonVariants } from "../ui/button";
 import { Icons } from "../icon";
-import { Facebook, Link2, Linkedin } from "lucide-react";
+import { Bookmark, Facebook, Link2, Linkedin, MoreHorizontal } from "lucide-react";
 import { LinkedInLogoIcon, FaceIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "next-share";
 import { cn } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import PostCard from "../tags/post-card-v2";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import Image from "next/image";
 
 
 export default function PublishDialog({ post, user, session, ...props }: { post: Post, user: User, session?: any } & React.ComponentPropsWithoutRef<typeof Dialog>) {
@@ -39,8 +41,54 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                               </DialogDescription>
                          </DialogHeader>
                          <div className="flex flex-col gap-2">
-                              <PostCard post={post} session={session} className="w-full" />
-                              <div className="flex flex-row flex-wrap items-center gap-2 w-full mx-auto my-5">
+                              <Card className={cn("feedArticleCard bg-background max-h-72 border-none shadow-none my-8 w-full")}>
+                                   <CardContent className="flex flex-col">
+                                        <div className="flex justify-between">
+                                        <CardHeader className={cn("py-0 pb-3 md:py-0 px-0")}>
+                                             <CardTitle className="!text-base md:text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">
+                                                  {post.title}
+                                             </CardTitle>
+                                             <CardDescription className="text-ellipsis overflow-hidden line-clamp-2 text-muted-foreground">
+                                                  {post.subtitle}
+                                             </CardDescription>
+                                        </CardHeader>
+                                        <div className="flex-none ml-6 md:ml-8">
+                                             <div className={`h-14 md:h-28 !relative bg-muted !pb-0 aspect-square`} >
+                                                  {post.cover ? (
+                                                       <Image
+                                                            src={post.cover}
+                                                            fill
+                                                            alt={post.title}
+                                                            className="object-cover w-full"
+                                                       />
+                                                  ) : (
+                                                       <Icons.noThumbnail className="w-full h-full" />
+                                                  )}
+                                             </div>
+                                        </div>
+                                        </div>
+                                        <div className="flex justify-between items-center mt-4">
+                                                            <div className="flex flex-1 items-center space-x-2.5">
+                                                                 <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{post.readingTime}</p>
+                                                            </div>
+                                                            <div className="stats flex items-center justify-around gap-1">
+                                                                 <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                                                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                                                     <Bookmark className={`h-5 w-5`} strokeWidth={2} />
+                                                                                     <span className="sr-only">Save</span>
+                                                                                </Button>
+                                                                 </div>
+                                                                 <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                                                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                                                <MoreHorizontal className="h-5 w-5" />
+                                                                                <span className="sr-only">More</span>
+                                                                           </Button>
+                                                                 </div>
+                                                            </div>
+                                                       </div>
+                                   </CardContent>
+                              </Card>
+                              <div className="flex flex-row flex-wrap items-center gap-2 w-full mx-auto mb-5">
                                    <div className="w-56">
                                         <TwitterShareButton
                                              url={url}
