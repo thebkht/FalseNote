@@ -3,14 +3,12 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import UserHoverCard from "../user-hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Badge } from "../ui/badge";
-import { Check, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import LoginDialog from "../login-dialog";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getSessionUser } from "../get-session";
 import { useSession } from "next-auth/react";
-import Markdown from "markdown-to-jsx";
 import TagBadge from "../tags/tag";
 import PostTabs from "./navbar";
 import { dateFormat } from "@/lib/format-date";
@@ -20,7 +18,7 @@ import CommentsSheet from "./comments/comments-sheet";
 import MobilePostTabs from "./mobile-navbar";
 import PostMoreActions from "./post-more-actions";
 import PublishDialog from "./publish-dialog";
-import { PreBlock } from "@/lib/syntax";
+import MarkdownCard from "../markdown-card";
 
 export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
 
@@ -159,27 +157,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                          </div>
 
                          <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
-                         <article className="article__content prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:!bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
-                              {/* <Markdown>{post?.content}</Markdown> */}
-                              <Markdown options={{
-                                   overrides: {
-                                        pre: PreBlock,
-                                        img: {
-                                             component: (props: any) => {
-                                                  return (
-                                                       <>
-                                                            <img {...props} className="!relative w-full" />
-                                                       <figcaption className="text-center text-sm text-muted">{props.title}</figcaption>
-                                                       </>
-                                                  )
-                                             }
-                                        },
-                                   },
-                              }}>
-                                   {post?.content}
-                              </Markdown>
-                              {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
-                         </article>
+                         <MarkdownCard code={post?.content} />
 
 
                          {

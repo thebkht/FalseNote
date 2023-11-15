@@ -35,7 +35,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
 import { useRouter } from "next/navigation"
-import Markdown from "markdown-to-jsx";
 import { Textarea } from "../ui/textarea"
 import { ToastAction } from "../ui/toast"
 import { toast } from "../ui/use-toast"
@@ -56,7 +55,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useDebounce } from "use-debounce"
-import { PreBlock } from "@/lib/syntax"
+import MarkdownCard from "../markdown-card"
 
 async function fetchSuggestions(query: string) {
   const tagResponse = await fetch(`/api/tags/search?search=${encodeURIComponent(query)}&limit=5`);
@@ -385,24 +384,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
               )}
             /></TabsContent>
             <TabsContent value="preview" className="pb-5 px-3 bg-popover text-sm rounded-md">
-              <article className="article__content markdown-body w-full !m-0">
-                <Markdown options={{
-                  overrides: {
-                    pre: PreBlock,
-                    img: {
-                         component: (props: any) => {
-                              return (
-                                   <>
-                                        <img {...props} className="!relative w-full" />
-                                   <figcaption className="text-center text-sm text-muted">{props.title}</figcaption>
-                                   </>
-                              )
-                         }
-                    },
-               },
-                }}>{markdownContent}</Markdown>
-                {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
-              </article>
+            <MarkdownCard code={markdownContent} />
             </TabsContent>
           </Tabs>
 

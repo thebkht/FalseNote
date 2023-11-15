@@ -390,7 +390,7 @@
 }
 
 .markdown-body pre {
-  @apply !my-4 !rounded-sm !text-card-foreground p-0 !bg-muted;
+  @apply !py-2 !px-4 !rounded-sm !text-card-foreground !m-0 h-fit align-middle !bg-popover;
 }
 /* 
 .markdown-body p code, .markdown-body li code,
