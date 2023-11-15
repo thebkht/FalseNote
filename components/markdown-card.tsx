@@ -10,10 +10,10 @@ export default function MarkdownCard({ code }: { code: string }) {
                          img: {
                               component: (props: any) => {
                                    return (
-                                        <>
+                                        <figure>
                                              <img {...props} className="!relative w-full" />
                                              <figcaption className="text-center text-sm text-muted">{props.title}</figcaption>
-                                        </>
+                                        </figure>
                                    )
                               }
                          },
