@@ -446,7 +446,11 @@
 }
 
 .markdown-body img {
-  @apply w-full h-auto;
+  @apply w-full h-auto my-6;
+}
+
+.markdown-body figcaption {
+  @apply text-center text-sm text-muted-foreground mt-0;
 }
 
 .markdown-body .article__cover-image {
