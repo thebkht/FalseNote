@@ -390,8 +390,7 @@
 }
 
 .markdown-body pre {
-  @apply !my-4 !rounded-sm !text-card-foreground p-0;
-  background: hsl(220 12% 9.8%) !important;
+  @apply !my-4 !rounded-sm !text-card-foreground p-0 !bg-secondary;
 }
 
 .markdown-body pre pre {
@@ -401,12 +400,11 @@
 .markdown-body p pre, .markdown-body li pre,
 .markdown-body h3 pre, .markdown-body h4 pre,
 .markdown-body h5 pre, .markdown-body h6 pre {
-  @apply !my-1 !rounded-sm !text-card-foreground !px-2.5 !py-0.5 w-fit inline-flex;
-  background: hsl(220 12% 9.8%) !important;
+  @apply !my-1 !rounded-sm !text-card-foreground !px-2.5 !py-0.5 w-fit inline-flex !bg-secondary;
 }
 
 .markdown-body pre code {
-  background: hsl(220 12% 9.8%) !important;
+  @apply !bg-secondary
 } 
 
 .markdown-body code {

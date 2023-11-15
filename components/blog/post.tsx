@@ -16,28 +16,11 @@ import PostTabs from "./navbar";
 import { dateFormat } from "@/lib/format-date";
 import { useRouter } from "next/navigation";
 import { Icons } from "../icon";
-import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus, vs, prism, oneLight, oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import readingTime from "reading-time";
 import CommentsSheet from "./comments/comments-sheet";
 import MobilePostTabs from "./mobile-navbar";
 import PostMoreActions from "./post-more-actions";
 import PublishDialog from "./publish-dialog";
-
-const components = {
-     code({ className, children, }: { className: string, children: any }) {
-          let lang = 'text'; // default monospaced text
-          if (className && className.startsWith('lang-')) {
-               lang = className.replace('lang-', '');
-          }
-          return (
-               <SyntaxHighlighter style={oneDark} language={lang} >
-                    {children}
-               </SyntaxHighlighter>
-          )
-     }
-}
+import { PreBlock } from "@/lib/syntax";
 
 export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
 
@@ -180,8 +163,16 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                               {/* <Markdown>{post?.content}</Markdown> */}
                               <Markdown options={{
                                    overrides: {
-                                        code: {
-                                             component: components.code,
+                                        pre: PreBlock,
+                                        img: {
+                                             component: (props: any) => {
+                                                  return (
+                                                       <>
+                                                            <img {...props} className="!relative w-full" />
+                                                       <figcaption className="text-center text-sm text-muted">{props.title}</figcaption>
+                                                       </>
+                                                  )
+                                             }
                                         },
                                    },
                               }}>

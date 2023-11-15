@@ -36,8 +36,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Icons } from "../icon"
 import { useRouter } from "next/navigation"
 import Markdown from "markdown-to-jsx";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Textarea } from "../ui/textarea"
 import { ToastAction } from "../ui/toast"
 import { toast } from "../ui/use-toast"
@@ -58,20 +56,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useDebounce } from "use-debounce"
-
-const components = {
-  code({ className, children, }: { className: string, children: any }) {
-    let lang = 'text'; // default monospaced text
-    if (className && className.startsWith('lang-')) {
-      lang = className.replace('lang-', '');
-    }
-    return (
-      <SyntaxHighlighter style={oneDark} language={lang} >
-        {children}
-      </SyntaxHighlighter>
-    )
-  }
-}
+import { PreBlock } from "@/lib/syntax"
 
 async function fetchSuggestions(query: string) {
   const tagResponse = await fetch(`/api/tags/search?search=${encodeURIComponent(query)}&limit=5`);
@@ -403,10 +388,18 @@ export function PostEditorForm(props: { post: any, user: any }) {
               <article className="article__content markdown-body w-full !m-0">
                 <Markdown options={{
                   overrides: {
-                    code: {
-                      component: components.code,
+                    pre: PreBlock,
+                    img: {
+                         component: (props: any) => {
+                              return (
+                                   <>
+                                        <img {...props} className="!relative w-full" />
+                                   <figcaption className="text-center text-sm text-muted">{props.title}</figcaption>
+                                   </>
+                              )
+                         }
                     },
-                  },
+               },
                 }}>{markdownContent}</Markdown>
                 {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} className="markdown-body" /> */}
               </article>
