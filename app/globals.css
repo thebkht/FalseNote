@@ -390,30 +390,22 @@
 }
 
 .markdown-body pre {
-  @apply !my-4 !rounded-sm !text-card-foreground p-0 !bg-secondary;
+  @apply !my-4 !rounded-sm !text-card-foreground p-0 !bg-muted;
 }
-
-.markdown-body pre pre {
-  @apply !m-0
-}
-
-.markdown-body p pre, .markdown-body li pre,
-.markdown-body h3 pre, .markdown-body h4 pre,
-.markdown-body h5 pre, .markdown-body h6 pre {
-  @apply !my-1 !rounded-sm !text-card-foreground !px-2.5 !py-0.5 w-fit inline-flex !bg-secondary;
-}
-
-.markdown-body pre code {
-  @apply !bg-secondary
-} 
+/* 
+.markdown-body p code, .markdown-body li code,
+.markdown-body h3 code, .markdown-body h4 code,
+.markdown-body h5 code, .markdown-body h6 code {
+  @apply !my-1 !rounded-sm !text-card-foreground !px-2.5 !py-0.5 w-fit inline-flex !bg-muted;
+} */
 
 .markdown-body code {
-  @apply py-1.5 px-1.5 !rounded-sm text-card-foreground;
+  @apply py-1.5 px-1.5 !rounded-sm text-card-foreground !bg-muted;
   font-family: var(--font-geist-mono)
 }
 
 .markdown-body pre code {
-  @apply py-0 px-0 !rounded-sm text-card-foreground;
+  @apply py-0 px-0 !rounded-sm text-card-foreground !bg-transparent;
 }
 
 .markdown-body pre code.lang-text {

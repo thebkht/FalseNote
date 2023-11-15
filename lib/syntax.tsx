@@ -9,7 +9,9 @@ const CodeBlock = ({className, children}: {className: string, children: string})
        lang = className.replace('lang-', '');
      }
      return (
-       <SyntaxHighlighter language={lang} style={Theme() == 'light' ? oneLight : oneDark}>
+       <SyntaxHighlighter language={lang} style={Theme() == 'light' ? oneLight : oneDark} customStyle={{
+          backgroundColor: "transparent",
+       }}>
          {children}
        </SyntaxHighlighter>
      );
