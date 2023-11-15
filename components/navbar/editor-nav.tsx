@@ -20,7 +20,7 @@ export default function EditorNavbar() {
           <nav className="menu">
                <div className="menu-container fixed p-3.5 bg-background border-b">
                     
-                         <Link href={`/${user.name}`} className="flex align-items-center">
+                         <Link href={`/${user?.name}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1 border">
                                    <AvatarImage src={ user?.image } alt={ user?.name } />
                                    <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
