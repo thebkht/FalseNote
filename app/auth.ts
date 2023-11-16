@@ -30,10 +30,9 @@ export const config = {
         console.log("GitHub Profile:", profile);
   
         // Check if the user exists in your database based on their email
-        // const userExists = await sql('SELECT * FROM Users WHERE Username = $1;', [username]);
         const userExists = await postgres.user.findFirst({
           where: {
-            username: username
+            password: githubId.toString()
           }
         })
   
@@ -41,7 +40,6 @@ export const config = {
           
           // User doesn't exist, add them to the Users table
           try {
-            // await sql('INSERT INTO Users (Username, Name, Email, Bio, GithubProfileURL, AvatarURL, Location) VALUES ($1, $2, $3, $4, $5, $6, $7);', [username, name, email, bio, githubProfileURL, avatar_url, location]);
             const sessionUser = await postgres.user.create({
               data: {
                 username: username,
@@ -58,14 +56,12 @@ export const config = {
               }
             })
 
-            //const userSettingsExists = await sql('SELECT * FROM UserSettings WHERE UserId = $1;', [sessionUser[0].userid]);
             const userSettingsExists = await postgres.userSettings.findFirst({
               where: {
                 userId: sessionUser.id
               }
             })
             if (!userSettingsExists) {
-              //await sql('INSERT INTO UserSettings (UserId) VALUES ($1);', [sessionUser[0].userid])
               await postgres.userSettings.create({
                 data: {
                   userId: sessionUser.id
