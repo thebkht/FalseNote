@@ -56,7 +56,9 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
 
 
 
-            <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
+            {
+              posts.length >= 10 && (
+                <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
               <Card className="rounded-lg bg-transparent max-h-72 w-full border-none shadow-none">
                 <CardContent className="p-0">
                   <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
@@ -87,6 +89,8 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
                 </CardContent>
               </Card>
             </div>
+              )
+            }
           </>
 
         ) : (

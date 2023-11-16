@@ -54,7 +54,9 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
 
 
 
-            <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
+            {
+              posts?.length >= 10 && (
+                <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
               <Card className="rounded-lg bg-backgreound max-h-72 w-full border-none shadow-none">
                 <CardContent className="p-0">
                   <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
@@ -85,6 +87,8 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
                 </CardContent>
               </Card>
             </div>
+              )
+            }
           </>
 
         ) : (

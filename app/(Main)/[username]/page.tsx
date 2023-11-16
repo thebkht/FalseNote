@@ -95,8 +95,8 @@ export default async function Page({ params, searchParams }: {
   const following = user.Followings;
 
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined;
-  const { bookmarks } = await getBookmarks({ id: sessionUserName?.id })
-  const { history } = await getHistory({ id: sessionUserName?.id })
+  const { bookmarks } = await getBookmarks({ id: sessionUserName?.id, limit: 10 })
+  const { history } = await getHistory({ id: sessionUserName?.id, limit: 10 })
   return (
     <div className="md:container mx-auto px-4 mt-4">
       <div className="gap-5 lg:gap-6 flex flex-col md:flex-row items-start" >
