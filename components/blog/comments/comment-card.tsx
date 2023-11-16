@@ -5,16 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import UserHoverCard from "@/components/user-hover-card";
-import { dateFormat } from "@/lib/format-date";
-import { Flag, Heart, MoreHorizontal, Pencil, Reply, Trash2 } from "lucide-react";
+import { Heart, MoreHorizontal, Pencil, Reply, Trash2 } from "lucide-react";
 import Markdown from "markdown-to-jsx";
 import Link from "next/link";
 import {
      DropdownMenu,
      DropdownMenuContent,
      DropdownMenuItem,
-     DropdownMenuLabel,
-     DropdownMenuSeparator,
      DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import React from "react";
@@ -25,6 +22,37 @@ import CommentEditorForm from "./comment-editor-form";
 import ReplyForm from "./reply-form";
 import { Separator } from "@/components/ui/separator";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
+
+export function dateFormat(dateString: string | number | Date) {
+     const date = new Date(dateString);
+     const currentDate = new Date();
+   
+     const differenceInTime = currentDate.getTime() - date.getTime();
+     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+   
+     if (differenceInDays < 1) {
+       const differenceInHours = differenceInTime / (1000 * 3600);
+       if (differenceInHours < 1) {
+         const differenceInMinutes = differenceInTime / (1000 * 60);
+         if (differenceInMinutes < 1) {
+           const differenceInSeconds = differenceInTime / 1000;
+           return differenceInSeconds < 30 ? 'Just now': `${Math.floor(differenceInSeconds)}s`;
+         }
+         return `${Math.floor(differenceInMinutes)}m`;
+       }
+       return `${Math.floor(differenceInHours)}h`;
+     }
+   
+     if (differenceInDays > 15) {
+       return `${date.toLocaleDateString('en-US', {
+         year: 'numeric',
+         month: 'short',
+         day: 'numeric',
+       })}`;
+     } else {
+       return `${Math.floor(differenceInDays)}d`;
+     }
+}
 
 
 export default function CommentCard({ comment, post, session, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { comment: any, post: any, session: any }) {

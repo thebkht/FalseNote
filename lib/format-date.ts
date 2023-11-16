@@ -18,7 +18,7 @@ export function dateFormat(dateString: string | number | Date) {
        return `${Math.floor(differenceInHours)} hours ago`;
      }
    
-     if (differenceInDays > 30) {
+     if (differenceInDays > 15) {
        return `${date.toLocaleDateString('en-US', {
          year: 'numeric',
          month: 'short',
