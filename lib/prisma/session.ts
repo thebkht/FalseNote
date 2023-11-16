@@ -7,16 +7,37 @@ export const getFollowingTags = async ({ id }: { id: number | undefined }) => {
     select: {
       tagfollower: {
         include: {
-          tag: true,
+          tag: {
+            include: {
+              posts: {
+                select: {
+                  createdAt: true,
+                },
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+            },
+          },
         },
       },
       id: true,
     },
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 750));
+  const followingTagsWithLatestPostDate = followingTags?.tagfollower.map(tagFollower => {
+    const latestPostDate = tagFollower.tag.posts[0]?.createdAt;
+
+    return {
+      ...tagFollower,
+      latestPostDate,
+    };
+  });
+
+  const sortedFollowingTags = followingTagsWithLatestPostDate?.sort((a, b) => new Date(b.latestPostDate).getTime() - new Date(a.latestPostDate).getTime());
   return {
-    followingTags: JSON.parse(JSON.stringify(followingTags?.tagfollower)),
+    followingTags: JSON.parse(JSON.stringify(sortedFollowingTags)),
   };
 };
 
@@ -32,8 +53,6 @@ export const getFollowings = async ({ id }: { id: number | undefined }) => {
       id: true,
     },
   });
-
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { followings: JSON.parse(JSON.stringify(followings?.Followings)) };
 };
 
@@ -49,8 +68,6 @@ export const getFollowers = async ({ id }: { id: number | undefined }) => {
       id: true,
     },
   });
-
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { followers: JSON.parse(JSON.stringify(followers?.Followers)) };
 };
 
@@ -69,8 +86,6 @@ export const getPosts = async ({ id }: { id: number | undefined }) => {
       id: true,
     },
   });
-
-  await new Promise((resolve) => setTimeout(resolve, 750));
   return { posts: JSON.parse(JSON.stringify(posts?.posts)) };
 };
 
