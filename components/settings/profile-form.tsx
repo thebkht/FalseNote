@@ -81,7 +81,7 @@ const defaultValues: Partial<ProfileFormValues> = {
       action: (
         <ToastAction
           altText="View profile"
-          onClick={() => router.push(`/user/${data.username}`)}
+          onClick={() => router.push(`/@${data.username}`)}
           className="hover:text-secondary-foreground"
         >
           View profile

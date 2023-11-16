@@ -10,8 +10,8 @@ export async function generateMetadata(
   { params }: Props
 ): Promise<Metadata> {
   try {
-    const encodedString = params.username.replace(/ /g, "%20");
-    const response = await fetch(`${process.env.DOMAIN}/api/users/${encodedString}`);
+    const decodedUsername = decodeURIComponent(params.username);
+    const response = await fetch(`${process.env.DOMAIN}/api/users/${decodedUsername.substring(1)}`);
     if (!response.ok) {
       throw new Error(`Error fetching user data: ${response.statusText}`);
     }

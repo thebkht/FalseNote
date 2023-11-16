@@ -14,11 +14,12 @@ type Props = {
 }
 
 async function getPostData(username: string, url: string) {
+     const decodedUsername = decodeURIComponent(username);
      const post = await postgres.post.findFirst({
        where: {
          url: url,
          author: {
-           username: username
+           username: decodedUsername.substring(1)
          }
        },
        include: {
@@ -93,9 +94,10 @@ async function getPostData(username: string, url: string) {
 export default async function PostLayout(
      { children, params }: Props
 ) {
+     const decodedUsername = decodeURIComponent(params.username);
      const author = await postgres.user.findFirst({
           where: {
-               username: params.username
+               username: decodedUsername.substring(1)
           },
           include: {
                posts: {
