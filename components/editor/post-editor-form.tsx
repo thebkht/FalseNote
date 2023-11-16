@@ -616,8 +616,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 </div>
               </ScrollArea>
               <DialogFooter className="p-6 border-t">
-                <DialogClose asChild>
-                  <Button
+              <Button
                     type="submit"
                     className="ml-auto w-full"
                     size={"lg"}
@@ -634,7 +633,6 @@ export function PostEditorForm(props: { post: any, user: any }) {
                       )
                     }
                   </Button>
-                </DialogClose>
               </DialogFooter>
 
             </DialogContent>
@@ -656,6 +654,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
               </p>
             </div>
             <DialogFooter>
+              <DialogClose asChild>
               <Button onClick={() => saveDraft()} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
                 isSaving ? (
                   <>
@@ -666,6 +665,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 )
 
               }</Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
