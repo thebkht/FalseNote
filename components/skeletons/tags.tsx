@@ -13,17 +13,17 @@ export default function TagsCardSkeleton(
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
-                      <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
-                        <Skeleton className="h-5 w-24 rounded-full" />
+                      <div className="w-2/3 md:w-1/4 lg:w-full flex flex-wrap">
+                        <Skeleton className="h-5 w-24 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-20 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-16 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-24 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-20 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-16 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-24 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-20 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-16 my-1 mr-1 rounded-full" />
+                        <Skeleton className="h-5 w-24 my-1 mr-1 rounded-full" />
                       </div>
                     </CardContent>
                   </Card>
