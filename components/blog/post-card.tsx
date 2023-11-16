@@ -51,17 +51,18 @@ function PostCard(
             src={props.thumbnail}
             fill
             alt={props.title}
-            className="rounded-md
+            className="z-[1]
+            bg-muted
             object-cover
             w-full
             "
           />
           </AspectRatio>
-          <Skeleton className="w-full h-full rounded-md" />
+          <Skeleton className="w-full h-full" />
           </>
         ) : (
           <AspectRatio ratio={16 / 9}>
-            <Icons.noThumbnail className="w-full h-full rounded-md" />
+            <Icons.noThumbnail className="w-full h-full" />
           </AspectRatio>
         )}
 

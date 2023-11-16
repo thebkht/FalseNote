@@ -155,7 +155,7 @@ export default function PostCard(
                                                        src={props.post.cover}
                                                        fill
                                                        alt={props.post.title}
-                                                       className="object-cover w-full"
+                                                       className="object-cover w-full z-[1] bg-muted"
                                                   />
                                                   <Skeleton className="w-full h-full" />
                                              </>

@@ -57,7 +57,7 @@ export default function TagPostCard(
                                                        src={props.post.cover}
                                                        fill
                                                        alt={props.post.title}
-                                                       className="object-cover bg-muted"
+                                                       className="object-cover bg-muted z-[1]"
                                                   />
                                                   <Skeleton className="w-full h-full rounded-md" />
                                              </>
