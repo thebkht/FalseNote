@@ -197,7 +197,7 @@ export default async function PostLayout(
           take: 6
      });
      const data = await getForYou({ limit: 6 });
-     const forYou = data?.feed;
+     const forYou = data?.feed || [];
      const sessionUser = await getSessionUser();
      const posts = relatedPosts.length > 0 ? relatedPosts : forYou;
      posts.length % 2 !== 0 && posts.pop();
