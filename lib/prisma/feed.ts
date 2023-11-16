@@ -46,6 +46,33 @@ const getHistory = async ({ id }: { id: number | undefined }) => {
   return { history: JSON.parse(JSON.stringify(history)) };
 }
 
+const getTags = async ({ id }: { id: number | undefined }) => {
+  const tags = await postgres.tagFollow.findMany({
+    where: { followerId: id },
+    select: {
+      tagId: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
+  });
+
+  const tagIds = tags.map((tag) => tag.tagId);
+
+  const postTags = await postgres.postTag.findMany({
+    where: { tagId: { in: tagIds } },
+    select: {
+      postId: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return { postTags: JSON.parse(JSON.stringify(postTags)) };
+}
+
 const baseQuery = {
   orderBy: { createdAt: "desc" },
   select: {
@@ -96,10 +123,11 @@ export const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit
   const { id } = user;
 
   //get user's interests
-  const [{ likes: userLikes }, { bookmarks: userBookmarks }, { history: userHistory }] = await Promise.all([
+  const [{ likes: userLikes }, { bookmarks: userBookmarks }, { history: userHistory }, { postTags: userTags}] = await Promise.all([
     getLikes({id}),
     getBookmarks({id}),
-    getHistory({id})
+    getHistory({id}),
+    getTags({id})
   ]);
 
   // Fetch the tags of the posts in parallel
@@ -110,6 +138,7 @@ export const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit
           ...userLikes.map((like: any) => like.postId),
           ...userBookmarks.map((bookmark: any) => bookmark.postId),
           ...userHistory.map((history: any) => history.postId),
+          ...userTags.map((tag: any) => tag.postId),
         ],
       },
     },
