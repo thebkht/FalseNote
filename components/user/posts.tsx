@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader } from '../ui/card';
 import { Skeleton } from "../ui/skeleton";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PostCreateButton } from "./post-create-button";
 
 export default function UserPosts({ posts: initialPosts, className, user, sessionUser, children, query, search }: { posts: any, className?: string, user?: any, sessionUser?: any, children?: React.ReactNode, query?: any, search: string | undefined }) {
   const router = useRouter();
@@ -99,6 +100,9 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
                   <>The user doesn&apos;t have any posts yet.</>)
               }
             </EmptyPlaceholder.Description>
+            {user?.id === sessionUser?.id && (
+              <PostCreateButton key={"New Post"} variant={'outline'} />
+            )}
           </EmptyPlaceholder>
         )}
       </div>
