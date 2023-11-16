@@ -1,6 +1,6 @@
 'use server'
 import { getSessionUser } from "@/components/get-session-user"
-import { redirect, useRouter } from "next/navigation"
+import { notFound, redirect, useRouter } from "next/navigation"
 import postgres from "@/lib/postgres"
 import Post from "@/components/blog/post"
 import PostComment from "@/components/blog/comment"
@@ -86,12 +86,12 @@ export default async function PostView({ params, searchParams }: { params: { use
           }
      });
 
-     if (!post) redirect("/404");
+     if (!post) return notFound();
 
      const sessionUser = await getSessionUser()
 
      if (post?.authorId !== sessionUser?.id) {
-          if (post?.visibility !== "public") redirect("/404");
+          if (post?.visibility !== "public") return notFound();
      }
 
      const published = sessionUser?.id === post?.authorId && (
@@ -133,10 +133,6 @@ export default async function PostView({ params, searchParams }: { params: { use
                });
           }
      }
-
-     //fetch related posts according to tags and dont include the current post
-     //fetch the first 4 posts
-
      return (
           <>
                <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} comments={Boolean(commentsOpen)} published={published} />

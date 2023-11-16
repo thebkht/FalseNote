@@ -12,7 +12,7 @@ export default function NotFound() {
           <EmptyPlaceholder.Icon name="warning" />
           <EmptyPlaceholder.Title>Uh oh! Not Found</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            This post cound not be found. Please try again.
+            This post cound not be found or has been deleted. If you think this is a mistake, please contact us.
           </EmptyPlaceholder.Description>
           <Link href="/" className={buttonVariants({ variant: "ghost" })}>
             Go to Home
