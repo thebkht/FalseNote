@@ -27,7 +27,7 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
           // set tags where not in followingTags
           setTags(initialTags?.filter((tag: any) => tag.followingtag?.followerId !== session?.id))
      }, [initialTags, session])
-     
+
      const [isLast, setIsLast] = useState<boolean>(false)
      const [page, setPage] = useState<number>(0)
 
@@ -45,7 +45,7 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
      }
 
      const handleFollow = async (tagId: any, index: number) => {
-          
+
           try {
                const response = await fetch(`/api/follow/tag?tagId=${tagId}&userId=${session?.id}`, {
                     method: "GET",
@@ -53,19 +53,19 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
                if (response.status === 200) {
                     // Check if tag is already in followingTags
                     const isTagInFollowingTags = followingTags.some((tag: any) => tag.id === tagId);
-                
+
                     if (isTagInFollowingTags) {
-                        // If tag is in followingTags, remove it
-                        setFollowingTags(followingTags.filter((tag: any) => tag.id !== tagId));
-                        // And add it to tags
-                        setTags([...tags, followingTags[index]]);
+                         // If tag is in followingTags, remove it
+                         setFollowingTags(followingTags.filter((tag: any) => tag.id !== tagId));
+                         // And add it to tags
+                         setTags([...tags, followingTags[index]]);
                     } else {
-                        // If tag is not in followingTags, add it
-                        setFollowingTags([...followingTags, tags[index]]);
-                        // And remove it from tags
-                        setTags(tags.filter((tag: any) => tag.id !== tagId));
+                         // If tag is not in followingTags, add it
+                         setFollowingTags([...followingTags, tags[index]]);
+                         // And remove it from tags
+                         setTags(tags.filter((tag: any) => tag.id !== tagId));
                     }
-                }
+               }
           } catch (error) {
                console.error(error);
           }
@@ -86,16 +86,20 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
                     </AlertDialogHeader>
                     <div className="flex flex-wrap justify-center mt-8">
                          {followingTags?.map((tag: any, index) => (
-                              <TagBadge key={tag.id} className="bg-primary text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 text-primary-foreground capitalize">
-                                   <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)}><Check className="h-4 w-4" /></Button>
-                                   {tag?.name?.replace(/-/g, ' ')}
-                              </TagBadge>
+                              <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)} key={tag.id}>
+                                   <TagBadge className="text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 capitalize">
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        {tag.name?.replace(/-/g, ' ')}
+                                   </TagBadge>
+                              </Button>
                          ))}
                          {tags?.map((tag: any, index: number) => (
-                              <TagBadge key={tag.id} className="text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 capitalize">
-                                   <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)}><Plus className="h-4 w-4" /></Button>
-                                   {tag.name?.replace(/-/g, ' ')}
-                              </TagBadge>
+                              <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)} key={tag.id}>
+                                   <TagBadge className="text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 capitalize">
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        {tag.name?.replace(/-/g, ' ')}
+                                   </TagBadge>
+                              </Button>
                          ))}
                     </div>
                     {!isLast ? (
