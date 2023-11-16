@@ -3,31 +3,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import LoginDialog from "@/components/login-dialog";
-import UserHoverCard from "@/components/user-hover-card";
 import { getSessionUser } from "@/components/get-session-user";
-import { ArrowUp } from "lucide-react";
+import { validate } from "@/lib/revalidate";
 
 export default function CommentEditorForm(props: { post: any, session: any, data: any, onCancel: () => void, onUpdate: () => void  }) {
   const [posting, setPosting] = useState<boolean>(false)
   const router = useRouter();
-  const { status } = useSession();
-  const [open, setOpen] = useState(false);
   const commentFormSchema = z.object({
     content: z.string().min(1, "Please enter some content."),
   })
@@ -62,9 +55,7 @@ export default function CommentEditorForm(props: { post: any, session: any, data
       setPosting(false);
     }
     form.setValue("content", "");
-    await fetch(`/api/revalidate?path=${pathname}`, {
-      method: "GET",
-    }).then((res) => res.json());
+    await validate(pathname);
     props.onUpdate();
     router.refresh();
   }

@@ -11,7 +11,7 @@ export default function UserHorizontalCard({ user, className, ...props }: { user
           <Card className={cn("rounded-lg feedArticleCard !bg-background max-h-72 w-full border-none shadow-none", className)} {...props}>
                <CardContent className="flex space-x-3 w-full items-center justify-between p-4">
                     <UserHoverCard user={user}>
-                         <Link href={`/${user.username}`}>
+                         <Link href={`/@${user.username}`}>
                               <Avatar className="h-12 w-12 mr-2">
                                    <AvatarImage src={user.image} alt={user.username} />
                                    <AvatarFallback>{user.name?.charAt(0) || user.username?.charAt(0)}</AvatarFallback>
@@ -19,7 +19,7 @@ export default function UserHorizontalCard({ user, className, ...props }: { user
                          </Link>
                     </UserHoverCard>
                     <div className="flex justify-between w-full gap-8">
-                         <Link href={`/${user.username}`}>
+                         <Link href={`/@${user.username}`}>
                               <div className="w-full flex flex-col">
 
                                    <div className="flex items-center">

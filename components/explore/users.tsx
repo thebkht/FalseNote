@@ -50,7 +50,7 @@ export default function Users({ users: initialUser, search, session }: { users: 
                                    <div className="flex gap-4 w-full items-center justify-between" key={item.id}>
                                         <div className="space-y-3">
                                              <UserHoverCard user={item} >
-                                                  <Link href={`/${item.username}`} className="flex items-center">
+                                                  <Link href={`/@${item.username}`} className="flex items-center">
                                                        <Avatar className="mr-1.5 md:mr-2 flex items-center border justify-center bg-muted h-8 w-8">
                                                             <AvatarImage src={item.image} alt={item.username} />
                                                             <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>

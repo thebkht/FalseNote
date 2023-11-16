@@ -56,6 +56,7 @@ import {
 } from "@/components/ui/popover"
 import { useDebounce } from "use-debounce"
 import MarkdownCard from "../markdown-card"
+import { validate } from "@/lib/revalidate"
 
 async function fetchSuggestions(query: string) {
   const tagResponse = await fetch(`/api/tags/search?search=${encodeURIComponent(query)}&limit=5`);
@@ -179,13 +180,13 @@ export function PostEditorForm(props: { post: any, user: any }) {
         throw new Error('Failed to update post');
       }
 
-      await fetch(`/api/revalidate?path=/${props.user?.username}`);
+      await validate(`/@${props.user?.username}`)
       if (data.visibility === 'public' && previousStatus !== 'public') {
-        router.push(`/${props.user?.username}/${form.getValues('url')}?published=true`);
+        router.push(`/@${props.user?.username}/${form.getValues('url')}?published=true`);
         toast({ description: "Post Published!" });
       }
       else {
-        router.push(`/${props.user?.username}/`);
+        router.push(`/@${props.user?.username}/`);
         toast({ description: "Post Updated!" });
       }
 
@@ -442,7 +443,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                       <FormItem>
                         <FormLabel>URL-friendly Link</FormLabel>
                         <FormDescription>
-                          {`falsenotes.app/${props.user?.username}/`}
+                          {`falsenotes.app/@${props.user?.username}/`}
                         </FormDescription>
                         <FormControl>
                           <Input placeholder="URL" {...field} onChange={handleUrlChange} />
@@ -515,8 +516,8 @@ export function PostEditorForm(props: { post: any, user: any }) {
                                     setCover('');
                                     setFile(undefined);
                                   }}>
-                                    <Trash2 className="h-4 w-4" />
-                                    <span className="sr-only">Remove</span>
+                                    <Trash2 className="h-4 w-4 mr-2 ml-auto" />
+                                    Remove
                                   </Button>
                                 </div>
                               )

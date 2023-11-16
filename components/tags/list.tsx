@@ -8,6 +8,7 @@ import { Hash } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { cn } from "@/lib/utils"
 import LoginDialog from "../login-dialog";
+import { validate } from "@/lib/revalidate";
 
 export default function TagsList({ tags: initialTags, session, className, ...props }: { tags: any, session: any, className?: string } & React.ComponentPropsWithoutRef<typeof Card>) {
      const [tags, setTags] = useState<any>(initialTags)
@@ -58,9 +59,7 @@ export default function TagsList({ tags: initialTags, session, className, ...pro
                newIsFollowLoading[index] = false
                setIsFollowLoading(newIsFollowLoading)
           }
-          await fetch(`/api/revalidate?path=/tags`, {
-               method: "GET",
-          });
+          await validate('/tags')
           // router.refresh();
      }
 

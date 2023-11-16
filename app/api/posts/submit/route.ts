@@ -109,9 +109,6 @@ export async function POST(req: NextRequest) {
                     }
                })
                if (postTagsData) {
-                    // await sql`
-                    //      DELETE FROM BlogPostTags WHERE BlogPostID = ${postid}
-                    //      `;
                     await postgres.postTag.deleteMany({
                          where: {
                               postId: Number(postid),

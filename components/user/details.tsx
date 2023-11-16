@@ -1,8 +1,7 @@
 "use client";
 
-import { BadgeCheck, CalendarDays, Check, Mail, MapPin, Share, Users2 } from "lucide-react";
+import { CalendarDays, Mail, MapPin, Users2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Badge } from "../ui/badge";
 import { Icons } from "../icon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
@@ -11,18 +10,12 @@ import Link from "next/link";
 import { formatNumberWithSuffix } from "../format-numbers";
 import LoginDialog from "../login-dialog";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, } from "react";
 import { getSessionUser } from "../get-session-user";
-
-import { useRef } from "react";
-import { revalidatePath } from "next/cache";
-import { usePathname, useRouter } from "next/navigation";
-import { is, ro } from "date-fns/locale";
-import { set } from "date-fns";
-import ShareList from "../share-list";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { SiteFooter } from "../footer";
 import { cn } from "@/lib/utils";
+import { validate } from "@/lib/revalidate";
 
 function getRegistrationDateDisplay(registrationDate: string) {
   ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -68,15 +61,11 @@ export default function UserDetails({ className, children, user, followers, foll
         console.error(error);
         setIsFollowingLoading(false);
       }
-      await fetch(`api/revalidate?path=/${user?.username}`, {
-        method: 'GET'
-      })
+      await validate(`/@${user?.username}`)
       router.refresh();
     }
 
   }
-
-  if (status === "loading") return null;
 
   return (
     <div className={cn("flex flex-col items-stretch justify-between xs:h-fit details", className)}>
@@ -108,9 +97,6 @@ export default function UserDetails({ className, children, user, followers, foll
               </div>
               )
           }
-          {/* <ShareList url={pathname} text={`${user.username} ${user?.name ? `(` + user?.name + `)` : `` }`}>
-            <Button variant={"ghost"} size={"icon"} className="h-10 w-10" ><Share className="h-4 w-4" /></Button>
-          </ShareList> */}
         </div>
       </div>
       </div>
@@ -159,7 +145,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 <div className="flex gap-4 w-full items-center justify-between" key={follower.id}>
                   <div className="space-y-3">
                     <UserHoverCard user={follower.follower} >
-                      <Link href={`/${follower.follower?.username}`} className="flex items-center">
+                      <Link href={`/@${follower.follower?.username}`} className="flex items-center">
                         <Avatar className="h-10 w-10 mr-2 md:mr-3">
                           <AvatarImage src={follower.follower?.image} alt={follower.follower?.username} />
                           <AvatarFallback>{follower.follower?.name?.charAt(0) || follower.follower?.username?.charAt(0)}</AvatarFallback>
@@ -208,7 +194,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 <div className="flex gap-4 w-full items-center" key={following.id}>
                   <div className="space-y-3">
                     <UserHoverCard user={following.following} >
-                      <Link href={`/${following.following.username}`} className="flex items-center">
+                      <Link href={`/@${following.following.username}`} className="flex items-center">
                         <Avatar className="h-10 w-10 mr-2 md:mr-3">
                           <AvatarImage src={following.following.image} alt={following.following.username} />
                           <AvatarFallback>{following.following.name?.charAt(0) || following.following.username?.charAt(0)}</AvatarFallback>

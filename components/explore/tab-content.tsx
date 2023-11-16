@@ -23,7 +23,7 @@ export default function ExploreComponent({ users, posts, tags, search, className
                                         (item: any, index: number) => (
                                              <li key={item.id} className="text-sm space-y-2.5">
 
-                                                  <Link href={`/${item.author.username}`} className="text-xs flex items-center mb-2 font-medium">
+                                                  <Link href={`/@${item.author.username}`} className="text-xs flex items-center mb-2 font-medium">
                                                        <Avatar className="h-5 w-5 mr-1 md:mr-1.5 border">
                                                             <AvatarImage src={item.author?.image} alt={item.author?.username} />
                                                             <AvatarFallback>{item.author?.name?.charAt(0) || item.author?.username?.charAt(0)}</AvatarFallback>
@@ -34,7 +34,7 @@ export default function ExploreComponent({ users, posts, tags, search, className
                                                   </Link>
 
 
-                                                  <Link href={`/${item.author.username}/${item.url}`} className="text-base font-bold line-clamp-2 overflow-hidden leading-tight">
+                                                  <Link href={`/@${item.author.username}/${item.url}`} className="text-base font-bold line-clamp-2 overflow-hidden leading-tight">
                                                        {item.title}
                                                   </Link>
                                              </li>
@@ -56,7 +56,7 @@ export default function ExploreComponent({ users, posts, tags, search, className
                                              <div className="flex gap-4 w-full items-center justify-between" key={item.id}>
                                                   <div className="space-y-3">
                                                        <UserHoverCard user={item} >
-                                                            <Link href={`/${item.username}`} className="flex items-center">
+                                                            <Link href={`/@${item.username}`} className="flex items-center">
                                                                  <Avatar className="mr-1.5 md:mr-2 flex items-center border justify-center bg-muted h-8 w-8">
                                                                       <AvatarImage src={item.image} alt={item.username} />
                                                                       <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>

@@ -13,10 +13,10 @@ import readingTime from 'reading-time';
 export default async function PostView({ params, searchParams }: { params: { username: string, url: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
      const commentsOpen = typeof searchParams.commentsOpen === 'string' ? searchParams.commentsOpen : undefined
      
-     console.log(commentsOpen);
+     const decodedUsername = decodeURIComponent(params.username);
      const author = await postgres.user.findFirst({
           where: {
-               username: params.username
+               username: decodedUsername.substring(1)
                },
           include: {
                _count: { select: { posts: true, Followers: true, Followings: true } },

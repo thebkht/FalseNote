@@ -39,7 +39,6 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
   }, [inView])
 
   const { status } = useSession();
-  if (status == "loading") return null;
   return (
     <div className={className}>
       <div className="user-articles">

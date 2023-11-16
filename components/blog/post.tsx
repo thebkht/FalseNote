@@ -12,13 +12,14 @@ import { useSession } from "next-auth/react";
 import TagBadge from "../tags/tag";
 import PostTabs from "./navbar";
 import { dateFormat } from "@/lib/format-date";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Icons } from "../icon";
 import CommentsSheet from "./comments/comments-sheet";
 import MobilePostTabs from "./mobile-navbar";
 import PostMoreActions from "./post-more-actions";
 import PublishDialog from "./publish-dialog";
 import MarkdownCard from "../markdown-card";
+import { validate } from "@/lib/revalidate";
 
 export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
 
@@ -43,6 +44,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
      }, [author])
 
      const router = useRouter();
+     const pathaname = usePathname();
 
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
@@ -56,9 +58,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                     if (!result.ok) {
                          setIsFollowing(!isFollowing);
                     }
-                    await fetch(`/api/revalidate?page=/${author?.username}/${post?.url}`, {
-                         method: "GET",
-                    }).then((res) => res.json());
+                    await validate(pathaname)
                     router.refresh();
                     setIsFollowingLoading(false);
                } catch (error) {
@@ -70,7 +70,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
           }
      }
      if(openPublishDialog === false && published === true){
-          router.replace(`/${author?.username}/${post?.url}`)
+          router.replace(`/@${author?.username}/${post?.url}`)
      }
      return (
           <>
@@ -86,7 +86,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                               <h1 className="article__title">{post?.title}</h1>
                               <div className="article__meta">
                                    <UserHoverCard user={author} >
-                                        <Link href={`/${author?.username}`}>
+                                        <Link href={`/@${author?.username}`}>
                                              <Avatar className="article__author-avatar border">
                                                   <AvatarImage src={author?.image} alt={author?.username} />
                                                   <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
@@ -97,7 +97,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                    <div className="flex flex-col">
                                         <span className="article__author-name md:text-base text-sm">
                                              <UserHoverCard user={author} >
-                                                  <Link href={`/${author?.username}`}>
+                                                  <Link href={`/@${author?.username}`}>
                                                        {author?.name || author?.username}
                                                        {author?.verified &&
                                                             (

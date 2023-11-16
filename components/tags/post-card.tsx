@@ -49,7 +49,7 @@ export default function TagPostCard(
                <CardContent className="md:p-6 p-2 md:px-4 h-full">
                     <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6">
                          <div className="w-full">
-                              <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+                              <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
                                    <div className="w-full h-auto bg-muted !relative !pb-0 aspect-[2/1]" >
                                         {props.post.cover ? (
                                              <>
@@ -70,7 +70,7 @@ export default function TagPostCard(
                          <div className="col-span-12 flex flex-col justify-between space-y-4 h-full w-full">
                               <div className="flex items-center space-x-1">
                                    <UserHoverCard user={props.post.author} >
-                                        <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
+                                        <Link href={`/@${props.post.author?.username}`} className="flex items-center space-x-0.5">
                                              <Avatar className="h-5 w-5 mr-0.5 border">
                                                   <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
                                                   <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
@@ -84,7 +84,7 @@ export default function TagPostCard(
                               </div>
                               <div className="flex">
                                    <div className="flex-initial w-full">
-                                        <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+                                        <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
                                              <div>
                                                   <div className="pb-2">
                                                        <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title custom">{props.post.title}</h2>

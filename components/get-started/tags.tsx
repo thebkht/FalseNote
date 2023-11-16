@@ -17,6 +17,7 @@ import { Button } from "../ui/button"
 import { Check, Plus } from "lucide-react"
 import { forwardRef, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { validate } from "@/lib/revalidate"
 
 const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { tags: any, session: any }) => {
      const router = useRouter()
@@ -69,9 +70,7 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
           } catch (error) {
                console.error(error);
           }
-          await fetch(`/api/revalidate?path=/tags`, {
-               method: "GET",
-          });
+          await validate('/tags')
      }
 
      return (

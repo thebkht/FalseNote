@@ -37,8 +37,6 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
      }
    }, [inView])
 
-  const { status } = useSession();
-  if (status == "loading") return null;
   return (
     <div className={className}>
       <div className="user-articles w-full">

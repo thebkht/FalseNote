@@ -52,7 +52,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                         </div>
                         <div className="flex flex-col space-y-2">
                           <UserHoverCard user={post.author} >
-                            <Link href={`/${post.author?.username}`} className="flex items-center space-x-0.5">
+                            <Link href={`/@${post.author?.username}`} className="flex items-center space-x-0.5">
                               <Avatar className="h-5 w-5 border">
                                 <AvatarImage src={post.author?.image} alt={post.author?.username} />
                                 <AvatarFallback>{post.author?.name?.charAt(0) || post.author?.username?.charAt(0)}</AvatarFallback>
@@ -63,7 +63,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                               )}
                             </Link>
                           </UserHoverCard>
-                          <Link href={`/${post.author?.username}/${post.url}`}>
+                          <Link href={`/@${post.author?.username}/${post.url}`}>
                             <h2 className="font-extrabold line-clamp-2 max-h-10 text-ellipsis leading-tight tracking-normal">{post.title}</h2>
                           </Link>
                           <span className="text-sm text-muted-foreground">

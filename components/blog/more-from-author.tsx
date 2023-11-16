@@ -1,19 +1,16 @@
 "use client"
 import { formatNumberWithSuffix } from "../format-numbers";
-import PostCard from "./post-card";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { useSession } from "next-auth/react";
 import LoginDialog from "../login-dialog";
 import { useEffect, useState } from "react";
-import { getSessionUser } from "../get-session-user";
 import TagPostCard from "../tags/post-card";
 import Link from "next/link";
-import { Badge } from "../ui/badge";
-import { Check } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Icons } from "../icon";
+import { validate } from "@/lib/revalidate";
 
 export default function MoreFromAuthor({ author: initialAuthor, post: initialPost, sessionUser }: { author: any, post: any, sessionUser: any }) {
      const { status } = useSession();
@@ -45,7 +42,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                     if (!result.ok) {
                          setIsFollowing(!isFollowing);
                     }
-                    await fetch(`/api/revalidate?path=${path}`)
+                    await validate(path);
                     router.refresh();
                     setIsFollowingLoading(false);
                } catch (error) {
@@ -61,7 +58,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                <div className="max-w-[680px] lg:text-xl mx-auto">
                     <div className="author__details flex flex-col gap-y-4">
                          <div className="mx-2 md:mx-6">
-                              <Link href={`/${author?.username}`} className="flex items-center">
+                              <Link href={`/@${author?.username}`} className="flex items-center">
                                    <Avatar className="h-20 w-20 mb-4 border">
                                         <AvatarImage src={author?.image} alt={author?.username} />
                                         <AvatarFallback>{author?.username.charAt(0)}</AvatarFallback>
@@ -70,7 +67,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                               <div className="flex justify-between">
                                    <div className="gap-y-2">
                                         <div className="flex">
-                                             <Link href={`/${author?.username}`} className="flex items-center">
+                                             <Link href={`/@${author?.username}`} className="flex items-center">
                                                   <h2 className="text-2xl font-medium">
                                                        {author?.name || author?.username} {author?.verified &&
                                                             (
@@ -111,7 +108,7 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
                                    </div>
                                    <Separator className="mb-6" />
                                    <Button variant={"outline"} className="w-full md:w-max" size={"lg"} asChild>
-                                        <Link href={`/${author?.username}`}>
+                                        <Link href={`/@${author?.username}`}>
                                              See all from {author?.name || author?.username}
                                         </Link>
                                    </Button>

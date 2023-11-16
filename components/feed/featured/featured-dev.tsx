@@ -6,13 +6,13 @@ import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
 import { Suspense, useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 import { getSessionUser } from "@/components/get-session-user";
 import { useSession } from "next-auth/react";
 import { Icons } from "@/components/icon";
 import UserHoverCard from "@/components/user-hover-card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { validate } from "@/lib/revalidate";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -65,9 +65,7 @@ export default function FeaturedDev(
         setIsFollowing(newFollowingStates);
         newLoadingStates[index] = false;
         setIsFollowingLoading(newLoadingStates);
-        await fetch(`/api/revalidate?path=/feed`, {
-          method: "GET",
-        });
+        await validate('/feed');
       } catch (error) {
         console.error(error);
 
@@ -100,7 +98,7 @@ export default function FeaturedDev(
                 <div className="flex gap-4 w-full items-center justify-between" key={item.id}>
                 <div className="space-y-3">
                 <UserHoverCard user={item} >
-                <Link href={`/${item.username}`} className="flex items-center">
+                <Link href={`/@${item.username}`} className="flex items-center">
                   <Avatar className="mr-1.5 md:mr-2 flex items-center justify-center border bg-muted h-8 w-8">
                     <AvatarImage src={item.image} alt={item.username} />
                     <AvatarFallback>{item.name?.charAt(0) || item.username?.charAt(0)}</AvatarFallback>

@@ -7,7 +7,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
           if (!data) {
                return new Response("No data provided", { status: 400 });
           }
-          console.log("Received data:", data);
 
           const { post, content, author } = data;
 

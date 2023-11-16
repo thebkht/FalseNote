@@ -19,7 +19,6 @@ export default function ExploreTabs() {
      if(path.split("/").slice(0, 2).join("/")){
           pathname = path.split("/").slice(0, 2).join("/")
      }
-     console.log(pathname);
      return (
           <div className="w-full bg-background/70 backdrop-blur-md sticky top-[60px] p-1.5 flex justify-center z-[10]">
                <Tabs defaultValue={pathname}>

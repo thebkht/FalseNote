@@ -102,7 +102,7 @@ export default function SearchBar() {
                     key={user.id}
                     value={user.id}
                   >
-                    <Link href={`/${user.username}`} className="flex items-center">
+                    <Link href={`/@${user.username}`} className="flex items-center">
                     <Avatar className="h-6 w-6 mr-2">
                       <AvatarImage src={user.image} alt={user.username} />
                       <AvatarFallback>{user.username}</AvatarFallback>

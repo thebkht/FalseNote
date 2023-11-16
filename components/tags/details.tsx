@@ -9,6 +9,7 @@ import { is } from "date-fns/locale";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { set } from "date-fns";
+import { validate } from "@/lib/revalidate";
 
 export default function TagDetails({ tag, tagFollowers, session }: { tag: any, tagFollowers: any, session: any }) {
      const router = useRouter();
@@ -38,9 +39,7 @@ export default function TagDetails({ tag, tagFollowers, session }: { tag: any, t
                     console.error(error);
                     setIsFollowingLoading(false);
                }
-               await fetch(`/api/revalidate?path=/tag/${tag.name}`, {
-                    method: "GET",
-                    });
+               await validate(`/tags/${tag.name}`);
                router.refresh();
      }
      

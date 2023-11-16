@@ -82,10 +82,3 @@ try {
           return new Response("error", { status: 500 });
      }
 }
-
-/*Type error: Route "app/api/posts/[username]/opengraph-image/route.tsx" has an invalid export:
-"Promise<ImageResponse | undefined>" is not a valid GET return type:
-Expected "void | Response | Promise<void | Response>", got "Promise<ImageResponse | undefined>".
-  Expected "Promise<void | Response>", got "Promise<ImageResponse | undefined>".
-    Expected "void | Response", got "ImageResponse | undefined".
-      Expected "void | Response", got "ImageResponse".*/

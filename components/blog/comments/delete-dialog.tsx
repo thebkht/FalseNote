@@ -1,7 +1,6 @@
 'use client'
 import { usePathname, useRouter } from "next/navigation";
-import { handleDelete, handleDeleteComment } from "@/components/delete";
-import { Button } from "@/components/ui/button";
+import { handleDeleteComment } from "@/components/delete";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +13,7 @@ import {
   AlertDialogTrigger,
 
 } from "@/components/ui/alert-dialog"
-import { MessageCircle, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 
 export default function CommentDeleteDialog({ comment, user, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { comment: any, user: any }) {

@@ -1,19 +1,14 @@
 import { useRouter } from "next/navigation";
 import { handleDelete } from "../delete";
-import { Button } from "../ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react";
+import { validate } from "@/lib/revalidate";
 
 
 export default function PostDeleteDialog({ post, user, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { post: any, user: any }) {
@@ -37,8 +32,8 @@ export default function PostDeleteDialog({ post, user, ...props }: React.Compone
               <AlertDialogAction onClick={
                 async () => {
                   handleDelete(post?.id, user)
-                  await fetch(`/api/revalidate?path=/${user?.username}`)
-                  router.push(`/${user?.username}`)
+                  await validate(`/@${user?.username}`)
+                  router.push(`/@${user?.username}`)
                 }
               } className="bg-red-600 focus:ring-red-600">Delete</AlertDialogAction>
             </AlertDialogFooter>

@@ -30,7 +30,7 @@ export async function incrementPostViews({ post, author} : { post: string, autho
      return {
           name: cookieName,
           value: "true",
-          path: `/${author}/${post}`,
+          path: `/@${author}/${post}`,
           expires: expirationDate,
           secure: true,
      };

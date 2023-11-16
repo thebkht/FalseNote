@@ -2,13 +2,12 @@
 import { Bookmark, Heart, MessageCircle, MoreHorizontal, Pencil, ShareIcon, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import CommentsSheet from "./comments/comments-sheet";
 import ShareList from "../share-list";
 import { usePathname } from "next/navigation";
 import { handlePostLike } from "../like";
 import { handlePostSave } from "../bookmark";
 import { useEffect, useState } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
 import PostDeleteDialog from "./post-delete-dialog";
 import LoginDialog from "../login-dialog";

@@ -100,7 +100,7 @@ export default async function Feed({
                           (item: any, index: number) => (
                             <li key={item.id} className="text-sm space-y-2.5">
 
-                              <Link href={`/${item.post?.author.username}`} className="text-xs flex items-center mb-2 font-medium">
+                              <Link href={`/@${item.post?.author.username}`} className="text-xs flex items-center mb-2 font-medium">
                                 <Avatar className="h-5 w-5 mr-1 md:mr-1.5 ">
                                   <AvatarImage src={item.post?.author?.image} alt={item.post?.author?.username} />
                                   <AvatarFallback>{item.post?.author?.name?.charAt(0) || item.post?.author?.username?.charAt(0)}</AvatarFallback>
@@ -111,7 +111,7 @@ export default async function Feed({
                               </Link>
 
 
-                              <Link href={`/${item.post?.author.username}/${item.post?.url}`} className="text-base font-bold line-clamp-2 overflow-hidden">
+                              <Link href={`/@${item.post?.author.username}/${item.post?.url}`} className="text-base font-bold line-clamp-2 overflow-hidden">
                                 {item.post?.title}
                               </Link>
                               <div className="text-muted-foreground">
@@ -122,7 +122,7 @@ export default async function Feed({
                             </li>
                           ))}
                         <li className="text-sm space-y-2.5">
-                          <Link href={`/${session.username}?tab=bookmarks`} className="text-xs flex items-center mb-2 font-medium">
+                          <Link href={`/@${session.username}?tab=bookmarks`} className="text-xs flex items-center mb-2 font-medium">
                             See all ({bookmarksCount})
                           </Link>
                         </li>

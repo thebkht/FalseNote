@@ -34,8 +34,6 @@ export default function UserExplore({ className, ...props }: { className?: strin
           fetchUsers();
      }, [status]);
 
-     if (status !== "authenticated") return null;
-
      return (
           <>
                {

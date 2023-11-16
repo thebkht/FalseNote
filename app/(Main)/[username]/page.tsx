@@ -21,6 +21,11 @@ export default async function Page({ params, searchParams }: {
   },
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+  const decodedUsername = decodeURIComponent(params.username);
+  
+  if (!decodedUsername.startsWith('@')) {
+    redirect('/404')
+  }
   const sessionUserName = await getSessionUser();
   const user = await postgres.user.findFirst({
     include: {
@@ -77,7 +82,7 @@ export default async function Page({ params, searchParams }: {
       }
     },
     where: {
-      username: params.username
+      username: decodedUsername.substring(1)
     }
   })
 

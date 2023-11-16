@@ -2,18 +2,13 @@ import React from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark, CalendarDays, Check, Eye, Heart, MessageCircle, MoreHorizontal, Share, User } from "lucide-react";
-import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { Badge } from "../ui/badge";
+import { Bookmark, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
@@ -22,8 +17,6 @@ import { dateFormat } from "@/lib/format-date";
 import ShareList from "../share-list";
 import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
-import { getSessionUser } from "../get-session";
-import { formatNumberWithSuffix } from "../format-numbers";
 import { Skeleton } from "../ui/skeleton";
 
 
@@ -45,7 +38,7 @@ export default function FeedPostCard(
         <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
           <div className="flex items-center space-x-1">
             <UserHoverCard user={props.post.author} >
-              <Link href={`/${props.post.author?.username}`} className="flex items-center space-x-0.5">
+              <Link href={`/@${props.post.author?.username}`} className="flex items-center space-x-0.5">
                 <Avatar className="h-6 w-6 mr-0.5 border">
                   <AvatarImage src={props.post.author?.image} alt={props.post.author?.username} />
                   <AvatarFallback>{props.post.author?.name?.charAt(0) || props.post.author?.username?.charAt(0)}</AvatarFallback>
@@ -64,7 +57,7 @@ export default function FeedPostCard(
         </CardHeader>
         <div className="flex">
           <div className="flex-initial w-full">
-            <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+            <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
               <div>
                 <div className="pb-2">
                   <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title">{props.post.title}</h2>
@@ -100,7 +93,7 @@ export default function FeedPostCard(
                   </div>
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                      <ShareList url={`https://falsenotes.netlify.app/${props.post.author.username}/${props.post.url}`} text={props.post.title}>
+                      <ShareList url={`https://falsenotes.netlify.app/@${props.post.author.username}/${props.post.url}`} text={props.post.title}>
                         <div>
                           <MoreHorizontal className="h-5 w-5" />
                           <span className="sr-only">Share</span>
@@ -115,7 +108,7 @@ export default function FeedPostCard(
           </div>
 
           <div className="flex-none ml-6 md:ml-8">
-            <Link href={`/${props.post.author?.username}/${props.post.url}`}>
+            <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
               <div className="h-14 md:h-28 bg-muted !relative !pb-0 aspect-[4/3] md:aspect-square" >
                 {props.post.cover ? (
                   <>
@@ -160,7 +153,7 @@ export default function FeedPostCard(
               </div>
               <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                  <ShareList url={`https://falsenotes.netlify.app/${props.post.author.username}/${props.post.url}`} text={props.post.title}>
+                  <ShareList url={`https://falsenotes.netlify.app/@${props.post.author.username}/${props.post.url}`} text={props.post.title}>
                     <div>
                       <MoreHorizontal className="h-5 w-5" />
                       <span className="sr-only">Share</span>
