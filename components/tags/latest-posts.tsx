@@ -7,8 +7,6 @@ import Link from "next/link";
 import { Separator } from "../ui/separator";
 
 export default function TagLatestPosts({ posts, tag, session }: { posts: any, tag: any, session: any }) {
-     const { status: sessionStatus } = useSession();
-     if (sessionStatus === "loading") return null;
      return (
           <div className="flex justify-center">
                <div className="mx-6 mb-20 w-full">

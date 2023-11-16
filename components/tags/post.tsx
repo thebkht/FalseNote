@@ -11,8 +11,6 @@ export default function TagPopularPosts({ posts: initialPosts, tag, session }: {
      useEffect(() => {
           setPosts(initialPosts)
      }, [initialPosts])
-     const { status: sessionStatus } = useSession();
-     if (sessionStatus == "loading") return null;
      const firstTwoPosts = posts.slice(0, 2);
      const restPosts = posts.slice(2, posts.length);
      return (

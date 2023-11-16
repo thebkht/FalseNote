@@ -19,13 +19,13 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                _count: { select: { posts: true, followingtag: true } }
           }
      })
-     if (!tag) redirect("/404");
+
      const popularPosts = await postgres.post.findMany({
           where: {
                visibility: 'public',
                tags: {
                     some: {
-                         tagId: tag.id
+                         tagId: tag?.id
                     }
                }
           },
@@ -54,7 +54,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                visibility: 'public',
                tags: {
                     some: {
-                         tagId: tag.id
+                         tagId: tag?.id
                     }
                }
           },
@@ -73,7 +73,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
           },
           take: 5
      });
-
+     if (!tag) redirect("/404");
      const session = await getSessionUser();
      return (
           <>
