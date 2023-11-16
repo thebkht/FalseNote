@@ -14,11 +14,11 @@ export default function NotFound() {
     <AlertDialogContent className="p-0 border-none">
     <EmptyPlaceholder className="w-full">
       <EmptyPlaceholder.Icon name="warning" />
-      <EmptyPlaceholder.Title>Uh oh! Not Found</EmptyPlaceholder.Title>
+      <EmptyPlaceholder.Title>Page not found</EmptyPlaceholder.Title>
       <EmptyPlaceholder.Description>
-        We couldn&apos;t find what you were looking for.
+        Sorry 😔 — we couldn&apos;t find what you were looking for.
       </EmptyPlaceholder.Description>
-      <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+      <Link href="/" className={buttonVariants({ variant: "default" })}>
         Go to Home
       </Link>
     </EmptyPlaceholder>

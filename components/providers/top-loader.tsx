@@ -1,16 +1,20 @@
 "use client";
 
+import { Theme } from "@/lib/theme";
 import NextTopLoader from "nextjs-toploader";
+import { useTheme } from "next-themes";
 
 function TopLoader() {
+  const { theme, setTheme } = useTheme(); 
   return (
     <NextTopLoader
-      color="#1e9cf1"
+      color={'#2463eb'}
       initialPosition={0.1}
-      crawl={true}
-      showSpinner={false}
+      crawlSpeed={200}
+      showSpinner={true}
       easing="ease"
-      shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+      speed={600}
+      shadow="0 0 10px #2463eb, 0 0 5px #2463eb"
     />
   );
 }
