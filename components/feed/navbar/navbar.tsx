@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
+import { Plus } from "lucide-react";
 
 
 export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tabs: any, activeTab?: string, children?: React.ReactNode }) {
@@ -25,7 +26,10 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
                     <Tabs defaultValue={activeTab} className="">
                          <ScrollArea className="w-full py-2">
                               <TabsList className="bg-transparent gap-2">
-                                   <TabsTrigger value="foryou" ref={firstTab} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                                   <TabsTrigger asChild value="explore" ref={firstTab} className="bg-transparent">
+                                        <Link href={`/explore`}><Plus className="h-5 w-5" /></Link>
+                                   </TabsTrigger>
+                                   <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
                                         <Link href={`/feed`}>For You</Link>
                                    </TabsTrigger>
                                    <Link href={`/feed?tab=following`}>
