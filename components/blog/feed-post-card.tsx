@@ -24,6 +24,7 @@ import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
 import { getSessionUser } from "../get-session";
 import { formatNumberWithSuffix } from "../format-numbers";
+import { Skeleton } from "../ui/skeleton";
 
 
 export default function FeedPostCard(
@@ -117,12 +118,15 @@ export default function FeedPostCard(
             <Link href={`/${props.post.author?.username}/${props.post.url}`}>
               <div className="h-14 md:h-28 bg-muted !relative !pb-0 aspect-[4/3] md:aspect-square" >
                 {props.post.cover ? (
+                  <>
                   <Image
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
                     className="object-cover w-full"
                   />
+                  <Skeleton className="w-full h-full" />
+                  </>
                 ) : (
                   <Icons.noThumbnail className="w-full h-full" />
                 )}

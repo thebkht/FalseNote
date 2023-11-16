@@ -27,6 +27,7 @@ import { formatNumberWithSuffix } from "../format-numbers";
 import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
 import LoginDialog from "../login-dialog";
+import { Skeleton } from "../ui/skeleton";
 
 
 export default function PostCard(
@@ -118,9 +119,9 @@ export default function PostCard(
                                                   {
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                       <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
-                                                       <span className="sr-only">Save</span>
-                                                  </Button>
+                                                                 <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
+                                                                 <span className="sr-only">Save</span>
+                                                            </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
@@ -149,12 +150,15 @@ export default function PostCard(
                               <Link href={`/${props.post.author?.username}/${props.post.url}`}>
                                    <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                         {props.post.cover ? (
-                                             <Image
-                                                  src={props.post.cover}
-                                                  fill
-                                                  alt={props.post.title}
-                                                  className="object-cover w-full"
-                                             />
+                                             <>
+                                                  <Image
+                                                       src={props.post.cover}
+                                                       fill
+                                                       alt={props.post.title}
+                                                       className="object-cover w-full"
+                                                  />
+                                                  <Skeleton className="w-full h-full" />
+                                             </>
                                         ) : (
                                              <Icons.noThumbnail className="w-full h-full" />
                                         )}
@@ -181,26 +185,26 @@ export default function PostCard(
                               </div>
                               <div className="stats flex items-center justify-around gap-1">
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                   {
-                                                       props.session ? (
-                                                            <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                        {
+                                             props.session ? (
+                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                                                        <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
                                                   </Button>
-                                                       ) : (
-                                                            <LoginDialog>
-                                                                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                                      <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
-                                                                 </Button>
-                                                            </LoginDialog>
-                                                       )
-                                                  }
+                                             ) : (
+                                                  <LoginDialog>
+                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                            <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                                       </Button>
+                                                  </LoginDialog>
+                                             )
+                                        }
                                    </div>
                                    <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                   <PostMoreActions post={props.post} session={props.session}>
-                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                            <MoreHorizontal className="h-5 w-5" />
-                                                       </Button>
-                                                  </PostMoreActions>
+                                        <PostMoreActions post={props.post} session={props.session}>
+                                             <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                  <MoreHorizontal className="h-5 w-5" />
+                                             </Button>
+                                        </PostMoreActions>
                                    </div>
                               </div>
                          </div>

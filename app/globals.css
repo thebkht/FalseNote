@@ -390,17 +390,11 @@
 }
 
 .markdown-body pre {
-  @apply !py-2 !px-4 !rounded-sm !text-card-foreground !m-0 h-fit align-middle !bg-popover;
+  @apply !py-2 !px-4 !rounded-sm !text-card-foreground !my-auto h-fit align-middle !bg-popover text-base;
 }
-/* 
-.markdown-body p code, .markdown-body li code,
-.markdown-body h3 code, .markdown-body h4 code,
-.markdown-body h5 code, .markdown-body h6 code {
-  @apply !my-1 !rounded-sm !text-card-foreground !px-2.5 !py-0.5 w-fit inline-flex !bg-muted;
-} */
 
 .markdown-body code {
-  @apply py-1.5 px-1.5 !rounded-sm text-card-foreground !bg-muted;
+  @apply py-1 px-1.5 !rounded border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80;
   font-family: var(--font-geist-mono)
 }
 

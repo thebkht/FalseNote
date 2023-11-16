@@ -15,7 +15,7 @@ const CodeBlock = ({ className, children }: { className: string, children: strin
     lang = className.replace('lang-', '');
   }
   return (
-    <div className="flex justify-between bg-popover border rounded-sm">
+    <div className="flex justify-between bg-popover border rounded-sm my-2">
       <SyntaxHighlighter language={lang} style={Theme() == 'light' ? oneLight : oneDark} customStyle={{
         backgroundColor: "transparent",
       }}>

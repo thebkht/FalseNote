@@ -24,6 +24,7 @@ import { getSessionUser } from "../get-session";
 import { formatNumberWithSuffix } from "../format-numbers";
 import LoginDialog from "../login-dialog";
 import { dateFormat } from "@/lib/format-date";
+import { Skeleton } from "../ui/skeleton";
 
 export default function LandingPostCard(
   props: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -99,12 +100,15 @@ export default function LandingPostCard(
             <Link href={`/${props.post.author?.username}/${props.post.url}`} aria-label={`Link to ${props.post.title} by ${props.post.author?.username}`}>
               <div className="h-[100px] md:h-36 bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square" >
                 {props.post.cover ? (
+                  <>
                   <Image
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
                     className="object-cover w-full"
                   />
+                  <Skeleton className="w-full h-full" />
+                  </>
                 ) : (
                   <Icons.noThumbnail className="w-full h-full" />
                 )}

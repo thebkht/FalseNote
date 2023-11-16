@@ -13,35 +13,9 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../icon";
 import { Eye, Heart, MessageCircle } from "lucide-react";
-import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-
-
-function formatDate(dateString: string | number | Date) {
-  const date = new Date(dateString);
-  const currentYear = new Date().getFullYear();
-  const year = date.getFullYear();
-  
-  let formattedDate = date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-  });
-
-  if (year !== currentYear) {
-    formattedDate = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    });
-  }
-
-  return formattedDate;
-}
+import { AspectRatio } from "../ui/aspect-ratio";
+import { dateFormat } from "@/lib/format-date";
+import { Skeleton } from "../ui/skeleton";
 
 
 function PostCard(
@@ -71,6 +45,7 @@ function PostCard(
       <CardContent className="px-4 md:px-6 py-0">
       <CardHeader className={cn("py-4 md:py-6 px-0 gap-y-2 md:gap-y-4")}>
         {props.thumbnail ? (
+          <>
           <AspectRatio ratio={16 / 9}>
             <Image
             src={props.thumbnail}
@@ -82,6 +57,8 @@ function PostCard(
             "
           />
           </AspectRatio>
+          <Skeleton className="w-full h-full rounded-md" />
+          </>
         ) : (
           <AspectRatio ratio={16 / 9}>
             <Icons.noThumbnail className="w-full h-full rounded-md" />
@@ -100,7 +77,7 @@ function PostCard(
         </CardDescription>
       </CardHeader>
       <CardFooter className="px-0 justify-between text-sm md:text-base">
-        <p className="card-text inline mb-0 text-muted-foreground">{formatDate(props.date)}</p>
+        <p className="card-text inline mb-0 text-muted-foreground">{dateFormat(props.date)}</p>
                   <div className="stats flex items-center gap-3">
                     
                     <p className="card-text inline mb-0 text-muted-foreground flex"><Eye className="mr-1 md:h-6 md:w-6 h-5 w-5" /> {props.views}</p>

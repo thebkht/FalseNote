@@ -26,6 +26,7 @@ import { handlePostSave } from "../bookmark";
 import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
 import LoginDialog from "../login-dialog";
+import { Skeleton } from "../ui/skeleton";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -51,12 +52,15 @@ export default function TagPostCard(
                               <Link href={`/${props.post.author?.username}/${props.post.url}`}>
                                    <div className="w-full h-auto bg-muted !relative !pb-0 aspect-[2/1]" >
                                         {props.post.cover ? (
-                                             <Image
-                                                  src={props.post.cover}
-                                                  fill
-                                                  alt={props.post.title}
-                                                  className="object-cover bg-muted"
-                                             />
+                                             <>
+                                                  <Image
+                                                       src={props.post.cover}
+                                                       fill
+                                                       alt={props.post.title}
+                                                       className="object-cover bg-muted"
+                                                  />
+                                                  <Skeleton className="w-full h-full rounded-md" />
+                                             </>
                                         ) : (
                                              <Icons.noThumbnail className="h-full" />
                                         )}
