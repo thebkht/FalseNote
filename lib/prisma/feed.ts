@@ -88,7 +88,7 @@ const baseQuery = {
   },
 };
 
-const getForYou = async ({ page = 0, limit = 5 }: { page?: number, limit?: number | undefined}) => {
+const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit?: number | undefined}) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
@@ -137,8 +137,8 @@ const uniquePosts = posts.filter((post, index) => posts.findIndex((p) => p.id ==
 return fetchFeed({
   where: { id: { in: uniquePosts.map((post) => post.id) }, visibility: "public" },
   ...baseQuery,
-  take: limit,
-  skip: page * limit,
+  take: Number(limit),
+  skip: page * Number(limit),
 });
 };
 
@@ -151,7 +151,7 @@ const fetchFeed = async (query: any) => {
   }
 };
 
-export const getFeed = async ({ page = 0, tab, limit = 5 }: { page?: number | undefined; tab?: string | undefined, limit?: number | undefined }) => {
+export const getFeed = async ({ page = 0, tab, limit = 10 }: { page?: number | undefined; tab?: string | undefined, limit?: number | undefined }) => {
   const user = await getSessionUser();
   if (!user) {
     return null;
@@ -170,8 +170,8 @@ export const getFeed = async ({ page = 0, tab, limit = 5 }: { page?: number | un
       const followingIds = following.map((user) => user.followingId);
       return fetchFeed({
         ...baseQuery,
-        take: limit,
-        skip: page * limit,
+        take: Number(limit),
+        skip: page * Number(limit),
         where: { authorId: { in: followingIds }, visibility: "public" },
         select: {
           ...baseQuery.select,
@@ -191,8 +191,8 @@ export const getFeed = async ({ page = 0, tab, limit = 5 }: { page?: number | un
     const postIds = postTags.map((postTag) => postTag.postId);
     return fetchFeed({
       ...baseQuery,
-      take: limit,
-      skip: page * limit,
+      take: Number(limit),
+      skip: page * Number(limit),
       where: { id: { in: postIds }, visibility: "public" },
     });
   } 

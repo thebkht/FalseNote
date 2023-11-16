@@ -22,7 +22,6 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 function Navbar() {
   const { data: session, status } = useSession();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   /* useEffect(() => {
     async function getNotifications(){
@@ -56,7 +55,7 @@ function Navbar() {
         </Button>
         <SearchBar />
         {
-          session ? (
+          status == 'authenticated' ? (
             <>
               <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
               <UserNav />
