@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { Skeleton } from "../ui/skeleton";
 import FeedPostCard from "../blog/feed-post-card";
@@ -39,14 +39,13 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
 
       <div className="divide-y">
         {feed?.map((post: any) => (
-          <>
-            <FeedPostCard
-              key={post.id}
-              post={post}
-              session={session}
-            />
-            <Separator />
-          </>
+          <React.Fragment key={post.id}>
+          <FeedPostCard
+            post={post}
+            session={session}
+          />
+          <Separator />
+        </React.Fragment>
         ))}
 
         {
