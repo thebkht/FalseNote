@@ -1,14 +1,9 @@
 'use server'
 import { getSessionUser } from "@/components/get-session-user"
-import { notFound, redirect, useRouter } from "next/navigation"
+import { notFound } from "next/navigation"
 import postgres from "@/lib/postgres"
 import Post from "@/components/blog/post"
-import PostComment from "@/components/blog/comment"
-import MoreFromAuthor from "@/components/blog/more-from-author"
 import { cookies } from 'next/headers'
-import { Separator } from "@/components/ui/separator"
-import RelatedPosts from "@/components/blog/related-posts"
-import readingTime from 'reading-time';
 
 export default async function PostView({ params, searchParams }: { params: { username: string, url: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
      const commentsOpen = typeof searchParams.commentsOpen === 'string' ? searchParams.commentsOpen : undefined
