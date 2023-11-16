@@ -15,7 +15,7 @@ export default function PostCardSkeletonV2(
                               </div>
                          </div>
                          <div className="col-span-12 flex flex-col justify-between space-y-4 h-full w-full">
-                              <div className="flex items-center space-x-1">
+                              <div className="flex items-center gap-1.5">
                                    <Skeleton className="w-5 h-5 rounded-full" />
                                    <Skeleton className="w-20 h-5" />
                               </div>

@@ -11,7 +11,7 @@ export default function PostCardSkeleton(
                <CardContent className="p-0">
                     <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
                          <div className="flex items-center space-x-1">
-                              <div className="flex items-center space-x-1">
+                              <div className="flex items-center gap-1.5">
                                    <Skeleton className="w-5 h-5 rounded-full" />
                                    <Skeleton className="w-20 h-5" />
                                    <Skeleton className="w-16 h-5" />
