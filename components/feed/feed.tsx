@@ -51,7 +51,7 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
 
         <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
           <Card className="rounded-lg bg-backgreound max-h-72 w-full border-none shadow-none">
-            <CardContent className="px-4 md:px-6 py-0">
+            <CardContent className="py-0 px-0 md:px-4">
               <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
                 <div className="flex items-center space-x-1">
                   <Skeleton className="h-6 w-6 mr-1 md:mr-1.5" />
