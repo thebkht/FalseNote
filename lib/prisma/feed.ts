@@ -88,7 +88,7 @@ const baseQuery = {
   },
 };
 
-const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit?: number | undefined}) => {
+export const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit?: number | undefined}) => {
   const user = await getSessionUser();
   if (!user) {
     return null;

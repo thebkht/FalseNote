@@ -1,9 +1,11 @@
 import MoreFromAuthor from '@/components/blog/more-from-author';
 import RelatedPosts from '@/components/blog/related-posts';
+import { fetchFeed } from '@/components/feed/get-feed';
 import { SiteFooter } from '@/components/footer';
 import { getSessionUser } from '@/components/get-session-user';
 import { Separator } from '@/components/ui/separator';
 import postgres from '@/lib/postgres';
+import { getForYou } from '@/lib/prisma/feed';
 import type { Metadata } from 'next'
 
 type Props = {
@@ -192,8 +194,11 @@ export default async function PostLayout(
           },
           take: 6
      });
+     const data = await getForYou({ limit: 6 });
+     const forYou = data?.feed;
      const sessionUser = await getSessionUser();
-     relatedPosts.length % 2 !== 0 && relatedPosts.pop();
+     const posts = relatedPosts.length > 0 ? relatedPosts : forYou;
+     posts.length % 2 !== 0 && posts.pop();
      return (
           <>
                <div className='md:container mx-auto px-4'>
@@ -204,11 +209,11 @@ export default async function PostLayout(
                     <div className=' md:container mx-auto px-4'>
                          <MoreFromAuthor post={authorPosts} author={author} sessionUser={sessionUser} />
                          {
-                              relatedPosts?.length > 0 &&
+                              posts?.length > 0 &&
                               (
                                    <>
                                         <Separator className="mt-14 mb-8" />
-                                        <RelatedPosts posts={relatedPosts} post={post} session={sessionUser} />
+                                        <RelatedPosts posts={posts} post={post} session={sessionUser} />
                                    </>
                               )
 
