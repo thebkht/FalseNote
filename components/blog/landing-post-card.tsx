@@ -105,7 +105,7 @@ export default function LandingPostCard(
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
-                    className="object-cover w-full z-[1] bg-muted"
+                    className="object-cover w-full z-[1]"
                   />
                   <Skeleton className="w-full h-full" />
                   </>

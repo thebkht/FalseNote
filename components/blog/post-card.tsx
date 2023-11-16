@@ -52,7 +52,6 @@ function PostCard(
             fill
             alt={props.title}
             className="z-[1]
-            bg-muted
             object-cover
             w-full
             "
