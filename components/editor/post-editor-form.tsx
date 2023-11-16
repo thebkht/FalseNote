@@ -92,7 +92,7 @@ const postFormSchema = z.object({
     })
     .optional(),
   url: z.string(),
-  subtitle: z.string().max(280).optional(),
+  subtitle: z.string().max(280, { message: "Subtitle must not be longer than 280 characters." }).optional(),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
