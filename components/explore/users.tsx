@@ -73,6 +73,7 @@ export default function Users({ users: initialUser, search, session }: { users: 
                                                        }
                                                   </Link>
                                              </UserHoverCard>
+                                             {item.bio && ( <p className="text-sm text-muted-foreground">{item.bio}</p> )}
                                         </div>
                                    </div>
                               ))}

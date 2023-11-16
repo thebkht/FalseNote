@@ -29,7 +29,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import Image from "next/image"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
-import { ArrowUp, Check, Eye, Hash, Pencil, RefreshCcw, Trash, Trash2 } from "lucide-react"
+import { ArrowUp, Check, Eye, Hash, Pencil, RefreshCcw, Save, Trash, Trash2 } from "lucide-react"
 import { ScrollArea } from "../ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TextareaAutosize from 'react-textarea-autosize';
@@ -203,7 +203,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
   }
   const [isValidUrl, setIsValidUrl] = useState<boolean | null>(null);
   const [isPublishing, setIsPublishing] = useState<boolean>(false);
-  const [cover, setCover] = useState<string>('');
+  const [cover, setCover] = useState<string>(props.post?.cover || '');
   const [file, setFile] = useState<File>(); // State for the uploaded file
 
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -384,7 +384,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
               )}
             /></TabsContent>
             <TabsContent value="preview" className="pb-5 px-3 bg-popover text-sm rounded-md">
-            <MarkdownCard code={markdownContent} />
+              <MarkdownCard code={markdownContent} />
             </TabsContent>
           </Tabs>
 
@@ -470,31 +470,57 @@ export function PostEditorForm(props: { post: any, user: any }) {
                         <FormLabel>Post Preview</FormLabel>
                         <FormControl>
                           <>
-                            {
-                              cover && (
-                                <AspectRatio ratio={16 / 9} className="bg-muted">
+                            
+                            <div className="flex items-center justify-center w-full">
+                              <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-md cursor-pointer bg-popover/50">
+                              {
+                              cover ? (
+                                <AspectRatio ratio={16 / 9} className="bg-muted rounded-md">
                                   <Image
                                     src={file ? URL.createObjectURL(file) as string : field.value as string}
                                     alt="Cover Image"
                                     fill
-                                    className="rounded-md object-cover"
+                                    className="object-cover rounded-md"
                                   />
                                 </AspectRatio>
+                              ) : (
+                            
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                  <svg className="w-8 h-8 mb-4 text-secondary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                  </svg>
+                                  <p className="mb-2 text-sm text-secondary-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                  <p className="text-xs text-secondary-foreground">PNG, JPG (MAX. 2MB)</p>
+                                </div> )
+                                }
+                                <Input id="dropzone-file" type="file" accept="image/*" onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    if (file.size > 2 * 1024 * 1024) {
+                                      toast({ description: "File size should not exceed 2MB.", variant: "destructive" });
+                                    } else if (!['image/png', 'image/jpeg'].includes(file.type)) {
+                                      toast({ description: "File type must be PNG or JPEG.", variant: "destructive" });
+                                    } else {
+                                      setFile(file);
+                                    }
+                                  }
+                                }} className="hidden" />
+                              </label>
+                            </div>
+                            {
+                              (cover || file) && (
+                                <div className="flex items-center justify-center">
+                                  <Button variant="ghost" className="" onClick={() => {
+                                    form.setValue('coverImage', '');
+                                    setCover('');
+                                    setFile(undefined);
+                                  }}>
+                                    <Trash2 className="h-4 w-4" />
+                                    <span className="sr-only">Remove</span>
+                                  </Button>
+                                </div>
                               )
                             }
-                            <Input type="file" accept="image/*" onChange={(e) => {
-                              const file = e.target.files?.[0];
-                              if (file) {
-                                if (file.size > 2 * 1024 * 1024) {
-                                  toast({ description: "File size should not exceed 2MB.", variant: "destructive" });
-                                } else if (!['image/png', 'image/jpeg'].includes(file.type)) {
-                                  toast({ description: "File type must be PNG or JPEG.", variant: "destructive" });
-                                } else {
-                                  setFile(file);
-                                }
-                              }
-                            }} />
-
                           </>
                         </FormControl>
                         <FormMessage />
@@ -618,7 +644,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
       </Form>
       <div className="flex absolute right-3.5 top-0 z-50 gap-1.5">
         <Dialog>
-          <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Check className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
+          <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Save className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
           <DialogContent className="flex flex-col justify-center md:w-72">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
               <RefreshCcw className={"h-10 w-10"} strokeWidth={1.25} />
@@ -630,18 +656,16 @@ export function PostEditorForm(props: { post: any, user: any }) {
               </p>
             </div>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button onClick={() => saveDraft()} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
-                  isSaving ? (
-                    <>
-                      <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
-                    </>
-                  ) : (
-                    <>Save</>
-                  )
+              <Button onClick={() => saveDraft()} className="m-auto" size={"lg"} variant="outline" disabled={isSaving}>{
+                isSaving ? (
+                  <>
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Saving
+                  </>
+                ) : (
+                  <>Save</>
+                )
 
-                }</Button>
-              </DialogClose>
+              }</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

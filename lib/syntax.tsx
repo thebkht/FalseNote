@@ -22,7 +22,7 @@ const CodeBlock = ({ className, children }: { className: string, children: strin
         {children}
       </SyntaxHighlighter>
       <div className="clipboard-button p-2 h-12">
-        <Button variant={'ghost'} size={'icon'} className="h-8 w-8 rounded-sm" onClick={
+        <Button variant={'ghost'} size={'icon'} className="h-8 w-8 rounded-sm" asChild onClick={
           () => {
             navigator.clipboard.writeText(code);
             setCopied(true);
@@ -31,6 +31,7 @@ const CodeBlock = ({ className, children }: { className: string, children: strin
             }, 1000);
           }
         }>
+          <div>
           {
             copied ? (
               <TooltipProvider>
@@ -51,6 +52,7 @@ const CodeBlock = ({ className, children }: { className: string, children: strin
               </>
             )
           }
+          </div>
         </Button>
       </div>
     </div>
