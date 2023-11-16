@@ -316,7 +316,7 @@
 }
 
 
-.markdown-body p {
+.markdown-body p, .markdown-body span {
   @apply mb-4 text-sm md:text-base text-foreground;
 }
 

@@ -21,6 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         content: content,
         authorId: author,
         postId: post,
+        parentId: null,
       },
     });
 
