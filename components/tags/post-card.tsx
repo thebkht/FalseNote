@@ -50,7 +50,7 @@ export default function TagPostCard(
                     <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6">
                          <div className="w-full">
                               <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
-                                   <div className="w-full h-auto bg-muted !relative !pb-0 aspect-[2/1]" >
+                                   <div className="w-full h-auto bg-muted !relative !pb-0 aspect-[2/1] overflow-hidden" >
                                         {props.post.cover ? (
                                              <>
                                                   <Image
@@ -62,7 +62,7 @@ export default function TagPostCard(
                                                   <Skeleton className="w-full h-full rounded-md" />
                                              </>
                                         ) : (
-                                             <Icons.noThumbnail className="h-full" />
+                                             <Icons.noThumbnail className="w-full h-full" />
                                         )}
                                    </div>
                               </Link>

@@ -66,7 +66,7 @@ export const Icons = {
           </svg>
      ),
      noThumbnail: (props: IconProps) => (
-          <svg className={cn("w-full h-full bg-muted", props.className)} xmlns="http://www.w3.org/2000/svg" {...props} fill="none" viewBox="0 0 189 112">
+          <svg className={cn("h-full bg-muted", props.className)} xmlns="http://www.w3.org/2000/svg" {...props} viewBox="0 0 189 112">
   <path d="M59.2,29.2L59.2,29.2l-58.7,0l29.3,50.9h58.4L59.2,29.2z M88.2,80.1L69.9,112h54.8L143,80.1v0H88.2z M76,0L59.2,29.2h113.2
 	L189.2,0H76z" className="fill-muted-foreground/30 h-full"/>
 </svg>

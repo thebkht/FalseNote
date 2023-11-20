@@ -145,7 +145,7 @@ export default function PostCard(
 
                          <div className="flex-none ml-6 md:ml-8">
                               <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.id}` : `/@${props.post.author?.username}/${props.post.url}`}>
-                                   <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
+                                   <div className={`h-14 md:h-28 !relative bg-muted overflow-hidden !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                         {props.post.cover ? (
                                              <>
                                                   <Image
@@ -157,7 +157,7 @@ export default function PostCard(
                                                   <Skeleton className="w-full h-full" />
                                              </>
                                         ) : (
-                                             <Icons.noThumbnail className="w-full h-full" />
+                                             <Icons.noThumbnail className="h-full" />
                                         )}
                                    </div>
                               </Link>
