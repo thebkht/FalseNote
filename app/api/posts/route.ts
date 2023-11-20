@@ -100,7 +100,7 @@ export async function POST(req: Request) {
         visibility: json.visibility,
       },
       select: {
-        url: true,
+        id: true,
       },
     });
 
