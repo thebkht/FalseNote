@@ -23,7 +23,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
         <div className="landing__hero px-6 xl:px-36 2xl:px-64 border-b">
           <div className="landing__hero_content flex flex-col md:my-24 my-8 space-y-8 md:space-y-24 items-center justify-center">
             <div className="landing_hero-image w-[120vw] md:w-full">
-              <Image loading="eager" src="https://falsenotescontent.s3.ap-northeast-2.amazonaws.com/header/header-img.png" sizes="100vw" width={1200} height={283} layout="responsive"
+              <Image loading="eager" src="https://s3.ap-northeast-2.amazonaws.com/falsenotes.cdn/header/header-img.png" sizes="100vw" width={1200} height={283} layout="responsive"
                 // Make the image display full width
                 style={{
                   width: '120vw',
