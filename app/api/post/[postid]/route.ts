@@ -47,12 +47,7 @@ export async function PATCH(
       select: {
         visibility: true,
       },
-    });
-    await postgres.postTag.deleteMany({
-      where: {
-        postId: postid,
-      },
-    });
+    })
 
     await postgres.post.update({
       where: {
@@ -70,6 +65,12 @@ export async function PATCH(
         visibility === "public" && { createdAt: new Date() }),
       ...(oldData?.visibility === "public" &&
         visibility === "public" && { updatedAt: new Date(), updated: true }),
+      },
+    });
+
+    await postgres.postTag.deleteMany({
+      where: {
+        postId: postid,
       },
     });
 

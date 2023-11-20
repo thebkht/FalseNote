@@ -6,6 +6,13 @@ function sanitizeTagName(tag: string): string {
 }
 
 export async function insertTag(tags: any, postid: string) {
+  //delete all tags connected to post
+  await postgres.postTag.deleteMany({
+    where: {
+      postId: postid,
+    },
+  });
+  
   if (tags) {
     const uniqueTags = new Set<string>(
       tags.map((tag: any) => sanitizeTagName(tag.value))
