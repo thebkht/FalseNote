@@ -4,7 +4,7 @@ import postgres from "@/lib/postgres";
 export async function incrementPostViews({ post, author} : { post: string, author: string }) {
      const cookieName = `post_views_${author}_${post}`;
 
-     const authorId = await postgres.user.findUnique({
+     const authorId = await postgres.user.findFirst({
           where: {
             username: author,
           },
