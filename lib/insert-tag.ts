@@ -1,3 +1,4 @@
+import { Post, Tag } from "@prisma/client";
 import postgres from "./postgres";
 
 function sanitizeTagName(tag: string): string {
@@ -12,7 +13,7 @@ export async function insertTag(tags: any, postid: string) {
       postId: postid,
     },
   });
-  
+
   if (tags) {
     const uniqueTags = new Set<string>(
       tags.map((tag: any) => sanitizeTagName(tag.value))
@@ -29,14 +30,13 @@ export async function insertTag(tags: any, postid: string) {
         });
         await connectTagToPost(tagId.id, postid);
       } else {
-        console.log("tag exists and connected to post");
         await connectTagToPost(tagExists.id, postid);
       }
     }
   }
 }
 
-async function connectTagToPost(tagId: any, postid: any) {
+async function connectTagToPost(tagId: Tag['id'], postid: Post['id']) {
   //first check if tag is already connected to post
   const tagAlreadyConnected = await postgres.postTag.findFirst({
     where: {
