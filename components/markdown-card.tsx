@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { PreBlock } from "@/lib/syntax"
 import Markdown from "markdown-to-jsx"
 
@@ -9,11 +10,13 @@ export default function MarkdownCard({ code }: { code: string }) {
                          pre: PreBlock,
                          img: {
                               component: (props: any) => {
-                                   return (
+                                   return props.title ? (
                                         <figure>
-                                             <img {...props} className="!relative w-full" />
+                                             <img {...props} className="!relative w-full" alt={props.alt} />
                                              <figcaption className="text-center text-sm text-muted">{props.title}</figcaption>
                                         </figure>
+                                   ) : (
+                                        <img {...props} className="!relative w-full" alt={props.alt} />
                                    )
                               }
                          },
