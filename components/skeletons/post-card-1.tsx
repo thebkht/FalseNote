@@ -17,16 +17,16 @@ export default function PostCardSkeletonV2(
                          <div className="col-span-12 flex flex-col justify-between space-y-4 h-full w-full">
                               <div className="flex items-center gap-1.5">
                                    <Skeleton className="w-5 h-5 rounded-full" />
-                                   <Skeleton className="w-20 h-5" />
+                                   <Skeleton className="w-40 h-5" />
                               </div>
                               <div className="flex">
                                    <div className="flex-initial w-full">
                                         <div>
-                                             <div className="pb-2">
+                                             <div className="mb-6 space-y-2">
                                                   <Skeleton className="w-full h-6" />
                                                   <Skeleton className="w-full h-6" />
                                              </div>
-                                             <div className="post-subtitle hidden md:block">
+                                             <div className="post-subtitle hidden md:block space-y-2">
                                                   <Skeleton className="w-full h-5" />
                                                   <Skeleton className="w-full h-5" />
                                                   <Skeleton className="w-full h-5" />
@@ -35,7 +35,7 @@ export default function PostCardSkeletonV2(
                                    </div>
                               </div>
                               <div className="">
-                                   <Skeleton className="w-16 h-5" />
+                                   <Skeleton className="w-24 h-5" />
                               </div>
                          </div>
                     </div>
