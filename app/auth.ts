@@ -32,7 +32,7 @@ export const config = {
         // Check if the user exists in your database based on their email
         const userExists = await postgres.user.findFirst({
           where: {
-            password: githubId.toString()
+            githubId: githubId.toString()
           }
         })
   
