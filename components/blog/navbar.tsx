@@ -18,10 +18,10 @@ export default function PostTabs({ post: initialPost, className, session, author
           setPost(initialPost);
      }, [initialPost])
      const pathname = usePathname();
-     const like = async (postId: number) => {
+     const like = async (postId: string) => {
           await handlePostLike({ postId, path: pathname });
      }
-     const save = async (postId: number) => {
+     const save = async (postId: string) => {
           await handlePostSave({ postId, path: pathname });
      }
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
