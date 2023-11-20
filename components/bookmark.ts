@@ -23,7 +23,6 @@ export const handlePostSave = async ({ postId, path} : {postId: string, path: st
                      id: saved.id
                    }
                  })
-                 console.log("unsaved")
                } else {
                  await postgres.bookmark.create({
                    data: {

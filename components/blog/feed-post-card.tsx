@@ -28,7 +28,7 @@ export default function FeedPostCard(
   }
 ) {
   const pathname = usePathname();
-  const save = async (postId: number) => {
+  const save = async (postId: string) => {
     await handlePostSave({ postId, path: pathname });
   }
   const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);

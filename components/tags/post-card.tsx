@@ -36,10 +36,10 @@ export default function TagPostCard(
      }
 ) {
      const pathname = usePathname();
-     const save = async (postId: number) => {
+     const save = async (postId: string) => {
           await handlePostSave({ postId, path: pathname });
      }
-     const like = async (postId: number) => {
+     const like = async (postId: string) => {
           await handlePostLike({ postId, path: pathname });
      }
      const isLiked = props.post?.likes?.some((like: any) => like.authorId === props.session?.id);
