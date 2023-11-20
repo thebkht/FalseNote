@@ -52,7 +52,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                          session?.id === post?.authorId && (
                               <DropdownMenuGroup>
                                    <DropdownMenuItem asChild>
-                                        <Link href={`/editor/${post?.url}`}>
+                                        <Link href={`/editor/${post?.id}`}>
                                              <Pencil className="mr-2 h-4 w-4" />
                                              <span>Edit</span>
                                         </Link>

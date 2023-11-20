@@ -18,7 +18,7 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
     // Execute a query to fetch the specific user by name
-    const author = await postgres.user.findUnique({
+    const author = await postgres.user.findFirst({
       where: {
         username: username,
       }

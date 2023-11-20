@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 // api to execute the top users query by followers and return the result
 export async function GET(request: NextRequest) {
   try {
-    const userid = Number(request.nextUrl.searchParams.get("user")); 
+    const userid = request.nextUrl.searchParams.get("user")?.toString(); 
     
     const topUsers = await postgres.user.findMany({
       include: {

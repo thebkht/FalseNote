@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: `falsenotescontent.s3.ap-northeast-2.amazonaws.com`,
+        hostname: `falsenotes.cdn.s3.ap-northeast-2.amazonaws.com`,
         port: '',
         pathname: `/**`,
       },
@@ -14,11 +14,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: `s3.ap-northeast-2.amazonaws.com`,
         port: '',
-        pathname: `/falsenotes.app/**`,
+        pathname: `/falsenotes.cdn/**`,
       },
       {
         protocol: 'https',
-        hostname: `falsenotes.vercel.app`,
+        hostname: `falsenotes.netlify.app`,
         port: '',
         pathname: `/**`,
       },

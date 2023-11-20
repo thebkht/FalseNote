@@ -5,12 +5,11 @@ import postgres from '@/lib/postgres';
 import { Post, User } from '@prisma/client';
 import { notFound, redirect } from 'next/navigation';
 
-async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
+async function getPostForUser(postId: Post['id']) {
   // check if post draft exists of post
   const post =  await postgres.post.findFirst({
     where: {
-      url: postUrl,
-      authorId: userId,
+      id: postId,
     },
     include: {
       tags: {
@@ -41,14 +40,14 @@ async function getPostForUser(postUrl: Post['url'], userId: User["id"]) {
   return post
 }
 
-export default async function PostEditor({ params }: { params: { posturl: string } }) {
+export default async function PostEditor({ params }: { params: { id: string } }) {
   const session = await getSessionUser();
 
   if (!session) {
     redirect('/signin')
   }
 
-  const post = await getPostForUser(params.posturl, session.id)
+  const post = await getPostForUser(params.id)
 
   if (!post) {
     return notFound()

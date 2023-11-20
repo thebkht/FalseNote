@@ -3,7 +3,7 @@ import { tr } from "date-fns/locale";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const userId = Number(req.nextUrl.searchParams.get("userId"));
+  const userId = req.nextUrl.searchParams.get("userId")?.toString();
   try {
     const user = await postgres.user.findFirst({
       where: {

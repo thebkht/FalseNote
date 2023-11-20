@@ -30,7 +30,7 @@ async function insertTag(tags: any, postid: any) {
                     await postgres.postTag.create({
                          data: {
                               tagId: tagId.id,
-                              postId: Number(postid),
+                              postId: postid,
                          }
                     })
                }
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
           if (postid) {
                const postData = await postgres.post.findFirst({
                     where: {
-                         id: Number(postid),
+                         id: postid,
                     },
                })
                if (!postData) {
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
                     
                     await postgres.post.update({
                          where: {
-                              id: Number(postid),
+                              id: postid,
                          },
                          data: {
                               title: title,
@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
                }
                const postTagsData = await postgres.postTag.findMany({
                     where: {
-                         postId: Number(postid),
+                         postId: postid,
                     },
                     select: {
                          tag: {
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
                if (postTagsData) {
                     await postgres.postTag.deleteMany({
                          where: {
-                              postId: Number(postid),
+                              postId: postid,
                          }
                     })
                }
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
                     visibility: visibility,
                     url: url,
                     subtitle: subtitle ? subtitle : null,
-                    authorId: Number(authorId),
+                    authorId: authorId,
                     readingTime: readTime,
                }
           })

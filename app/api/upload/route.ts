@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     Body: buffer,
   };
 
-  const url = `https://${process.env.BUCKET_NAME}.s3.${process.env.REGION}.amazonaws.com/${s3path}`;
+  const url = `https://s3.${process.env.REGION}.amazonaws.com/${process.env.BUCKET_NAME}/${s3path}`;
 
   s3.upload(params, function (err: any, data: any) {
     if (err) {

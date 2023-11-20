@@ -5,7 +5,7 @@ function sanitizeTagName(tag: string): string {
   return tag.replace(/\s+/g, "-").toLowerCase().toString();
 }
 
-export async function insertTag(tags: any, postid: any) {
+export async function insertTag(tags: any, postid: string) {
   if (tags) {
     const uniqueTags = new Set<string>(
       tags.map((tag: any) => sanitizeTagName(tag.value))
@@ -34,7 +34,7 @@ async function connectTagToPost(tagId: any, postid: any) {
   const tagAlreadyConnected = await postgres.postTag.findFirst({
     where: {
       tagId: tagId,
-      postId: Number(postid),
+      postId: postid,
     },
     select: {
       id: true,
@@ -46,7 +46,7 @@ async function connectTagToPost(tagId: any, postid: any) {
     await postgres.postTag.create({
       data: {
         tagId: tagId,
-        postId: Number(postid),
+        postId: postid,
       },
     });
   }

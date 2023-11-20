@@ -4,7 +4,7 @@ export const getTags = async ({
   id,
   page = 0,
 }: {
-  id?: number | undefined;
+  id?: string | undefined;
   page?: number | undefined;
 }) => {
   try {
@@ -43,7 +43,7 @@ export const getPopularTags = async ({
   id, 
   take = 5,
 }: {
-  id: number | undefined;
+  id?: string | undefined;
   take?: number | undefined;
 }) => {
   try {

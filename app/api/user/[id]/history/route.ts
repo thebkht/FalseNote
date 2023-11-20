@@ -6,7 +6,7 @@ export async function GET(req: NextRequest, { params} : { params: { id: string }
   const page = req.nextUrl.searchParams.get("page") ? parseInt(req.nextUrl.searchParams.get("page") as string) : 0;
   const limit = req.nextUrl.searchParams.get("limit") ? parseInt(req.nextUrl.searchParams.get("limit") as string) : 10;
   const user = await postgres.user.findFirst({
-     where: { id: parseInt(id) },
+     where: { id: id },
      include: {
      readinghistory: {
          include: {

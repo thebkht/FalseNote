@@ -33,9 +33,9 @@ export async function GET(req: NextRequest, { params } : { params: { id: string 
      const posts = await postgres.post.findMany({
           ...baseQuery,
           where: {
-               ...(session?.id === Number(userId) ? {} : { visibility: "public" }),
-               authorId: Number(userId),
-               visibility: session?.id === Number(userId) ? undefined : "public",
+               ...(session?.id === userId ? {} : { visibility: "public" }),
+               authorId: userId,
+               visibility: session?.id === userId ? undefined : "public",
                ...(search ? { title: { contains: search, mode: "insensitive" } } : {}),
           },
           take: Number(limit),

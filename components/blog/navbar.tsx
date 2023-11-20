@@ -95,7 +95,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                              <DropdownMenuItem asChild>
-                                                  <Link href={`/editor/${post?.url}`}>
+                                                  <Link href={`/editor/${post?.id}`}>
                                                        <Pencil className="mr-2 h-4 w-4" />
                                                        <span>Edit</span>
                                                   </Link>

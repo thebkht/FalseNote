@@ -49,7 +49,7 @@ export const config = {
                 githubprofile: githubProfileURL,
                 location: location,
                 image: avatar_url,
-                password: githubId.toString()
+                githubId: githubId.toString()
               },
               select: {
                 id: true

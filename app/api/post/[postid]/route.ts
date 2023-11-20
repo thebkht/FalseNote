@@ -11,7 +11,7 @@ export async function PATCH(
   try {
     const { postid } = params;
 
-    if (!(await verifyCurrentUserHasAccessToPost(parseInt(postid)))) {
+    if (!(await verifyCurrentUserHasAccessToPost(postid))) {
       return new Response(null, { status: 403 });
     }
     const data = await req.json();
@@ -42,7 +42,7 @@ export async function PATCH(
 
     const oldData = await postgres.post.findFirst({
       where: {
-        id: Number(postid),
+        id: postid,
       },
       select: {
         visibility: true,
@@ -50,13 +50,13 @@ export async function PATCH(
     });
     await postgres.postTag.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
 
     await postgres.post.update({
       where: {
-        id: Number(postid),
+        id: postid,
       },
       data: {
         title: title,
@@ -92,49 +92,49 @@ export async function DELETE(
   try {
     const { postid } = params;
 
-    if (!(await verifyCurrentUserHasAccessToPost(parseInt(postid)))) {
+    if (!(await verifyCurrentUserHasAccessToPost(postid))) {
       return new Response(null, { status: 403 });
     }
 
     // Disconnect all connections of the post
     await postgres.postTag.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     })
 
     await postgres.comment.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     })
 
     await postgres.like.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     })
 
     await postgres.bookmark.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     })
 
     await postgres.readingHistory.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     })
     await postgres.draftPost.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     })
     // Delete the post.
     await postgres.post.delete({
       where: {
-        id: Number(postid),
+        id: postid,
       },
     })
 
@@ -148,7 +148,7 @@ export async function DELETE(
   }
 }
 
-async function verifyCurrentUserHasAccessToPost(postId: number) {
+async function verifyCurrentUserHasAccessToPost(postId: string) {
   try {
     const session = await getSessionUser();
     const count = await postgres.post.count({

@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 import readingTime from "reading-time";
 import { z } from "zod";
 
-async function verifyCurrentUserHasAccessToPost(postId: number) {
+async function verifyCurrentUserHasAccessToPost(postId: string) {
   try {
     const session = await getSessionUser();
     const count = await postgres.post.count({
@@ -29,7 +29,7 @@ export async function PATCH(
   try {
     const { postid } = params;
 
-    if (!(await verifyCurrentUserHasAccessToPost(parseInt(postid)))) {
+    if (!(await verifyCurrentUserHasAccessToPost(postid))) {
       return new Response(null, { status: 403 });
     }
     const data = await req.json();
@@ -48,25 +48,17 @@ export async function PATCH(
     if (!content) {
       return new Response("No content provided", { status: 400 });
     }
-
-    const oldData = await postgres.post.findFirst({
-      where: {
-        id: Number(postid),
-      },
-      select: {
-        visibility: true,
-      },
-    });
+    
     await postgres.postTag.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
 
     //check if draft is existing
     const draft = await postgres.draftPost.findFirst({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
       select: {
         id: true,
@@ -95,14 +87,14 @@ export async function PATCH(
           readingTime: readTime,
           url,
           subtitle: subtitle || null,
-          postId: Number(postid),
+          postId: postid,
         },
       });
     }
 
     await postgres.postTag.deleteMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
 

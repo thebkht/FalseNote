@@ -70,6 +70,7 @@ async function fetchSuggestions(query: string) {
 }
 
 const postFormSchema = z.object({
+  id: z.string().optional(),
   title: z
     .string()
     .min(2, {
@@ -105,6 +106,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
   // This can come from your database or API.
   const defaultValues: Partial<PostFormValues> = {
+    id: props.post?.id,
     title: props.post?.title,
     content: props.post?.content,
     visibility: props.post?.visibility,
@@ -224,7 +226,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
           dataForm.set('body', JSON.stringify(requestBody));
 
-          const res = await fetch(`/api/upload?postId=${form.getValues('url')}&authorId=${props.user?.username}`, {
+          const res = await fetch(`/api/upload?postId=${form.getValues('id')}&authorId=${props.user?.username}`, {
             method: 'POST',
             body: dataForm,
           });
@@ -244,7 +246,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
             method: "PATCH",
             body: JSON.stringify({ ...form.getValues() }),
           })
-          if (!result.ok) {
+          if (result.status !== 200) {
             toast({
               description: "Something went wrong. Please try again later.",
               variant: "destructive",

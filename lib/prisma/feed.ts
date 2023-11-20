@@ -1,7 +1,8 @@
+'use server'
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
 
-const getLikes = async ({ id }: { id: number | undefined }) => {
+const getLikes = async ({ id }: { id: string | undefined }) => {
   const likes = await postgres.like.findMany({
     where: { authorId: id },
     select: {
@@ -16,7 +17,7 @@ const getLikes = async ({ id }: { id: number | undefined }) => {
   return { likes: JSON.parse(JSON.stringify(likes)) };
 }
 
-const getBookmarks = async ({ id }: { id: number | undefined }) => {
+const getBookmarks = async ({ id }: { id: string | undefined }) => {
   const bookmarks = await postgres.bookmark.findMany({
     where: { userId: id },
     select: {
@@ -31,7 +32,7 @@ const getBookmarks = async ({ id }: { id: number | undefined }) => {
   return { bookmarks: JSON.parse(JSON.stringify(bookmarks)) };
 }
 
-const getHistory = async ({ id }: { id: number | undefined }) => {
+const getHistory = async ({ id }: { id: string | undefined }) => {
   const history = await postgres.readingHistory.findMany({
     where: { userId: id },
     select: {
@@ -46,7 +47,7 @@ const getHistory = async ({ id }: { id: number | undefined }) => {
   return { history: JSON.parse(JSON.stringify(history)) };
 }
 
-const getTags = async ({ id }: { id: number | undefined }) => {
+const getTags = async ({ id }: { id: string | undefined }) => {
   const tags = await postgres.tagFollow.findMany({
     where: { followerId: id },
     select: {

@@ -17,14 +17,14 @@ export async function GET(
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
     // Execute a query to fetch the specific user by name
-    const author = await postgres.user.findUnique({
+    const author = await postgres.user.findFirst({
       where: {
         username: username,
       }
     });
     const authorID = author?.id;
 
-    const result = await postgres.post.findUnique({
+    const result = await postgres.post.findFirst({
       where: {
         url: postUrl,
         authorId: authorID,
@@ -78,7 +78,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { username:
   }
 
   try {
-    const author = await postgres.user.findUnique({
+    const author = await postgres.user.findFirst({
       where: {
         username: username,
       },
@@ -89,9 +89,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { username:
     const authorID = author?.id;
 
     //check if the post belongs to the user
-    const result = await postgres.post.findUnique({
+    const result = await postgres.post.findFirst({
       where: {
-        id: Number(postid),
+        id: postid,
         authorId: authorID,
       },
     });
@@ -102,55 +102,55 @@ export async function DELETE(req: NextRequest, { params }: { params: { username:
     //check if the post has comments and tags
     const comments = await postgres.comment.findMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
     const tags = await postgres.postTag.findMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
     const likes = await postgres.like.findMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
     const saved = await postgres.bookmark.findMany({
       where: {
-        postId: Number(postid),
+        postId: postid,
       },
     });
     if (comments.length !== 0) {
       await postgres.comment.deleteMany({
         where: {
-          postId: Number(postid),
+          postId: postid,
         },
       });
     }
     if (tags.length !== 0) {
       await postgres.postTag.deleteMany({
         where: {
-          postId: Number(postid),
+          postId: postid,
         },
       });
     }
     if (likes.length !== 0) {
       await postgres.like.deleteMany({
         where: {
-          postId: Number(postid),
+          postId: postid,
         },
       });
     }
     if (saved.length !== 0) {
       await postgres.bookmark.deleteMany({
         where: {
-          postId: Number(postid),
+          postId: postid,
         },
       });
     }
     await postgres.post.delete({
       where: {
-        id: Number(postid),
+        id: postid,
       },
     });
     return NextResponse.json({ message: "Post deleted" }, { status: 200 });

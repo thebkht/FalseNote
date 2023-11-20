@@ -108,7 +108,7 @@ export const getPost = async ({
   page?: number;
   limit?: number;
   whereQuery?: any;
-  id: number;
+  id: string | undefined;
 }) => {
   const mainQuery =
     search !== undefined

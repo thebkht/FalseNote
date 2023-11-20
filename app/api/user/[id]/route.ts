@@ -15,7 +15,7 @@ export async function GET(
 
   const user = await postgres.user.findUnique({
     where: {
-      id: Number(userId),
+      id: userId,
     },
   });
   if (!user) {
@@ -31,7 +31,7 @@ export async function PATCH(
 ) {
   try {
     const session = await getSessionUser();
-    const userId = Number(params.id);
+    const userId = params.id;
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

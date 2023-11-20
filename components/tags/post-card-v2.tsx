@@ -87,7 +87,7 @@ export default function PostCard(
                     </CardHeader>
                     <div className="flex">
                          <div className="flex-initial w-full">
-                              <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.url}` : `/@${props.post.author?.username}/${props.post.url}`}>
+                              <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.id}` : `/@${props.post.author?.username}/${props.post.url}`}>
                                    <div>
                                         <div className="pb-2">
                                              <h2 className={`text-base md:text-xl font-bold text-ellipsis overflow-hidden ${props.user == 'true' ? "line-clamp-2" : "line-clamp-3"}`}>{props.post.title}</h2>
@@ -147,7 +147,7 @@ export default function PostCard(
                          </div>
 
                          <div className="flex-none ml-6 md:ml-8">
-                              <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.url}` : `/@${props.post.author?.username}/${props.post.url}`}>
+                              <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.id}` : `/@${props.post.author?.username}/${props.post.url}`}>
                                    <div className={`h-14 md:h-28 !relative bg-muted !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                         {props.post.cover ? (
                                              <>
