@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import postgrtes from "@/lib/postgres";
 import { ImageResponse } from "next/og";
 

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Icons } from "@/components/icon";
 import { ImageResponse } from "next/og";
 import { NextRequest, NextResponse } from "next/server";
