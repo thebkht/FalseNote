@@ -86,7 +86,7 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
                     <div className="flex flex-wrap justify-center mt-8">
                          {followingTags?.map((tag: any, index) => (
                               <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)} key={tag.id}>
-                                   <TagBadge className="bg-primary text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 text-primary-foreground capitalize">
+                                   <TagBadge className="bg-primary text-sm py-1.5 px-2.5 rounded-full mb-1.5 text-primary-foreground capitalize">
                                         <Check className="h-4 w-4 mr-2" />
                                         {tag.name?.replace(/-/g, ' ')}
                                    </TagBadge>
@@ -94,7 +94,7 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
                          ))}
                          {tags?.map((tag: any, index: number) => (
                               <Button variant={'ghost'} className="h-fit w-fit !p-0 mr-2.5 hover:bg-transparent hover:text-primary-foreground" onClick={async () => await handleFollow(tag.id, index)} key={tag.id}>
-                                   <TagBadge className="text-sm py-1.5 px-2.5 rounded-full mr-1.5 mb-1.5 capitalize">
+                                   <TagBadge className="text-sm py-1.5 px-2.5 rounded-full mb-1.5 capitalize">
                                         <Plus className="h-4 w-4 mr-2" />
                                         {tag.name?.replace(/-/g, ' ')}
                                    </TagBadge>
@@ -102,11 +102,11 @@ const TagsDialog = forwardRef(({ tags: initialTags, session, ...props }: React.C
                          ))}
                     </div>
                     {!isLast ? (
-                         <Button variant={'link'} className="text-sm py-2 px-4 rounded-full mr-1.5 mb-1.5 w-max mx-auto" onClick={loadMoreTags}>
+                         <Button variant={'link'} className="text-sm py-2 px-4 rounded-full w-max mx-auto" onClick={loadMoreTags}>
                               See more
                          </Button>
                     ) : (
-                         <Button variant={'link'} className="text-sm py-2 px-4 rounded-full mr-1.5 mb-1.5 w-max mx-auto" onClick={() => {
+                         <Button variant={'link'} className="text-sm py-2 px-4 rounded-full w-max mx-auto" onClick={() => {
                               loadMoreTags()
                               setIsLast(false)
                          }}>
