@@ -2,6 +2,7 @@
 import postgres from "@/lib/postgres"
 import { getSessionUser } from "./get-session-user"
 import { revalidatePath } from "next/cache"
+import { create } from "@/lib/notifications/create-notification"
 
 export const handlePostLike = async ({ postId, path} : {postId: string, path: string}) => {
      const sessionUser = await getSessionUser()
@@ -24,13 +25,31 @@ export const handlePostLike = async ({ postId, path} : {postId: string, path: st
                          }
                     })
                } else {
-                    await postgres.like.create({
+                    const data = await postgres.like.create({
                          data: {
                               authorId: sessionUser.id,
                               postId
+                         },
+                         select: {
+                              post: {
+                                   select: {
+                                        author: true,
+                                        title: true,
+                                        url: true
+                                   }
+                              }
                          }
                     })
+                    const message = `${data.post.title}` as string
+                    await create({
+                         type: "postLike",
+                         content: message,
+                         senderId: sessionUser.id,
+                         receiverId: data.post.author.id,
+                         url: `/@${data.post.author.username}/${data.post.url}`
+                    })
                }
+               
                revalidatePath(path)
           }
      } catch (error) {
@@ -60,12 +79,31 @@ export const handleCommentLike = async ({ commentId, path} : {commentId: number,
                          }
                     })
                } else {
-                    await postgres.commentLike.create({
+                    const data = await postgres.commentLike.create({
                          data: {
                               authorId: sessionUser?.id,
                               commentId
+                         },
+                         select: {
+                              comment: {
+                                   select: {
+                                        author: true,
+                                        content: true,
+                                        post: true,
+                                   }
+                              }
                          }
                     })
+
+                    const message = `${data.comment.content}` as string
+                    await create({
+                         type: "commentLike",
+                         content: message,
+                         senderId: sessionUser.id,
+                         receiverId: data.comment.author.id,
+                         url: `/@${data.comment.author.username}/${data.comment.post.url}?commentsOpen=true`
+                    })
+                    revalidatePath(`/notifications`)
                }
      
                revalidatePath(path)

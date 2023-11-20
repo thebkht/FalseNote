@@ -48,8 +48,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const commentContent = content.replace(/<[^>]*>?/gm, "");
 
     // Send a notification to the author of the post using api/notifications post method body json
-    const message = `${authorDetails?.name || authorDetails?.username} replied to your comment "${commentContent}"`;
-    const type = "comment";
+    const message = `"${commentContent}"`;
+    const type = "reply";
     const url = `/@${receiver?.post.author.username}/${receiver?.post?.url}?commentsOpen=true`;
     if (receiver?.authorId && authorDetails?.id) {
       await create({

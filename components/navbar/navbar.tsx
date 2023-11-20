@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { MenuIcon, Plus, SearchIcon } from "lucide-react";
+import { Bell, MenuIcon, Plus, SearchIcon } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { UserNav } from "./user-nav";
 import { Icons } from "@/components/icon";
@@ -20,28 +20,12 @@ import { useRouter } from "next/navigation";
 import { PostCreateButton } from "./post-create-button";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
-function Navbar() {
+function Navbar(notifications: any) {
   const { data: session, status } = useSession();
-
-  /* useEffect(() => {
-    async function getNotifications(){
-      const sessionUser = await getSessionUser();
-      try {
-        const notificationsData = await fetch(`/api/notifications?user_id=${sessionUser.userid}`, {
-          method: "GET",
-        });
-        const not = await notificationsData.json();
-        setNotifications(not.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getNotifications();
-      }, [session]) */
 
   return (
     <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background border-b">
-      <Link href={ session ? "/feed" : "/" } className="flex items-center">
+      <Link href={session ? "/feed" : "/"} className="flex items-center">
         <Icons.logo className="" />
         <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
       </Link>
@@ -58,6 +42,12 @@ function Navbar() {
           status == 'authenticated' ? (
             <>
               <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
+              <Button variant={"ghost"} size={"icon"} asChild>
+                <Link href={'/notifications'}>
+                  <Bell className="w-[1.25rem] h-[1.25rem]" strokeWidth={1.75} />
+                  {notifications.notifications && notifications.notifications.length > 0 && ( <Badge className="ml-2 md:ml-6 font-normal px-1 py-0 absolute mb-3 border-[3px] border-solid border-secondary" >{notifications.notifications.length}</Badge> )}
+                </Link>
+              </Button>
               <UserNav />
             </>
           ) : (

@@ -28,11 +28,8 @@ import BookmarksCardSkeleton from '@/components/skeletons/bookmark-card';
 
 export default async function Loading() {
   return (
-    <>
-      <main className="flex flex-col items-center justify-between feed xl:px-8">
-        <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
-          <div className="md:my-4 w-full lg:w-2/3">
-            <FeedTabsSkeleton />
+    <div className='w-full'>
+      <FeedTabsSkeleton />
             <div className="pt-10">
               <div className="feed__list">
                 <div className="divide-y">
@@ -49,8 +46,10 @@ export default async function Loading() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-screen">
+    </div>
+  )
+}
+/* <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-screen">
             <div className="relative w-full h-full inline-block">
               <div className="sticky space-y-4 top-16 w-full">
                 <PopularPostsSkeleton />
@@ -60,8 +59,4 @@ export default async function Loading() {
               </div>
             </div>
           </div>
-        </div>
-      </main>
-    </>
-  )
-}
+           */

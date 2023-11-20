@@ -20,39 +20,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           },
      
     })
-    
-    // Get the author of the post and the post details
-    const authorDetails = await postgres.user.findUnique({
-          where: {
-          id: author,
-          },
-     });
-
-     const postDetails = await postgres.post.findUnique({
-          where: {
-          id: post,
-          },
-          include: {
-               author: true,
-          }
-     });
-     
-     // Replace content with converted markdown
-     const comment = content.replace(/<[^>]*>?/gm, "");
-
-     // Send a notification to the author of the post using api/notifications post method body json
-     const message = `${authorDetails?.name || authorDetails?.username} commented on your post "${postDetails?.title}: ${comment}"`;
-     const type = "comment";
-     const url = `/@${authorDetails?.username}/${postDetails?.url}?commentsOpen=true`;
-     if (postDetails?.authorId && authorDetails?.id) {
-          await create({
-            content: message,
-            type,
-            url,
-            receiverId: postDetails.authorId,
-            senderId: authorDetails.id
-          });
-        }
 
     return new NextResponse("Comment updated", { status: 200 });
   } catch (error) {

@@ -196,10 +196,36 @@ export const getNotifications = async ({ id }: { id: string | undefined }) => {
   const notifications = await postgres.user.findFirst({
     where: { id },
     select: {
-      notifications: true,
+      notifications: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       id: true,
     },
   });
 
-  return { notifications: JSON.parse(JSON.stringify(notifications?.notifications)) };
+  const senderDetails = await postgres.user.findMany({
+    where: {
+      id: {
+        in: notifications?.notifications
+          .filter(notification => notification.senderId !== null)
+          .map(notification => notification.senderId as string),
+      },
+    },
+    include:{
+      Followers: true,
+      Followings: true,
+    }
+  });
+
+  const notificationsWithSenderDetails = notifications?.notifications.map(notification => {
+    const sender = senderDetails?.find(sender => sender.id === notification.senderId);
+    return {
+      ...notification,
+      sender,
+    };
+  });
+
+  return { notifications: JSON.parse(JSON.stringify(notificationsWithSenderDetails)) };
 };

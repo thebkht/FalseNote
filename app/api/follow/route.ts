@@ -52,12 +52,12 @@ export async function GET(request: NextRequest) {
               id: followeeId || "",
             },
           });
-  
+          
           // Check if sender and receiver are not null
           if (sender && receiver) {
             const message = `${sender?.name || sender?.username} followed you`;
             const type = "follow";
-            const url = `/@${sender?.username}`;
+            const url = `/@${sender?.username}`
             await create({
               content: message,
               type,
