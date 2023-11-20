@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import useWindowDimensions from "../window-dimensions";
 import { SiteFooter } from "../footer";
 import { dateFormat } from "@/lib/format-date";
+import Balancer from 'react-wrap-balancer'
 
 export default function Landing({ latest, tags, popular }: { latest: any, tags: any, popular: any }) {
   const { width, height } = useWindowDimensions();
@@ -31,8 +32,8 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                 }} alt="" />
             </div>
             <div>
-              <h1 className="landing__hero_title max-w-[1200px] font-black leading-snug text-3xl md:text-7xl text-center">Start Your Journey with FalseNotes!</h1>
-              <p className="landing__hero_description mt-6 mx-auto max-w-[960px] font-medium text-sm md:text-2xl leading-relaxed text-center">🚀 FalseNotes — a platform for Developers to Spark Discussions, Share Expertise, and Shape Coding Journeys.</p>
+              <h1 className="landing__hero_title max-w-[1200px] font-black leading-snug text-3xl md:text-7xl text-center"><Balancer>Start Your Journey with FalseNotes!</Balancer></h1>
+              <p className="landing__hero_description mt-6 mx-auto max-w-[960px] font-medium text-sm md:text-2xl leading-relaxed text-center"><Balancer>🚀 FalseNotes — a platform for Developers to Spark Discussions, Share Expertise, and Shape Coding Journeys.</Balancer></p>
             </div>
           </div>
         </div>

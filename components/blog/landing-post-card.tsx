@@ -15,6 +15,7 @@ import TagBadge from "../tags/tag";
 import LoginDialog from "../login-dialog";
 import { dateFormat } from "@/lib/format-date";
 import { Skeleton } from "../ui/skeleton";
+import Balancer from 'react-wrap-balancer'
 
 export default function LandingPostCard(
   props: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -43,10 +44,10 @@ export default function LandingPostCard(
             <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
               <div>
                 <div className="pb-2">
-                  <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title">{props.post.title}</h2>
+                  <h2 className="text-base md:text-xl font-bold text-ellipsis overflow-hidden post__title"><Balancer>{props.post.title}</Balancer></h2>
                 </div>
                 <div className="post-subtitle hidden md:block">
-                  <p className="text-ellipsis overflow-hidden line-clamp-2 text-muted-foreground">{props.post.subtitle}</p>
+                  <p className="text-ellipsis overflow-hidden line-clamp-2 text-muted-foreground"><Balancer>{props.post.subtitle}</Balancer></p>
                 </div>
               </div>
             </Link>
