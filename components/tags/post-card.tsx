@@ -129,7 +129,7 @@ export default function TagPostCard(
                                                   <span>{formatNumberWithSuffix(props.post._count.likes)}</span>
                                              </div>
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
-                                                  <Link href={`/${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
+                                                  <Link href={`/@${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
                                                        <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
                                                             <MessageCircle className="w-5 h-5" />
                                                             <span className="sr-only">Comment</span>

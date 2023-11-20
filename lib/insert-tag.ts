@@ -47,9 +47,8 @@ async function connectTagToPost(tagId: Tag['id'], postid: Post['id']) {
       id: true,
     },
   });
-  if (tagAlreadyConnected) {
-    return;
-  } else {
+  
+  if (!tagAlreadyConnected) {
     await postgres.postTag.create({
       data: {
         tagId: tagId,
