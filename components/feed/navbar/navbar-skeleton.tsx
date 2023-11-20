@@ -12,32 +12,32 @@ export default function FeedTabsSkeleton() {
                     <Tabs defaultValue={''} className="">
                          <TabsList className="bg-transparent gap-2">
                               <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Skeleton className="h-5 w-10" />
+                                   <Skeleton className="h-5 w-16" />
                               </TabsTrigger>
                          </TabsList>
                          <TabsList className="bg-transparent gap-2">
                               <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Skeleton className="h-5 w-10" />
+                                   <Skeleton className="h-5 w-16" />
                               </TabsTrigger>
                          </TabsList>
                          <TabsList className="bg-transparent gap-2">
                               <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Skeleton className="h-5 w-10" />
+                                   <Skeleton className="h-5 w-16" />
                               </TabsTrigger>
                          </TabsList>
                          <TabsList className="bg-transparent gap-2">
                               <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Skeleton className="h-5 w-10" />
+                                   <Skeleton className="h-5 w-16" />
                               </TabsTrigger>
                          </TabsList>
                          <TabsList className="bg-transparent gap-2">
                               <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Skeleton className="h-5 w-10" />
+                                   <Skeleton className="h-5 w-16" />
                               </TabsTrigger>
                          </TabsList>
                          <TabsList className="bg-transparent gap-2">
                               <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                   <Skeleton className="h-5 w-10" />
+                                   <Skeleton className="h-5 w-16" />
                               </TabsTrigger>
                          </TabsList>
                     </Tabs>

@@ -22,6 +22,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 function Navbar(notifications: any) {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   return (
     <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background border-b">
@@ -42,18 +43,16 @@ function Navbar(notifications: any) {
           status == 'authenticated' ? (
             <>
               <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
-              <Button variant={"ghost"} size={"icon"} asChild>
-                <Link href={'/notifications'}>
-                  <Bell className="w-[1.25rem] h-[1.25rem]" strokeWidth={1.75} />
-                  {notifications.notifications && notifications.notifications.length > 0 && ( <Badge className="ml-2 md:ml-6 font-normal px-1 py-0 absolute mb-3 border-[3px] border-solid border-secondary" >{notifications.notifications.length}</Badge> )}
-                </Link>
+              <Button variant={"ghost"} size={"icon"} onClick={() => router.replace('/notifications')}>
+                <Bell className="w-[1.25rem] h-[1.25rem]" strokeWidth={1.75} />
+                {notifications.notifications && notifications.notifications.length > 0 && (<Badge className="ml-2 md:ml-6 font-normal px-1 py-0 absolute mb-3 border-[3px] border-solid border-secondary" >{notifications.notifications.length}</Badge>)}
               </Button>
               <UserNav />
             </>
           ) : (
             <div className="flex items-center gap-2 md:gap-4">
-              <Button asChild>
-                <Link href={"/signin"}>Join</Link>
+              <Button onClick={() => router.replace('/signin')}>
+                Join
               </Button>
             </div>
           )

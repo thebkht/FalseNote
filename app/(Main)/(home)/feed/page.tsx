@@ -48,16 +48,7 @@ export default async function Feed({
     <>
       <FeedTabs tabs={userFollowingsTags} activeTab={tab} />
             <div className="pt-10">
-              {!feed || feed.length === 0 ? (
-                <div className="w-full max-h-screen my-auto flex justify-center items-center bg-background">
-                  <div className="flex flex-col items-center justify-center space-y-4">
-                    <h1 className="text-2xl font-bold">No posts yet</h1>
-                    <p className="text-muted-foreground">When you follow someone, their posts will show up here.</p>
-                  </div>
-                </div>
-              ) : (
-                <InfinitiveScrollFeed initialFeed={feed} tag={tab} session={session} />
-              )}
+            <InfinitiveScrollFeed initialFeed={feed} tag={tab} session={session} />
             </div>
     </>
   )

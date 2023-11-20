@@ -4,11 +4,13 @@ import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useInView } from "react-intersection-observer";
 import { Plus } from "lucide-react";
+import { useRouter } from 'next/navigation'
 
 
 export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tabs: any, activeTab?: string, children?: React.ReactNode }) {
      const [firstTab, inFView] = useInView();
      const [lastTab, inLView] = useInView();
+     const router = useRouter()
 
      return (
           <>
@@ -23,37 +25,40 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
                          }></div>
                          <div className={`tab-shadow ${inLView && 'opacity-0'}`} style={{ right: "-3%" }}></div>
                     </div>
-                    <Tabs defaultValue={activeTab} className="">
+                    <div className="inline-flex h-10 items-center justify-center rounded-md bg-background p-1 text-muted-foreground w-full">
                          <ScrollArea className="w-full py-2">
-                              <TabsList className="bg-transparent gap-2">
-                                   <TabsTrigger asChild value="explore" ref={firstTab} className="bg-transparent">
+                              <div className="inline-flex h-10 items-center justify-center rounded-md p-1 text-muted-foreground bg-transparent gap-2">
+                                   <div ref={firstTab} className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm bg-transparent">
                                         <Link href={`/explore`}><Plus className="h-5 w-5" /></Link>
-                                   </TabsTrigger>
-                                   <TabsTrigger value="foryou" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                        <Link href={`/feed`}>For You</Link>
-                                   </TabsTrigger>
-                                   <Link href={`/feed?tab=following`}>
-                                        <TabsTrigger value="following" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
-                                             Following
-                                        </TabsTrigger>
-                                   </Link>
+                                   </div>
+                                   <div className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == 'foryou' ? 'bg-background shadow-sm text-foreground border-foreground border' : 'bg-muted'}`} onClick={() => {
+                                        router.replace('/feed')
+                                   }}>
+                                        For You
+                                   </div>
+                                   <div className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == 'following' ? 'bg-background shadow-sm text-foreground border-foreground border' : 'bg-muted'}`} onClick={() => {
+                                        router.replace('/feed?tab=following')
+                                   }}>
+                                        Following
+                                   </div>
                                    {tabs?.map((item: any, index: number) => (
 
-                                        <Link href={`/feed?tab=${item.tag.name}`} key={item.tag.id}>
-                                             <TabsTrigger value={item.tag.name} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground capitalize">
+                                        <div className={`inline-flex capitalize items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == item.tag.name ? 'bg-background shadow-sm text-foreground border-foreground border' : 'bg-muted'}`} onClick={() => {
+                                             router.replace(`/feed?tab=${item.tag.name}`)
+                                        }} key={item.tag.id}>
 
-                                                  {item.tag.name.replace(/-/g, " ")}
+                                             {item.tag.name.replace(/-/g, " ")}
 
-                                             </TabsTrigger></Link>
+                                        </div>
 
                                    ))}
-                                   <TabsTrigger value="" ref={lastTab} className="bg-transparent w-3" disabled />
-                              </TabsList>
+                                   <div ref={lastTab} className="bg-transparent w-3" />
+                              </div>
                               <ScrollBar orientation="horizontal" />
                          </ScrollArea>
 
                          {children}
-                    </Tabs>
+                    </div>
 
                </div>
           </>

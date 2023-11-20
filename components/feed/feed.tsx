@@ -9,11 +9,15 @@ import { cn } from '@/lib/utils';
 import { Separator } from '@radix-ui/react-context-menu';
 import { EmptyPlaceholder } from '../empty-placeholder';
 import PostCardSkeleton from '../skeletons/feed-post-card';
+import { Button } from '../ui/button';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { initialFeed: any | undefined, tag: string | undefined, session: any }) {
   const [feed, setFeed] = useState<Array<any>>(initialFeed)
   const [page, setPage] = useState<number>(0)
   const [ref, inView] = useInView()
+  const router = useRouter()
   //when tab change, feed is not updated yet so when when tab change it must be set feed to initialFeed
   useEffect(() => {
     setFeed(initialFeed)
@@ -58,12 +62,20 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
         }
       </div>
     </div>
-  ) : (
-    <EmptyPlaceholder>
-      <EmptyPlaceholder.Icon name='post' />
+  ) : 
+    (
+      tag == 'following' && (
+        <EmptyPlaceholder>
+      <EmptyPlaceholder.Icon name='post' strokeWidth={1.5} />
       <EmptyPlaceholder.Title>No posts yet</EmptyPlaceholder.Title>
       <EmptyPlaceholder.Description>When you follow someone, their posts will show up here.</EmptyPlaceholder.Description>
-
+        <Button className="mt-4" onClick={
+          () => {
+            router.push('/feed')
+          }
+        }>Browse recommended posts</Button>
     </EmptyPlaceholder>
-  )
+      )
+    )
+  
 }
