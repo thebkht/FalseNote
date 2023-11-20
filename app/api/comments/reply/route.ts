@@ -1,3 +1,4 @@
+import { create } from "@/lib/notifications/create-notification";
 import postgres from "@/lib/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,11 +11,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const { post, content, author, comment } = data;
 
-    // await sql`
-    //   INSERT INTO comments (blogpostid, content, authorid)
-    //   VALUES (${post}, ${content}, ${author})
-    //   RETURNING *
-    // `;
     await postgres.comment.create({
       data: {
         content: content,
@@ -23,50 +19,47 @@ export async function POST(req: NextRequest, res: NextResponse) {
         parentId: comment,
       },
     });
-    // const authorDetails = await postgres.user.findFirst({
-    //   where: {
-    //     id: author,
-    //   },
-    // });
-    // const postDetails = await postgres.post.findFirst({
-    //   where: {
-    //     id: post,
-    //   },
-    // });
+    // Get the author of the post and the post details
+    const authorDetails = await postgres.user.findUnique({
+      where: {
+        id: author,
+      },
+    });
 
-    // // Send a notification to the author of the post using api/notifications post method body json
-    // const message = `${authorDetails?.username} commented on your post "${postDetails?.title}: ${content}"`;
-    // const user_id = postDetails?.authorId;
-    // const type = "comment";
-    // const created_at = new Date().toISOString()
-    // const read_at = null
-    // const sender_id = authorDetails?.id;
+    const receiver = await postgres.comment.findUnique({
+      where: {
+        id: comment,
+      },
+      include: {
+        post: {
+          select: {
+            url: true,
+            author: {
+              select: {
+                username: true,
+              }
+            }
+          },
+          }
+      },
+    });
 
-    // await postgres.notification.create({
-    //   data: {
-    //     content: message,
-    //     type: type,
-    //     createdAt: created_at,
-    //     receiverId: user_id!,
-    //     senderId: sender_id!,
+    // Replace content with converted markdown
+    const commentContent = content.replace(/<[^>]*>?/gm, "");
 
-    //   },
-    // });
-
-    // const notification = await fetch(`localhost:3000/api/notifications`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ type, message, user_id }),
-    // });
-
-    // console.log("Notification response:", notification);
-
-    // if (!notification.ok) {
-    //   // Handle fetch error if needed
-    //   return new NextResponse("Failed to send notification", { status: 500 });
-    // }
+    // Send a notification to the author of the post using api/notifications post method body json
+    const message = `${authorDetails?.name || authorDetails?.username} replied to your comment "${commentContent}"`;
+    const type = "comment";
+    const url = `/@${receiver?.post.author.username}/${receiver?.post?.url}?commentsOpen=true`;
+    if (receiver?.authorId && authorDetails?.id) {
+      await create({
+        content: message,
+        type,
+        url,
+        receiverId: receiver.authorId,
+        senderId: authorDetails.id,
+      });
+    }
 
     return new NextResponse("Reply created", { status: 201 });
   } catch (error) {

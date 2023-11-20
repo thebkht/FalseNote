@@ -46,8 +46,6 @@ export async function POST(req: NextRequest) {
           }
           const postid = req.nextUrl.searchParams.get("postId");
 
-          console.log(data)
-
           const { title, content, coverImage, visibility, tags, url, authorId, subtitle } = data;
           const stats = readingTime(content);
           const readTime = stats.text;

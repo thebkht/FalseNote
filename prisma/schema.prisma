@@ -53,7 +53,7 @@ model VerificationToken {
 model User {
   id        String      @id @default(cuid())
   email     String?   @unique
-  username      String?  @unique
+  username      String?
   name      String?
   bio       String?
   password  String?
@@ -223,7 +223,7 @@ model Notification {
   receiverId  String
   type      String?
   url       String
-  senderId  Int?
+  senderId  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
