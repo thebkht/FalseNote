@@ -42,7 +42,7 @@ export async function PATCH(
     // Get the request body and validate it.
     const body = await req.json();
     const profileSchema = z.object({
-      id: z.number(),
+      id: z.string(),
       email: z.string().email().nullable().optional(),
       name: z.string().nullable().optional(),
       bio: z.string().max(160).nullable().optional(),

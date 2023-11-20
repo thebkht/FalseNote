@@ -24,7 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ToastAction } from "@radix-ui/react-toast"
 
 const appearanceFormSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   theme: z.enum(["light", "dark"], {
     required_error: "Please select a theme.",
   }),

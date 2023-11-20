@@ -33,7 +33,7 @@ import { useRouter } from "next/navigation"
 import { ToastAction } from "../ui/toast"
 
 const profileFormSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   username: z.string().nullable().optional(),
   email: z.string().email().nullable().optional(),
   name: z.string().nullable().optional(),
