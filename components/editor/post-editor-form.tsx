@@ -152,26 +152,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
       }
       setIsPublishing(true);
 
-      if (file) {
-        const dataForm = new FormData();
-        dataForm.set('file', file);
-
-        const postId = form.getValues('url');
-        const requestBody = {
-          postId,
-          userId: props.user?.id,
-        };
-
-        dataForm.set('body', JSON.stringify(requestBody));
-
-        const res = await fetch(`/api/upload?postId=${postId}&authorId=${props.user?.username}`, {
-          method: 'POST',
-          body: dataForm,
-        });
-
-        const { data: coverUrl } = await res.json();
-        data.coverImage = coverUrl.url;
-      }
+      uploadCover();
 
       const result = await fetch(`/api/post/${props.post?.id}`, {
         method: "PATCH",
@@ -211,34 +192,38 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
+  async function uploadCover() {
+    if (file) {
+      try {
+        const dataForm = new FormData()
+        dataForm.set('file', file)
+        // Construct the request body with postId and authorId
+        const requestBody = {
+          postId: form.getValues('url'),
+          userId: props.user?.id,
+        };
+
+        dataForm.set('body', JSON.stringify(requestBody));
+
+        const res = await fetch(`/api/upload?postId=${form.getValues('id')}&authorId=${props.user?.username}`, {
+          method: 'POST',
+          body: dataForm,
+        });
+        // get the image url
+        const { data: coverUrl } = await res.json()
+        form.setValue('coverImage', coverUrl.url);
+
+      } catch (e: any) {
+        // Handle errors here
+        console.error(e);
+      }
+    }
+  }
+
   const saveDraft = async () => {
     if (!isPublishing) {
       setIsSaving(true);
-      if (file) {
-        try {
-          const dataForm = new FormData()
-          dataForm.set('file', file)
-          // Construct the request body with postId and authorId
-          const requestBody = {
-            postId: form.getValues('url'),
-            userId: props.user?.id,
-          };
-
-          dataForm.set('body', JSON.stringify(requestBody));
-
-          const res = await fetch(`/api/upload?postId=${form.getValues('id')}&authorId=${props.user?.username}`, {
-            method: 'POST',
-            body: dataForm,
-          });
-          // get the image url
-          const { data: coverUrl } = await res.json()
-          form.setValue('coverImage', coverUrl.url);
-
-        } catch (e: any) {
-          // Handle errors here
-          console.error(e);
-        }
-      }
+      uploadCover();
       if (form.getValues('title') && form.getValues('content')) {
         try {
           // Submit the form
