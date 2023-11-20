@@ -60,7 +60,7 @@ export default function ReplyForm(props: { post: any, session: any, onCanceled: 
   }
 
   return (
-    <div className="my-4 w-full">
+    <div className="my-4 w-full ml-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 article__comments-form flex w-full gap-3" id="reply">
 

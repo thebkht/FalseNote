@@ -79,39 +79,56 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
      try {
-          await postgres.commentLike.deleteMany({
-               where: {
-                    commentId: Number(params.id),
-               },
-          })
-          await postgres.commentLike.deleteMany({
-               where: {
-                    commentId: {
-                         in: await postgres.comment.findMany({
-                              where: {
-                                   parentId: Number(params.id),
-                              },
-                              select: {
-                                   id: true,
-                              },
-                         }).then((comments) => comments.map((comment) => comment.id)),
-                    },
-               },
-          })
-          await postgres.comment.deleteMany({
+          const replies = await postgres.comment.findMany({
                where: {
                     parentId: Number(params.id),
                },
-          })
-          await postgres.comment.delete({
-
-               where: {
-                    id: Number(params.id),
+               select: {
+                    id: true,
                },
-          })
+          }).then((comments) => comments.map((comment) => comment.id));
+
+          replies.forEach((reply) => deleteComment(reply));
+
+          await deleteComment(Number(params.id));
+          
           return new NextResponse("Comment deleted", { status: 200 });
      } catch (error) {
           console.error(error);
           return NextResponse.json({ error: "Internal server error" }, { status: 500});
      }
+}
+
+async function deleteComment(id: number) {
+     await postgres.commentLike.deleteMany({
+          where: {
+               commentId: Number(id),
+          },
+     })
+     await postgres.commentLike.deleteMany({
+          where: {
+               commentId: {
+                    in: await postgres.comment.findMany({
+                         where: {
+                              parentId: Number(id),
+                         },
+                         select: {
+                              id: true,
+                         },
+                    }).then((comments) => comments.map((comment) => comment.id)),
+               },
+          },
+     })
+     await postgres.comment.deleteMany({
+          where: {
+               parentId: Number(id),
+          },
+     })
+     
+     await postgres.comment.delete({
+
+          where: {
+               id: Number(id),
+          },
+     })
 }

@@ -7,18 +7,18 @@ import { cookies } from 'next/headers'
 
 export default async function PostView({ params, searchParams }: { params: { username: string, url: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
      const commentsOpen = typeof searchParams.commentsOpen === 'string' ? searchParams.commentsOpen : undefined
-     
+
      const decodedUsername = decodeURIComponent(params.username);
      const author = await postgres.user.findFirst({
           where: {
                username: decodedUsername.substring(1)
-               },
+          },
           include: {
                _count: { select: { posts: true, Followers: true, Followings: true } },
                Followers: true,
                Followings: true
           }
-               });
+     });
      const post = await postgres.post.findFirst({
           where: {
                url: params.url,
@@ -34,27 +34,7 @@ export default async function PostView({ params, searchParams }: { params: { use
                                    Followings: true
                               }
                          },
-                         replies: {
-                              select: {
-                                   id: true,
-                                   content: true,
-                                   createdAt: true,
-                                   updatedAt: true,
-                                   authorId: true,
-                                   author: {
-                                        select: {
-                                             username: true,
-                                             name: true,
-                                             image: true,
-                                             id: true,
-                                             Followers: true,
-                                             Followings: true
-                                        }
-                                   },
-                                   likes: true,
-                                   _count: { select: { likes: true } },
-                              },
-                         },
+                         replies: { include: { author: true, _count: { select: { replies: true, likes: true } } } },
                          _count: { select: { replies: true, likes: true } },
                          likes: true,
                     },
@@ -63,7 +43,7 @@ export default async function PostView({ params, searchParams }: { params: { use
                     }
                },
                likes: true,
-               
+
                readedUsers: true,
                author: {
                     include: {
@@ -98,10 +78,10 @@ export default async function PostView({ params, searchParams }: { params: { use
 
      if (!hasViewed) {
           await fetch(`${process.env.DOMAIN}/api/posts/${author?.username}/views/?url=${post.url}`, {
-          method: "POST",
-     });
+               method: "POST",
+          });
      }
-     if(sessionUser) {
+     if (sessionUser) {
           //check if the user has readed the post
           const hasReaded = await postgres.readingHistory.findFirst({
                where: {

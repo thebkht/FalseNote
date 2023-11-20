@@ -22,6 +22,7 @@ import CommentEditorForm from "./comment-editor-form";
 import ReplyForm from "./reply-form";
 import { Separator } from "@/components/ui/separator";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
+import { getComment } from "@/lib/prisma/get-comment";
 
 export function dateFormat(dateString: string | number | Date) {
      const date = new Date(dateString);
@@ -54,12 +55,27 @@ export function dateFormat(dateString: string | number | Date) {
      }
 }
 
+async function fetchComment(commentId: number) {
+     return await getComment(commentId);
+}
 
-export default function CommentCard({ comment, post, session, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { comment: any, post: any, session: any }) {
+
+export default function CommentCard({ comment: initialComment, post, session, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { comment: any, post: any, session: any }) {
      const pathname = usePathname();
      const like = async (commentId: number) => {
           await handleCommentLike({ commentId, path: pathname });
      }
+     const [comment, setComment] = React.useState<any>(initialComment);
+     React.useEffect(() => {
+          setComment(initialComment);
+          if(initialComment.parentId) {
+            (async () => {
+              const fetchedComment = await fetchComment(initialComment.id);
+              setComment(fetchedComment);
+            })();
+          }
+        }, [initialComment]);
+
      const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
      const isLiked = comment.likes?.find((like: any) => like.authorId === session?.id)
      const [isReplying, setIsReplying] = React.useState<boolean>(false)
@@ -71,19 +87,19 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                     !isEditing ? (
                          <>
                               <Card className="article__comments-item-card w-full bg-background border-none shadow-none">
-                                   <CardHeader className="space-y-0 w-full text-sm flex-row items-center p-4 px-0">
+                                   <CardHeader className={`space-y-0 w-full text-sm flex-row items-center p-4 ${comment.parentId && 'pt-0'} px-0`}>
                                         <div className="flex justify-between w-full">
                                              <div className="w-full flex">
                                                   <UserHoverCard user={comment.author} className="h-6 w-6 mr-1 md:mr-1.5" >
-                                                       <Link href={`/@${comment.author.username}`} className="inline-block">
+                                                       <Link href={`/@${comment.author?.username}`} className="inline-block">
                                                             <Avatar className="h-6 w-6 border">
-                                                                 <AvatarImage src={comment.author.image} alt={comment.author.name} />
-                                                                 <AvatarFallback>{comment.author.name ? comment.author.name.charAt(0) : comment.author.username.charAt(0)}</AvatarFallback>
+                                                                 <AvatarImage src={comment.author?.image} alt={comment.autho?.name} />
+                                                                 <AvatarFallback>{comment.author?.name ? comment.author?.name.charAt(0) : comment.author?.username.charAt(0)}</AvatarFallback>
                                                             </Avatar>
                                                        </Link>
                                                   </UserHoverCard>
-                                                  <Link href={`/@${comment.author.username}`} className="flex items-center">
-                                                       <span className="article__comments-item-author text-sm">{comment.author.name || comment.author.username}</span>
+                                                  <Link href={`/@${comment.author?.username}`} className="flex items-center">
+                                                       <span className="article__comments-item-author text-sm">{comment.author?.name || comment.author?.username}</span>
                                                        {comment.author?.verified &&
                                                             (
                                                                  <Icons.verified className="h-4 w-4 mx-1 inline fill-primary align-middle" />
@@ -148,13 +164,13 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                                    <CardFooter className="flex-row items-center justify-between p-4 px-0">
                                         <div className="flex items-center space-x-2">
                                              <div className="flex items-center">
-                                                  <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} disabled={session.id == comment.authorId} onClick={() => like(comment.id)} >
+                                                  <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} disabled={session?.id == comment.authorId} onClick={() => like(comment.id)} >
                                                        <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
                                                   </Button>
                                                   <span className="text-sm">{formatNumberWithSuffix(comment?._count?.likes)}</span>
                                              </div>
                                              {
-                                                  comment?.replies?.length > 0 && (
+                                                  comment._count.replies > 0 && (
                                                        <div className="flex items-center">
                                                             <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => setOpenReply(!openReply)} >
                                                                  <Reply className="w-5 h-5" strokeWidth={2} />
@@ -173,12 +189,14 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                               </Card>
                               {
                                    openReply && (
-                                        <div className="flex w-full justify-between">
-                                             <Separator orientation="vertical" className="mx-3.5 w-0.5" />
-                                             <div className="w-full">
+                                        <div className="flex w-full justify-between space-y-4 before:bg-border before:w-[1px]">
+                                             <div className="w-full ml-6">
                                                   {
-                                                       comment?.replies?.map((reply: any) => (
+                                                       comment?.replies?.map((reply: any, index: number) => (
+                                                            <>
                                                             <CommentCard key={reply.id} comment={reply} post={post} session={session} />
+                                                            { index !== comment?.replies?.length - 1 && <Separator className="w-full mb-4" /> }
+                                                            </>
                                                        ))
                                                   }
                                              </div>
@@ -198,8 +216,7 @@ export default function CommentCard({ comment, post, session, ...props }: React.
                     )
                }
                {isReplying && (
-                    <div className="flex w-full justify-between">
-                         <Separator orientation="vertical" className="mx-3.5 w-0.5" />
+                    <div className="flex w-full justify-between before:bg-border before:w-[1px]">
                          <ReplyForm
                               comment={comment}
                               post={post}
