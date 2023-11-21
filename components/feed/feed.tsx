@@ -42,7 +42,7 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
   return feed.length > 0 ? (
     <div className="feed__list">
 
-      <div className="flex lg:gap-6 md:gap-5 gap-4">
+      <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
         {feed?.map((post: any) => (
           <React.Fragment key={post.id}>
           <FeedPostCard
