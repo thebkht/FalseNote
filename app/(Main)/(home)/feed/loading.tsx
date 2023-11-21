@@ -32,7 +32,7 @@ export default async function Loading() {
       <FeedTabsSkeleton />
             <div className="pt-10">
               <div className="feed__list">
-                <div className="flex lg:gap-6 md:gap-5 gap-4">
+                <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
                   <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
                   <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
                   <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
