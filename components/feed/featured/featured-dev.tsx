@@ -13,7 +13,7 @@ import UserHoverCard from "@/components/user-hover-card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { validate } from "@/lib/revalidate";
-import { Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -130,9 +130,9 @@ export default function FeaturedDev(
                         size={'icon'}
                       >
               {isFollowingLoading[index] ? (
-                  <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing[index] ? "Following" : "Follow"}</>
+                  <><Icons.spinner className="h-4 w-4 animate-spin" /></>
                 ) : (
-                  <>{isFollowing[index] ? <><Icons.spinner className="h-4 w-4" /></> : <><Plus className="h-4 w-4" /></>}</>
+                  <>{isFollowing[index] ? <><Check className="h-4 w-4" /></> : <><Plus className="h-4 w-4" /></>}</>
                 )
               }
             </Button>
