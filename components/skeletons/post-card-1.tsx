@@ -6,8 +6,8 @@ export default function PostCardSkeletonV2(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { className?: string; }
 ) {
      return (
-          <Card {...props} className={cn('rounded-lg feedArticleCard bg-transparent border-none shadow-none md:pb-14', className)}>
-               <CardContent className="md:p-6 p-2 md:px-4 h-full">
+          <Card {...props} className={cn('rounded-lg feedArticleCard bg-transparent md:mb-14', className)}>
+               <CardContent className="md:p-6 p-4 h-full">
                     <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6">
                          <div className="w-full">
                               <div className="w-full h-auto bg-muted !relative !pb-0 aspect-[2/1]" >
