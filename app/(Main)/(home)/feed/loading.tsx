@@ -33,11 +33,11 @@ export default async function Loading() {
             <div className="pt-10">
               <div className="feed__list">
                 <div className="flex lg:gap-6 md:gap-5 gap-4">
-                  <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full" />
-                  <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full" />
-                  <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full" />
-                  <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full" />
-                  <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full" />
+                  <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
+                  <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
+                  <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
+                  <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
+                  <PostCardSkeleton className="rounded-lg bg-backgraound max-h-72 w-full" />
                 </div>
               </div>
             </div>
