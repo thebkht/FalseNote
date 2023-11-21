@@ -33,7 +33,7 @@ export default function PostCardSkeleton(
                         </div>
                       </div>
                     </div>
-                    <Skeleton className="h-14 md:h-28 aspect-[4/3] md:aspect-square ml-6 md:ml-8 rounded-none" />
+                    <Skeleton className="h-14 md:h-28 aspect-[4/3] rounded-md md:aspect-square ml-6 md:ml-8" />
                   </div>
                 </CardContent>
           </Card>
