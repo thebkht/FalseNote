@@ -23,9 +23,9 @@ export default function LandingPostCard(
   }
 ) {
   return (
-    <Card {...props} className={cn("rounded-lg feedArticleCard bg-transparent max-h-72 w-full border-none shadow-none", props.className)}>
-      <CardContent className="py-0 px-0 md:px-4">
-        <div className="flex items-start mb-8 md:mb-12 justify-between gap-3 md:gap-5">
+    <Card {...props} className={cn("rounded-lg feedArticleCard bg-transparent w-full", props.className)}>
+      <CardContent className="p-4 md:p-6">
+        <div className="flex items-start justify-between gap-3 md:gap-5">
           <div className="flex-initial w-full">
             <div className="flex items-center space-x-1 mb-2">
               <UserHoverCard user={props.post.author} >
@@ -50,7 +50,7 @@ export default function LandingPostCard(
                 </div>
               </div>
             </Link>
-            <div className="mt-1">
+            <div className="mt-4 md:mt-6">
               <div className="flex justify-between items-center">
                 <div className="flex flex-1 items-center space-x-1.5">
 
@@ -88,19 +88,19 @@ export default function LandingPostCard(
 
           <div className="flex-none">
             <Link href={`/@${props.post.author?.username}/${props.post.url}`} aria-label={`Link to ${props.post.title} by ${props.post.author?.username}`}>
-              <div className="h-[100px] md:h-36 bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square overflow-hidden" >
+              <div className="h-[100px] md:h-36 rounded-md bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square overflow-hidden" >
                 {props.post.cover ? (
                   <>
                   <Image
                     src={props.post.cover}
                     fill
                     alt={props.post.title}
-                    className="object-cover w-full z-[1]"
+                    className="object-cover w-full z-[1] rounded-md"
                   />
-                  <Skeleton className="w-full h-full" />
+                  <Skeleton className="w-full h-full rounded-md" />
                   </>
                 ) : (
-                  <Icons.noThumbnail className="h-full" />
+                  <Icons.noThumbnail className="h-full rounded-md" />
                 )}
               </div>
             </Link>

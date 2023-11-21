@@ -85,7 +85,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
           <div className="grid-cols-12 lg:grid flex flex-col-reverse pt-14 grid-rows-1 ">
             <div style={{ 'gridColumn': '1 / span 7' }} className="mt-10 lg:mt-0">
               {latest.length > 0 ? (
-                <div className="feed__list">
+                <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
                   {latest?.map((post: any) => (
                       <LandingPostCard
                       post={post}
@@ -105,11 +105,11 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
             <div style={{ 'gridColumn': '9 / span 4' }}>
               <div className="sticky lg:top-20 border-b lg:border-b-0">
                 {tags.length !== 0 && (
-                  <Card className="feed__content_featured_card bg-transparent border-none shadow-none">
-                    <CardHeader className="py-4 px-0">
+                  <Card className="feed__content_featured_card bg-transparent">
+                    <CardHeader className="p-4 md:p-6">
                       <CardTitle className="feed__content_featured_card_title text-base">Discover more of what matchs you</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-0">
+                    <CardContent className="px-4 md:px-6 pb-0">
                       <div className="w-full flex-wrap">
                         {tags?.map((tag: any) => (
                           <Link href={`/tags/${tag.name}`} key={tag.id}>
@@ -118,7 +118,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                         ))}
                       </div>
                     </CardContent>
-                    <CardFooter className="px-0">
+                    <CardFooter className="px-4 md:px-6">
                       <Button variant={'link'} className="px-0" asChild>
                         <Link href={`/tags`} className="text-sm flex items-center my-2.5 font-medium">
                           See more tags
