@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Mail, MapPin, Users2 } from "lucide-react";
+import { CalendarDays, Mail, MapPin, ShareIcon, Users2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Icons } from "../icon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { validate } from "@/lib/revalidate";
+import ShareList from "../share-list";
 
 function getRegistrationDateDisplay(registrationDate: string) {
   ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -72,7 +73,7 @@ export default function UserDetails({ className, children, user, followers, foll
       <div className="flex-1">
       <div className="flex lg:flex-col items-start">
       <div className="user__header flex md:block md:items-start lg:space-y-4 space-y-2 pb-4">
-        <Avatar className="rounded-full mr-3 lg:w-64 xl:w-[296px] w-1/4 md:w-56 md:h-56 lg:h-64 xl:h-[296px] border h-1/4">
+        <Avatar className="rounded-full mr-3 lg:w-64 xl:w-[296px] w-16 md:w-56 md:h-56 lg:h-64 xl:h-[296px] border h-16">
           <AvatarImage className="rounded-full" src={user?.image} alt={user?.name} />
           <AvatarFallback className="text-8xl text-foreground">{user?.name ? user?.username?.charAt(0) : user?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
@@ -89,7 +90,7 @@ export default function UserDetails({ className, children, user, followers, foll
               </div>
             ) : (
               <div className="md:space-y-3 w-full">
-                <h1 className="font-bold text-xl lg:text-2xl flex items-center"><span>{user?.username}</span> {user?.verified && (
+                <h1 className="font-bold text-lg lg:text-2xl flex items-center"><span>{user?.username}</span> {user?.verified && (
                   <Icons.verified className="h-5 lg:h-6 w-5 lg:w-6 mx-0.5 inline fill-primary align-middle" />
                 )} {user?.falsemember && (
                   <Image src='https://avatars.githubusercontent.com/u/144859178?v=4' alt="False icon" height={30} width={30} className="h-5 lg:h-6 w-5 lg:w-6 inline rounded border align-middle" />
@@ -101,6 +102,7 @@ export default function UserDetails({ className, children, user, followers, foll
       </div>
       </div>
 
+      <div className="flex justify-between items-center w-full">
       {
         status === "authenticated" ? (
           session?.id === user?.id ? (
@@ -128,6 +130,10 @@ export default function UserDetails({ className, children, user, followers, foll
           </LoginDialog>
         )
       }
+      <ShareList url={`https://falsenotes.netlify.app/@${user?.username}`} text={`Check ${user.name || user.username}'s profile on @FalseNotesTeam`}>
+          <ShareIcon className="h-5 w-5 text-muted-foreground" />
+        </ShareList>
+      </div>
       {user.bio && (<div className="w-full mt-5">{user?.bio}</div>)}
 
       <div className="py-4 items-center flex gap-2 w-full">
