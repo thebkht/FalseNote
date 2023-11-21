@@ -49,7 +49,6 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
             post={post}
             session={session}
           />
-          <Separator />
         </React.Fragment>
         ))}
 
