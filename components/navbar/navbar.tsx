@@ -25,7 +25,7 @@ function Navbar(notifications: any) {
   const router = useRouter();
 
   return (
-    <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background border-b">
+    <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background/60 backdrop-blur-md border-b">
       <Link href={session ? "/feed" : "/"} className="flex items-center">
         <Icons.logo className="" />
         <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
