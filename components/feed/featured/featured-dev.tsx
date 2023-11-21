@@ -13,6 +13,7 @@ import UserHoverCard from "@/components/user-hover-card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { validate } from "@/lib/revalidate";
+import { Plus } from "lucide-react";
 
 const formatDate = (dateString: string | number | Date) => {
   const date = new Date(dateString)
@@ -126,11 +127,12 @@ export default function FeaturedDev(
                           handleFollow(item?.id, index);
                         }}
                         disabled={isFollowingLoading[index]}
+                        size={'icon'}
                       >
               {isFollowingLoading[index] ? (
                   <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing[index] ? "Following" : "Follow"}</>
                 ) : (
-                  <>{isFollowing[index] ? <>Following</> : <>Follow</>}</>
+                  <>{isFollowing[index] ? <><Icons.spinner className="h-4 w-4" /></> : <><Plus className="h-4 w-4" /></>}</>
                 )
               }
             </Button>
