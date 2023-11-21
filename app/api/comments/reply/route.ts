@@ -37,6 +37,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             author: {
               select: {
                 username: true,
+                
               }
             }
           },
@@ -44,7 +45,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
     });
 
-    // Replace content with converted markdown
+    if (author !== receiver?.authorId) {
+      // Replace content with converted markdown
     const commentContent = content.replace(/<[^>]*>?/gm, "");
 
     // Send a notification to the author of the post using api/notifications post method body json
@@ -59,6 +61,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         receiverId: receiver.authorId,
         senderId: authorDetails.id,
       });
+    }
     }
 
     return new NextResponse("Reply created", { status: 201 });
