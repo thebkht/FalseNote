@@ -47,7 +47,7 @@ export default function TagDetails({ tag, tagFollowers, session }: { tag: any, t
 
      return (
           <>
-               <div className="space-y-0.5 px-6 pb-14 w-full">
+               <div className="space-y-0.5 px-4 pb-14 w-full">
                     <h2 className="text-5xl font-medium tracking-tight w-full capitalize text-center">{tag.name.replace(/-/g, " ")}</h2>
                     <div className="text-muted-foreground pt-4 pb-6 flex justify-center">
                          Tag<div className="mx-2">·</div>{formatNumberWithSuffix(tag._count.posts)} Posts<div className="mx-2">·</div>{formatNumberWithSuffix(tagFollowers.length)} Followers

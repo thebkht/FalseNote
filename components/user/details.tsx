@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { validate } from "@/lib/revalidate";
-import ShareList from "../share-list";
+import ShareList from "./share";
 
 function getRegistrationDateDisplay(registrationDate: string) {
   ///format date ex: if published this year Apr 4, otherwise Apr 4, 2021
@@ -102,7 +102,7 @@ export default function UserDetails({ className, children, user, followers, foll
       </div>
       </div>
 
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full gap-2">
       {
         status === "authenticated" ? (
           session?.id === user?.id ? (
@@ -125,13 +125,15 @@ export default function UserDetails({ className, children, user, followers, foll
             </Button>
           )
         ) : (
-          <LoginDialog className="w-full">
+          <LoginDialog>
             <Button className="w-full">Follow</Button>
           </LoginDialog>
         )
       }
       <ShareList url={`https://falsenotes.netlify.app/@${user?.username}`} text={`Check ${user.name || user.username}'s profile on @FalseNotesTeam`}>
-          <ShareIcon className="h-5 w-5 text-muted-foreground" />
+        <Button variant={"secondary"} className="px-2">
+        <ShareIcon className="h-5 w-5 text-muted-foreground" />
+        </Button>
         </ShareList>
       </div>
       {user.bio && (<div className="w-full mt-5">{user?.bio}</div>)}

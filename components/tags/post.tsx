@@ -15,7 +15,7 @@ export default function TagPopularPosts({ posts: initialPosts, tag, session }: {
      const restPosts = posts.slice(2, posts.length);
      return (
           <div className="flex justify-center">
-               <div className="mx-6 mb-20">
+               <div className="mb-20">
                     <div className="my-10">
                          <h2 className="text-2xl font-medium tracking-tight w-full capitalize">Popular posts</h2>
                     </div>

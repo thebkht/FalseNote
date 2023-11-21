@@ -45,11 +45,10 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
         {children}
         <Separator className="md:hidden flex mt-4" />
         {posts?.length > 0 ? (
-          <>
+          <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
             {posts?.map((article: any) => (
               <div  key={article.id}>
                 <PostCard post={article} session={sessionUser} user={true.toString()} />
-                <Separator />
               </div>
             ))}
 
@@ -90,7 +89,7 @@ export default function UserPosts({ posts: initialPosts, className, user, sessio
             </div>
               )
             }
-          </>
+          </div>
 
         ) : (
           <EmptyPlaceholder>

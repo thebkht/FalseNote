@@ -20,7 +20,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
   const { width, height } = useWindowDimensions();
   return (
     <>
-      <main className="landing mx-auto w-full overflow-hidden">
+      <main className="landing mx-auto w-full overflow-hidden mb-4">
         <div className="landing__hero px-6 xl:px-36 2xl:px-64 border-b">
           <div className="landing__hero_content flex flex-col md:my-24 my-8 space-y-8 md:space-y-24 items-center justify-center">
             <div className="landing_hero-image w-[120vw] md:w-full">

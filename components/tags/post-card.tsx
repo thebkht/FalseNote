@@ -47,7 +47,7 @@ export default function TagPostCard(
      return (
           <Card {...props} className={cn('rounded-lg feedArticleCard bg-transparent md:mb-14', className)}>
                <CardContent className="md:p-6 p-4 h-full">
-                    <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6">
+                    <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full">
                          <div className="w-full">
                               <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
                                    <div className="w-full h-auto bg-muted rounded-md !relative !pb-0 aspect-[2/1] overflow-hidden" >

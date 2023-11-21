@@ -203,7 +203,7 @@ export default async function PostLayout(
      posts.length % 2 !== 0 && posts.pop();
      return (
           <>
-               <div className='md:container mx-auto px-4'>
+               <div className='md:container mx-auto px-4 pt-5'>
                     {children}
                </div>
 

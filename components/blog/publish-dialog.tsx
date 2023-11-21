@@ -41,10 +41,10 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                               </DialogDescription>
                          </DialogHeader>
                          <div className="flex flex-col gap-2">
-                              <Card className={cn("feedArticleCard bg-background max-h-72 border-none shadow-none my-8 w-full")}>
+                              <Card className={cn("feedArticleCard bg-background max-h-72 my-8 w-full")}>
                                    <CardContent className="flex flex-col">
-                                        <div className="flex justify-between">
-                                        <CardHeader className={cn("py-0 pb-3 md:py-0 px-0")}>
+                                        <div className="flex justify-between items-start">
+                                        <CardHeader className={cn("px-0 pb-3")}>
                                              <CardTitle className="!text-base md:text-xl font-bold text-ellipsis overflow-hidden line-clamp-2">
                                                   {post.title}
                                              </CardTitle>
@@ -52,17 +52,17 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                                                   {post.subtitle}
                                              </CardDescription>
                                         </CardHeader>
-                                        <div className="flex-none ml-6 md:ml-8">
-                                             <div className={`h-14 md:h-28 !relative bg-muted !pb-0 aspect-square`} >
+                                        <div className="flex-none ml-6 md:ml-8 pt-6">
+                                             <div className={`h-14 md:h-28 !relative bg-muted !pb-0 aspect-square overflow-hidden rounded-md`} >
                                                   {post.cover ? (
                                                        <Image
                                                             src={post.cover}
                                                             fill
                                                             alt={post.title}
-                                                            className="object-cover w-full"
+                                                            className="object-cover w-full rounded-md"
                                                        />
                                                   ) : (
-                                                       <Icons.noThumbnail className="w-full h-full" />
+                                                       <Icons.noThumbnail className="h-full rounded-md" />
                                                   )}
                                              </div>
                                         </div>

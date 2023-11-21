@@ -44,7 +44,7 @@ export default function PostCard(
      }
      const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (
-          <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full my-4", props.className
+          <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full", props.className
           )}>
                <CardContent className="md:p-6 p-4">
                     <CardHeader className={cn("pb-4 pt-0 px-0 gap-y-4")}>

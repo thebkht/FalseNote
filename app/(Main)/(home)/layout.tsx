@@ -32,14 +32,14 @@ export default async function HomeLayout({
      return (
           <>
                <div className="md:container mx-auto px-4">
-                    <main className="flex flex-col items-center justify-between feed xl:px-8">
-                         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] w-full xl:gap-8 md:gap-4">
+                    <main className="flex flex-col items-center justify-between feed xl:px-4">
+                         <div className="md:flex lg:flex-nowrap flex-wrap md:mx-[-16px] mt-5 w-full xl:gap-8 md:gap-4">
                               <div className="md:my-4 w-full lg:w-2/3">
                                    {children}
                               </div>
                               <div className="hidden lg:block md:my-4 lg:w-1/3 xl:pl-8 md:pl-4 border-l min-h-screen">
                                    <div className="relative w-full h-full inline-block">
-                                        <div className="sticky space-y-4 top-16">
+                                        <div className="sticky space-y-4 top-[90px]">
                                              <PopularPosts />
                                              {popularTags.length !== 0 && (
                                                   <Card className="feed__content_featured_card bg-background">

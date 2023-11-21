@@ -25,9 +25,11 @@ function Navbar(notifications: any) {
   const router = useRouter();
 
   return (
-    <div className="menu-container h-[60px] px-3.5 sticky top-0 bg-background/60 backdrop-blur-md border-b">
+    <div className="md:container px-4 sticky top-4 z-20">
+      <div className="menu-container py-4 px-8 bg-background/70 backdrop-blur-md border rounded-2xl shadow-xl xl:mx-8">
       <Link href={session ? "/feed" : "/"} className="flex items-center">
-        <Icons.logo className="" />
+        <Icons.logo className="md:block hidden" />
+        <Icons.logoIcon className="md:hidden block" />
         <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
       </Link>
 
@@ -59,6 +61,7 @@ function Navbar(notifications: any) {
         }
 
       </div>
+    </div>
     </div>
   );
 }

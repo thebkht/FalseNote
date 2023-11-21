@@ -78,7 +78,7 @@ tags.forEach((tag: any) => {
 export default async function TagLayout({ children, params }: Props) {
      return (
           <>
-               <div className="py-10">
+               <div className="md:container px-4 py-10">
                     <TagNav />
                     {children}
                </div>

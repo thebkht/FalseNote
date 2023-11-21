@@ -103,12 +103,12 @@ export default async function Page({ params, searchParams }: {
   const { bookmarks } = await getBookmarks({ id: sessionUserName?.id, limit: 10 })
   const { history } = await getHistory({ id: sessionUserName?.id, limit: 10 })
   return (
-    <div className="md:container mx-auto px-4 mt-4">
-      <div className="gap-5 lg:gap-6 flex flex-col md:flex-row items-start" >
-        <div className="w-full md:sticky top-16 md:w-1/3 lg:w-1/4">
+    <div className="md:container mx-auto px-4 pt-5">
+      <div className="gap-5 lg:gap-6 flex flex-col md:flex-row items-start xl:px-4 pt-5" >
+        <div className="w-full md:w-1/3 lg:w-1/4">
           <UserDetails user={user} followers={followers} followings={following} session={sessionUserName} />
         </div>
-        <div className="lg:px-8 w-full">
+        <div className="lg:pl-8 w-full">
           {sessionUserName?.id === user?.id ? (
             <Tabs className="w-full" defaultValue={tab || "posts"}>
               <TabsList className="bg-background w-full py-4 justify-start h-fit rounded-none gap-2 sticky top-[60px] z-10">

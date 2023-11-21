@@ -11,7 +11,7 @@ export default function FeedLayout({
 }) {
   return (
      <>
-      <div className="md:container mx-auto px-4">
+      <div className="mx-auto">
           {children}
         </div>
      </>

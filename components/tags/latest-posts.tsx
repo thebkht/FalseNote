@@ -9,18 +9,17 @@ import { Separator } from "../ui/separator";
 export default function TagLatestPosts({ posts, tag, session }: { posts: any, tag: any, session: any }) {
      return (
           <div className="flex justify-center">
-               <div className="mx-6 mb-20 w-full">
+               <div className="mb-20 w-full">
                     <div className="flex justify-between flex-col xl:flex-row">
                          <div className="min-w-80">
                               <h2 className="text-2xl font-medium tracking-tight w-full capitalize">Latest posts</h2>
                          </div>
                          <div className="flex flex-col xl:max-w-[780px]">
-                              <div className="divide-y">
+                              <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
                                    {
                                         posts.map((post: any) => (
                                              <>
                                                   <PostCard key={post.id} post={post} session={session} />
-                                                  <Separator />
                                              </>
                                         ))
                                    }
