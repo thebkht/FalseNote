@@ -8,7 +8,7 @@ import { getSessionUser } from "@/components/get-session-user";
 import { Icons } from "@/components/icon";
 import TagBadge from "@/components/tags/tag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { dateFormat } from "@/lib/format-date";
 import { getBookmarks } from "@/lib/prisma/session";
 import { Metadata } from "next"
@@ -42,19 +42,19 @@ export default async function HomeLayout({
                                         <div className="sticky space-y-4 top-16">
                                              <PopularPosts />
                                              {popularTags.length !== 0 && (
-                                                  <Card className="feed__content_featured_card bg-background border-none shadow-none">
-                                                       <CardHeader className="py-4 px-0">
+                                                  <Card className="feed__content_featured_card bg-background">
+                                                       <CardHeader className="p-4">
                                                             <CardTitle className="feed__content_featured_card_title text-base">Popular tags</CardTitle>
                                                        </CardHeader>
-                                                       <CardContent className="p-0">
-                                                            <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap">
+                                                       <CardContent className="px-4">
+                                                            <div className="w-2/3 md:w-1/4 lg:w-full flex-wrap pb-4">
                                                                  {popularTags?.map((tag: any) => (
                                                                       <Link href={`/tags/${tag.name}`} key={tag.id}>
                                                                            <TagBadge className="my-1 mr-1" variant={"secondary"}>{tag.name}</TagBadge>
                                                                       </Link>
                                                                  ))}
                                                             </div>
-                                                            <Link href={`/tags`} className="text-xs flex items-center my-2.5 font-medium">
+                                                            <Link href={`/tags`} className="text-xs flex items-center font-medium">
                                                                  See more tags
                                                             </Link>
                                                        </CardContent>
@@ -63,12 +63,13 @@ export default async function HomeLayout({
                                              {topUsers && (
                                                   <FeaturedDev data={topUsers} />
                                              )}
-                                             <Card className="feed__content_featured_card bg-background border-none shadow-none">
-                                                  <CardHeader className="py-4 px-0">
+                                             <Card className="feed__content_featured_card bg-background">
+                                                  <CardHeader className="p-4">
                                                        <CardTitle className="feed__content_featured_card_title text-base">Recently saved</CardTitle>
                                                   </CardHeader>
-                                                  <CardContent className="p-0">
+                                                  <CardContent className="px-4 pb-0">
                                                        {bookmarks.length !== 0 ? (
+                                                            <>
                                                             <ol className="flex flex-col items-start justify-between space-y-4">
                                                                  {bookmarks?.map(
                                                                       (item: any, index: number) => (
@@ -96,11 +97,15 @@ export default async function HomeLayout({
                                                                            </li>
                                                                       ))}
                                                                  <li className="text-sm space-y-2.5">
-                                                                      <Link href={`/@${session.username}?tab=bookmarks`} className="text-xs flex items-center mb-2 font-medium">
-                                                                           See all ({bookmarksCount})
-                                                                      </Link>
+                                                                      
                                                                  </li>
                                                             </ol>
+                                                            <CardFooter className="px-0 py-4">
+                                                                 <Link href={`/@${session.username}?tab=bookmarks`} className="text-xs flex items-center mb-2 font-medium">
+                                                                           See all ({bookmarksCount})
+                                                                      </Link>
+                                                            </CardFooter>
+                                                            </>
                                                        ) : (
                                                             <EmptyPlaceholder className='min-h-min p-6'>
                                                                  <EmptyPlaceholder.Icon name='bookmark' className='h-5 w-5' parentClassName='h-10 w-10' />

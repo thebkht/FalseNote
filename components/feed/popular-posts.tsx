@@ -36,11 +36,11 @@ export default async function PopularPosts() {
 
   posts ? content = (
     posts.length !== 0 && (
-      <Card className="feed__content_featured_card bg-background border-none shadow-none">
-        <CardHeader className="py-4 px-0">
+      <Card className="feed__content_featured_card bg-background">
+        <CardHeader className="p-4">
           <CardTitle className="feed__content_featured_card_title text-base">Trending Now</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent className="px-4 pb-4">
           <ol className="flex flex-col items-start justify-between space-y-4">
             {posts.map(
               (item: any, index: number) => (

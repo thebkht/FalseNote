@@ -80,11 +80,11 @@ export default function FeaturedDev(
 
   if (Array.isArray(featuredDevs)) {
     featuredDevs.length ? content = (
-      <Card className={cn("feed__content_featured_card bg-background border-none shadow-none", props.className)} {...props}>
-        <CardHeader className="py-4 px-0">
+      <Card className={cn("feed__content_featured_card bg-background", props.className)} {...props}>
+        <CardHeader className="p-4">
           <CardTitle className="feed__content_featured_card_title text-base">Who to follow</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent className="px-4">
           <div className="feed__content_featured_card_content flex flex-col items-start justify-between space-y-4">
             {featuredDevs?.map(
                   (item: any, index: number) => (
