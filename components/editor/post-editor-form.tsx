@@ -662,7 +662,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
         <PostDeleteDialog post={props.post} user={props.user} open={showDeleteAlert} onOpenChange={setShowDeleteAlert} />
 
 
-        <Button size={"icon"} variant={"secondary"} disabled={isSaving} onClick={
+        <Button size={"icon"} disabled={isSaving} onClick={
           () => {
             if (form.getValues('title') === undefined) {
               toast({
@@ -670,7 +670,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 variant: "destructive",
               })
             }
-            if (form.getValues('content') === undefined) {
+            if (!form.getValues('content') || form.getValues('content') === '') {
               toast({
                 description: "Please enter a content for your post!",
                 variant: "destructive",
