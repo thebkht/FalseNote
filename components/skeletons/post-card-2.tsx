@@ -8,8 +8,8 @@ export default function PostCardSkeleton(
      return (
           <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full border-none shadow-none my-4", className
           )}>
-               <CardContent className="p-0">
-                    <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
+               <CardContent className="md:p-6 p-4">
+               <CardHeader className={cn("pb-4 pt-0 px-0 gap-y-4")}>
                          <div className="flex items-center space-x-1">
                               <div className="flex items-center gap-1.5">
                                    <Skeleton className="w-5 h-5 rounded-full" />
@@ -31,7 +31,7 @@ export default function PostCardSkeleton(
                                         <Skeleton className="w-full h-5" />
                                    </div>
                               </div>
-                              <div className="hidden py-8 lg:block">
+                              <div className="hidden pt-8 lg:block">
                                    <div className="flex justify-between items-center">
                                         <div className="flex flex-1 items-center space-x-2.5">
                                              <Skeleton className="w-16 h-5" />
@@ -47,7 +47,7 @@ export default function PostCardSkeleton(
                               </div>
                          </div>
                     </div>
-                    <div className="py-4 lg:hidden">
+                    <div className="pt-4 lg:hidden">
                          <div className="flex justify-between items-center">
                               <div className="flex flex-1 items-center space-x-2.5">
                                    <Skeleton className="w-16 h-5" />

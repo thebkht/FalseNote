@@ -44,10 +44,10 @@ export default function PostCard(
      }
      const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (
-          <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full", props.className
+          <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full my-4", props.className
           )}>
                <CardContent className="md:p-6 p-4">
-                    <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
+                    <CardHeader className={cn("pb-4 pt-0 px-0 gap-y-4")}>
                          <div className="flex items-center space-x-1">
                               {
                                    props.user != 'true' && (
@@ -94,7 +94,7 @@ export default function PostCard(
                                         </div>
                                    </div>
                               </Link>
-                              <div className="hidden py-8 lg:block">
+                              <div className="hidden pt-8 lg:block">
                                    <div className="flex justify-between items-center">
                                         <div className="flex flex-1 items-center space-x-2.5">
                                              {
@@ -145,25 +145,25 @@ export default function PostCard(
 
                          <div className="flex-none ml-6 md:ml-8">
                               <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.id}` : `/@${props.post.author?.username}/${props.post.url}`}>
-                                   <div className={`h-14 md:h-28 !relative bg-muted overflow-hidden !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
+                                   <div className={`h-14 md:h-28 !relative rounded-md bg-muted overflow-hidden !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                         {props.post.cover ? (
                                              <>
                                                   <Image
                                                        src={props.post.cover}
                                                        fill
                                                        alt={props.post.title}
-                                                       className="object-cover w-full z-[1]"
+                                                       className="object-cover w-full z-[1] rounded-md"
                                                   />
-                                                  <Skeleton className="w-full h-full" />
+                                                  <Skeleton className="w-full h-full rounded-md" />
                                              </>
                                         ) : (
-                                             <Icons.noThumbnail className="h-full" />
+                                             <Icons.noThumbnail className="h-full rounded-md" />
                                         )}
                                    </div>
                               </Link>
                          </div>
                     </div>
-                    <div className="py-4 lg:hidden">
+                    <div className="pt-4 lg:hidden">
                          <div className="flex justify-between items-center">
                               <div className="flex flex-1 items-center space-x-2.5">
                                    {
