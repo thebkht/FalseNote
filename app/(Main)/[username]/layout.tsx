@@ -49,7 +49,7 @@ export async function generateMetadata(
 
       },
       twitter: {
-        card: 'summary_large_image',
+        card: 'summary',
         title: `Not Found - FalseNotes`,
         description: `The page you were looking for doesn't exist.`,
       },
