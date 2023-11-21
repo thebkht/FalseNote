@@ -45,24 +45,24 @@ export default function TagPostCard(
      const isLiked = props.post?.likes?.some((like: any) => like.authorId === props.session?.id);
      const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (
-          <Card {...props} className={cn('rounded-lg feedArticleCard bg-transparent border-none shadow-none md:pb-14', className)}>
-               <CardContent className="md:p-6 p-2 md:px-4 h-full">
+          <Card {...props} className={cn('rounded-lg feedArticleCard bg-transparent md:mb-14', className)}>
+               <CardContent className="md:p-6 p-4 h-full">
                     <div className="flex flex-col grid-cols-12 gap-y-8 items-start h-full pb-6">
                          <div className="w-full">
                               <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
-                                   <div className="w-full h-auto bg-muted !relative !pb-0 aspect-[2/1] overflow-hidden" >
+                                   <div className="w-full h-auto bg-muted rounded-md !relative !pb-0 aspect-[2/1] overflow-hidden" >
                                         {props.post.cover ? (
                                              <>
                                                   <Image
                                                        src={props.post.cover}
                                                        fill
                                                        alt={props.post.title}
-                                                       className="object-cover z-[1]"
+                                                       className="object-cover z-[1] rounded-md"
                                                   />
                                                   <Skeleton className="w-full h-full rounded-md" />
                                              </>
                                         ) : (
-                                             <Icons.noThumbnail className="w-full h-full" />
+                                             <Icons.noThumbnail className="w-full h-full rounded-md" />
                                         )}
                                    </div>
                               </Link>
