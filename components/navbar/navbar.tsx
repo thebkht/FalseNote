@@ -36,7 +36,7 @@ function Navbar(notifications: any) {
       <div className="flex items-center gap-1 md:gap-4">
         <Button variant="ghost" size={"icon"} className="flex md:hidden" asChild>
           <Link href="/explore">
-            <MagnifyingGlassIcon className="md:h-[1.2rem] md:w-[1.2rem]" />
+            <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
             <span className="sr-only">Search</span>
           </Link>
         </Button>
