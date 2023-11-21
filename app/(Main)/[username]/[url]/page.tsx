@@ -19,6 +19,7 @@ export default async function PostView({ params, searchParams }: { params: { use
                Followings: true
           }
      });
+     if (!author) return notFound();
      const post = await postgres.post.findFirst({
           where: {
                url: params.url,
