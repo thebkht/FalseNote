@@ -48,14 +48,14 @@ async function getPostData(username: string, url: string) {
          throw new Error('Post not found');
        }
        return {
-         metadataBase: new URL(`${process.env.DOMAIN}/${post.author.username}/${post.url}`),
+         metadataBase: new URL(`${process.env.DOMAIN}/@${post.author.username}/${post.url}`),
          title: `${post.title} - FalseNotes`,
-         description: post.subtitle,
+         description: post.subtitle || markdownToText(post.content.slice(0, 100)),
          keywords: post.tags.map((tag: any) => tag.tag.name).join(', '),
          openGraph: {
            title: `${post.title} - FalseNotes`,
            description: post.subtitle || markdownToText(post.content.slice(0, 100)),
-           url: `${process.env.DOMAIN}/${post.author.username}/${post.url}`,
+           url: new URL(`${process.env.DOMAIN}/@${post.author.username}/${post.url}`),
            images: [
              {
                url: `${process.env.DOMAIN}/api/posts/${post.author.username}/opengraph-image?url=${post.url}`,
