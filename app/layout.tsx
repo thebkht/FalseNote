@@ -65,7 +65,6 @@ export default async function Rootayout({
       <body className={`${GeistSans.className}`}>
         <ThemeProvider attribute="class" defaultTheme={settings?.appearance || 'system'} enableSystem>
           <AuthProvider>
-          <TopLoader />
           {children}
           <Toaster />
           <TailwindIndicator />
