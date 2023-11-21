@@ -156,7 +156,6 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
 
                          </div>
 
-                         <PostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
                          <MarkdownCard code={post?.content} />
 
 
@@ -181,7 +180,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
 
                          {
                               // if post word count is greater than 1000 show the stats
-                              <PostTabs post={post} session={session} author={author} className="border-none" comments={post?.comments} onClicked={() => setOpenComments(!openComments)} />
+                              <PostTabs post={post} session={session} author={author} comments={post?.comments} onClicked={() => setOpenComments(!openComments)} />
 
                          }
                          <MobilePostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />

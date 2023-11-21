@@ -31,7 +31,7 @@ export default function MobilePostTabs({ post: initialPost, className, session, 
      const [showDeleteAlert, setShowDeleteAlert] = useState<boolean>(false)
      return (
           <>
-               <div className={cn("px-3 py-2 border-t flex md:hidden w-full sticky bottom-0 left-0 bg-background", className)}>
+               <div className={cn("p-2 border rounded-full shadow-xl flex md:hidden w-full sticky bottom-5 bg-background/60 backdrop-blur-md", className)}>
                     <div className="flex items-center justify-between w-full">
                          <div className="flex items-center justify-center flex-1">
                               {
