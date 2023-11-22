@@ -107,7 +107,7 @@ export default async function HomeLayout({
                                                             </CardFooter>
                                                             </>
                                                        ) : (
-                                                            <EmptyPlaceholder className='min-h-min p-6'>
+                                                            <EmptyPlaceholder className='min-h-min p-6 mb-4'>
                                                                  <EmptyPlaceholder.Icon name='bookmark' className='h-5 w-5' parentClassName='h-10 w-10' />
                                                                  <EmptyPlaceholder.Description className='!my-2'>
                                                                       You haven&apos;t saved any posts yet. Click the bookmark icon on a post to save it here.
