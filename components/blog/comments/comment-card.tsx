@@ -158,9 +158,7 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                    </CardHeader>
                                    <CardContent className="p-4 pt-0 px-0">
 
-                                        <div className="article__comments-item-body text-sm prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
-                                             <MarkdownCard code={comment.content} />
-                                        </div>
+                                   <MarkdownCard code={comment.content} />
                                    </CardContent>
                                    <CardFooter className="flex-row items-center justify-between p-4 px-0">
                                         <div className="flex items-center space-x-2">
