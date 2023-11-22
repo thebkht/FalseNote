@@ -111,7 +111,7 @@ export default async function Page({ params, searchParams }: {
         <div className="lg:pl-8 w-full">
           {sessionUserName?.id === user?.id ? (
             <Tabs className="w-full" defaultValue={tab || "posts"}>
-              <TabsList className="bg-background w-full py-4 justify-start h-fit rounded-none gap-2 sticky top-[60px] z-10">
+              <TabsList className="bg-background w-full py-4 justify-start h-fit rounded-none gap-2 sticky top-[90px] z-10">
                 <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
                   Posts
                 </TabsTrigger>

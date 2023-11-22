@@ -28,9 +28,9 @@ export default async function Feed({
   const userFollowingsTags = await fetchFollowingTags({ id: session?.id })
 
   if (session) {
-    if(userFollowingsTags.length === 0) {
+    if (userFollowingsTags.length === 0) {
       redirect('/get-started')
-    } 
+    }
   } else {
     return redirect('/')
   }
@@ -38,18 +38,12 @@ export default async function Feed({
   const tab = typeof searchParams.tab === 'string' ? searchParams.tab : undefined
   const feed = await fetchFeed({ page: 0, tab, limit: 10 });
 
-  const topData = await fetchUsers({ id: session?.id })
-  const topUsers = topData?.users;
-  const popularTags = await fetchTags();
-
-  const { bookmarks, bookmarksCount } = await getBookmarks({ id: session?.id, limit: 3 })
-
   return (
     <>
       <FeedTabs tabs={userFollowingsTags} activeTab={tab} />
-            <div className="pt-10">
-            <InfinitiveScrollFeed initialFeed={feed} tag={tab} session={session} />
-            </div>
+      <div className="pt-10">
+        <InfinitiveScrollFeed initialFeed={feed} tag={tab} session={session} />
+      </div>
     </>
   )
 }
