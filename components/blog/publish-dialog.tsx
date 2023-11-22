@@ -18,7 +18,8 @@ import { cn } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import PostCard from "../tags/post-card-v2";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import Image from "next/image";
+import { BlurImage as Image } from "../image";
+import { shimmer, toBase64 } from "@/lib/image";
 
 
 export default function PublishDialog({ post, user, session, ...props }: { post: Post, user: User, session?: any } & React.ComponentPropsWithoutRef<typeof Dialog>) {
@@ -59,7 +60,8 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                                                             src={post.cover}
                                                             fill
                                                             alt={post.title}
-                                                            className="object-cover w-full rounded-md"
+                                                            placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
+                                                       className="object-cover max-w-full h-auto z-[1] rounded-md"
                                                        />
                                                   ) : (
                                                        <Icons.noThumbnail className="h-full rounded-md" />
