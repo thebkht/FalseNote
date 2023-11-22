@@ -29,7 +29,7 @@ function Navbar(notifications: any) {
       <div className="menu-container py-4 px-8 bg-background/70 backdrop-blur-md border rounded-2xl shadow-xl xl:mx-8">
       <Link href={session ? "/feed" : "/"} className="flex items-center">
         <Icons.logo className="md:block hidden" />
-        <Icons.logoIcon className="md:hidden block" />
+        <Icons.logoIcon className="md:hidden block h-6" />
         <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
       </Link>
 
