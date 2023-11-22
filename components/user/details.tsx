@@ -79,7 +79,6 @@ useEffect(() => {
   };
 
   window.addEventListener('scroll', checkScroll);
-  console.log(window.pageYOffset)
 
   return () => {
     window.removeEventListener('scroll', checkScroll);
