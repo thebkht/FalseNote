@@ -14,7 +14,7 @@ import PostDeleteDialog from "./post-delete-dialog";
 import LoginDialog from "../login-dialog";
 import PostMoreActions from "./post-more-actions";
 
-export default function MobilePostTabs({ post: initialPost, className, session, author, comments, onClicked }: { post: any, className?: string, session: any, author: any, comments: boolean | undefined, onClicked: () => void }) {
+export default function MobilePostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
      useEffect(() => {
           setPost(initialPost);

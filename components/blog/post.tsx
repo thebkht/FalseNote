@@ -20,7 +20,6 @@ import PostMoreActions from "./post-more-actions";
 import PublishDialog from "./publish-dialog";
 import MarkdownCard from "../markdown-card";
 import { validate } from "@/lib/revalidate";
-import { Separator } from "../ui/separator";
 import { shimmer, toBase64 } from "@/lib/image";
 
 export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
@@ -71,7 +70,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                return null;
           }
      }
-     if(openPublishDialog === false && published === true){
+     if (openPublishDialog === false && published === true) {
           router.replace(`/@${author?.username}/${post?.url}`)
      }
      return (
@@ -131,9 +130,6 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                                             ))
                                              }
 
-
-
-
                                         </span>
                                         <div className="article__date">
                                              <span className="">{post?.readingTime}</span>
@@ -169,7 +165,6 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                                   <Link href={`/tags/${tag.tag.name}`} key={tag.tag.id}>
                                                        <TagBadge className="my-1.5 mr-1.5" variant={"secondary"}>
                                                             {
-                                                                 //replace - with space
                                                                  tag.tag.name.replace(/-/g, " ")
                                                             }
                                                        </TagBadge>
@@ -180,26 +175,11 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                               )
                          }
 
-                         {
-                              // if post word count is greater than 1000 show the stats
-                              <PostTabs post={post} session={session} author={author} comments={post?.comments} onClicked={() => setOpenComments(!openComments)} />
-
-                         }
-                         <MobilePostTabs post={post} session={session} author={author} className="mt-8" comments={comments} onClicked={() => setOpenComments(!openComments)} />
+<PostTabs post={post} session={session} author={author} onClicked={() => setOpenComments(!openComments)} />
+                         <MobilePostTabs post={post} session={session} author={author} className="mt-8" onClicked={() => setOpenComments(!openComments)} />
                     </div>
                </div>
                <CommentsSheet post={post} comments={post?.comments} session={session} open={openComments} onOpenChange={setOpenComments} />
           </>
      )
-}
-
-function getCookie(name: string) {
-     const cookies = document.cookie.split(";")
-     for (const cookie of cookies) {
-          const [cookieName, cookieValue] = cookie.split("=")
-          if (cookieName.trim() === name) {
-               return cookieValue
-          }
-     }
-     return null
 }
