@@ -41,6 +41,11 @@ export default function FeaturedDev(
   const [isFollowing, setIsFollowing] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
   );
+  useEffect(() => {
+    setIsFollowing(featuredDevs?.map(() => false) || []);
+    setIsFollowingLoading(featuredDevs?.map(() => false) || []);
+  }, [featuredDevs]);
+
   const [isFollowingLoading, setIsFollowingLoading] = useState<boolean[]>(
     featuredDevs?.map(() => false) || []
   );
