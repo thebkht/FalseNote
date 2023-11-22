@@ -20,6 +20,7 @@ import PostMoreActions from "./post-more-actions";
 import PublishDialog from "./publish-dialog";
 import MarkdownCard from "../markdown-card";
 import { validate } from "@/lib/revalidate";
+import { Separator } from "../ui/separator";
 
 export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
 
@@ -76,15 +77,15 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
           <>
                <PublishDialog post={post} user={post.author} open={openPublishDialog} onOpenChange={setOpenPublishDialog} session={session} />
                <div className="article max-w-[650px] lg:max-w-[680px] mx-auto">
-                    <div className="article__container space-y-8">
+                    <div className="article__container space-y-6">
                          <div className="article__header lg:text-xl">
                               {
                                    post?.cover && (
-                                        <Image src={post?.cover} alt={post?.title} fill className="!relative w-full" />
+                                        <Image src={post?.cover} alt={post?.title} fill className="!relative w-full rounded-md" />
                                    )
                               }
                               <h1 className="article__title">{post?.title}</h1>
-                              <div className="article__meta">
+                              <div className="article__meta border-y py-2">
                                    <UserHoverCard user={author} >
                                         <Link href={`/@${author?.username}`}>
                                              <Avatar className="article__author-avatar border">
