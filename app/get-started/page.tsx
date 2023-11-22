@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export default async function GetStartedPage() {
      const session = await getSessionUser();
-     const { tags } = await getTags({id: session?.id});
+     const { tags } = await getTags({id: session?.id, getStarted: true});
      !session && redirect('/signin');
      return (
           <>

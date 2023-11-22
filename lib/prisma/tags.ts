@@ -3,9 +3,11 @@ import postgres from "../postgres";
 export const getTags = async ({
   id,
   page = 0,
+  getStarted,
 }: {
   id?: string | undefined;
   page?: number | undefined;
+  getStarted?: boolean | undefined;
 }) => {
   try {
     const whereClause = id !== undefined ? {
@@ -14,6 +16,9 @@ export const getTags = async ({
           followerId: id,
         },
       },
+      posts: getStarted ? {
+        some: {}
+      } : undefined
     } : {};
 
     const tags = await postgres.tag.findMany({
