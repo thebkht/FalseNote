@@ -296,7 +296,7 @@ useEffect(() => {
           </ul>
         </div>
       </div>
-      <div className={`${isScrolled ? 'flex' : 'hidden'} justify-between duration-700 ease-in-out pr-8 items-center py-4 gap-2 fixed bg-background top-[90px] z-10`}>
+      <div className={`${isScrolled ? 'opacity-100' : 'opacity-0'} flex justify-between duration-700 ease-in-out pr-8 items-center py-4 gap-2 fixed bg-background top-[90px] z-10`}>
         <Avatar className="h-8 w-8">
           <AvatarImage src={user?.image} alt={user?.name} />
           <AvatarFallback>{user?.name?.charAt(0) || user?.username?.charAt(0)}</AvatarFallback>
