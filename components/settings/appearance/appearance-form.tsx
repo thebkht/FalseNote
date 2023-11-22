@@ -69,11 +69,16 @@ export function AppearanceForm({ data }: { data: any }) {
         variant: "destructive",
       })
     }
+
+    toast({
+      title: "Your theme was updated.",
+      description: "Your theme was updated successfully.",
+    })
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" id="apperance" >
         {/* <FormField
           control={form.control}
           name="font"
@@ -216,7 +221,7 @@ export function AppearanceForm({ data }: { data: any }) {
           )}
         />
 
-        <Button type="submit">Save changes</Button>
+        <Button type="submit" form="apperance">Save changes</Button>
       </form>
     </Form>
   )
