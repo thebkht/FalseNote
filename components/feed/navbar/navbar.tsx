@@ -43,7 +43,7 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
                                    </div>
                                    {tabs?.map((item: any, index: number) => (
 
-                                        <div className={`inline-flex capitalize items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == item.tag.name ? 'bg-background shadow-sm text-foreground border-foreground border' : 'bg-muted'}`} onClick={() => {
+                                        <div className={`inline-flex capitalize items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == item.tag.name ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
                                              router.replace(`/feed?tab=${item.tag.name}`)
                                         }} key={item.tag.id}>
 
