@@ -6,9 +6,9 @@ export default function PostCardSkeleton(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { className?: string; }
 ) {
      return (
-          <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full border-none shadow-none my-4", className
+          <Card {...props} className={cn("feedArticleCard bg-background max-h-72 w-full my-4", className
           )}>
-               <CardContent className="py-0 px-0 md:px-4">
+               <CardContent className="py-0 px-4">
                   <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
                     <div className="flex items-center space-x-1">
                       <Skeleton className="h-6 w-6 mr-1 md:mr-1.5" />
