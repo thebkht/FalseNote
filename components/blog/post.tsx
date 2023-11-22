@@ -21,6 +21,7 @@ import PublishDialog from "./publish-dialog";
 import MarkdownCard from "../markdown-card";
 import { validate } from "@/lib/revalidate";
 import { Separator } from "../ui/separator";
+import { shimmer, toBase64 } from "@/lib/image";
 
 export default function SinglePost({ post: initialPost, author, sessionUser, tags, comments, published }: { post: any, author: any, sessionUser: any, tags: any, comments: boolean | undefined, published: boolean | undefined }) {
 
@@ -81,7 +82,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                          <div className="article__header lg:text-xl">
                               {
                                    post?.cover && (
-                                        <Image src={post?.cover} alt={post?.title} fill className="!relative w-full rounded-md" />
+                                        <Image src={post?.cover} alt={post?.title} fill className="!relative w-full rounded-md" placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`} />
                                    )
                               }
                               <h1 className="article__title">{post?.title}</h1>
