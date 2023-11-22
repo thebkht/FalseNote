@@ -99,7 +99,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                    <div className="flex flex-col">
                                         <span className="article__author-name md:text-base text-sm">
                                              <UserHoverCard user={author} >
-                                                  <Link href={`/@${author?.username}`}>
+                                                  <Link href={`/@${author?.username}`} className="inline-flex items-center">
                                                        {author?.name || author?.username}
                                                        {author?.verified &&
                                                             (
@@ -114,7 +114,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                                             (
                                                                  <Button
                                                                       variant="link"
-                                                                      className="py-0 h-6 px-1.5"
+                                                                      className="py-0 h-6 px-1"
                                                                       onClick={() => handleFollow(post?.authorId)}
                                                                       disabled={isFollowingLoading} >
                                                                       {isFollowing ? "Following" : "Follow"}
@@ -123,7 +123,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                                                  <LoginDialog className="py-0 h-6 px-0">
                                                                       <Button
                                                                            variant="link"
-                                                                           className="py-0 h-6 px-3"
+                                                                           className="py-0 h-6 px-1"
                                                                            disabled={isFollowingLoading} >
                                                                            {isFollowing ? "Following" : "Follow"}
                                                                       </Button>
