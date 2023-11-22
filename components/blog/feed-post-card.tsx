@@ -33,7 +33,7 @@ export default function FeedPostCard(
   }
   const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
   return (
-    <Card {...props} className={cn("rounded-lg feedArticleCard max-h-72 w-full", props.className)}>
+    <Card {...props} className={cn("rounded-lg feedArticleCard w-full", props.className)}>
       <CardContent className="py-0 px-4">
         <CardHeader className={cn("pt-4 pb-3 md:pt-6 px-0 gap-y-4")}>
           <div className="flex items-center space-x-1">
