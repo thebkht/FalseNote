@@ -1,12 +1,9 @@
 import { redirect } from 'next/navigation';
-import dynamic from 'next/dynamic'
-import { getFollowings } from '@/lib/prisma/session';
 import { fetchFollowingTags } from '@/components/get-following-tags';
 import { getSessionUser } from '@/components/get-session-user';
 import Landing from '@/components/landing/landing';
 import postgres from '@/lib/postgres';
 import { getPosts } from '@/lib/prisma/posts';
-import { headers } from 'next/headers';
 
 export default async function Home() {
 
@@ -20,9 +17,6 @@ export default async function Home() {
       redirect('/feed')
     } 
   }
-
-  const headersList = headers();
-  console.log(headersList)
 
   // Use Promise.all to run both fetch operations in parallel
 const [latestPosts, tags, popularPosts] = await Promise.all([
