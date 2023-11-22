@@ -16,7 +16,6 @@ import { useInView } from "react-intersection-observer";
 export function TagNav({ className, items, tag, ...props }: { className?: string, items?: any, tag?: any } & React.ComponentPropsWithoutRef<"nav">) {
   const path = usePathname()
   const { status } = useSession()
-  // path /tags/[tagname]
   const pathname = path.split("/")[2]
   const [tags, setTags] = React.useState(items)
 

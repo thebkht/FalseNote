@@ -102,7 +102,6 @@ export default function PostCard(
                                                        <Link href={`/tags/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
                                                             <TagBadge variant={"secondary"} className="flex">
                                                                  {
-                                                                      //replace - with space
                                                                       props.post.tags[0].tag?.name.replace(/-/g, " ")
                                                                  }
                                                             </TagBadge>

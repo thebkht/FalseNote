@@ -75,7 +75,6 @@ export default function FeedPostCard(
                       <Link href={`/tags/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
                         <TagBadge variant={"secondary"} className="flex">
                           {
-                            //replace - with space
                             props.post.tags[0].tag?.name.replace(/-/g, " ")
                           }
                         </TagBadge>
@@ -132,10 +131,9 @@ export default function FeedPostCard(
             <div className="flex flex-1 items-center space-x-2.5">
               {
                 props.post.tags?.length > 0 && (
-                  <Link href={`/tag/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
+                  <Link href={`/tags/${props.post.tags[0].tag?.name}`} key={props.post.tags[0].tag?.id}>
                     <TagBadge variant={"secondary"} className="flex">
                       {
-                        //replace - with space
                         props.post.tags[0].tag?.name.replace(/-/g, " ")
                       }
                     </TagBadge>

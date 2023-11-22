@@ -113,7 +113,7 @@ export default function TagPostCard(
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   {
                                                        props.session ? (
-                                                            <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)}>
+                                                            <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)} disabled={props.session.id === props.post.authorId}>
                                                                  <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} />
                                                                  <span className="sr-only">Like</span>
                                                             </Button>

@@ -15,7 +15,7 @@ export default function TagLatestPosts({ posts, tag, session }: { posts: any, ta
                               <h2 className="text-2xl font-medium tracking-tight w-full capitalize">Latest posts</h2>
                          </div>
                          <div className="flex flex-col xl:max-w-[780px]">
-                              <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
+                              <div className="flex flex-col lg:gap-6 md:gap-5 gap-4 my-4">
                                    {
                                         posts.map((post: any) => (
                                              <>
