@@ -5,7 +5,7 @@ import UserHoverCard from "../user-hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MoreHorizontal } from "lucide-react";
 import LoginDialog from "../login-dialog";
-import Image from "next/image";
+import { BlurImage as Image } from "../image";
 import { useEffect, useState } from "react";
 import { getSessionUser } from "../get-session";
 import { useSession } from "next-auth/react";

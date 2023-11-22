@@ -7,7 +7,7 @@ import {
      CardHeader,
      CardTitle,
 } from "@/components/ui/card";
-import Image from "next/image";
+import { BlurImage as Image } from "../image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
