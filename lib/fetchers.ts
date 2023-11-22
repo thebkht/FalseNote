@@ -1,11 +1,7 @@
 import { unstable_cache } from "next/cache";
 import postgres from "./postgres";
 
-export async function getPostsForSite(domain: string) {
-  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
-    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
-    : null;
-
+export async function getPostsForSite() {
   return await unstable_cache(
     async () => {
       return postgres.post.findMany({
@@ -32,10 +28,10 @@ export async function getPostsForSite(domain: string) {
         ],
       });
     },
-    [`${domain}-posts`],
+    [`$posts`],
     {
       revalidate: 900,
-      tags: [`${domain}-posts`],
+      tags: [`$posts`],
     }
   )();
 }
