@@ -23,6 +23,7 @@ import ReplyForm from "./reply-form";
 import { Separator } from "@/components/ui/separator";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getComment } from "@/lib/prisma/get-comment";
+import MarkdownCard from "@/components/markdown-card";
 
 export function dateFormat(dateString: string | number | Date) {
      const date = new Date(dateString);
@@ -158,7 +159,7 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                    <CardContent className="p-4 pt-0 px-0">
 
                                         <div className="article__comments-item-body text-sm prose-neutral markdown-body dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-muted prose-pre:bg-muted prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
-                                             <Markdown>{comment.content}</Markdown>
+                                             <MarkdownCard code={comment.content} />
                                         </div>
                                    </CardContent>
                                    <CardFooter className="flex-row items-center justify-between p-4 px-0">
