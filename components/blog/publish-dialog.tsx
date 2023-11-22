@@ -55,7 +55,7 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                                         </CardHeader>
                                         <div className="flex-none ml-6 md:ml-8 pt-6">
                                              <div className={`h-14 md:h-28 !relative bg-muted !pb-0 aspect-square overflow-hidden rounded-md`} >
-                                                  {post.cover ? (
+                                                  {post.cover && (
                                                        <Image
                                                             src={post.cover}
                                                             fill
@@ -63,8 +63,6 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                                                             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
                                                        className="object-cover max-w-full h-auto z-[1] rounded-md"
                                                        />
-                                                  ) : (
-                                                       <Icons.noThumbnail className="h-full rounded-md" />
                                                   )}
                                              </div>
                                         </div>

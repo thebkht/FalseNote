@@ -110,7 +110,7 @@ export default function FeedPostCard(
           <div className="flex-none ml-6 md:ml-8">
             <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
               <div className="h-14 md:h-28 bg-muted !relative !pb-0 aspect-[4/3] md:aspect-square overflow-hidden rounded-md" >
-                {props.post.cover ? (
+                {props.post.cover && (
                   <>
                   <Image
                     src={props.post.cover}
@@ -122,8 +122,6 @@ export default function FeedPostCard(
                   />
                   <Skeleton className="w-full h-full rounded-md" />
                   </>
-                ) : (
-                  <Icons.noThumbnail className="h-full rounded-md" />
                 )}
               </div>
             </Link>
