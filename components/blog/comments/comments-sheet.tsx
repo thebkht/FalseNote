@@ -22,7 +22,7 @@ export default function CommentsSheet({ post, comments, session, ...props }: Rea
 
      return (
           <Sheet {...props}>
-               <SheetContent className="p-0 md:max-w-[500px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 640 ? "bottom" : "right") : "right"}>
+               <SheetContent className="p-0 md:max-w-[500px] md:h-full h-3/4 md:rounded-none rounded-md" side={width ? (width <= 768 ? "bottom" : "right") : "right"}>
                     <ScrollArea className="flex flex-col p-6 w-full h-full">
                          <SheetHeader>
                               <SheetTitle>Comments {post._count.comments > 0 && `(${formatNumberWithSuffix(post._count.comments)})`}</SheetTitle>
