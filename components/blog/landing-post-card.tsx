@@ -86,11 +86,11 @@ export default function LandingPostCard(
               </div>
             </div>
           </div>
+          {props.post.cover && (
+            <div className="flex-none">
+              <Link href={`/@${props.post.author?.username}/${props.post.url}`} aria-label={`Link to ${props.post.title} by ${props.post.author?.username}`}>
+                <div className="h-[100px] md:h-36 rounded-md bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square overflow-hidden" >
 
-          <div className="flex-none">
-            <Link href={`/@${props.post.author?.username}/${props.post.url}`} aria-label={`Link to ${props.post.title} by ${props.post.author?.username}`}>
-              <div className="h-[100px] md:h-36 rounded-md bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square overflow-hidden" >
-                {props.post.cover && (
                   <>
                     <Image
                       src={props.post.cover}
@@ -101,10 +101,11 @@ export default function LandingPostCard(
                     />
                     <Skeleton className="w-full h-full rounded-md" />
                   </>
-                )}
-              </div>
-            </Link>
-          </div>
+
+                </div>
+              </Link>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

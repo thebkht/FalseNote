@@ -142,11 +142,10 @@ export default function PostCard(
                               </div>
 
                          </div>
-
-                         <div className="flex-none ml-6 md:ml-8">
-                              <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.id}` : `/@${props.post.author?.username}/${props.post.url}`}>
-                                   <div className={`h-14 md:h-28 !relative rounded-md bg-muted overflow-hidden !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
-                                        {props.post.cover && (
+                         {props.post.cover && (
+                              <div className="flex-none ml-6 md:ml-8">
+                                   <Link href={props.post.visibility === 'draft' ? `/editor/${props.post.id}` : `/@${props.post.author?.username}/${props.post.url}`}>
+                                        <div className={`h-14 md:h-28 !relative rounded-md bg-muted overflow-hidden !pb-0 ${props.user == 'true' ? "aspect-[8/5]" : "aspect-[8/5]"}`} >
                                              <>
                                                   <Image
                                                        src={props.post.cover}
@@ -157,10 +156,10 @@ export default function PostCard(
                                                   />
                                                   <Skeleton className="w-full h-full rounded-md" />
                                              </>
-                                        )}
-                                   </div>
-                              </Link>
-                         </div>
+                                        </div>
+                                   </Link>
+                              </div>
+                         )}
                     </div>
                     <div className="pt-4 lg:hidden">
                          <div className="flex justify-between items-center">

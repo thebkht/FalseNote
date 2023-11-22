@@ -46,8 +46,8 @@ export default function FeedPostCard(
                 </Avatar>
                 <p className="text-sm font-normal leading-none">{props.post.author?.name || props.post.author?.username}</p>
                 {props.post.author?.verified && (
-                        <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
-                      )}
+                  <Icons.verified className="h-3 w-3 inline fill-primary align-middle" />
+                )}
               </Link>
             </UserHoverCard>
             <span>·</span>
@@ -106,26 +106,27 @@ export default function FeedPostCard(
             </div>
 
           </div>
+          {props.post.cover && (
+            <div className="flex-none ml-6 md:ml-8">
+              <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
+                <div className="h-14 md:h-28 bg-muted !relative !pb-0 aspect-[4/3] md:aspect-square overflow-hidden rounded-md" >
 
-          <div className="flex-none ml-6 md:ml-8">
-            <Link href={`/@${props.post.author?.username}/${props.post.url}`}>
-              <div className="h-14 md:h-28 bg-muted !relative !pb-0 aspect-[4/3] md:aspect-square overflow-hidden rounded-md" >
-                {props.post.cover && (
                   <>
-                  <Image
-                    src={props.post.cover}
-                    fill
-                    placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
-                    alt={props.post.title}
-                    className="object-cover max-w-full h-auto z-[1] rounded-md"
-                    
-                  />
-                  <Skeleton className="w-full h-full rounded-md" />
+                    <Image
+                      src={props.post.cover}
+                      fill
+                      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
+                      alt={props.post.title}
+                      className="object-cover max-w-full h-auto z-[1] rounded-md"
+
+                    />
+                    <Skeleton className="w-full h-full rounded-md" />
                   </>
-                )}
-              </div>
-            </Link>
-          </div>
+
+                </div>
+              </Link>
+            </div>
+          )}
         </div>
         <div className="py-4 md:hidden">
           <div className="flex justify-between items-center">
