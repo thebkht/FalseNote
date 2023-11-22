@@ -18,6 +18,7 @@ import ShareList from "../share-list";
 import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
+import { shimmer, toBase64 } from "@/lib/image";
 
 
 export default function FeedPostCard(
@@ -114,8 +115,10 @@ export default function FeedPostCard(
                   <Image
                     src={props.post.cover}
                     fill
+                    placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
                     alt={props.post.title}
-                    className="object-cover w-full z-[1] rounded-md"
+                    className="object-cover max-w-full h-auto z-[1] rounded-md"
+                    
                   />
                   <Skeleton className="w-full h-full rounded-md" />
                   </>

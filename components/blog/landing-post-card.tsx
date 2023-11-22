@@ -15,6 +15,7 @@ import TagBadge from "../tags/tag";
 import LoginDialog from "../login-dialog";
 import { dateFormat } from "@/lib/format-date";
 import { Skeleton } from "../ui/skeleton";
+import { shimmer, toBase64 } from "@/lib/image";
 
 export default function LandingPostCard(
   props: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -91,13 +92,14 @@ export default function LandingPostCard(
               <div className="h-[100px] md:h-36 rounded-md bg-muted !relative !pb-0 md:aspect-[4/3] aspect-square overflow-hidden" >
                 {props.post.cover ? (
                   <>
-                  <Image
-                    src={props.post.cover}
-                    fill
-                    alt={props.post.title}
-                    className="object-cover w-full z-[1] rounded-md"
-                  />
-                  <Skeleton className="w-full h-full rounded-md" />
+                    <Image
+                      src={props.post.cover}
+                      fill
+                      alt={props.post.title}
+                      placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
+                      className="object-cover max-w-full h-auto z-[1] rounded-md"
+                    />
+                    <Skeleton className="w-full h-full rounded-md" />
                   </>
                 ) : (
                   <Icons.noThumbnail className="h-full rounded-md" />

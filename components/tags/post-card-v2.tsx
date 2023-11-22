@@ -28,6 +28,7 @@ import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
 import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
+import { shimmer, toBase64 } from "@/lib/image";
 
 
 export default function PostCard(
@@ -151,7 +152,8 @@ export default function PostCard(
                                                        src={props.post.cover}
                                                        fill
                                                        alt={props.post.title}
-                                                       className="object-cover w-full z-[1] rounded-md"
+                                                       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(1920, 1080))}`}
+                                                       className="object-cover max-w-full h-auto z-[1] rounded-md"
                                                   />
                                                   <Skeleton className="w-full h-full rounded-md" />
                                              </>
