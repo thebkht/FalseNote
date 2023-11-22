@@ -311,11 +311,6 @@
   left: -10px;
 }
 
-.prose {
-  @apply prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto text-foreground;
-}
-
-
 .prose p, .prose span {
   @apply mb-4 text-sm md:text-base text-foreground;
 }
