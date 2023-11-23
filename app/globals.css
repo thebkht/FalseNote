@@ -315,8 +315,8 @@
   @apply mb-4 text-sm md:text-base text-foreground;
 }
 
-.prose p em {
-  @apply italic overflow-hidden text-ellipsis;
+.prose p {
+  @apply overflow-hidden text-ellipsis;
 }
 
 .prose h1 {
