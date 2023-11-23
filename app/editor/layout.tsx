@@ -15,13 +15,11 @@ export default function MainLayout({
 }) {
   return (
     <div className='bg-popover'>
-     <EditorNavbar />
-            <ScrollArea className='h-screen max-w-screen xl:px-36 2xl:px-64'>
-              <div className='py-10'>
-                {children}
-                <Toaster />
-              </div>
-            </ScrollArea>
+      <EditorNavbar />
+      <div className='py-10'>
+        {children}
+        <Toaster />
+      </div>
     </div>
   )
 }

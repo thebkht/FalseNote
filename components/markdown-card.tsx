@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { PreBlock } from "@/lib/syntax"
+import { cn } from "@/lib/utils"
 import Markdown from "markdown-to-jsx"
 
-export default function MarkdownCard({ code }: { code: string }) {
+export default function MarkdownCard({ code, className }: { code: string, className?: string }) {
      return (
-          <article className="article__content prose-neutral dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-popover prose-pre:!bg-popover prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl">
+          <article className={cn("article__content prose-neutral dark:prose-invert prose-img:rounded-xl prose-a:text-primary prose-code:bg-popover prose-pre:!bg-popover prose-code:text-foreground prose-pre:text-foreground !max-w-full prose lg:prose-xl", className)}>
                <Markdown options={{
                     overrides: {
                          pre: PreBlock,

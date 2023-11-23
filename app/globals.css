@@ -315,6 +315,10 @@
   @apply mb-4 text-sm md:text-base text-foreground;
 }
 
+.prose p em {
+  @apply italic overflow-hidden text-ellipsis;
+}
+
 .prose h1 {
   @apply text-3xl md:text-4xl font-bold my-4 text-foreground;
 }

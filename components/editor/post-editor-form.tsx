@@ -372,7 +372,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
               )}
             /></TabsContent>
             <TabsContent value="preview" className="pb-5 px-3 bg-popover text-sm rounded-md">
-              <MarkdownCard code={markdownContent} />
+              <MarkdownCard code={markdownContent} className="w-full" />
             </TabsContent>
           </Tabs>
 
