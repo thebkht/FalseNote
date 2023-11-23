@@ -352,7 +352,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
             )}
           />
           <Tabs defaultValue={"editor"} className="min-h-[250px]">
-            <TabsList className="mb-2 absolute z-20 my-3 top-0 right-36">
+            <TabsList className="mb-2 absolute z-30 my-3 top-0 right-36">
               <TabsTrigger value="editor" ><Pencil className="h-[1.2rem] w-[1.2rem]" /><span className="sr-only">Editor</span></TabsTrigger>
               <TabsTrigger value="preview"><Eye className="h-[1.2rem] w-[1.2rem]" /> <span className="sr-only">Preview</span></TabsTrigger>
             </TabsList>
@@ -648,7 +648,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                          </Link>
                          <div className="flex items-center gap-1.5">
         <Dialog>
-          <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Save className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
+          <DialogTrigger><Button size={"icon"} variant={"outline"} disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Save className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
           <DialogContent className="flex flex-col justify-center md:w-72">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
               <RefreshCcw className={"h-10 w-10"} strokeWidth={1.25} />
@@ -676,7 +676,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
           </DialogContent>
         </Dialog>
 
-        <Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving} onClick={() => setShowDeleteAlert(true)}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button>
+        <Button size={"icon"} variant={"outline"} disabled={isSaving} onClick={() => setShowDeleteAlert(true)}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Trash2 className="h-[1.2rem] w-[1.2rem]" />}</Button>
         <PostDeleteDialog post={props.post} user={props.user} open={showDeleteAlert} onOpenChange={setShowDeleteAlert} />
 
 
@@ -705,7 +705,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
               setOpen(true);
             }
           }
-        } className="!mt-3">{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button>
+        }>{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button>
         </div>
                </div>
           </nav>
