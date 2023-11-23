@@ -57,6 +57,8 @@ import {
 import { useDebounce } from "use-debounce"
 import MarkdownCard from "../markdown-card"
 import { validate } from "@/lib/revalidate"
+import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 async function fetchSuggestions(query: string) {
   const tagResponse = await fetch(`/api/tags/search?search=${encodeURIComponent(query)}&limit=5`);
@@ -628,7 +630,23 @@ export function PostEditorForm(props: { post: any, user: any }) {
 
         </form>
       </Form>
-      <div className="flex absolute right-3.5 top-0 z-50 gap-1.5">
+      <nav className="menu">
+               <div className="menu-container fixed p-3.5 bg-background border-b w-full top-0">
+                    
+                         <Link href={`/@${props.user?.name}`} className="flex align-items-center">
+                              <Avatar className="h-8 w-8 mr-1 border">
+                                   <AvatarImage src={ props.user?.image } alt={ props.user?.name } />
+                                   <AvatarFallback>{props.user?.name.charAt(0)}</AvatarFallback>
+
+                              </Avatar>
+                              <Button variant="ghost" size={"sm"} className="hidden md:flex" asChild>
+                              <div className="font-medium">
+                                   { props.user?.name }
+                              </div>
+                              </Button>
+                              
+                         </Link>
+                         <div className="flex items-center gap-1.5">
         <Dialog>
           <DialogTrigger><Button size={"icon"} variant={"outline"} className="!mt-3" disabled={isSaving}>{isSaving ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <Save className="h-[1.2rem] w-[1.2rem]" />}</Button></DialogTrigger>
           <DialogContent className="flex flex-col justify-center md:w-72">
@@ -687,7 +705,10 @@ export function PostEditorForm(props: { post: any, user: any }) {
               setOpen(true);
             }
           }
-        } className="!mt-3">{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button></div>
+        } className="!mt-3">{isPublishing ? <Icons.spinner className="h-[1.2rem] w-[1.2rem] animate-spin" /> : <ArrowUp className="h-[1.2rem] w-[1.2rem]" />}</Button>
+        </div>
+               </div>
+          </nav>
     </>
   )
 }

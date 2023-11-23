@@ -15,10 +15,8 @@ export default function MainLayout({
 }) {
   return (
     <div className='bg-popover'>
-      <EditorNavbar />
       <div className='py-10'>
         {children}
-        <Toaster />
       </div>
     </div>
   )
