@@ -352,7 +352,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
             )}
           />
           <Tabs defaultValue={"editor"} className="min-h-[250px]">
-            <TabsList className="mb-2 absolute z-30 my-3 top-0 right-36">
+            <TabsList className="mb-2 fixed z-30 my-3 top-0 right-36">
               <TabsTrigger value="editor" ><Pencil className="h-[1.2rem] w-[1.2rem]" /><span className="sr-only">Editor</span></TabsTrigger>
               <TabsTrigger value="preview"><Eye className="h-[1.2rem] w-[1.2rem]" /> <span className="sr-only">Preview</span></TabsTrigger>
             </TabsList>
@@ -631,7 +631,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
         </form>
       </Form>
       <nav className="menu">
-               <div className="menu-container fixed p-3.5 bg-background border-b w-full top-0">
+               <div className="menu-container fixed p-3.5 bg-background border-b w-full top-0 left-0">
                     
                          <Link href={`/@${props.user?.name}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1 border">
