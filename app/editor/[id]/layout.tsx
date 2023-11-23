@@ -1,6 +1,3 @@
-import { ScrollArea } from '@/components/ui/scroll-area'
-import EditorNavbar from '@/components/navbar/editor-nav'
-import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import postgres from '@/lib/postgres'
 import { notFound } from 'next/navigation'
