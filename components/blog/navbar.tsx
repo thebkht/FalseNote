@@ -11,6 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import Link from "next/link";
 import PostDeleteDialog from "./post-delete-dialog";
 import LoginDialog from "../login-dialog";
+import { Separator } from "../ui/separator";
 
 export default function PostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -34,13 +35,13 @@ export default function PostTabs({ post: initialPost, className, session, author
                          <div className="flex items-center">
                               {
                                    session ? (
-                                        <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
+                                        <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
                                              <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
                                              <span className="sr-only">Like</span>
                                         </Button>
                                    ) : (
                                         <LoginDialog>
-                                             <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                             <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                                   <Heart className={`w-5 h-5`} strokeWidth={2} />
                                                   <span className="sr-only">Like</span>
                                              </Button>
@@ -49,11 +50,9 @@ export default function PostTabs({ post: initialPost, className, session, author
                               }
                               <span className="text-sm">{post?._count.likes}</span>
                          </div>
-
-
-                         
-                              <div className="flex items-center">
-                              <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={onClicked}>
+                         <Separator orientation="vertical" />
+                         <div className="flex items-center">
+                              <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={onClicked}>
                                         <MessageCircle className="w-5 h-5" strokeWidth={2} />
                                         <span className="sr-only">Comment</span>
                                    </Button>
@@ -66,30 +65,33 @@ export default function PostTabs({ post: initialPost, className, session, author
                     <div className="flex items-center gap-1.5">
                          {
                               session ? (
-                                   <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                   <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                         <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(post.id)} />
                                         <span className="sr-only">Save</span>
                                    </Button>
                               ) : (
                                    <LoginDialog>
-                                        <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                        <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                              <Bookmark className={`w-5 h-5`} strokeWidth={2} />
                                              <span className="sr-only">Save</span>
                                         </Button>
                                    </LoginDialog>
                               )
                          }
+                         <Separator orientation="vertical" />
                          <ShareList url={`https://falsenotes.netlify.app/@${author?.username}/${post.url}`} text={post.title} >
-                              <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                              <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                    <ShareIcon className="w-5 h-5" strokeWidth={2} />
                                    <span className="sr-only">Share</span>
                               </Button>
                          </ShareList>
                          {
                               session?.id === post?.authorId && (
+                                   <>
+                                   <Separator orientation="vertical" />
                                    <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
-                                             <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                             <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                                   <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
                                              </Button>
                                         </DropdownMenuTrigger>
@@ -108,6 +110,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                                              </DropdownMenuItem>
                                         </DropdownMenuContent>
                                    </DropdownMenu>
+                                   </>
                               )
                          }
                     </div>
