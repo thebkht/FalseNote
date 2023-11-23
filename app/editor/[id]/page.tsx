@@ -1,5 +1,5 @@
 import { config } from '@/app/auth';
-import { PostEditorForm } from '@/components/editor/post-editor-form'
+import { PostEditorForm as Editor } from '@/components/editor/post-editor-form'
 import { getSessionUser } from '@/components/get-session-user';
 import postgres from '@/lib/postgres';
 import { Post, User } from '@prisma/client';
@@ -51,13 +51,12 @@ export default async function PostEditor({ params }: { params: { id: string } })
 
   if (!post) {
     return notFound()
-    redirect('/404')
   }
 
   return (
     
     <main className="flex min-h-screen flex-col items-center justify-between px-6 py-14 lg:p-20 editor">
-     { post && <PostEditorForm post={post} user={session} /> }
+     <Editor post={post} user={session} />
     </main>
   )
 }
