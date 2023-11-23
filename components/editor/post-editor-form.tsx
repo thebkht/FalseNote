@@ -633,15 +633,15 @@ export function PostEditorForm(props: { post: any, user: any }) {
       <nav className="menu">
                <div className="menu-container fixed p-3.5 bg-background border-b w-full top-0 left-0">
                     
-                         <Link href={`/@${props.user?.name}`} className="flex align-items-center">
+                         <Link href={`/@${props.user?.username}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1 border">
-                                   <AvatarImage src={ props.user?.image } alt={ props.user?.name } />
+                                   <AvatarImage src={ props.user?.image } alt={ props.user?.name || props.user?.username } />
                                    <AvatarFallback>{props.user?.name.charAt(0)}</AvatarFallback>
 
                               </Avatar>
                               <Button variant="ghost" size={"sm"} className="hidden md:flex" asChild>
                               <div className="font-medium">
-                                   { props.user?.name }
+                                   { props.user?.name || props.user?.username }
                               </div>
                               </Button>
                               
