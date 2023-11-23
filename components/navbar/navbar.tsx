@@ -27,41 +27,41 @@ function Navbar(notifications: any) {
   return (
     <div className="md:container px-4 sticky top-4 z-20">
       <div className="menu-container py-4 px-8 bg-background/70 backdrop-blur-md border rounded-2xl shadow-xl xl:mx-8">
-      <Link href={session ? "/feed" : "/"} className="flex items-center">
-        <Icons.logo className="md:block hidden" />
-        <Icons.logoIcon className="md:hidden block h-6" />
-        <Badge className="ml-2 md:ml-3 px-1 py-0" variant={"secondary"}>Beta</Badge>
-      </Link>
+        <Link href={session ? "/feed" : "/"} className="flex items-center">
+          <Icons.logo className="md:block hidden h-7" />
+          <Icons.logoIcon className="md:hidden block h-7" />
+          <Badge className="ml-1.5 md:ml-2" variant={"default"}>Beta</Badge>
+        </Link>
 
-      <div className="flex items-center gap-1 md:gap-4">
-        <Button variant="ghost" size={"icon"} className="flex md:hidden" asChild>
-          <Link href="/explore">
-            <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
-            <span className="sr-only">Search</span>
-          </Link>
-        </Button>
-        <SearchBar />
-        {
-          status == 'authenticated' ? (
-            <>
-              <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} />
-              <Button variant={"ghost"} size={"icon"} onClick={() => router.replace('/notifications')}>
-                <Bell className="w-[1.25rem] h-[1.25rem]" strokeWidth={1.75} />
-                {notifications.notifications && notifications.notifications.length > 0 && (<Badge className="ml-2 md:ml-6 font-normal px-1 py-0 absolute mb-3 border-[3px] border-solid border-secondary" >{notifications.notifications.length}</Badge>)}
-              </Button>
-              <UserNav />
-            </>
-          ) : (
-            <div className="flex items-center gap-2 md:gap-4">
-              <Button onClick={() => router.replace('/signin')}>
-                Join
-              </Button>
-            </div>
-          )
-        }
+        <div className="flex items-center gap-1 md:gap-4">
+          <Button variant="ghost" size={"icon"} className="flex md:hidden h-10 w-10" asChild>
+            <Link href="/explore">
+              <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">Search</span>
+            </Link>
+          </Button>
+          <SearchBar />
+          {
+            status == 'authenticated' ? (
+              <>
+                <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} className="h-10 w-10" />
+                <Button variant={"ghost"} size={"icon"} className="h-10 w-10" onClick={() => router.replace('/notifications')}>
+                  <Bell className="w-5 h-5" strokeWidth={1.75} />
+                  {notifications.notifications && notifications.notifications.length > 0 && (<Badge className="ml-2 md:ml-6 font-normal px-1 py-0 absolute mb-3 border-[3px] border-solid border-secondary" >{notifications.notifications.length}</Badge>)}
+                </Button>
+                <UserNav />
+              </>
+            ) : (
+              <div className="flex items-center gap-2 md:gap-4">
+                <Button onClick={() => router.replace('/signin')}>
+                  Join
+                </Button>
+              </div>
+            )
+          }
 
+        </div>
       </div>
-    </div>
     </div>
   );
 }

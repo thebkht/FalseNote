@@ -69,21 +69,21 @@ export default function UserDetails({ className, children, user, followers, foll
 
   const [isScrolled, setIsScrolled] = useState(false);
 
-useEffect(() => {
-  const checkScroll = () => {
-    if (window.pageYOffset > 1000) {
-      setIsScrolled(true);
-    } else {
-      setIsScrolled(false);
-    }
-  };
+  useEffect(() => {
+    const checkScroll = () => {
+      if (window.pageYOffset > 1000) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
 
-  window.addEventListener('scroll', checkScroll);
+    window.addEventListener('scroll', checkScroll);
 
-  return () => {
-    window.removeEventListener('scroll', checkScroll);
-  };
-}, []);
+    return () => {
+      window.removeEventListener('scroll', checkScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -308,32 +308,32 @@ useEffect(() => {
             )}
         </h1>
         {
-              status === "authenticated" ? (
-                session?.id === user?.id ? (
-                  <Button size={'sm'} variant={"outline"} className="px-4 ml-2">
-                    <Link href="/settings/profile">
-                      Edit Profile
-                    </Link>
-                  </Button>
-                ) : (
-                  <Button size={'sm'} className="px-4 ml-2" onClick={() => {
-                    handleFollow(user?.id);
-                  }} disabled={isFollowingLoading} >
-                    {
-                      isFollowingLoading ? (
-                        <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
-                      ) : (
-                        <>{isFollowing ? "Following" : "Follow"}</>
-                      )
-                    }
-                  </Button>
-                )
-              ) : (
-                <LoginDialog>
-                  <Button size={'sm'} className="px-4 ml-2">Follow</Button>
-                </LoginDialog>
-              )
-            }
+          status === "authenticated" ? (
+            session?.id === user?.id ? (
+              <Button size={'sm'} variant={"outline"} className="px-4 ml-2">
+                <Link href="/settings/profile">
+                  Edit Profile
+                </Link>
+              </Button>
+            ) : (
+              <Button size={'sm'} className="px-4 ml-2" onClick={() => {
+                handleFollow(user?.id);
+              }} disabled={isFollowingLoading} >
+                {
+                  isFollowingLoading ? (
+                    <><Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {isFollowing ? "Following" : "Follow"}</>
+                  ) : (
+                    <>{isFollowing ? "Following" : "Follow"}</>
+                  )
+                }
+              </Button>
+            )
+          ) : (
+            <LoginDialog>
+              <Button size={'sm'} className="px-4 ml-2">Follow</Button>
+            </LoginDialog>
+          )
+        }
       </div>
     </>
   )

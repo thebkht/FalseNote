@@ -175,7 +175,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                               )
                          }
 
-<PostTabs post={post} session={session} author={author} onClicked={() => setOpenComments(!openComments)} />
+                         <PostTabs post={post} session={session} author={author} onClicked={() => setOpenComments(!openComments)} />
                          <MobilePostTabs post={post} session={session} author={author} className="mt-8" onClicked={() => setOpenComments(!openComments)} />
                     </div>
                </div>

@@ -22,7 +22,7 @@ export default async function Page({ params, searchParams }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const decodedUsername = decodeURIComponent(params.username);
-  
+
   if (!decodedUsername.startsWith('@')) {
     redirect('/404')
   }

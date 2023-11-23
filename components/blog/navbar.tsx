@@ -53,12 +53,12 @@ export default function PostTabs({ post: initialPost, className, session, author
                          <Separator orientation="vertical" />
                          <div className="flex items-center">
                               <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={onClicked}>
-                                        <MessageCircle className="w-5 h-5" strokeWidth={2} />
-                                        <span className="sr-only">Comment</span>
-                                   </Button>
-                                   <span className="text-sm">{post?._count.comments}</span>
-                              </div>
-                         
+                                   <MessageCircle className="w-5 h-5" strokeWidth={2} />
+                                   <span className="sr-only">Comment</span>
+                              </Button>
+                              <span className="text-sm">{post?._count.comments}</span>
+                         </div>
+
 
 
                     </div>
@@ -88,28 +88,28 @@ export default function PostTabs({ post: initialPost, className, session, author
                          {
                               session?.id === post?.authorId && (
                                    <>
-                                   <Separator orientation="vertical" />
-                                   <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                             <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                                  <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
-                                             </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                             <DropdownMenuItem asChild>
-                                                  <Link href={`/editor/${post?.id}`}>
-                                                       <Pencil className="mr-2 h-4 w-4" />
-                                                       <span>Edit</span>
-                                                  </Link>
-                                             </DropdownMenuItem>
-                                             <DropdownMenuSeparator />
-                                             <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-                                                  onSelect={() => setShowDeleteAlert(true)} >
-                                                  <Trash2 className="mr-2 h-4 w-4" />
-                                                  <span>Delete</span>
-                                             </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                   </DropdownMenu>
+                                        <Separator orientation="vertical" />
+                                        <DropdownMenu>
+                                             <DropdownMenuTrigger asChild>
+                                                  <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
+                                                       <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+                                                  </Button>
+                                             </DropdownMenuTrigger>
+                                             <DropdownMenuContent align="end">
+                                                  <DropdownMenuItem asChild>
+                                                       <Link href={`/editor/${post?.id}`}>
+                                                            <Pencil className="mr-2 h-4 w-4" />
+                                                            <span>Edit</span>
+                                                       </Link>
+                                                  </DropdownMenuItem>
+                                                  <DropdownMenuSeparator />
+                                                  <DropdownMenuItem className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+                                                       onSelect={() => setShowDeleteAlert(true)} >
+                                                       <Trash2 className="mr-2 h-4 w-4" />
+                                                       <span>Delete</span>
+                                                  </DropdownMenuItem>
+                                             </DropdownMenuContent>
+                                        </DropdownMenu>
                                    </>
                               )
                          }

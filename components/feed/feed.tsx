@@ -45,36 +45,36 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
       <div className="flex flex-col lg:gap-6 md:gap-5 gap-4 my-4">
         {feed?.map((post: any) => (
           <React.Fragment key={post.id}>
-          <FeedPostCard
-            post={post}
-            session={session}
-          />
-        </React.Fragment>
+            <FeedPostCard
+              post={post}
+              session={session}
+            />
+          </React.Fragment>
         ))}
 
         {
           feed.length >= 10 && (
             <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
-              <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full border-none shadow-none" />
+              <PostCardSkeleton className="rounded-lg bg-backgreound max-h-72 w-full" />
             </div>
           )
         }
       </div>
     </div>
-  ) : 
+  ) :
     (
       tag == 'following' && (
         <EmptyPlaceholder>
-      <EmptyPlaceholder.Icon name='post' strokeWidth={1.5} />
-      <EmptyPlaceholder.Title>No posts yet</EmptyPlaceholder.Title>
-      <EmptyPlaceholder.Description>When you follow someone, their posts will show up here.</EmptyPlaceholder.Description>
-        <Button className="mt-4" onClick={
-          () => {
-            router.push('/feed')
-          }
-        }>Browse recommended posts</Button>
-    </EmptyPlaceholder>
+          <EmptyPlaceholder.Icon name='post' strokeWidth={1.5} />
+          <EmptyPlaceholder.Title>No posts yet</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Description>When you follow someone, their posts will show up here.</EmptyPlaceholder.Description>
+          <Button className="mt-4" onClick={
+            () => {
+              router.push('/feed')
+            }
+          }>Browse recommended posts</Button>
+        </EmptyPlaceholder>
       )
     )
-  
+
 }
