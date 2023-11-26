@@ -45,7 +45,6 @@ export const config = {
           try {
             const sessionUser = await postgres.user.create({
               data: {
-                id: id,
                 username: username,
                 name: name,
                 email: email,

@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id         String     @id @map("_id") @db.ObjectId
+  id             String           @id @default(cuid()) @map("_id")
   email          String?          @unique
   username       String?          @unique
   name           String?
@@ -42,14 +42,14 @@ model User {
 }
 
 model Post {
-  id          String           @id @map("_id") @db.ObjectId
+  id          String           @id @default(cuid()) @map("_id")
   title       String
   content     String?
   subtitle    String?
   cover       String?
   views       Int              @default(0)
   author      User             @relation(fields: [authorId], references: [id])
-  authorId    String           @db.ObjectId
+  authorId    String
   url         String           @unique
   readingTime String?
   createdAt   DateTime         @default(now())
@@ -70,13 +70,13 @@ model Post {
 
 //draft post model to store autosave drafts of posts in editor
 model DraftPost {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(cuid()) @map("_id")
   title     String
   content   String
   subtitle  String?
   cover     String?
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
+  postId    String
   url       String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -86,17 +86,17 @@ model DraftPost {
 }
 
 model Comment {
-  id        String        @id @map("_id") @db.ObjectId
+  id        String        @id @default(cuid()) @map("_id")
   content   String
   author    User          @relation(fields: [authorId], references: [id])
-  authorId  String        @db.ObjectId
+  authorId  String
   post      Post          @relation(fields: [postId], references: [id])
-  postId    String        @db.ObjectId
+  postId    String
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   likes     CommentLike[]
   replies   Comment[]     @relation("CommenttoComment")
-  parentId  String?       @map("parent_id") @db.ObjectId
+  parentId  String?       @map("parent_id")
   parent    Comment?      @relation("CommenttoComment", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([createdAt])
@@ -104,11 +104,11 @@ model Comment {
 }
 
 model Like {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @map("_id")
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @db.ObjectId
+  authorId  String
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
+  postId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -116,11 +116,11 @@ model Like {
 }
 
 model CommentLike {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @map("_id")
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @db.ObjectId
+  authorId  String
   comment   Comment  @relation(fields: [commentId], references: [id])
-  commentId String   @db.ObjectId
+  commentId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -139,9 +139,9 @@ model Tag {
 }
 
 model PostTag {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @map("_id")
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
+  postId    String
   tag       Tag      @relation(fields: [tagId], references: [id])
   tagId     String   @db.ObjectId
   createdAt DateTime @default(now())
@@ -153,9 +153,9 @@ model PostTag {
 model Follow {
   id          String   @id @map("_id") @db.ObjectId
   follower    User     @relation("Follower", fields: [followerId], references: [id])
-  followerId  String   @db.ObjectId
+  followerId  String
   following   User     @relation("Following", fields: [followingId], references: [id])
-  followingId String   @db.ObjectId
+  followingId String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -165,7 +165,7 @@ model Follow {
 model TagFollow {
   id         String   @id @map("_id") @db.ObjectId
   follower   User     @relation("TagFollower", fields: [followerId], references: [id])
-  followerId String   @db.ObjectId
+  followerId String
   tag        Tag      @relation("FollowingTag", fields: [tagId], references: [id])
   tagId      String   @db.ObjectId
   createdAt  DateTime @default(now())
@@ -175,11 +175,11 @@ model TagFollow {
 }
 
 model Notification {
-  id         String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @map("_id")
   content    String
   read       Boolean  @default(false)
   receiver   User     @relation(fields: [receiverId], references: [id])
-  receiverId String   @db.ObjectId
+  receiverId String
   type       String?
   url        String
   senderId   String?
@@ -191,11 +191,11 @@ model Notification {
 }
 
 model Bookmark {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @map("_id")
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
+  postId    String
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.ObjectId
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -203,9 +203,9 @@ model Bookmark {
 }
 
 model UserSettings {
-  id         String   @id @map("_id") @db.ObjectId
+  id         String   @id @default(uuid()) @map("_id")
   user       User     @relation(fields: [userId], references: [id])
-  userId     String   @unique @db.ObjectId
+  userId     String   @unique
   appearance String   @default("system")
   language   String   @default("en")
   createdAt  DateTime @default(now())
@@ -215,11 +215,11 @@ model UserSettings {
 }
 
 model ReadingHistory {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @default(uuid()) @map("_id")
   post      Post     @relation(fields: [postId], references: [id])
-  postId    String   @db.ObjectId
+  postId    String
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.ObjectId
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

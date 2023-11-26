@@ -14,7 +14,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     await postgres.comment.create({
       data: {
-        id: new ObjectId().toHexString(),
         content: content,
         authorId: author,
         postId: post,

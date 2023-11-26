@@ -81,7 +81,6 @@ export async function PATCH(
     } else {
       await postgres.draftPost.create({
         data: {
-          id: new ObjectId().toHexString(),
           title,
           content,
           cover: coverImage || null,

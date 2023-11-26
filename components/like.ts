@@ -29,7 +29,6 @@ export const handlePostLike = async ({ postId, path} : {postId: Post['id'], path
                } else {
                     const data = await postgres.like.create({
                          data: {
-                              id: new ObjectId().toHexString(),
                               authorId: sessionUser.id,
                               postId
                          },

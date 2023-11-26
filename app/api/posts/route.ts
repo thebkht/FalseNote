@@ -4,9 +4,6 @@ import postgres from "@/lib/postgres";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { ObjectId } from 'bson';
-
-const id = new ObjectId().toHexString();
 
 const baseQuery = {
   include: {
@@ -96,7 +93,6 @@ export async function POST(req: Request) {
 
     const post = await postgres.post.create({
       data: {
-        id: id,
         title: json.title,
         content: json.content,
         authorId: session.id,

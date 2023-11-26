@@ -29,6 +29,7 @@ import PostMoreActions from "../blog/post-more-actions";
 import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
 import { shimmer, toBase64 } from "@/lib/image";
+import { validate } from "@/lib/revalidate";
 
 
 export default function PostCard(
@@ -41,7 +42,14 @@ export default function PostCard(
 ) {
      const pathname = usePathname();
      const save = async (postId: string) => {
-          await handlePostSave({ postId, path: pathname });
+          await fetch(`/api/post/${postId}/save`, {
+               method: "POST",
+               headers: {
+                    "Content-Type": "application/json",
+               },
+               body: JSON.stringify({ postId }),
+          });
+          await validate(pathname)
      }
      const isSaved = props.post?.savedUsers?.some((savedUser: any) => savedUser.userId === props.session?.id);
      return (
