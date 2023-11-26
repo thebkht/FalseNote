@@ -66,7 +66,7 @@ async function fetchComment(commentId: Comment['id']) {
 export default function CommentCard({ comment: initialComment, post, session, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { comment: any, post: any, session: any }) {
      const pathname = usePathname();
      const like = async (commentId: Comment['id']) => {
-          await fetch(`/api/comment/${commentId}/like`, {
+          await fetch(`/api/comments/${commentId}/like`, {
                method: "POST",
                headers: {
                  "Content-Type": "application/json",

@@ -7,7 +7,6 @@ import { MoreHorizontal } from "lucide-react";
 import LoginDialog from "../login-dialog";
 import { BlurImage as Image } from "../image";
 import { useEffect, useState } from "react";
-import { getSessionUser } from "../get-session";
 import { useSession } from "next-auth/react";
 import TagBadge from "../tags/tag";
 import PostTabs from "./navbar";

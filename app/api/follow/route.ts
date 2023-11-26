@@ -43,13 +43,13 @@ export async function GET(request: NextRequest) {
           //Create notification
           const sender = await postgres.user.findUnique({
             where: {
-              id: followerId || "",
+              id: followerId,
             },
           });
   
           const receiver = await postgres.user.findUnique({
             where: {
-              id: followeeId || "",
+              id: followeeId,
             },
           });
           
