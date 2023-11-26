@@ -45,31 +45,28 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
      }, [author])
 
      const router = useRouter();
-     const pathaname = usePathname();
+     const pathname = usePathname();
 
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
-               setIsFollowingLoading(true);
-               try {
-                    setIsFollowing(!isFollowing);
-                    const followerId = (await getSessionUser())?.id;
-                    const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-                         method: "GET",
-                    }).then((res) => res.json());
-                    if (!result.ok) {
-                         setIsFollowing(!isFollowing);
-                    }
-                    await validate(pathaname)
-                    router.refresh();
-                    setIsFollowingLoading(false);
-               } catch (error) {
-                    console.error(error);
-                    setIsFollowingLoading(false);
-               }
-          } else {
-               return null;
+              setIsFollowingLoading(true);
+              try {
+                  setIsFollowing(!isFollowing);
+                  const followerId = session.id;
+                  const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+                      method: "GET",
+                  }).then((res) => res.json());
+                  if (!result.ok) {
+                      setIsFollowing(!isFollowing);
+                  }
+                  await validate(pathname)
+                  setIsFollowingLoading(false);
+              } catch (error) {
+                  console.error(error);
+                  setIsFollowingLoading(false);
+              }
           }
-     }
+      }
      if (openPublishDialog === false && published === true) {
           router.replace(`/@${author?.username}/${post?.url}`)
      }

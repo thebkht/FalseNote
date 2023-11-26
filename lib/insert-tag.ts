@@ -1,6 +1,5 @@
 import { Post, Tag } from "@prisma/client";
 import postgres from "./postgres";
-import { ObjectId } from "bson";
 
 function sanitizeTagName(tag: string): string {
   //if tag is "hello world" it will be "hello-world" if 'hello world ' it will be 'hello-world' not 'hello-world-'
@@ -26,8 +25,7 @@ export async function insertTag(tags: any, postid: string) {
       });
       if (!tagExists) {
         const tagId = await postgres.tag.create({
-          data: {
-            id: new ObjectId().toHexString(), 
+          data: { 
             name: tag
            },
           select: { id: true },
@@ -55,7 +53,6 @@ async function connectTagToPost(tagId: Tag['id'], postid: Post['id']) {
   if (!tagAlreadyConnected) {
     await postgres.postTag.create({
       data: {
-        id: new ObjectId().toHexString(),
         tagId: tagId,
         postId: postid,
       },

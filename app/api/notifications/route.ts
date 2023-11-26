@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
 
           await postgres.notification.create({
                data: {
-                    id: new ObjectId().toHexString(),
                     content,
                     receiverId,
                     type,

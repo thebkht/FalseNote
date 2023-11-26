@@ -32,27 +32,24 @@ export default function MoreFromAuthor({ author: initialAuthor, post: initialPos
      const router = useRouter();
      async function handleFollow(followeeId: string) {
           if (status === "authenticated") {
-               setIsFollowingLoading(true);
-               try {
-                    setIsFollowing(!isFollowing);
-                    const followerId = sessionUser?.id;
-                    const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
-                         method: "GET",
-                    }).then((res) => res.json());
-                    if (!result.ok) {
-                         setIsFollowing(!isFollowing);
-                    }
-                    await validate(path);
-                    router.refresh();
-                    setIsFollowingLoading(false);
-               } catch (error) {
-                    console.error(error);
-                    setIsFollowingLoading(false);
-               }
-          } else {
-               return null;
+              setIsFollowingLoading(true);
+              try {
+                  setIsFollowing(!isFollowing);
+                  const followerId = sessionUser.id;
+                  const result = await fetch(`/api/follow?followeeId=${followeeId}&followerId=${followerId}`, {
+                      method: "GET",
+                  }).then((res) => res.json());
+                  if (!result.ok) {
+                      setIsFollowing(!isFollowing);
+                  }
+                  await validate(path)
+                  setIsFollowingLoading(false);
+              } catch (error) {
+                  console.error(error);
+                  setIsFollowingLoading(false);
+              }
           }
-     }
+      }
      return (
           <>
                <div className="max-w-[680px] lg:text-xl mx-auto">
