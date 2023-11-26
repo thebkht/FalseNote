@@ -64,7 +64,6 @@ export const handleCommentLike = async ({ commentId, path} : {commentId: Comment
      if (!sessionUser) {
           console.log("No session user")
      }
-     console.log(path, commentId)
      try {
           const liked = await postgres.commentLike.findFirst({
                where: {

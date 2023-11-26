@@ -4,9 +4,7 @@ import { notFound } from "next/navigation"
 import postgres from "@/lib/postgres"
 import Post from "@/components/blog/post"
 import { cookies } from 'next/headers'
-import { ObjectId } from 'bson';
 
-const id = new ObjectId().toHexString();
 
 export default async function PostView({ params, searchParams }: { params: { username: string, url: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
      const commentsOpen = typeof searchParams.commentsOpen === 'string' ? searchParams.commentsOpen : undefined
@@ -96,7 +94,6 @@ export default async function PostView({ params, searchParams }: { params: { use
           if (!hasReaded) {
                await postgres.readingHistory.create({
                     data: {
-                         id,
                          postId: post?.id,
                          userId: sessionUser?.id
                     }
@@ -114,8 +111,6 @@ export default async function PostView({ params, searchParams }: { params: { use
           }
      }
      return (
-          <>
-               <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} comments={Boolean(commentsOpen)} published={published} />
-          </>
+          <Post post={post} author={author} sessionUser={sessionUser} tags={post.tags} comments={Boolean(commentsOpen)} published={published} />
      )
 }

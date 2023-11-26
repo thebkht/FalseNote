@@ -24,6 +24,8 @@ import { Separator } from "@/components/ui/separator";
 import { formatNumberWithSuffix } from "@/components/format-numbers";
 import { getComment } from "@/lib/prisma/get-comment";
 import MarkdownCard from "@/components/markdown-card";
+import { Comment } from "@prisma/client";
+import { validate } from "@/lib/revalidate";
 
 export function dateFormat(dateString: string | number | Date) {
      const date = new Date(dateString);
@@ -56,15 +58,22 @@ export function dateFormat(dateString: string | number | Date) {
      }
 }
 
-async function fetchComment(commentId: number) {
+async function fetchComment(commentId: Comment['id']) {
      return await getComment(commentId);
 }
 
 
 export default function CommentCard({ comment: initialComment, post, session, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { comment: any, post: any, session: any }) {
      const pathname = usePathname();
-     const like = async (commentId: number) => {
-          await handleCommentLike({ commentId, path: pathname });
+     const like = async (commentId: Comment['id']) => {
+          await fetch(`/api/comment/${commentId}/like`, {
+               method: "POST",
+               headers: {
+                 "Content-Type": "application/json",
+               },
+               body: JSON.stringify({ commentId }),
+             });
+             await validate(pathname)
      }
      const [comment, setComment] = React.useState<any>(initialComment);
      React.useEffect(() => {
