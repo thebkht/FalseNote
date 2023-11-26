@@ -1,5 +1,6 @@
 import { create } from "@/lib/notifications/create-notification";
 import postgres from "@/lib/postgres";
+import { Comment } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     await postgres.comment.update({
           where: {
-          id: Number(params.id),
+          id: params.id,
           },
           data: {
           content: content,
@@ -32,7 +33,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
      try {
           const replies = await postgres.comment.findMany({
                where: {
-                    parentId: Number(params.id),
+                    parentId: params.id,
                },
                select: {
                     id: true,
@@ -41,7 +42,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
           replies.forEach((reply) => deleteComment(reply));
 
-          await deleteComment(Number(params.id));
+          await deleteComment(params.id);
           
           return new NextResponse("Comment deleted", { status: 200 });
      } catch (error) {
@@ -50,10 +51,10 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
      }
 }
 
-async function deleteComment(id: number) {
+async function deleteComment(id: Comment["id"]) {
      await postgres.commentLike.deleteMany({
           where: {
-               commentId: Number(id),
+               commentId: id,
           },
      })
      await postgres.commentLike.deleteMany({
@@ -61,7 +62,7 @@ async function deleteComment(id: number) {
                commentId: {
                     in: await postgres.comment.findMany({
                          where: {
-                              parentId: Number(id),
+                              parentId: id,
                          },
                          select: {
                               id: true,
@@ -72,14 +73,14 @@ async function deleteComment(id: number) {
      })
      await postgres.comment.deleteMany({
           where: {
-               parentId: Number(id),
+               parentId: id,
           },
      })
      
      await postgres.comment.delete({
 
           where: {
-               id: Number(id),
+               id: id,
           },
      })
 }

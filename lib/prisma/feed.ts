@@ -1,6 +1,7 @@
 'use server'
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
+import { ObjectId } from "bson";
 
 const getLikes = async ({ id }: { id: string | undefined }) => {
   const likes = await postgres.like.findMany({
@@ -82,7 +83,7 @@ const baseQuery = {
     subtitle: true,
     url: true,
     cover: true,
-    visibility: true,
+    published: true,
     createdAt: true,
     updatedAt: true,
     readingTime: true,
@@ -155,17 +156,20 @@ const tagCounts = tags.reduce((counts, tag) => {
 }, {} as Record<string, number>);
 
 // Sort the tags by their count in descending order
-const sortedTagIds = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).map(([tagId]) => Number(tagId));
+const sortedTagIds = Object.entries(tagCounts)
+  .sort((a, b) => b[1] - a[1])
+  .map(([tagId]) => Number(tagId).toString()); // Convert numbers to strings
 
-const posts = await postgres.post.findMany({
-  where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
-  select: { id: true },
-});
+  const validTagIds = sortedTagIds.filter(tagId => ObjectId.isValid(tagId));
+  const posts = await postgres.post.findMany({
+    where: { tags: { some: { tagId: { in: validTagIds.slice(0, 5) } } } },
+    select: { id: true },
+  });
 
 // remove duplicates
 const uniquePosts = posts.filter((post, index) => posts.findIndex((p) => p.id === post.id) === index);
 return fetchFeed({
-  where: { id: { in: uniquePosts.map((post) => post.id) }, visibility: "public" },
+  where: { id: { in: uniquePosts.map((post) => post.id) }, published: true },
   ...baseQuery,
   take: Number(limit),
   skip: page * Number(limit),
@@ -202,7 +206,7 @@ export const getFeed = async ({ page = 0, tab, limit = 10 }: { page?: number | u
         ...baseQuery,
         take: Number(limit),
         skip: page * Number(limit),
-        where: { authorId: { in: followingIds }, visibility: "public" },
+        where: { authorId: { in: followingIds }, published: true },
         select: {
           ...baseQuery.select,
           author: {
@@ -223,7 +227,7 @@ export const getFeed = async ({ page = 0, tab, limit = 10 }: { page?: number | u
       ...baseQuery,
       take: Number(limit),
       skip: page * Number(limit),
-      where: { id: { in: postIds }, visibility: "public" },
+      where: { id: { in: postIds }, published: true },
     });
   } 
 };

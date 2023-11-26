@@ -81,9 +81,6 @@ const postFormSchema = z.object({
     .max(100, {
       message: "Username must not be longer than 100 characters.",
     }),
-  visibility: z.enum(["public", "private", "draft"], {
-    required_error: "Please select a visibility option",
-  }),
   content: z.string(),
   coverImage: z.string().optional(),
   tags: z
@@ -97,12 +94,13 @@ const postFormSchema = z.object({
     .optional(),
   url: z.string(),
   subtitle: z.string().max(280, { message: "Subtitle must not be longer than 280 characters." }).optional(),
+  published: z.boolean().optional(),
 })
 
 type PostFormValues = z.infer<typeof postFormSchema>
 
 export function PostEditorForm(props: { post: any, user: any }) {
-  const [previousStatus, setPreviousStatus] = useState<string>(props.post?.visibility);
+  const [previousStatus, setPreviousStatus] = useState<boolean>(props.post?.published);
   const router = useRouter();
   const [markdownContent, setMarkdownContent] = useState<string>(props.post?.content);
 
@@ -111,10 +109,10 @@ export function PostEditorForm(props: { post: any, user: any }) {
     id: props.post?.id,
     title: props.post?.title,
     content: props.post?.content,
-    visibility: props.post?.visibility,
     coverImage: props.post?.cover || '',
     url: props.post?.url,
     subtitle: props.post?.subtitle || '',
+    published: props.post?.published,
     tags: props.post?.tags?.map((tag: any) => ({
       value: tag.tag?.name,
     })),
@@ -166,7 +164,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
       }
 
       await validate(`/@${props.user?.username}`)
-      if (data.visibility === 'public' && previousStatus !== 'public') {
+      if (data.published == true && previousStatus == false) {
         router.push(`/@${props.user?.username}/${form.getValues('url')}?published=true`);
         toast({ description: "Post Published!" });
       }
@@ -387,46 +385,6 @@ export function PostEditorForm(props: { post: any, user: any }) {
                 <div className="space-y-4 pb-4 m-1">
                   <FormField
                     control={form.control}
-                    name="visibility"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
-                        <FormLabel>Privacy</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-col space-y-1"
-                          >
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="public" />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                Public
-                              </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="private" />
-                              </FormControl>
-                              <FormLabel className="font-normal">
-                                Private
-                              </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-3 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="draft" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Draft</FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
                     name="url"
                     render={({ field }) => (
                       <FormItem>
@@ -612,14 +570,18 @@ export function PostEditorForm(props: { post: any, user: any }) {
                     size={"lg"}
                     form="PostForm"
                     disabled={isPublishing}
+                    onClick={() => {
+                      form.setValue('published', true);
+                    }
+                    }
                   >
                     {
                       isPublishing ? (
                         <>
-                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> Publishing
+                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> {previousStatus ? 'Updating' : 'Publishing'}
                         </>
                       ) : (
-                        <>Publish</>
+                        <>{ previousStatus ? 'Update' : 'Publish' }</>
                       )
                     }
                   </Button>
@@ -701,7 +663,6 @@ export function PostEditorForm(props: { post: any, user: any }) {
               })
             }
             if (form.getValues('content') !== undefined && form.getValues('title') !== undefined) {
-              form.setValue('visibility', 'public');
               setOpen(true);
             }
           }

@@ -1,3 +1,4 @@
+import { ObjectId } from "bson";
 import postgres from "../postgres";
 
 type NotificationData = {
@@ -13,6 +14,7 @@ export const create = async (data: NotificationData) => {
           console.log(data)
           await postgres.notification.create({
                data: {
+                         id: new ObjectId().toHexString(),
                         type: data.type,
                         content: data.content,
                         receiverId: data.receiverId,

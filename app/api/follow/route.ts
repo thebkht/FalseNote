@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import postgres from "@/lib/postgres";
 import { create } from "@/lib/notifications/create-notification";
+import { ObjectId } from "bson";
 
 export async function GET(request: NextRequest) {
   try {
@@ -33,6 +34,7 @@ export async function GET(request: NextRequest) {
     } else {
       await postgres.follow.create({
         data: {
+          id: new ObjectId().toHexString(),
           followerId: followerId,
           followingId: followeeId,
         },

@@ -22,7 +22,7 @@ export default async function Home() {
 const [latestPosts, tags, popularPosts] = await Promise.all([
   postgres.post.findMany({
     where: {
-      visibility: 'public',
+      published: true,
     },
     orderBy: {
       createdAt: 'desc',

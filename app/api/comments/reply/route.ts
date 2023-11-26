@@ -1,5 +1,6 @@
 import { create } from "@/lib/notifications/create-notification";
 import postgres from "@/lib/postgres";
+import { ObjectId } from "bson";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     await postgres.comment.create({
       data: {
+        id: new ObjectId().toHexString(),
         content: content,
         authorId: author,
         postId: post,
@@ -37,7 +39,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
             author: {
               select: {
                 username: true,
-                
               }
             }
           },

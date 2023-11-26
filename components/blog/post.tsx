@@ -134,7 +134,7 @@ export default function SinglePost({ post: initialPost, author, sessionUser, tag
                                         <div className="article__date">
                                              <span className="">{post?.readingTime}</span>
                                              <span className=" mx-1">·</span>
-                                             <span className="">{dateFormat(post?.createdAt)}</span>
+                                             <span className="">{dateFormat(post?.publishedAt)}</span>
                                              {
                                                   post?.updated && (
                                                        <>

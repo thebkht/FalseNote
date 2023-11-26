@@ -1,8 +1,9 @@
 import postgres from "@/lib/postgres"
+import { ObjectId } from "bson";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest){
-     const tagid = Number(request.nextUrl.searchParams.get("tagId"))
+     const tagid = request.nextUrl.searchParams.get("tagId")
      const userid = request.nextUrl.searchParams.get("userId")
 
      try {
@@ -37,6 +38,7 @@ export async function GET(request: NextRequest){
           } else {
                await postgres.tagFollow.create({
                     data: {
+                         id: new ObjectId().toHexString(),
                          tagId: tagid,
                          followerId: userid
                     }

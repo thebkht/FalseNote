@@ -22,7 +22,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
 
      const popularPosts = await postgres.post.findMany({
           where: {
-               visibility: 'public',
+               published: true,
                tags: {
                     some: {
                          tagId: tag?.id
@@ -51,7 +51,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
      });
      const latestPosts = await postgres.post.findMany({
           where: {
-               visibility: 'public',
+               published: true,
                tags: {
                     some: {
                          tagId: tag?.id

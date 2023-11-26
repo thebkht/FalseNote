@@ -1,4 +1,5 @@
 import postgres from "@/lib/postgres"
+import { ObjectId } from "bson"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -11,6 +12,7 @@ export async function POST(request: NextRequest) {
 
           await postgres.notification.create({
                data: {
+                    id: new ObjectId().toHexString(),
                     content,
                     receiverId,
                     type,
@@ -58,14 +60,14 @@ export async function GET(request: NextRequest) {
 
 // PUT /api/notifications?id
 export async function PUT(request: NextRequest) {
-     const id = await request.nextUrl.searchParams.get("id")
+     const id = await request.nextUrl.searchParams.get("id")?.toString()
      try {
           // await sql`
           //      UPDATE notifications SET readat = ${new Date().toISOString()} WHERE id = ${id}
           // `
           await postgres.notification.update({
                where: {
-                    id: Number(id)
+                    id: id
                },
                data: {
                     read: true
@@ -80,11 +82,11 @@ export async function PUT(request: NextRequest) {
 
 // DELETE /api/notifications?id
 export async function DELETE(request: NextRequest) {
-     const id = await request.nextUrl.searchParams.get("id")
+     const id = await request.nextUrl.searchParams.get("id")?.toString()
      try {
           await postgres.notification.delete({
                where: {
-                    id: Number(id)
+                    id: id
                }
           })
           return NextResponse.json({ status: 200, message: "Notification deleted" })

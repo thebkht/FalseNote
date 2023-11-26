@@ -4,6 +4,9 @@ import postgres from "@/lib/postgres";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { ObjectId } from 'bson';
+
+const id = new ObjectId().toHexString();
 
 const baseQuery = {
   include: {
@@ -54,9 +57,9 @@ export async function GET(req: NextRequest) {
               contains: search,
               mode: "insensitive",
             },
-            visibility: "public",
+            published: true,
           }
-        : { visibility: "public" },
+        : { published: true },
       take: limit,
       skip: page * limit,
     });
@@ -93,11 +96,11 @@ export async function POST(req: Request) {
 
     const post = await postgres.post.create({
       data: {
+        id: id,
         title: json.title,
         content: json.content,
         authorId: session.id,
         url: json.url,
-        visibility: json.visibility,
       },
       select: {
         id: true,

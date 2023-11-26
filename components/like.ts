@@ -3,6 +3,8 @@ import postgres from "@/lib/postgres"
 import { getSessionUser } from "./get-session-user"
 import { revalidatePath } from "next/cache"
 import { create } from "@/lib/notifications/create-notification"
+import { ObjectId } from "bson"
+import { Comment } from "@prisma/client"
 
 export const handlePostLike = async ({ postId, path} : {postId: string, path: string}) => {
      const sessionUser = await getSessionUser()
@@ -27,6 +29,7 @@ export const handlePostLike = async ({ postId, path} : {postId: string, path: st
                } else {
                     const data = await postgres.like.create({
                          data: {
+                              id: new ObjectId().toHexString(),
                               authorId: sessionUser.id,
                               postId
                          },
@@ -57,7 +60,7 @@ export const handlePostLike = async ({ postId, path} : {postId: string, path: st
      }
 }
 
-export const handleCommentLike = async ({ commentId, path} : {commentId: number, path: string}) => {
+export const handleCommentLike = async ({ commentId, path} : {commentId: Comment['id'], path: string}) => {
      const sessionUser = await getSessionUser()
      if (!sessionUser) {
           console.log("No session user")
@@ -81,6 +84,7 @@ export const handleCommentLike = async ({ commentId, path} : {commentId: number,
                } else {
                     const data = await postgres.commentLike.create({
                          data: {
+                              id: new ObjectId().toHexString(),
                               authorId: sessionUser?.id,
                               commentId
                          },

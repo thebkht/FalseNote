@@ -39,7 +39,9 @@ export default function InfinitiveScrollFeed({ initialFeed, tag, session }: { in
     }
   }, [inView])
 
-  return feed.length > 0 ? (
+  const safeFeed = feed || [];
+
+  return safeFeed.length > 0 ? (
     <div className="feed__list">
 
       <div className="flex flex-col lg:gap-6 md:gap-5 gap-4 my-4">

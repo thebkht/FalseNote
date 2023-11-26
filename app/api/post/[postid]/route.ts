@@ -24,7 +24,7 @@ export async function PATCH(
       title,
       content,
       coverImage,
-      visibility,
+      published,
       tags,
       url,
       authorId,
@@ -45,9 +45,9 @@ export async function PATCH(
         id: postid,
       },
       select: {
-        visibility: true,
+        published: true,
       },
-    })
+    });
 
     await postgres.post.update({
       where: {
@@ -57,14 +57,14 @@ export async function PATCH(
         title: title,
         content: content,
         cover: coverImage || null,
-        visibility: visibility,
+        published: published,
         url: url,
         subtitle: subtitle || null,
         readingTime: readTime,
-        ...(oldData?.visibility === "draft" &&
-        visibility === "public" && { createdAt: new Date() }),
-      ...(oldData?.visibility === "public" &&
-        visibility === "public" && { updatedAt: new Date(), updated: true }),
+        ...(oldData?.published === false &&
+        published === true && { publishedAt: new Date() }),
+      ...(oldData?.published === true &&
+        published === true && { updatedAt: new Date(), updated: true }),
       },
     });
 

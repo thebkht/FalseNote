@@ -1,8 +1,9 @@
 'use server'
 
+import { Comment } from "@prisma/client"
 import postgres from "../postgres"
 
-export const getComment = async (id: number) => {
+export const getComment = async (id: Comment['id']) => {
      return await postgres.comment.findUnique({
      where: {
           id: id

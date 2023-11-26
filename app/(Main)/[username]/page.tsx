@@ -52,7 +52,7 @@ export default async function Page({ params, searchParams }: {
         where: {
           OR: [
             {
-              visibility: "public",
+              published: true,
             },
             {
               authorId: sessionUserName?.id,

@@ -20,7 +20,8 @@ async function getPostData(username: string, url: string) {
          url: url,
          author: {
            username: decodedUsername.substring(1)
-         }
+         },
+           published: true,
        },
        include: {
          tags: {
@@ -50,11 +51,11 @@ async function getPostData(username: string, url: string) {
        return {
          metadataBase: new URL(`${process.env.DOMAIN}/@${post.author.username}/${post.url}`),
          title: `${post.title} - FalseNotes`,
-         description: post.subtitle || markdownToText(post.content.slice(0, 100)),
+         description: post.subtitle || markdownToText(post.content?.slice(0, 100) || ''),
          keywords: post.tags.map((tag: any) => tag.tag.name).join(', '),
          openGraph: {
            title: `${post.title} - FalseNotes`,
-           description: post.subtitle || markdownToText(post.content.slice(0, 100)),
+           description: post.subtitle || markdownToText(post.content?.slice(0, 100) || ''),
            url: new URL(`${process.env.DOMAIN}/@${post.author.username}/${post.url}`),
            images: [
              {
@@ -68,8 +69,7 @@ async function getPostData(username: string, url: string) {
          twitter: {
            card: 'summary_large_image',
            title: `${post.title} - FalseNotes`,
-           description: post.subtitle || markdownToText(post.content.slice(0, 100)),
-               
+           description: post.subtitle || markdownToText(post.content?.slice(0, 100) || ''),
          },
        }
      } catch (error) {
@@ -105,7 +105,7 @@ export default async function PostLayout(
                          url: {
                               not: params.url
                          },
-                         visibility: "public",
+                         published: true,
                     },
                     include: {
                          _count: { select: { comments: true, savedUsers: true, likes: true } },
@@ -179,7 +179,7 @@ export default async function PostLayout(
                url: {
                     not: post?.url
                },
-               visibility: "public",
+               published: true,
           },
           include: {
                _count: { select: { comments: true, savedUsers: true, likes: true } },

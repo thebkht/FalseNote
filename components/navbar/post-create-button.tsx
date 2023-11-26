@@ -31,7 +31,6 @@ export function PostCreateButton({
                body: JSON.stringify({
                     title: "Untitled Post",
                     content: "",
-                    visibility: "draft",
                     url: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                }),
           })

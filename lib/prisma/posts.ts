@@ -59,9 +59,9 @@ export const getPosts = async ({
               contains: search,
               mode: "insensitive",
             },
-            visibility: "public",
+            published: true,
           }
-        : { visibility: "public" },
+        : { published: true },
     take: limit,
     skip: page * limit,
     orderBy: [

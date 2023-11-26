@@ -30,4 +30,4 @@ async function fetchSessionUser() {
   }
 }
 
-export const getSessionUser = cache(fetchSessionUser)
+export const getSessionUser = async () => await fetchSessionUser();

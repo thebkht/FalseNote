@@ -6,7 +6,7 @@ export async function getPostsForSite() {
     async () => {
       return postgres.post.findMany({
         where: {
-          visibility: "public",
+          published: true,
         },
         select: {
           title: true,
