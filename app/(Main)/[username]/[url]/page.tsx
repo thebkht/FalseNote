@@ -70,7 +70,7 @@ export default async function PostView({ params, searchParams }: { params: { use
      const sessionUser = await getSessionUser()
 
      if (post?.authorId !== sessionUser?.id) {
-          if (post?.published) return notFound();
+          if (!post?.published) return notFound();
      }
 
      const published = sessionUser?.id === post?.authorId && (

@@ -91,7 +91,7 @@ export default async function Page({ params, searchParams }: {
 
   if (!user) notFound();
 
-  const whereQuery = sessionUserName?.id === user?.id ? {} : { visibility: "public" };
+  const whereQuery = sessionUserName?.id === user?.id ? {} : { published: true };
 
   const { posts } = await getPost({ id: user?.id, search, whereQuery });
 

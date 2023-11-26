@@ -8,7 +8,7 @@ const baseQuery = {
       include: {
         Followers: true,
         Followings: true,
-      }
+      },
     },
     savedUsers: true,
     _count: {
@@ -65,25 +65,25 @@ export const getPosts = async ({
     take: limit,
     skip: page * limit,
     orderBy: [
-    {
-      readedUsers: {
-        _count: "desc",
+      {
+        readedUsers: {
+          _count: "desc",
+        },
       },
-    },
-    {
-      savedUsers: {
-        _count: "desc",
+      {
+        savedUsers: {
+          _count: "desc",
+        },
       },
-    },
-    {
-      likes: {
-        _count: "desc",
+      {
+        likes: {
+          _count: "desc",
+        },
       },
-    },
-    {
-      views: "desc",
-    },
-  ],
+      {
+        views: "desc",
+      },
+    ],
   });
 
   // // Sort the results in your application code

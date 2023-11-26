@@ -2,9 +2,8 @@
 import { config } from "@/app/auth";
 import postgres from "@/lib/postgres";
 import { getServerSession } from "next-auth";
-import { cache } from "react";
 
-async function fetchSessionUser() {
+export async function getSessionUser() {
   try {
     const session = await getServerSession(config);
     if (!session) {
@@ -13,7 +12,7 @@ async function fetchSessionUser() {
     const { user } = session;
     const result = await postgres.user.findFirst({
       where: {
-        image: user?.image,
+        username: user?.name,
       },
       select: {
         id: true,
@@ -23,11 +22,9 @@ async function fetchSessionUser() {
         username: true,
       },
     });
-     return result;
+    return result;
   } catch (error) {
     console.error("Failed to get session:", error);
     return null;
   }
 }
-
-export const getSessionUser = cache(fetchSessionUser)

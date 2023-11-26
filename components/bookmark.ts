@@ -1,6 +1,6 @@
 "use server";
 import postgres from "@/lib/postgres";
-import { getSessionUser } from "./get-session-user";
+import { getSessionUser } from "@/components/get-session-user";
 import { revalidatePath } from "next/cache";
 import { ObjectId } from "bson";
 
@@ -12,14 +12,16 @@ export const handlePostSave = async ({
   path: string;
 }) => {
   const sessionUser = await getSessionUser();
-  if (!sessionUser) {
-    console.log("No session user");
-  }
   try {
+    if (!sessionUser) {
+    console.log("No session user");
+    return null;
+  }
+    console.log("Session id:", sessionUser?.id);
     const saved = await postgres.bookmark.findFirst({
       where: {
         postId,
-        userId: sessionUser?.id,
+        userId: sessionUser.id,
       },
       select: {
         id: true,
@@ -46,6 +48,6 @@ export const handlePostSave = async ({
       revalidatePath(path);
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error:", error);
   }
 };

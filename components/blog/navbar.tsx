@@ -12,6 +12,7 @@ import Link from "next/link";
 import PostDeleteDialog from "./post-delete-dialog";
 import LoginDialog from "../login-dialog";
 import { Separator } from "../ui/separator";
+import { Post } from "@prisma/client";
 
 export default function PostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -19,10 +20,10 @@ export default function PostTabs({ post: initialPost, className, session, author
           setPost(initialPost);
      }, [initialPost])
      const pathname = usePathname();
-     const like = async (postId: string) => {
+     const like = async (postId: Post['id']) => {
           await handlePostLike({ postId, path: pathname });
      }
-     const save = async (postId: string) => {
+     const save = async (postId: Post['id']) => {
           await handlePostSave({ postId, path: pathname });
      }
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
@@ -65,7 +66,9 @@ export default function PostTabs({ post: initialPost, className, session, author
                     <div className="flex items-center gap-1.5">
                          {
                               session ? (
-                                   <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
+                                   <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={
+                                        () => save(post.id)
+                                   } >
                                         <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(post.id)} />
                                         <span className="sr-only">Save</span>
                                    </Button>

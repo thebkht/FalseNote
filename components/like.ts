@@ -4,9 +4,9 @@ import { getSessionUser } from "./get-session-user"
 import { revalidatePath } from "next/cache"
 import { create } from "@/lib/notifications/create-notification"
 import { ObjectId } from "bson"
-import { Comment } from "@prisma/client"
+import { Comment, Post } from "@prisma/client"
 
-export const handlePostLike = async ({ postId, path} : {postId: string, path: string}) => {
+export const handlePostLike = async ({ postId, path} : {postId: Post['id'], path: string}) => {
      const sessionUser = await getSessionUser()
      if (!sessionUser) {
          console.log("No session user")
