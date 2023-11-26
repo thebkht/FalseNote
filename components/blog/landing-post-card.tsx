@@ -56,7 +56,7 @@ export default function LandingPostCard(
                 <div className="flex flex-1 items-center space-x-1.5">
 
                   <span className="!text-muted-foreground text-sm">
-                    {dateFormat(props.post.createdAt)}
+                    {dateFormat(props.post.publishedAt)}
                   </span>
                   <span>·</span>
                   <p className="card-text mb-0 text-muted-foreground text-xs">{props.post.readingTime}</p>

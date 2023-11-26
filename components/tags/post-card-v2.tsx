@@ -11,20 +11,14 @@ import { BlurImage as Image } from "../image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark, CalendarDays, Check, Eye, Heart, MessageCircle, MoreHorizontal, Share, User } from "lucide-react";
-import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+import { Bookmark, MoreHorizontal, } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
 import TagBadge from "../tags/tag";
 import { dateFormat } from "@/lib/format-date";
-import ShareList from "../share-list";
-import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
-import { getSessionUser } from "../get-session";
-import { formatNumberWithSuffix } from "../format-numbers";
-import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
 import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
@@ -87,7 +81,7 @@ export default function PostCard(
                                    )
                               }
                               <span className="!text-muted-foreground text-sm">
-                                   {dateFormat(props.post.createdAt)}
+                                   {dateFormat(props.post.publishedAt)}
                               </span>
                          </div>
                     </CardHeader>

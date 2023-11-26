@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import React from "react";
 import { usePathname } from "next/navigation";
-import { handleCommentLike } from "@/components/like";
 import CommentDeleteDialog from "./delete-dialog";
 import CommentEditorForm from "./comment-editor-form";
 import ReplyForm from "./reply-form";

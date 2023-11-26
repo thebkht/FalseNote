@@ -2,9 +2,6 @@ import postgres from "@/lib/postgres"
 import type { NextAuthOptions as NextAuthConfig } from "next-auth"
 import GitHub from "next-auth/providers/github"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { ObjectId } from 'bson';
-
-const id = new ObjectId().toHexString();
 
 export const config = {
   // https://next-auth.js.org/configuration/providers/oauth
@@ -67,7 +64,6 @@ export const config = {
             if (!userSettingsExists) {
               await postgres.userSettings.create({
                 data: {
-                  id: new ObjectId().toHexString(),
                   userId: sessionUser.id
                 }
               })

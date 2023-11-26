@@ -1,6 +1,5 @@
 import MoreFromAuthor from '@/components/blog/more-from-author';
 import RelatedPosts from '@/components/blog/related-posts';
-import { fetchFeed } from '@/components/feed/get-feed';
 import { SiteFooter } from '@/components/footer';
 import { getSessionUser } from '@/components/get-session-user';
 import { Separator } from '@/components/ui/separator';

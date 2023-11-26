@@ -22,8 +22,6 @@ import TagBadge from "../tags/tag";
 import { dateFormat } from "@/lib/format-date";
 import { formatNumberWithSuffix } from "../format-numbers";
 import { usePathname } from "next/navigation";
-import { handlePostSave } from "../bookmark";
-import { handlePostLike } from "../like";
 import PostMoreActions from "../blog/post-more-actions";
 import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
@@ -120,7 +118,7 @@ export default function TagPostCard(
                                                   {props.post.readingTime}
                                              </span>
                                              <span>·</span>
-                                             <span>{dateFormat(props.post.createdAt)}</span>
+                                             <span>{dateFormat(props.post.publishedAt)}</span>
                                         </div>
                                    </div>
                               </div>

@@ -5,14 +5,14 @@ import { cn } from "@/lib/utils";
 import CommentsSheet from "./comments/comments-sheet";
 import ShareList from "../share-list";
 import { usePathname } from "next/navigation";
-import { handlePostLike } from "../like";
-import { handlePostSave } from "../bookmark";
 import { useEffect, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
 import PostDeleteDialog from "./post-delete-dialog";
 import LoginDialog from "../login-dialog";
 import { Separator } from "../ui/separator";
+import { validate } from "@/lib/revalidate";
+import { Post } from "@prisma/client";
 
 export default function MobilePostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -20,11 +20,25 @@ export default function MobilePostTabs({ post: initialPost, className, session, 
           setPost(initialPost);
      }, [initialPost])
      const pathname = usePathname();
-     const like = async (postId: string) => {
-          await handlePostLike({ postId, path: pathname });
+     const like = async (postId: Post['id']) => {
+          await fetch(`/api/post/${postId}/like`, {
+               method: "POST",
+               headers: {
+                 "Content-Type": "application/json",
+               },
+               body: JSON.stringify({ postId }),
+             });
+             await validate(pathname)
      }
-     const save = async (postId: string) => {
-          await handlePostSave({ postId, path: pathname });
+     const save = async (postId: Post['id']) => {
+          await fetch(`/api/post/${postId}/save`, {
+               method: "POST",
+               headers: {
+                 "Content-Type": "application/json",
+               },
+               body: JSON.stringify({ postId }),
+             });
+             await validate(pathname)
      }
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
      const isSaved = post?.savedUsers?.some((savedUser: any) => savedUser.userId === session?.id);

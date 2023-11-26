@@ -1,5 +1,4 @@
 "use client"
-import { useSession } from "next-auth/react";
 import PostCard from "../tags/post-card-v2";
 import { Separator } from "../ui/separator";
 import { EmptyPlaceholder } from "../empty-placeholder";

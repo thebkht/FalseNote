@@ -1,8 +1,6 @@
 import { getSessionUser } from "@/components/get-session-user";
 import { insertTag } from "@/lib/insert-tag";
 import postgres from "@/lib/postgres";
-import { ObjectId } from "bson";
-import { NextRequest } from "next/server";
 import readingTime from "reading-time";
 import { z } from "zod";
 

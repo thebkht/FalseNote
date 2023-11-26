@@ -1,7 +1,6 @@
 'use server'
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
-import { ObjectId } from "bson";
 
 const getLikes = async ({ id }: { id: string | undefined }) => {
   const likes = await postgres.like.findMany({
@@ -160,9 +159,8 @@ const sortedTagIds = Object.entries(tagCounts)
   .sort((a, b) => b[1] - a[1])
   .map(([tagId]) => Number(tagId).toString()); // Convert numbers to strings
 
-  const validTagIds = sortedTagIds.filter(tagId => ObjectId.isValid(tagId));
   const posts = await postgres.post.findMany({
-    where: { tags: { some: { tagId: { in: validTagIds.slice(0, 5) } } } },
+    where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
     select: { id: true },
   });
 

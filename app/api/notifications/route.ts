@@ -1,5 +1,4 @@
 import postgres from "@/lib/postgres"
-import { ObjectId } from "bson"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {

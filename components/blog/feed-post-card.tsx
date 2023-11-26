@@ -15,7 +15,6 @@ import { Icons } from "../icon";
 import TagBadge from "../tags/tag";
 import { dateFormat } from "@/lib/format-date";
 import ShareList from "../share-list";
-import { handlePostSave } from "../bookmark";
 import { usePathname } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { shimmer, toBase64 } from "@/lib/image";
@@ -60,7 +59,7 @@ export default function FeedPostCard(
             </UserHoverCard>
             <span>·</span>
             <span className="!text-muted-foreground text-sm">
-              {dateFormat(props.post.createdAt)}
+              {dateFormat(props.post.publishedAt)}
             </span>
           </div>
         </CardHeader>

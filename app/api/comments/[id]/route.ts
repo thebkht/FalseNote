@@ -1,4 +1,3 @@
-import { create } from "@/lib/notifications/create-notification";
 import postgres from "@/lib/postgres";
 import { Comment } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";

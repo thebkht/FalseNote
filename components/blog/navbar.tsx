@@ -4,8 +4,6 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import ShareList from "../share-list";
 import { usePathname } from "next/navigation";
-import { handlePostLike } from "../like";
-import { handlePostSave } from "../bookmark";
 import { useEffect, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
