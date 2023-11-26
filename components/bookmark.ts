@@ -21,6 +21,9 @@ export const handlePostSave = async ({
         postId,
         userId: sessionUser?.id,
       },
+      select: {
+        id: true,
+      },
     });
 
     if (sessionUser?.id) {
