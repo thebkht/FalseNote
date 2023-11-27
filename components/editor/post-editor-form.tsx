@@ -152,7 +152,11 @@ export function PostEditorForm(props: { post: any, user: any }) {
       }
       setIsPublishing(true);
 
-      uploadCover();
+      form.setValue('published', true);
+      const coverUrl = await uploadCover();
+      if (coverUrl) {
+        form.setValue('coverImage', coverUrl);
+      }
 
       const result = await fetch(`/api/post/${props.post?.id}`, {
         method: "PATCH",
@@ -211,11 +215,11 @@ export function PostEditorForm(props: { post: any, user: any }) {
         });
         // get the image url
         const { data: coverUrl } = await res.json()
-        form.setValue('coverImage', coverUrl.url);
-
+        return coverUrl.url;
       } catch (e: any) {
         // Handle errors here
         console.error(e);
+        return null
       }
     }
   }
@@ -223,7 +227,10 @@ export function PostEditorForm(props: { post: any, user: any }) {
   const saveDraft = async () => {
     if (!isPublishing) {
       setIsSaving(true);
-      uploadCover();
+      const coverUrl = await uploadCover();
+      if (coverUrl) {
+        form.setValue('coverImage', coverUrl);
+      }
       if (form.getValues('title') && form.getValues('content')) {
         try {
           // Submit the form
@@ -246,6 +253,9 @@ export function PostEditorForm(props: { post: any, user: any }) {
         } catch (error) {
           console.error(error)
         }
+      }
+      if (!form.getValues('published') && previousStatus == false) {
+        await onSubmit(form.getValues());
       }
       setIsSaving(false);
     }
@@ -557,7 +567,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                         }
                       }}
                     >
-                      Add Topic
+                      Add Tag
                     </Button>
                   )}
 

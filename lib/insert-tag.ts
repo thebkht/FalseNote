@@ -20,7 +20,7 @@ export async function insertTag(tags: any, postid: string) {
     );
     for (const tag of uniqueTags) {
       const tagExists = await postgres.tag.findFirst({
-        where: { name: tag },
+        where: { name: { equals: tag } },
         select: { id: true },
       });
       if (!tagExists) {
