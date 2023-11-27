@@ -25,37 +25,8 @@ import { getComment } from "@/lib/prisma/get-comment";
 import MarkdownCard from "@/components/markdown-card";
 import { Comment } from "@prisma/client";
 import { validate } from "@/lib/revalidate";
-
-export function dateFormat(dateString: string | number | Date) {
-     const date = new Date(dateString);
-     const currentDate = new Date();
-   
-     const differenceInTime = currentDate.getTime() - date.getTime();
-     const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-   
-     if (differenceInDays < 1) {
-       const differenceInHours = differenceInTime / (1000 * 3600);
-       if (differenceInHours < 1) {
-         const differenceInMinutes = differenceInTime / (1000 * 60);
-         if (differenceInMinutes < 1) {
-           const differenceInSeconds = differenceInTime / 1000;
-           return differenceInSeconds < 30 ? 'Just now': `${Math.floor(differenceInSeconds)}s`;
-         }
-         return `${Math.floor(differenceInMinutes)}m`;
-       }
-       return `${Math.floor(differenceInHours)}h`;
-     }
-   
-     if (differenceInDays > 15) {
-       return `${date.toLocaleDateString('en-US', {
-         year: 'numeric',
-         month: 'short',
-         day: 'numeric',
-       })}`;
-     } else {
-       return `${Math.floor(differenceInDays)}d`;
-     }
-}
+import { dateFormat } from "@/lib/format-date";
+import LoginDialog from "@/components/login-dialog";
 
 async function fetchComment(commentId: Comment['id']) {
      return await getComment(commentId);
@@ -99,26 +70,27 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                    <CardHeader className={`space-y-0 w-full text-sm flex-row items-center p-4 ${comment.parentId && 'pt-0'} px-0`}>
                                         <div className="flex justify-between w-full">
                                              <div className="w-full flex">
-                                                  <UserHoverCard user={comment.author} className="h-6 w-6 mr-1 md:mr-1.5" >
+                                                  <UserHoverCard user={comment.author} className="h-10 w-10 mr-1 md:mr-1.5" >
                                                        <Link href={`/@${comment.author?.username}`} className="inline-block">
-                                                            <Avatar className="h-6 w-6 border">
+                                                            <Avatar className="border">
                                                                  <AvatarImage src={comment.author?.image} alt={comment.autho?.name} />
                                                                  <AvatarFallback>{comment.author?.name ? comment.author?.name.charAt(0) : comment.author?.username.charAt(0)}</AvatarFallback>
                                                             </Avatar>
                                                        </Link>
                                                   </UserHoverCard>
                                                   <Link href={`/@${comment.author?.username}`} className="flex items-center">
-                                                       <span className="article__comments-item-author text-sm">{comment.author?.name || comment.author?.username}</span>
-                                                       {comment.author?.verified &&
+                                                       <div className="flex flex-col">
+                                                       <span className="article__comments-item-author text-sm">{comment.author?.name || comment.author?.username} {comment.author?.verified &&
                                                             (
                                                                  <Icons.verified className="h-4 w-4 mx-1 inline fill-primary align-middle" />
-                                                            )}
+                                                            )}</span>
+                                                       
+                                                            <span className="article__comments-item-date text-muted-foreground text-sm !mt-0">{dateFormat(comment.createdAt)}</span>
+                                                       </div>
                                                        {comment.author?.id === post?.authorId && (
-                                                            <Badge className="ml-1 text-[10px] py-0">Author</Badge>
+                                                            <Badge className="ml-1 text-xs py-0">Author</Badge>
                                                        )}
                                                   </Link>
-                                                  <span className="mx-1.5 !mt-0 text-sm">·</span>
-                                                  <span className="article__comments-item-date text-muted-foreground text-sm !mt-0">{dateFormat(comment.createdAt)}</span>
                                              </div>
                                              {
                                                   session?.id === post.authorId && (
@@ -166,14 +138,24 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                    </CardHeader>
                                    <CardContent className="p-4 pt-0 px-0">
 
-                                   <MarkdownCard code={comment.content} />
+                                   <MarkdownCard code={comment.content} className="!my-0" />
                                    </CardContent>
                                    <CardFooter className="flex-row items-center justify-between p-4 px-0">
                                         <div className="flex items-center space-x-2">
                                              <div className="flex items-center">
-                                                  <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} disabled={session?.id == comment.authorId} onClick={() => like(comment.id)} >
+                                                  {
+                                                       session ? (
+                                                            <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} disabled={session?.id == comment.authorId} onClick={() => like(comment.id)} >
                                                        <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
                                                   </Button>
+                                                       ) : (
+                                                            <LoginDialog>
+                                                                 <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
+                                                                      <Heart className={`w-5 h-5`} strokeWidth={2} />
+                                                                 </Button>
+                                                            </LoginDialog>
+                                                       )
+                                                  }
                                                   <span className="text-sm">{formatNumberWithSuffix(comment?._count?.likes)}</span>
                                              </div>
                                              {
@@ -188,9 +170,19 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                              }
                                         </div>
                                         <div className="flex items-center">
-                                             <Button className="mr-0.5" variant={"ghost"} onClick={() => setIsReplying(!isReplying)} >
+                                             {
+                                                  session ? (
+                                                       <Button className="mr-0.5" variant={"ghost"} onClick={() => setIsReplying(!isReplying)} >
                                                   Reply
                                              </Button>
+                                                  ) : (
+                                                       <LoginDialog>
+                                                            <Button className="mr-0.5" variant={"ghost"} >
+                                                  Reply
+                                             </Button>
+                                                       </LoginDialog>
+                                                  )
+                                             }
                                         </div>
                                    </CardFooter>
                               </Card>
