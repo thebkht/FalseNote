@@ -38,10 +38,9 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
 
   return (
     <div className={className}>
-      <div className="user-articles w-full">
-        <Separator className="md:hidden flex mt-4" />
+      <div className="user-articles w-full  lg:mb-6 md:mb-5 mb-4">
         {posts?.length > 0 ? (
-          <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
+          <div className="flex flex-col">
             {posts?.map((article: any) => (
               <>
                 <PostCard post={article.post} session={sessionUser} />
@@ -52,7 +51,7 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
 
             {
               posts?.length >= 10 && (
-                <div className="feed__list_loadmore !py-0 h-max lg:mb-6 md:mb-5 mb-4" ref={ref}>
+                <div className="feed__list_loadmore !py-0 h-max" ref={ref}>
                   <Card className="rounded-lg bg-transparent max-h-72 w-full">
                     <CardContent className="md:p-6 p-4">
                       <CardHeader className={cn("pb-4 pt-0 px-0 gap-y-4")}>
