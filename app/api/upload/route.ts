@@ -29,7 +29,7 @@ const blockBlobClient = containerClient.getBlockBlobClient(`${authorId}/${postId
   // Upload file to Azure Storage with name postId in the authorId folder
   const uploadBlobResponse = await blockBlobClient.upload(buffer, buffer.length);
   console.log(`Upload block blob ${postId} successfully`, uploadBlobResponse.requestId);
-  const url = `https://blogstorageaccount.blob.core.windows.net/blogs/${authorId}/${postId}`;
+  const url = `https://falsenotescontent.blob.core.windows.net/blogs/${authorId}/${postId}.${file.name.split('.').pop()}`;
 
   return NextResponse.json({ success: true, message: 'File uploaded', data: { url } })
   } catch (error : any) {
