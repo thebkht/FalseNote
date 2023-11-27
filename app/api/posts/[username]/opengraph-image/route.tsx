@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { Icons } from "@/components/icon";
 import { ImageResponse } from "next/og";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -29,20 +28,23 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
     regularFont,
     boldFont,
   ]);
-  try {
-    const { username } = params
-    const postUrl = req.nextUrl.searchParams.get("url");
-    if (!postUrl) {
-      return NextResponse.json("Missing post url", { status: 400 });
-    }
+  const { username } = params;
+  const postUrl = req.nextUrl.searchParams.get("url");
 
+  if (!postUrl) {
+    return NextResponse.json("Missing post url", { status: 400 });
+  }
+
+  try {
     const response = await fetch(`${process.env.DOMAIN}/api/posts/${username}/${postUrl}`);
+
     if (!response.ok) {
       return NextResponse.json("Error fetching user data", { status: 500 });
-
     }
+
     const data = await response.json();
     const post = data;
+
     return new ImageResponse(
       (
         post.cover ? (
@@ -136,7 +138,8 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
       },
     );
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching user data", error);
+    return NextResponse.json("Error occurred", { status: 500 });
   }
 }
 
