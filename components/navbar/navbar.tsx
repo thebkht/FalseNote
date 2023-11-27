@@ -30,6 +30,7 @@ function Navbar(notifications: any) {
         <Link href={session ? "/feed" : "/"} className="flex items-center">
           <Icons.logo className="md:block hidden h-7" />
           <Icons.logoIcon className="md:hidden block h-7" />
+          <span className="sr-only">FalseNotes</span>
         </Link>
 
         <div className="flex items-center gap-1 md:gap-4">
