@@ -255,7 +255,15 @@ export function PostEditorForm(props: { post: any, user: any }) {
         }
       }
       if (!form.getValues('published') && previousStatus == false) {
-        await onSubmit(form.getValues());
+        const result = await fetch(`/api/post/${props.post?.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({ ...form.getValues() }),
+        });
+  
+        if (!result.ok) {
+          throw new Error('Failed to update post');
+        }
+  
       }
       setIsSaving(false);
     }
