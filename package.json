@@ -103,20 +103,5 @@
     "typescript": "5.2.2",
     "use-debounce": "^9.0.4",
     "zod": "^3.22.2"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/formidable": "^3.4.3",
-    "@types/pg": "^8.10.7",
-    "@types/uuid": "^9.0.4",
-    "dns": "file:./app/mock/dns"
-  },
-  "browser": {
-    "crypto": false,
-    "fs": false,
-    "net": false,
-    "path": false,
-    "stream": false,
-    "tls": false
   }
 }
