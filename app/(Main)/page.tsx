@@ -34,6 +34,7 @@ const [latestPosts, tags, popularPosts] = await Promise.all([
       url: true,
       createdAt: true,
       readingTime: true,
+      publishedAt: true,
       cover: true,
       author: {
         select: {

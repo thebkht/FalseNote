@@ -82,8 +82,8 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
               </div>
             </div>
           </div>
-          <div className="grid-cols-12 lg:grid flex flex-col-reverse pt-14 grid-rows-1 ">
-            <div style={{ 'gridColumn': '1 / span 7' }} className="mt-10 lg:mt-0">
+          <div className="grid-cols-12 lg:grid flex flex-col-reverse lg:gap-8 gap-4 pt-14 grid-rows-1">
+            <div style={{ 'gridColumn': '1 / span 8' }} className="mt-10 lg:mt-0">
               {latest.length > 0 ? (
                 <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
                   {latest?.map((post: any) => (
@@ -113,7 +113,7 @@ export default function Landing({ latest, tags, popular }: { latest: any, tags: 
                       <div className="w-full flex-wrap">
                         {tags?.map((tag: any) => (
                           <Link href={`/tags/${tag.name}`} key={tag.id}>
-                            <TagBadge className="my-1.5 mr-1.5 py-2 px-4 text-sm font-medium capitalize" variant={"secondary"}>{tag.name.replace(/-/g, " ")}</TagBadge>
+                            <TagBadge className="my-1 mr-1 text-sm font-medium" variant={"secondary"}>{tag.name.replace(/-/g, " ")}</TagBadge>
                           </Link>
                         ))}
                       </div>
