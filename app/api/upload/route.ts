@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BlobServiceClient } from "@azure/storage-blob";
-import sharp from 'sharp';
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,13 +18,12 @@ export async function POST(req: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const webpBuffer = await sharp(buffer).webp().toBuffer();
 
     const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING!);
     const containerClient = blobServiceClient.getContainerClient('blogs');
     const blockBlobClient = containerClient.getBlockBlobClient(`${authorId}/${postId}`);
 
-    await blockBlobClient.upload(webpBuffer, webpBuffer.length);
+    await blockBlobClient.upload(buffer, buffer.length);
 
     const url = `https://falsenotescontent.blob.core.windows.net/blogs/${authorId}/${postId}`;
 
