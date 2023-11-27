@@ -616,7 +616,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                          <Link href={`/@${props.user?.username}`} className="flex align-items-center">
                               <Avatar className="h-8 w-8 mr-1 border">
                                    <AvatarImage src={ props.user?.image } alt={ props.user?.name || props.user?.username } />
-                                   <AvatarFallback>{props.user?.name.charAt(0)}</AvatarFallback>
+                                   <AvatarFallback>{props.user?.name ? props.user?.name.charAt(0) : props.user?.username.charAt(0)}</AvatarFallback>
 
                               </Avatar>
                               <Button variant="ghost" size={"sm"} className="hidden md:flex" asChild>

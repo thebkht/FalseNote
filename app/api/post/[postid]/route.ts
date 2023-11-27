@@ -92,50 +92,71 @@ export async function DELETE(
 ) {
   try {
     const { postid } = params;
+    
+    const post = await postgres.post.findUnique({
+      where: {
+        id: postid,
+      },
+    });
+    
+    if (!post) {
+      throw new Error('Post not found');
+    }
 
-    if (!(await verifyCurrentUserHasAccessToPost(postid))) {
+    const authorId = post.authorId;
+
+    if (!(await verifyCurrentUserHasAccessToPost(post.id))) {
       return new Response(null, { status: 403 });
     }
+
+    
 
     // Disconnect all connections of the post
     await postgres.postTag.deleteMany({
       where: {
-        postId: postid,
+        postId: post.id,
       },
     })
 
     await postgres.comment.deleteMany({
       where: {
-        postId: postid,
+        postId: post.id,
       },
     })
 
     await postgres.like.deleteMany({
       where: {
-        postId: postid,
+        postId: post.id,
       },
     })
 
     await postgres.bookmark.deleteMany({
       where: {
-        postId: postid,
+        postId: post.id,
       },
     })
-
     await postgres.readingHistory.deleteMany({
       where: {
         postId: postid,
+        userId: authorId,
+      },
+    });
+
+    await postgres.readingHistory.deleteMany({
+      where: {
+        postId: post.id,
       },
     })
+
     await postgres.draftPost.deleteMany({
       where: {
-        postId: postid,
+        postId: post.id,
       },
     })
     // Delete the post.
     await postgres.post.delete({
       where: {
-        id: postid,
+        id: post.id,
       },
     })
 

@@ -169,7 +169,8 @@ export const getBookmarks = async ({ id, limit = 5, page = 0 }: { id: string | u
 export const getHistory = async ({ id, limit = 5, page = 0 }: { id: string | undefined, limit?: number, page?: number }) => {
   const user = await postgres.user.findFirst({
     where: { id },
-    include: {
+    select: {
+      id: true,
       readinghistory: {
         include: {
           post: {
@@ -186,10 +187,15 @@ export const getHistory = async ({ id, limit = 5, page = 0 }: { id: string | und
       },
       _count: { select: { readinghistory: true } },
     },
-      }
-  );
+  });
 
-  return { history: JSON.parse(JSON.stringify(user?.readinghistory)), historyCount: user?._count?.readinghistory };
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const history = user.readinghistory.filter((historyItem : any) => historyItem.post !== null);
+
+  return { history: JSON.parse(JSON.stringify(history)), historyCount: user._count.readinghistory };
 }
 
 export const getNotifications = async ({ id }: { id: string | undefined }) => {

@@ -81,7 +81,7 @@ export default function PostCard(
                                    )
                               }
                               <span className="!text-muted-foreground text-sm">
-                                   {dateFormat(props.post.publishedAt)}
+                                   {props.post.published ? dateFormat(props.post.publishedAt) : dateFormat(props.post.createdAt)}
                               </span>
                          </div>
                     </CardHeader>

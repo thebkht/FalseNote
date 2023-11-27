@@ -158,7 +158,7 @@ const tagCounts = tags.reduce((counts, tag) => {
 // Sort the tags by their count in descending order
 const sortedTagIds = Object.entries(tagCounts)
   .sort((a, b) => b[1] - a[1])
-  .map(([tagId]) => Number(tagId).toString()); // Convert numbers to strings
+  .map(([tagId]) => tagId)
 
   const posts = await postgres.post.findMany({
     where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
