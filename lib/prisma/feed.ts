@@ -161,7 +161,7 @@ const sortedTagIds = Object.entries(tagCounts)
   .map(([tagId]) => tagId)
 
   const posts = await postgres.post.findMany({
-    where: { tags: { some: { tagId: { in: sortedTagIds } } } },
+    where: { tags: { some: { tagId: { in: sortedTagIds.slice(0, 5) } } } },
     select: { id: true },
   });
 
