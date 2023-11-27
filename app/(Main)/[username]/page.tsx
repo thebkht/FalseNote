@@ -112,13 +112,13 @@ export default async function Page({ params, searchParams }: {
           {sessionUserName?.id === user?.id ? (
             <Tabs className="w-full" defaultValue={tab || "posts"}>
               <TabsList className="bg-background w-full py-4 justify-start h-fit rounded-none gap-2 sticky top-[90px] z-10">
-                <TabsTrigger value="posts" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                <TabsTrigger value="posts" className="bg-muted data-[state=active]:bg-secondary-foreground data-[state=active]:shadow-sm data-[state=active]:text-secondary">
                   Posts
                 </TabsTrigger>
-                <TabsTrigger value="bookmarks" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                <TabsTrigger value="bookmarks" className="bg-muted data-[state=active]:bg-secondary-foreground data-[state=active]shadow-sm data-[state=active]:text-secondary">
                   Bookmarks
                 </TabsTrigger>
-                <TabsTrigger value="reading-history" className="bg-muted data-[state=active]:border data-[state=active]:border-foreground">
+                <TabsTrigger value="reading-history" className="bg-muted data-[state=active]:bg-secondary-foreground data-[state=active]:shadow-sm data-[state=active]:text-secondary">
                   Reading History
                 </TabsTrigger>
               </TabsList>
