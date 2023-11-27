@@ -12,7 +12,7 @@ import { BlurImage as Image } from "../image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark, BookmarkPlus, CalendarDays, Check, Eye, Heart, MessageCircle, MoreHorizontal, User } from "lucide-react";
+import { MessageCircle, MoreHorizontal, User } from "lucide-react";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -129,13 +129,13 @@ export default function TagPostCard(
                                                   {
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)} disabled={props.session.id === props.post.authorId}>
-                                                                 <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} />
+                                                                 <Icons.like className={`w-6 h-6 ${isLiked && 'fill-current'}`} />
                                                                  <span className="sr-only">Like</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                                      <Heart className={`w-5 h-5`} />
+                                                                      <Icons.like className={`w-6 h-6`} />
                                                                       <span className="sr-only">Like</span>
                                                                  </Button>
                                                             </LoginDialog>
@@ -146,7 +146,7 @@ export default function TagPostCard(
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <Link href={`/@${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
                                                        <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                            <MessageCircle className="w-5 h-5" />
+                                                            <Icons.commentBubble className="w-6 h-6" />
                                                             <span className="sr-only">Comment</span>
                                                        </Button>
                                                   </Link>
@@ -159,13 +159,13 @@ export default function TagPostCard(
                                                   {
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                                 <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} strokeWidth={2} />
+                                                                 <Icons.bookmark className={`h-6 w-6 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
                                                                  <span className="sr-only">Save</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                                      <Bookmark className={`h-5 w-5`} strokeWidth={2} />
+                                                                      <Icons.bookmark className={`h-6 w-6`} />
                                                                       <span className="sr-only">Save</span>
                                                                  </Button>
                                                             </LoginDialog>
@@ -175,7 +175,7 @@ export default function TagPostCard(
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   <PostMoreActions post={props.post} session={props.session}>
                                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                            <MoreHorizontal className="h-5 w-5" />
+                                                            <Icons.moreHorizontal className="h-6 w-6" />
                                                             <span className="sr-only">More</span>
                                                        </Button>
                                                   </PostMoreActions>

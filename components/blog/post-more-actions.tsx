@@ -68,7 +68,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                     }
                     <DropdownMenuGroup>
                          <DropdownMenuItem onClick={() => copylink(`${process.env.DOMAIN}/@${post.author.username}/${post.url}`)}>
-                              <Link2 className="mr-2 h-4 w-4" />
+                              <Icons.link className="mr-2 h-4 w-4" />
                               <span>Copy link</span>
                          </DropdownMenuItem>
                          <DropdownMenuItem>

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import UserHoverCard from "@/components/user-hover-card";
-import { Heart, MoreHorizontal, Pencil, Reply, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Reply, Trash2 } from "lucide-react";
 import Markdown from "markdown-to-jsx";
 import Link from "next/link";
 import {
@@ -146,12 +146,12 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                                   {
                                                        session ? (
                                                             <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} disabled={session?.id == comment.authorId} onClick={() => like(comment.id)} >
-                                                       <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
+                                                       <Icons.like className={`w-6 h-6 ${isLiked && 'fill-current'}`} />
                                                   </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >
-                                                                      <Heart className={`w-5 h-5`} strokeWidth={2} />
+                                                                      <Icons.like className={`w-6 h-6`} />
                                                                  </Button>
                                                             </LoginDialog>
                                                        )
@@ -162,7 +162,7 @@ export default function CommentCard({ comment: initialComment, post, session, ..
                                                   comment._count.replies > 0 && (
                                                        <div className="flex items-center">
                                                             <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} onClick={() => setOpenReply(!openReply)} >
-                                                                 <Reply className="w-5 h-5" strokeWidth={2} />
+                                                            <Icons.commentBubble className="w-6 h-6" />
                                                             </Button>
                                                             <span className="text-sm">{comment?._count.replies}</span>
                                                        </div>

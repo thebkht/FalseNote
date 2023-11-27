@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from 'use-debounce'
+import { Icons } from "../icon";
 
 export default function Search({search} : {search: string | undefined}) {
      const router = useRouter()
@@ -36,7 +37,7 @@ export default function Search({search} : {search: string | undefined}) {
                               <div className="search__form mx-auto md:w-[540px]">
                                    <div className="input w-full h-14 rounded-full">
                                         <div className="input__icon ml-3">
-                                             <SearchIcon className='search__form_icon' />
+                                             <Icons.search className='search__form_icon' />
                                         </div>
                                         <Input value={text} type="search" onChange={e => setText(e.target.value)} placeholder="Search for people or tags" className="input__field !foucs-visible:ring-0 !focus-visible:ring-offset-0 !focus-visible:outline-none" />
                                    </div>

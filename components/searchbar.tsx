@@ -77,7 +77,7 @@ export default function SearchBar() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger className="hidden md:flex" asChild>
         <div className="flex md:w-40 lg:w-64 h-10 rounded-md border border-input bg-transparent px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 items-center">
-        <MagnifyingGlassIcon className="mr-2 h-4 w-4 shrink-0 my-2 opacity-50" />
+        <Icons.search className="mr-2 h-4 w-4 shrink-0 my-2 opacity-50" />
         {/* when in input clicked inter it must redirect to /explore?search=[value]*/}
         <Input
           type="search"
@@ -123,7 +123,7 @@ export default function SearchBar() {
                     value={tag.id}
                   >
                     <Link href={`/tags/${tag.name}`} className="flex items-center">
-                    <Hash className="mr-2 h-4 w-4" />
+                    <Icons.hash className="mr-2 h-4 w-4" />
                     <span>{tag.name.replace(/-/g, " ")}</span>
                     </Link>
                   </CommandItem>

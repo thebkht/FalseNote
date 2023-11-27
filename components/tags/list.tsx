@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { cn } from "@/lib/utils"
 import LoginDialog from "../login-dialog";
 import { validate } from "@/lib/revalidate";
+import { Icons } from "../icon";
 
 export default function TagsList({ tags: initialTags, session, className, ...props }: { tags: any, session: any, className?: string } & React.ComponentPropsWithoutRef<typeof Card>) {
      const [tags, setTags] = useState<any>(initialTags)
@@ -75,7 +76,7 @@ export default function TagsList({ tags: initialTags, session, className, ...pro
                                    <div className="flex items-center justify-between py-5" key={tag.id}>
                                         <Link href={`/tags/${tag.name}`} className="w-full">
                                              <div className="flex items-center">
-                                                  <Badge className="mr-3 h-12 w-12 rounded-md bg-muted" variant={"outline"}><Hash className="h-4 w-4 mx-auto" /></Badge>
+                                                  <Badge className="mr-3 h-12 w-12 rounded-md bg-muted" variant={"outline"}><Icons.hash className="h-4 w-4 mx-auto" /></Badge>
                                                   <div className="space-y-1">
                                                        <p className="text-base capitalize">{tag.name.replace(/-/g, " ")}</p>
                                                        <p className="text-sm text-muted-foreground">{tag._count.posts} posts · {tag._count.followingtag} followers</p>
