@@ -408,7 +408,7 @@ export function PostEditorForm(props: { post: any, user: any }) {
                       <FormItem>
                         <FormLabel>URL-friendly Link</FormLabel>
                         <FormDescription>
-                          {`falsenotes.app/@${props.user?.username}/`}
+                          {`falsenotes.dev/@${props.user?.username}/`}
                         </FormDescription>
                         <FormControl>
                           <Input placeholder="URL" {...field} onChange={handleUrlChange} />

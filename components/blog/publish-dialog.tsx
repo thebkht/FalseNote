@@ -29,7 +29,7 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                description: 'Copied to clipboard',
           })
      }
-     const url = `https://falsenotes.netlify.app/@${user.username}/${post.url}`
+     const url = `${process.env.DOMAIN}/@${user.username}/${post.url}`
      const text = `Check out my new post:\n${post.title}`
      return (
           <>

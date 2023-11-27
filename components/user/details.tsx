@@ -148,7 +148,7 @@ export default function UserDetails({ className, children, user, followers, foll
                 </LoginDialog>
               )
             }
-            <ShareList url={`https://falsenotes.netlify.app/@${user?.username}`} text={`Check ${user.name || user.username}'s profile on @FalseNotesTeam`}>
+            <ShareList url={`${process.env.DOMAIN}/@${user?.username}`} text={`Check ${user.name || user.username}'s profile on @FalseNotesTeam`}>
               <Button variant={"secondary"} className="px-2">
                 <ShareIcon className="h-5 w-5 text-muted-foreground" />
               </Button>

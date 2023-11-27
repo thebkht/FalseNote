@@ -17,8 +17,14 @@ const nextConfig = {
         pathname: `/**`,
       },
       {
+        protocol: 'http',
+        hostname: `cdn.falsenotes.dev`,
+        port: '',
+        pathname: `/**`,
+      },
+      {
         protocol: 'https',
-        hostname: `falsenotes.netlify.app`,
+        hostname: `falsenotes.dev`,
         port: '',
         pathname: `/**`,
       },
