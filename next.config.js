@@ -6,15 +6,15 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: `falsenotes.cdn.s3.ap-northeast-2.amazonaws.com`,
+        hostname: `falsenotescontent.file.core.windows.net`,
         port: '',
         pathname: `/**`,
       },
       {
         protocol: 'https',
-        hostname: `s3.ap-northeast-2.amazonaws.com`,
+        hostname: `falsenotescontent.blob.core.windows.net`,
         port: '',
-        pathname: `/falsenotes.cdn/**`,
+        pathname: `/**`,
       },
       {
         protocol: 'https',
