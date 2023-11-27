@@ -94,7 +94,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                               )
                          }
                          <Separator orientation="vertical" />
-                         <ShareList url={`https://falsenotes.netlify.app/@${author?.username}/${post.url}`} text={post.title} >
+                         <ShareList url={`${process.env.DOMAIN}/@${author?.username}/${post.url}`} text={post.title} >
                               <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                    <ShareIcon className="w-5 h-5" strokeWidth={2} />
                                    <span className="sr-only">Share</span>
