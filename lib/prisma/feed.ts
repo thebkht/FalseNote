@@ -85,6 +85,7 @@ const baseQuery = {
     published: true,
     createdAt: true,
     updatedAt: true,
+    publishedAt: true,
     readingTime: true,
     author: {
       select: {
