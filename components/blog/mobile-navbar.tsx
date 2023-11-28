@@ -13,6 +13,7 @@ import LoginDialog from "../login-dialog";
 import { Separator } from "../ui/separator";
 import { validate } from "@/lib/revalidate";
 import { Post } from "@prisma/client";
+import { Icons } from "../icon";
 
 export default function MobilePostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -48,15 +49,17 @@ export default function MobilePostTabs({ post: initialPost, className, session, 
                <div className={cn("p-2 border rounded-full shadow-xl flex md:hidden mx-auto w-max sticky bottom-5 bg-background/60 backdrop-blur-md", className)}>
                     <div className="flex items-center justify-between w-full gap-6 px-6">
                          <div className="flex items-center justify-center flex-1">
-                              {
+                         {
                                    session ? (
                                         <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
-                                             <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={1.75} />
+                                             <Icons.like className={`w-6 h-6 ${isLiked && 'fill-current'}`} />
+                                             <span className="sr-only">Like</span>
                                         </Button>
                                    ) : (
                                         <LoginDialog>
                                              <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                                  <Heart className={`w-5 h-5`} strokeWidth={1.75} />
+                                                  <Icons.like className="w-6 h-6" />
+                                                  <span className="sr-only">Like</span>
                                              </Button>
                                         </LoginDialog>
                                    )
@@ -65,26 +68,29 @@ export default function MobilePostTabs({ post: initialPost, className, session, 
                          </div>
                          <Separator orientation="vertical" />
                          <div className="flex items-center justify-center flex-1">
-                              <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={onClicked}>
-                                   <MessageCircle className="w-5 h-5" strokeWidth={1.75} />
+                         <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={onClicked}>
+                                   <Icons.commentBubble className="w-6 h-6" />
+                                   <span className="sr-only">Comment</span>
                               </Button>
                               <span className="text-sm">{post?._count.comments}</span>
                          </div>
                          <Separator orientation="vertical" />
                          <div className="flex items-center justify-center flex-1">
-                              {
-                                   session ? (
+                         {
+                              session ? (
+                                   <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={() => save(post.id)} >
+                                        <Icons.bookmark className={`w-6 h-6 ${isSaved && 'fill-current'}`} />
+                                        <span className="sr-only">Save</span>
+                                   </Button>
+                              ) : (
+                                   <LoginDialog>
                                         <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                             <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={1.75} onClick={() => save(post.id)} />
+                                             <Icons.bookmark className="w-6 h-6" />
+                                             <span className="sr-only">Save</span>
                                         </Button>
-                                   ) : (
-                                        <LoginDialog>
-                                             <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                                  <Bookmark className={`w-5 h-5`} strokeWidth={1.75} />
-                                             </Button>
-                                        </LoginDialog>
-                                   )
-                              }
+                                   </LoginDialog>
+                              )
+                         }
                          </div>
                          {/* <PostMoreActions post={post} session={session} >
                               <Button className="h-10 w-10 mr-0.5" size={"icon"} variant={"ghost"} >

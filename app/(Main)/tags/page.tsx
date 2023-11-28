@@ -1,12 +1,7 @@
 import { getSessionUser } from "@/components/get-session-user"
 import TagsList from "@/components/tags/list"
 import TagBadge from "@/components/tags/tag"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import postgres from "@/lib/postgres"
 import { getPopularTags, getTags } from "@/lib/prisma/tags"
-import { Hash } from "lucide-react"
 import Link from "next/link"
 
 export default async function TagsPage() {

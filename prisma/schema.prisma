@@ -63,6 +63,7 @@ model Post {
   savedUsers  Bookmark[]
   readedUsers ReadingHistory[]
   drafts      DraftPost[]
+  shares      PostShare[]
 
   @@index([createdAt])
   @@map("posts")
@@ -83,6 +84,16 @@ model DraftPost {
 
   @@index([createdAt])
   @@map("drafts")
+}
+
+model PostShare {
+  id        String   @id @default(uuid()) @map("_id")
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("postshares")
 }
 
 model Comment {

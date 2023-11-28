@@ -22,6 +22,7 @@ import { useEffect, useState } from "react"
 import { getUserByUsername } from "../get-user"
 import { getSessionUser } from "../get-session"
 import { ArrowDownRight, ArrowRight, ChevronRight, Cog, LogOut, Settings, Settings2 } from "lucide-react"
+import { Icons } from "../icon"
 
 export function UserNav() {
      const { status } = useSession();
@@ -66,7 +67,7 @@ export function UserNav() {
 
                          <DropdownMenuItem className="px-2.5 py-2" asChild>
                               <Link href="/settings/profile">
-                                   <Cog className="h-5 w-5 mr-2" strokeWidth={1.5} />
+                                   <Icons.settings className="h-5 w-5 mr-2" />
                                    Settings
                               </Link>
                          </DropdownMenuItem>
@@ -74,11 +75,10 @@ export function UserNav() {
 
                          <DropdownMenuItem className="px-2.5 py-2" asChild>
                               <Link href="/signout">
-                                   <LogOut className="h-5 w-5 mr-2" />
+                                   <Icons.logOut className="h-5 w-5 mr-2" />
                                    Log out
                               </Link>
                          </DropdownMenuItem>
-
                     </DropdownMenuGroup>
                </DropdownMenuContent>
           </DropdownMenu>

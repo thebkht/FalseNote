@@ -30,13 +30,13 @@ function Navbar(notifications: any) {
         <Link href={session ? "/feed" : "/"} className="flex items-center">
           <Icons.logo className="md:block hidden h-7" />
           <Icons.logoIcon className="md:hidden block h-7" />
-          <Badge className="ml-1.5 md:ml-2" variant={"default"}>Beta</Badge>
+          <span className="sr-only">FalseNotes</span>
         </Link>
 
         <div className="flex items-center gap-1 md:gap-4">
           <Button variant="ghost" size={"icon"} className="flex md:hidden h-10 w-10" asChild>
             <Link href="/explore">
-              <MagnifyingGlassIcon className="h-[1.2rem] w-[1.2rem]" />
+              <Icons.search className="h-[1.2rem] w-[1.2rem]" />
               <span className="sr-only">Search</span>
             </Link>
           </Button>
@@ -46,7 +46,7 @@ function Navbar(notifications: any) {
               <>
                 <PostCreateButton key={"New Post"} variant="ghost" size={"icon"} className="h-10 w-10" />
                 <Button variant={"ghost"} size={"icon"} className="h-10 w-10" onClick={() => router.replace('/notifications')}>
-                  <Bell className="w-5 h-5" strokeWidth={1.75} />
+                  <Icons.notification className="w-5 h-5" />
                   {notifications.notifications && notifications.notifications.length > 0 && (<Badge className="ml-2 md:ml-6 font-normal px-1 py-0 absolute mb-3 border-[3px] border-solid border-secondary" >{notifications.notifications.length}</Badge>)}
                 </Button>
                 <UserNav />

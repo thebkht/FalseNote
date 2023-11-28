@@ -25,7 +25,7 @@ export default function ShareList({ className, children, url, text, ...props }: 
                     <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => copylink(url)}>
-                              <Link2 className="mr-2 h-4 w-4" />
+                              <Icons.link className="mr-2 h-4 w-4" />
                               <span>Copy link</span>
                          </DropdownMenuItem>
                          <DropdownMenuSeparator />

@@ -15,7 +15,7 @@ export function BlurImage(props: ComponentProps<typeof Image>) {
       alt={props.alt}
       className={cn(
         props.className,
-        "duration-700 ease-in-out",
+        "duration-700 ease-in-out hover:scale-105",
         isLoading ? "scale-105 blur-lg" : "scale-100 blur-0",
       )}
       onLoadingComplete={() => setLoading(false)}

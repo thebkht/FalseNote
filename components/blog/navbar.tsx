@@ -1,5 +1,5 @@
 'use client'
-import { Bookmark, Heart, MessageCircle, MoreHorizontal, Pencil, ShareIcon, Trash2 } from "lucide-react";
+import { Bookmark, MoreHorizontal, Pencil, ShareIcon, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import ShareList from "../share-list";
@@ -13,6 +13,7 @@ import { Separator } from "../ui/separator";
 import { Post } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { validate } from "@/lib/revalidate";
+import { Icons } from "../icon";
 
 export default function PostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -51,13 +52,13 @@ export default function PostTabs({ post: initialPost, className, session, author
                               {
                                    session ? (
                                         <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={() => like(post.id)} disabled={session.id == post.authorId} >
-                                             <Heart className={`w-5 h-5 ${isLiked && 'fill-current'}`} strokeWidth={2} />
+                                             <Icons.like className={`w-6 h-6 ${isLiked && 'fill-current'}`} />
                                              <span className="sr-only">Like</span>
                                         </Button>
                                    ) : (
                                         <LoginDialog>
                                              <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                                  <Heart className={`w-5 h-5`} strokeWidth={2} />
+                                                  <Icons.like className="w-6 h-6" />
                                                   <span className="sr-only">Like</span>
                                              </Button>
                                         </LoginDialog>
@@ -68,7 +69,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                          <Separator orientation="vertical" />
                          <div className="flex items-center">
                               <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={onClicked}>
-                                   <MessageCircle className="w-5 h-5" strokeWidth={2} />
+                                   <Icons.commentBubble className="w-6 h-6" />
                                    <span className="sr-only">Comment</span>
                               </Button>
                               <span className="text-sm">{post?._count.comments}</span>
@@ -81,22 +82,22 @@ export default function PostTabs({ post: initialPost, className, session, author
                          {
                               session ? (
                                    <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} onClick={() => save(post.id)} >
-                                        <Bookmark className={`w-5 h-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                        <Icons.bookmark className={`w-6 h-6 ${isSaved && 'fill-current'}`} />
                                         <span className="sr-only">Save</span>
                                    </Button>
                               ) : (
                                    <LoginDialog>
                                         <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                             <Bookmark className={`w-5 h-5`} strokeWidth={2} />
+                                             <Icons.bookmark className="w-6 h-6" />
                                              <span className="sr-only">Save</span>
                                         </Button>
                                    </LoginDialog>
                               )
                          }
                          <Separator orientation="vertical" />
-                         <ShareList url={`https://falsenotes.netlify.app/@${author?.username}/${post.url}`} text={post.title} >
+                         <ShareList url={`${process.env.DOMAIN}/@${author?.username}/${post.url}`} text={post.title} post={post.id} >
                               <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                   <ShareIcon className="w-5 h-5" strokeWidth={2} />
+                                   <Icons.share className="w-6 h-6" />
                                    <span className="sr-only">Share</span>
                               </Button>
                          </ShareList>
@@ -107,7 +108,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                                         <DropdownMenu>
                                              <DropdownMenuTrigger asChild>
                                                   <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
-                                                       <MoreHorizontal className="w-5 h-5" strokeWidth={2} />
+                                                       <Icons.moreHorizontal className="w-6 h-6" />
                                                   </Button>
                                              </DropdownMenuTrigger>
                                              <DropdownMenuContent align="end">

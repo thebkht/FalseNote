@@ -14,6 +14,7 @@ import {
 
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react";
+import { Icons } from "@/components/icon";
 
 
 export default function CommentDeleteDialog({ comment, user, ...props }: React.ComponentPropsWithoutRef<typeof AlertDialog> & { comment: any, user: any }) {
@@ -23,7 +24,7 @@ export default function CommentDeleteDialog({ comment, user, ...props }: React.C
           <AlertDialog {...props}>
           <AlertDialogContent className="flex flex-col justify-center !w-72 !rounded-lg">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted mx-auto">
-              <Trash2 className={"h-10 w-10"} strokeWidth={1.25} />
+              <Icons.trash className={"h-10 w-10"} />
             </div>
             <div className="flex flex-col space-y-2 text-center sm:text-left mx-auto">
               <h1 className="text-lg font-semibold leading-none tracking-tight text-center">Delete Comment</h1>

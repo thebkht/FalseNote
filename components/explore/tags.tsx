@@ -52,7 +52,7 @@ export default function Tags({ tags: initialTags, search, session }: { tags: any
                                              <Link href={`/tags/${tag.name}`} className="w-full">
                                                   <div className="flex items-center">
                                                        <div className="space-y-1">
-                                                            <p className="text-base capitalize"><Hash className="h-4 w-4 mr-1.5 inline" />{tag.name.replace(/-/g, " ")}</p>
+                                                            <p className="text-base capitalize"><Icons.hash className="h-4 w-4 mr-1.5 inline" />{tag.name.replace(/-/g, " ")}</p>
                                                             <p className="text-sm text-muted-foreground">{tag._count.posts} posts · {tag._count.followingtag} followers</p>
                                                        </div>
                                                   </div>

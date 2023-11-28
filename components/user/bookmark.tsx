@@ -38,9 +38,9 @@ export default function UserBookmarks({ posts: initialPosts, className, user, se
 
   return (
     <div className={className}>
-      <div className="user-articles w-full  lg:mb-6 md:mb-5 mb-4">
+      <div className="user-articles w-full lg:mb-6 md:mb-5 mb-4">
         {posts?.length > 0 ? (
-          <div className="flex flex-col">
+          <div className="flex flex-col lg:gap-6 md:gap-5 gap-4">
             {posts?.map((article: any) => (
               <>
                 <PostCard post={article.post} session={sessionUser} />

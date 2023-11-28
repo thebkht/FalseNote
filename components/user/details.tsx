@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Mail, MapPin, ShareIcon, Users2 } from "lucide-react";
+import { CalendarDays, Github, Mail, MapPin, ShareIcon, Users2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Icons } from "../icon";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
@@ -150,14 +150,14 @@ export default function UserDetails({ className, children, user, followers, foll
             }
             <ShareList url={`${process.env.DOMAIN}/@${user?.username}`} text={`Check ${user.name || user.username}'s profile on @FalseNotesTeam`}>
               <Button variant={"secondary"} className="px-2">
-                <ShareIcon className="h-5 w-5 text-muted-foreground" />
+                <Icons.share className="w-6 h-6 text-muted-foreground" />
               </Button>
             </ShareList>
           </div>
           {user.bio && (<div className="w-full mt-5">{user?.bio}</div>)}
 
           <div className="py-4 items-center flex gap-2 w-full">
-            <Users2 className="h-5 w-5 text-muted-foreground" />
+            <Icons.users className="h-5 w-5 text-muted-foreground" />
             <Dialog>
               <DialogTrigger><Button variant={"ghost"} size={"sm"} asChild>
                 <span>{formatNumberWithSuffix(followers?.length)} <span className="text-muted-foreground ml-2">Followers</span></span>
@@ -264,7 +264,7 @@ export default function UserDetails({ className, children, user, followers, foll
             {user?.location && <li>
               <Button variant={"link"} size={"sm"} asChild className="p-0 !text-sm hover:!no-underline text-foreground">
                 <span>
-                  <MapPin className="mr-2 h-5 w-5 text-muted-foreground" />
+                  <Icons.location className="mr-2 h-5 w-5 text-muted-foreground" />
                   {user?.location}
                 </span>
               </Button>
@@ -272,7 +272,7 @@ export default function UserDetails({ className, children, user, followers, foll
             {user?.email && <li>
               <Button variant={"link"} size={"sm"} asChild className="p-0 text-foreground">
                 <Link href={`mailto:${user?.email}`} target="_blank" className="flex items-center font-light !text-sm">
-                  <Mail className="mr-2 h-5 w-5 text-muted-foreground" />
+                  <Icons.envelope className="mr-2 h-5 w-5 text-muted-foreground" />
                   {user?.email}
                 </Link>
               </Button>
@@ -280,7 +280,7 @@ export default function UserDetails({ className, children, user, followers, foll
             <li>
               <Button variant={"link"} size={"sm"} asChild className="p-0 text-foreground" >
                 <Link href={user?.githubprofile} target="_blank" className="flex items-center font-light !text-sm">
-                  <Icons.gitHub className="mr-2 h-5 w-5 text-muted-foreground" />
+                  <Github className="mr-2 h-5 w-5 text-muted-foreground" />
                   {user?.githubprofile?.replace("https://github.com/", "")}
                 </Link>
               </Button>
@@ -288,7 +288,7 @@ export default function UserDetails({ className, children, user, followers, foll
             <li>
               <Button variant={"link"} size={"sm"} asChild className="p-0 !text-sm hover:!no-underline text-foreground" >
                 <span>
-                  <CalendarDays className="mr-2 h-5 w-5 text-muted-foreground" />
+                  <Icons.calendarDays className="mr-2 h-5 w-5 text-muted-foreground" />
                   Joined {getRegistrationDateDisplay(user?.createdAt)}
                 </span>
               </Button>

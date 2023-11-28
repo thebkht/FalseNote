@@ -75,7 +75,7 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                                              <div className="stats flex items-center justify-around gap-1">
                                                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                            <Bookmark className={`h-5 w-5`} strokeWidth={2} />
+                                                            <Icons.bookmark className={`h-6 w-6`} />
                                                             <span className="sr-only">Save</span>
                                                        </Button>
                                                   </div>
@@ -130,7 +130,7 @@ export default function PublishDialog({ post, user, session, ...props }: { post:
                                    </div>
                                    <div className="w-56">
                                         <Button onClick={() => copylink(url)} variant={'outline'} size={'lg'} className="w-full justify-between gap-2 !px-4" >
-                                             <Link2 className="h-5 w-5" />
+                                             <Icons.link className="h-5 w-5" />
                                              <span className="w-full">Copy link</span>
                                              <div className="h-5 w-5 fill-current stroke-none" />
                                         </Button>

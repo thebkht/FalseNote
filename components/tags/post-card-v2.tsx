@@ -11,7 +11,7 @@ import { BlurImage as Image } from "../image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark, MoreHorizontal, } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
@@ -118,13 +118,13 @@ export default function PostCard(
                                                   {
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                                 <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
+                                                                 <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
                                                                  <span className="sr-only">Save</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
                                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                                      <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                                                      <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} />
                                                                       <span className="sr-only">Save</span>
                                                                  </Button>
                                                             </LoginDialog>
@@ -185,12 +185,12 @@ export default function PostCard(
                                         {
                                              props.session ? (
                                                   <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                       <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} onClick={() => save(props.post.id)} />
+                                                       <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
                                                   </Button>
                                              ) : (
                                                   <LoginDialog>
                                                        <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                            <Bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} strokeWidth={2} />
+                                                            <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} />
                                                        </Button>
                                                   </LoginDialog>
                                              )

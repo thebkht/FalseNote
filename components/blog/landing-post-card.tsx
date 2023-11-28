@@ -7,7 +7,6 @@ import { BlurImage as Image } from "../image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Bookmark } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
 import { Icons } from "../icon";
@@ -78,7 +77,7 @@ export default function LandingPostCard(
                 <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                   <LoginDialog>
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                      <Bookmark className={`h-5 w-5 `} strokeWidth={2} />
+                      <Icons.bookmark className={`h-5 w-5 `} />
                       <span className="sr-only">Save</span>
                     </Button>
                   </LoginDialog>
