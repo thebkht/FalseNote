@@ -13,11 +13,14 @@ import {
 } from 'next-share'
 import { Icons } from "@/components/icon";
 import { Facebook, Linkedin } from "lucide-react";
+import { Post } from "@prisma/client";
+import { addShare } from "@/lib/prisma/add-share";
 
 
-export default function ShareList({ className, children, url, text, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { children: React.ReactNode, className?: string, url: string, text: string }) {
-     const copylink = (link: string) => {
+export default function ShareList({ className, children, url, text, post, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { children: React.ReactNode, className?: string, url: string, text: string, post: Post['id'] }) {
+     const copylink = async(link: string) => {
           navigator.clipboard.writeText(link)
+          await addShare(post)
      }
      return (
           <>
@@ -29,7 +32,7 @@ export default function ShareList({ className, children, url, text, ...props }: 
                               <span>Copy link</span>
                          </DropdownMenuItem>
                          <DropdownMenuSeparator />
-                         <DropdownMenuItem>
+                         <DropdownMenuItem onClick={async() => await addShare(post)}>
                               <TwitterShareButton
                                    url={url}
                                    title={text}
@@ -41,7 +44,7 @@ export default function ShareList({ className, children, url, text, ...props }: 
                                    </div>
                               </TwitterShareButton>
                          </DropdownMenuItem>
-                         <DropdownMenuItem>
+                         <DropdownMenuItem onClick={async() => await addShare(post)}>
                               <FacebookShareButton
                                    url={url}
                                    quote={text} >
@@ -51,7 +54,7 @@ export default function ShareList({ className, children, url, text, ...props }: 
                                    </div>
                               </FacebookShareButton>
                          </DropdownMenuItem>
-                         <DropdownMenuItem>
+                         <DropdownMenuItem onClick={async() => await addShare(post)}>
                               <LinkedinShareButton
                                    url={url} >
                                    <div className="flex">

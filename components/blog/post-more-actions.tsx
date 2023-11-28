@@ -34,10 +34,12 @@ import React from "react";
 import { handleDelete } from "../delete";
 import { useRouter } from "next/navigation";
 import PostDeleteDialog from "./post-delete-dialog";
+import { addShare } from "@/lib/prisma/add-share";
 
 export default function PostMoreActions({ post, session, className, children, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { post: any, session: any, className?: string }) {
-     const copylink = (link: string) => {
+     const copylink = async(link: string) => {
           navigator.clipboard.writeText(link)
+          await addShare(post?.id)
      }
      const router = useRouter()
      const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
@@ -71,7 +73,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                               <Icons.link className="mr-2 h-4 w-4" />
                               <span>Copy link</span>
                          </DropdownMenuItem>
-                         <DropdownMenuItem>
+                         <DropdownMenuItem onClick={async() => await addShare(post?.id)}>
                               <TwitterShareButton
                                    url={`${process.env.DOMAIN}/@${post.author.username}/${post.url}`}
                                    title={post.title}
@@ -82,7 +84,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                                    </div>
                               </TwitterShareButton>
                          </DropdownMenuItem>
-                         <DropdownMenuItem>
+                         <DropdownMenuItem onClick={async() => await addShare(post?.id)}>
                               <FacebookShareButton
                                    url={`${process.env.DOMAIN}/@${post.author.username}/${post.url}`}
                                    quote={post.title} >
@@ -92,7 +94,7 @@ export default function PostMoreActions({ post, session, className, children, ..
                                    </div>
                               </FacebookShareButton>
                          </DropdownMenuItem>
-                         <DropdownMenuItem>
+                         <DropdownMenuItem onClick={async() => await addShare(post?.id)}>
                               <LinkedinShareButton
                                    url={`${process.env.DOMAIN}/@${post.author.username}/${post.url}`} >
                                    <div className="flex">

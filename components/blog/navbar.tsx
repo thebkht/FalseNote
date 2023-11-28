@@ -95,7 +95,7 @@ export default function PostTabs({ post: initialPost, className, session, author
                               )
                          }
                          <Separator orientation="vertical" />
-                         <ShareList url={`${process.env.DOMAIN}/@${author?.username}/${post.url}`} text={post.title} >
+                         <ShareList url={`${process.env.DOMAIN}/@${author?.username}/${post.url}`} text={post.title} post={post.id} >
                               <Button className="h-10 w-10 mr-0.5 rounded-full hover:bg-primary hover:text-primary-foreground" size={"icon"} variant={"ghost"} >
                                    <Icons.share className="w-6 h-6" />
                                    <span className="sr-only">Share</span>

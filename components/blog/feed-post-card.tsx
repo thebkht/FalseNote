@@ -100,7 +100,7 @@ export default function FeedPostCard(
                   </div>
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                      <ShareList url={`${process.env.DOMAIN}/@${props.post.author.username}/${props.post.url}`} text={props.post.title}>
+                      <ShareList post={props.post.id} url={`${process.env.DOMAIN}/@${props.post.author.username}/${props.post.url}`} text={props.post.title}>
                         <div>
                           <MoreHorizontal className="h-5 w-5" />
                           <span className="sr-only">Share</span>
@@ -160,7 +160,7 @@ export default function FeedPostCard(
               </div>
               <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                  <ShareList url={`${process.env.DOMAIN}/@${props.post.author.username}/${props.post.url}`} text={props.post.title}>
+                  <ShareList url={`${process.env.DOMAIN}/@${props.post.author.username}/${props.post.url}`} post={props.post.id} text={props.post.title}>
                     <div>
                       <Icons.moreHorizontal className="h-6 w-6" />
                       <span className="sr-only">Share</span>
