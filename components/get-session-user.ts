@@ -12,7 +12,14 @@ export async function getSessionUser() {
     const { user } = session;
     const result = await postgres.user.findFirst({
       where: {
-        username: user?.name,
+        OR: [
+          {
+            username: user?.name as string,
+          },
+          {
+            image: user?.image,
+          }
+        ],
       },
       select: {
         id: true,
