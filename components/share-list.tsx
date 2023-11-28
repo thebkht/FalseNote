@@ -12,7 +12,7 @@ import {
      LinkedinShareButton
 } from 'next-share'
 import { Icons } from "@/components/icon";
-import { Facebook, Link2, Linkedin } from "lucide-react";
+import { Facebook, Linkedin } from "lucide-react";
 
 
 export default function ShareList({ className, children, url, text, ...props }: React.ComponentPropsWithoutRef<typeof DropdownMenu> & { children: React.ReactNode, className?: string, url: string, text: string }) {
