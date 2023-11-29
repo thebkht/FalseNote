@@ -13,8 +13,18 @@ export async function GET(req: NextRequest, { params} : { params: { id: string }
            post: {
              include: {
                author: true,
+               _count: {
+                select: {
+                 likes: true,
+                 savedUsers: true,
+                 readedUsers: true,
+                 shares: true,
+                 comments: true,
+                },
+              },
              }
            },
+           
          },
          orderBy: {
            updatedAt: "desc",

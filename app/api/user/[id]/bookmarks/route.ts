@@ -14,6 +14,15 @@ export async function GET(req: NextRequest, { params} : { params: { id: string }
              include: {
                author: true,
                savedUsers: true,
+               _count: {
+                select: {
+                 likes: true,
+                 savedUsers: true,
+                 readedUsers: true,
+                 shares: true,
+                 comments: true,
+                },
+              },
              }
            },
          },

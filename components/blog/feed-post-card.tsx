@@ -19,6 +19,7 @@ import { usePathname } from "next/navigation";
 import { Skeleton } from "../ui/skeleton";
 import { shimmer, toBase64 } from "@/lib/image";
 import { validate } from "@/lib/revalidate";
+import PostAnalyticsDialog from "./post-analytics-dialog";
 
 
 export default function FeedPostCard(
@@ -92,6 +93,14 @@ export default function FeedPostCard(
                   <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.readingTime}</p>
                 </div>
                 <div className="stats flex items-center justify-around gap-1">
+                  {
+                    props.session?.id === props.post.author.id && (
+                      <div className="flex items-center space-x-1">
+                        <PostAnalyticsDialog post={props.post} />
+                      </div>
+                    )
+
+                  }
                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                     <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                       <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
@@ -152,6 +161,14 @@ export default function FeedPostCard(
               <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.readingTime}</p>
             </div>
             <div className="stats flex items-center justify-around gap-1">
+              {
+                props.session?.id === props.post.author.id && (
+                  <div className="flex items-center space-x-1 text-muted-foreground">
+                    <PostAnalyticsDialog post={props.post} />
+                  </div>
+                )
+
+              }
               <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
                   <Icons.bookmark className={`h-6 w-6 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />

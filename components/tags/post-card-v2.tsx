@@ -11,7 +11,7 @@ import { BlurImage as Image } from "../image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { MoreHorizontal } from "lucide-react";
+import { BarChart2, MoreHorizontal } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UserHoverCard from "../user-hover-card";
@@ -24,6 +24,7 @@ import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
 import { shimmer, toBase64 } from "@/lib/image";
 import { validate } from "@/lib/revalidate";
+import PostAnalyticsDialog from "../blog/post-analytics-dialog";
 
 
 export default function PostCard(
@@ -114,16 +115,25 @@ export default function PostCard(
                                              <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.readingTime}</p>
                                         </div>
                                         <div className="stats flex items-center justify-around gap-1">
-                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                        {
+                                        props.post.published && (
+                                             props.session?.id === props.post.authorId && (
+                                                  <div className="flex items-center space-x-1">
+                                                       <PostAnalyticsDialog post={props.post} />
+                                                  </div>
+                                             )
+                                        )
+                                   }
+                                             <div className="flex items-center space-x-1 text-sm">
                                                   {
                                                        props.session ? (
-                                                            <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                            <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                                  <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
                                                                  <span className="sr-only">Save</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
-                                                                 <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                                 <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                                       <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} />
                                                                       <span className="sr-only">Save</span>
                                                                  </Button>
@@ -131,9 +141,9 @@ export default function PostCard(
                                                        )
                                                   }
                                              </div>
-                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                             <div className="flex items-center space-x-1 text-sm">
                                                   <PostMoreActions post={props.post} session={props.session}>
-                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                       <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                             <MoreHorizontal className="h-5 w-5" />
                                                             <span className="sr-only">More</span>
                                                        </Button>
@@ -181,24 +191,33 @@ export default function PostCard(
                                    <p className="card-text mb-0 py-0.5 text-muted-foreground text-xs">{props.post.readingTime}</p>
                               </div>
                               <div className="stats flex items-center justify-around gap-1">
-                                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                              {
+                                        props.post.published && (
+                                             props.session?.id === props.post.authorId && (
+                                                  <div className="flex items-center space-x-1">
+                                                       <PostAnalyticsDialog post={props.post} />
+                                                  </div>
+                                             )
+                                        )
+                                   }
+                                   <div className="flex items-center space-x-1 text-muted-foreground text-sm">
                                         {
                                              props.session ? (
-                                                  <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                  <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                        <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
                                                   </Button>
                                              ) : (
                                                   <LoginDialog>
-                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                                       <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                             <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} />
                                                        </Button>
                                                   </LoginDialog>
                                              )
                                         }
                                    </div>
-                                   <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                   <div className="flex items-center space-x-1 text-muted-foreground text-sm">
                                         <PostMoreActions post={props.post} session={props.session}>
-                                             <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
+                                             <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                   <MoreHorizontal className="h-5 w-5" />
                                              </Button>
                                         </PostMoreActions>
