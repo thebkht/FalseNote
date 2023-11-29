@@ -78,128 +78,6 @@ export default async function TagPage({ params }: { params: { tagname: string } 
      const session = await getSessionUser();
 
      const { followers } = await getFollowersByTag({ id: tag.id, limit: 5, session: session?.id });
-     const test = [
-          {
-            follower: {
-              id: 'clpiev85u0000mcffvvlrfs7h',
-              email: null,
-              username: 'TrexFill',
-              name: 'Fakhriddin',
-              bio: null,
-              password: null,
-              emailVerified: null,
-              image: 'https://avatars.githubusercontent.com/u/99584593?v=4',
-              githubprofile: 'https://github.com/TrexFill',
-              location: null,
-              verified: true,
-              falsemember: false,
-              createdAt: '2023-11-28T14:06:07.123Z',
-              updatedAt: '2023-11-28T14:06:07.123Z',
-              githubId: '99584593',
-              _count: { Followers: 0 }
-            }
-          },
-          {
-            follower: {
-              id: 'clpiev85u0000mcffvvlrfs7h',
-              email: null,
-              username: 'TrexFill',
-              name: 'Fakhriddin',
-              bio: null,
-              password: null,
-              emailVerified: null,
-              image: 'https://avatars.githubusercontent.com/u/99584593?v=4',
-              githubprofile: 'https://github.com/TrexFill',
-              location: null,
-              verified: true,
-              falsemember: false,
-              createdAt: '2023-11-28T14:06:07.123Z',
-              updatedAt: '2023-11-28T14:06:07.123Z',
-              githubId: '99584593',
-              _count: { Followers: 0 }
-            }
-          },
-          {
-            follower: {
-              id: 'clpiev85u0000mcffvvlrfs7h',
-              email: null,
-              username: 'TrexFill',
-              name: 'Fakhriddin',
-              bio: null,
-              password: null,
-              emailVerified: null,
-              image: 'https://avatars.githubusercontent.com/u/99584593?v=4',
-              githubprofile: 'https://github.com/TrexFill',
-              location: null,
-              verified: true,
-              falsemember: false,
-              createdAt: '2023-11-28T14:06:07.123Z',
-              updatedAt: '2023-11-28T14:06:07.123Z',
-              githubId: '99584593',
-              _count: { Followers: 0 }
-            }
-          },
-          {
-            follower: {
-              id: 'clpiev85u0000mcffvvlrfs7h',
-              email: null,
-              username: 'TrexFill',
-              name: 'Fakhriddin',
-              bio: null,
-              password: null,
-              emailVerified: null,
-              image: 'https://avatars.githubusercontent.com/u/99584593?v=4',
-              githubprofile: 'https://github.com/TrexFill',
-              location: null,
-              verified: true,
-              falsemember: false,
-              createdAt: '2023-11-28T14:06:07.123Z',
-              updatedAt: '2023-11-28T14:06:07.123Z',
-              githubId: '99584593',
-              _count: { Followers: 0 }
-            }
-          },
-          {
-            follower: {
-              id: 'clpiev85u0000mcffvvlrfs7h',
-              email: null,
-              username: 'TrexFill',
-              name: 'Fakhriddin',
-              bio: null,
-              password: null,
-              emailVerified: null,
-              image: 'https://avatars.githubusercontent.com/u/99584593?v=4',
-              githubprofile: 'https://github.com/TrexFill',
-              location: null,
-              verified: true,
-              falsemember: false,
-              createdAt: '2023-11-28T14:06:07.123Z',
-              updatedAt: '2023-11-28T14:06:07.123Z',
-              githubId: '99584593',
-              _count: { Followers: 0 }
-            }
-          },
-          {
-            follower: {
-              id: 'clpiev85u0000mcffvvlrfs7h',
-              email: null,
-              username: 'TrexFill',
-              name: 'Fakhriddin',
-              bio: null,
-              password: null,
-              emailVerified: null,
-              image: 'https://avatars.githubusercontent.com/u/99584593?v=4',
-              githubprofile: 'https://github.com/TrexFill',
-              location: null,
-              verified: true,
-              falsemember: false,
-              createdAt: '2023-11-28T14:06:07.123Z',
-              updatedAt: '2023-11-28T14:06:07.123Z',
-              githubId: '99584593',
-              _count: { Followers: 0 }
-            }
-          },
-        ]
      return (
           <>
                <div className="flex flex-col space-y-6 my-8">
@@ -214,7 +92,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                          followers.length > 0 && (
                               <>
                                    <Separator />
-                                   <TagFollowers followers={test} tag={tag} session={session} />
+                                   <TagFollowers followers={followers} tag={tag} session={session} />
                               </>
                          )
                     }
