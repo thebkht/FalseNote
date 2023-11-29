@@ -124,7 +124,7 @@ export default function PostCard(
                                              )
                                         )
                                    }
-                                             <div className="flex items-center space-x-1 text-sm">
+                                             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                                                   {
                                                        props.session ? (
                                                             <Button variant="ghost" size={"icon"} className="hover:text-primary">
@@ -141,7 +141,7 @@ export default function PostCard(
                                                        )
                                                   }
                                              </div>
-                                             <div className="flex items-center space-x-1 text-sm">
+                                             <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                                                   <PostMoreActions post={props.post} session={props.session}>
                                                        <Button variant="ghost" size={"icon"} className="hover:text-primary">
                                                             <MoreHorizontal className="h-5 w-5" />
