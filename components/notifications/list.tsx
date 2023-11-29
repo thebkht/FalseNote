@@ -38,30 +38,30 @@ export default function NotificationList({ notifications, ...props }: { notifica
                                                             <span className="font-bold">{notification?.sender?.name || notification?.sender?.username}</span>
                                                        } {notification?.type === 'comment' && (
                                                             <>
-                                                                 <span>commented on your post </span>
+                                                                 <span>commented on your post: </span>
                                                                  <span className="font-bold">{notification.content}</span>
                                                             </>
                                                        )} {notification?.type === 'like' && (
                                                             <span>liked your post</span>
                                                        )} {notification?.type === 'follow' && (
-                                                            <span>started following you</span>
+                                                            <span>is now following you</span>
                                                        )}
                                                        { notification.type === 'reply' && (
                                                             <>
-                                                                 <span>replied to your comment on </span>
+                                                                 <span>replied to your comment: </span>
                                                                  <span className="font-bold">{notification.content}</span>
                                                             </>
                                                        )}
                                                        { notification.type === 'commentLike' && (
                                                             <>
-                                                                 <span>liked your comment on </span>
+                                                                 <span>liked your comment: </span>
                                                                  <span className="font-bold">{notification.content}</span>
                                                             </>
                                                        )}
                                                        {
                                                             notification.type === 'postLike' && (
                                                                  <>
-                                                                      <span>liked your post </span>
+                                                                      <span>liked your post: </span>
                                                                       <span className="font-bold">{notification.content}</span>
                                                                  </>
                                                             )

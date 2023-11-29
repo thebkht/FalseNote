@@ -29,14 +29,89 @@ export async function POST(req: Request) {
           id: isLiked.id,
         },
       });
-      console.log("Deleted like");
+      
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      if (isLiked.createdAt > oneWeekAgo) {
+        const notification = await postgres.notification.findFirst({
+          where: {
+            senderId: user.id,
+            receiverId: comment.authorId,
+            type: "commentLike",
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (notification) {
+          await postgres.notification.delete({
+            where: {
+              id: notification.id,
+            },
+          });
+        }
+      }
     } else {
-      await postgres.commentLike.create({
+      const commentLike = await postgres.commentLike.create({
         data: {
           commentId,
           authorId: user.id,
         },
+        include: {
+          comment: {
+            select: {
+              post: {
+                include: {
+                  author: {
+                    select: {
+                      username: true,
+                    },
+                  },
+                }
+              },
+              content: true,
+            },
+          },
+        },
       });
+
+      const sender = await postgres.user.findUnique({
+        where: {
+          id: user.id,
+        },
+        select: {
+          id: true,
+          username: true,
+        },
+      });
+
+      const receiver = await postgres.user.findUnique({
+        where: {
+          id: comment.authorId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (sender && receiver) {
+        const message = `"${commentLike.comment.content}"`;
+        const type = "commentLike";
+        const url = `/@${commentLike.comment.post.author.username}/${commentLike.comment.post.url}?commentsOpen=true`;
+        await postgres.notification.create({
+          data: {
+            content: message,
+            type,
+            url,
+            receiverId: receiver?.id || "",
+            senderId: sender?.id || "",
+          },
+        });
+      }
       console.log("Created like");
     }
     return new Response(null, { status: 200 });
