@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
 
         // Check if sender and receiver are not null
         if (sender && receiver) {
-          const message = `${sender?.name || sender?.username} followed you`;
+          const message = `${sender?.name || sender?.username} is now following you`;
           const type = "follow";
           const url = `/@${sender?.username}`;
           await create({
