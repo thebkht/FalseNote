@@ -150,6 +150,15 @@ export const getBookmarks = async ({ id, limit = 5, page = 0 }: { id: string | u
             include: {
               author: true,
               savedUsers: true,
+              _count: {
+                select: {
+                 likes: true,
+                 savedUsers: true,
+                 readedUsers: true,
+                 shares: true,
+                 comments: true,
+                },
+              },
             }
           },
         },
@@ -176,6 +185,15 @@ export const getHistory = async ({ id, limit = 5, page = 0 }: { id: string | und
           post: {
             include: {
               author: true,
+              _count: {
+                select: {
+                 likes: true,
+                 savedUsers: true,
+                 readedUsers: true,
+                 shares: true,
+                 comments: true,
+                },
+              },
             }
           },
         },

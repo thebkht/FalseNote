@@ -16,6 +16,8 @@ const baseQuery = {
         likes: true,
         savedUsers: true,
         readedUsers: true,
+        shares: true,
+        comments: true,
       },
     },
     tags: {

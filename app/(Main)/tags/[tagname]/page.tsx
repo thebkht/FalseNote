@@ -38,7 +38,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                },
                savedUsers: true,
                likes: true,
-               _count: { select: { comments: true, likes: true, savedUsers: true } },
+               _count: { select: { comments: true, likes: true, savedUsers: true, shares: true } },
           },
           orderBy: [
                { likes: { _count: 'desc' } },
@@ -65,7 +65,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                          Followings: true,
                     }
                },
-               _count: { select: { comments: true, likes: true, savedUsers: true } },
+               _count: { select: { comments: true, likes: true, savedUsers: true, shares: true } },
                savedUsers: true,
           },
           orderBy: {

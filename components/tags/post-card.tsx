@@ -27,6 +27,7 @@ import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
 import { shimmer, toBase64 } from "@/lib/image";
 import { validate } from "@/lib/revalidate";
+import PostAnalyticsDialog from "../blog/post-analytics-dialog";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -154,7 +155,15 @@ export default function TagPostCard(
                                              </div>
                                         </div>
                                         <div className="flex items-center justify-around gap-2">
-
+                                        {
+                                        props.post.published &&(
+                                             props.session?.id === props.post.authorId && (
+                                                  <div className="flex items-center space-x-1">
+                                                       <PostAnalyticsDialog post={props.post} />
+                                                  </div>
+                                             )
+                                        )
+                                   }
                                              <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
                                                   {
                                                        props.session ? (
