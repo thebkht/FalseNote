@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
 
-export default function PostCardSkeletonV2(
+export default function PostCardSkeleton(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & { className?: string; }
 ) {
      return (
