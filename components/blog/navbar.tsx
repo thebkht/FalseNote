@@ -14,6 +14,7 @@ import { Post } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { validate } from "@/lib/revalidate";
 import { Icons } from "../icon";
+import PostAnalyticsDialog from "./post-analytics-dialog";
 
 export default function PostTabs({ post: initialPost, className, session, author, onClicked }: { post: any, className?: string, session: any, author: any, onClicked: () => void }) {
      const [post, setPost] = useState<any>(initialPost);
@@ -25,21 +26,21 @@ export default function PostTabs({ post: initialPost, className, session, author
           await fetch(`/api/post/${postId}/like`, {
                method: "POST",
                headers: {
-                 "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                },
                body: JSON.stringify({ postId }),
-             });
-             await validate(pathname)
+          });
+          await validate(pathname)
      }
      const save = async (postId: Post['id']) => {
           await fetch(`/api/post/${postId}/save`, {
                method: "POST",
                headers: {
-                 "Content-Type": "application/json",
+                    "Content-Type": "application/json",
                },
                body: JSON.stringify({ postId }),
-             });
-             await validate(pathname)
+          });
+          await validate(pathname)
      }
      const isLiked = post?.likes?.some((like: any) => like.authorId === session?.id);
      const isSaved = post?.savedUsers?.some((savedUser: any) => savedUser.userId === session?.id);
@@ -101,6 +102,14 @@ export default function PostTabs({ post: initialPost, className, session, author
                                    <span className="sr-only">Share</span>
                               </Button>
                          </ShareList>
+                         {
+                              session?.id === post.authorId && (
+                                   <>
+                                        <Separator orientation="vertical" />
+                                        <PostAnalyticsDialog post={post} className='rounded-full hover:bg-primary hover:text-primary-foreground text-background-foreground' />
+                                   </>
+                              )
+                         }
                          {
                               session?.id === post?.authorId && (
                                    <>

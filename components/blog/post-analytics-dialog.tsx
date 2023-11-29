@@ -23,13 +23,13 @@ import { shimmer, toBase64 } from "@/lib/image";
 import { formatNumberWithSuffix } from "../format-numbers";
 
 
-export default function PostAnalyticsDialog({ post, session, ...props }: { post: any, session?: any } & React.ComponentPropsWithoutRef<typeof Dialog>) {
+export default function PostAnalyticsDialog({ post, className, ...props }: { post: any, className?: string } & React.ComponentPropsWithoutRef<typeof Dialog>) {
      return (
           <>
                <Dialog {...props} >
                     <DialogTrigger asChild>
-                         <Button variant="ghost" size="icon" className="hover:bg-accent hover:text-primary">
-                              <BarChart2 className={`h-5 w-5`} />
+                         <Button variant="ghost" size="icon" className={cn("hover:bg-accent hover:text-primary text-muted-foreground", className)}>
+                              <BarChart2 className={`h-5 w-5`} strokeWidth={1.5} />
                               <span className="sr-only">Analytics</span>
                          </Button>
                     </DialogTrigger>
