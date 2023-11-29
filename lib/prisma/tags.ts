@@ -156,3 +156,47 @@ export async function getRelatedTags(tagName: string) {
 
   return { tags: JSON.parse(JSON.stringify(relatedTags))};
 }
+
+export const getFollowersByUser = async ({
+  id,
+  page = 0,
+  limit = 10,
+}: {
+  id: string | undefined;
+  page?: number | undefined;
+  limit?: number | undefined;
+}) => {
+  const followers = await postgres.tag.findMany({
+    where: { followingtag: { some: { followerId: id } } },
+    take: limit,
+    skip: page * limit,
+    include: {
+      _count: { select: { posts: true, followingtag: true } },
+      followingtag: true,
+    },
+  });
+
+  return { followers: JSON.parse(JSON.stringify(followers)) };
+}
+
+export const getFollowersByTag = async ({
+  id,
+  page = 0,
+  limit = 10,
+}: {
+  id: string | undefined;
+  page?: number | undefined;
+  limit?: number | undefined;
+}) => {
+  const followers = await postgres.tag.findMany({
+    where: { id },
+    take: limit,
+    skip: page * limit,
+    include: {
+      _count: { select: { posts: true, followingtag: true } },
+      followingtag: true,
+    },
+  });
+
+  return { followers: JSON.parse(JSON.stringify(followers)) };
+}
