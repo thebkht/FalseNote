@@ -87,6 +87,7 @@ const baseQuery = {
     updatedAt: true,
     publishedAt: true,
     readingTime: true,
+    views: true,
     author: {
       select: {
         id: true,
