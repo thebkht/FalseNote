@@ -62,19 +62,6 @@ export async function generateMetadata(
      }
 }
 
-const tags = await postgres.tag.findMany({
-     orderBy: {
-          posts: {
-               _count: 'desc'
-          }
-     }
-});
-//add href to tags
-tags.forEach((tag: any) => {
-     tag.href = `/tags/${tag.name}`;
-}
-)
-
 export default async function TagLayout({ children, params }: Props) {
      return (
           <>
