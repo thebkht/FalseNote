@@ -49,10 +49,11 @@ const getHistory = async ({ id }: { id: string | undefined }) => {
 }
 const getFollowingsUsers = async ({ id }: { id: string | undefined }) => {
   const { followings: sessionFollowingsArray } = await getFollowings({ id });
-  const sessionFollowings = sessionFollowingsArray.followings.map((following: any) => following.following);
+  console.log(sessionFollowingsArray);
+  const sessionFollowings = sessionFollowingsArray?.followings?.map((following: any) => following.following);
 
   const followings = await postgres.tagFollow.findMany({
-    where: { followerId: { in: sessionFollowings.map((following: any) => following.id) } },
+    where: { followerId: { in: sessionFollowings?.map((following: any) => following.id) } },
     select: {
       tagId: true,
     },
