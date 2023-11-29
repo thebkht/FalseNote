@@ -1,6 +1,7 @@
 'use server'
 import { getSessionUser } from "@/components/get-session-user";
 import postgres from "../postgres";
+import { getFollowings } from "./session";
 
 const getLikes = async ({ id }: { id: string | undefined }) => {
   const likes = await postgres.like.findMany({
@@ -45,6 +46,35 @@ const getHistory = async ({ id }: { id: string | undefined }) => {
   });
 
   return { history: JSON.parse(JSON.stringify(history)) };
+}
+const getFollowingsUsers = async ({ id }: { id: string | undefined }) => {
+  const { followings: sessionFollowingsArray } = await getFollowings({ id });
+  const sessionFollowings = sessionFollowingsArray.followings.map((following: any) => following.following);
+
+  const followings = await postgres.tagFollow.findMany({
+    where: { followerId: { in: sessionFollowings.map((following: any) => following.id) } },
+    select: {
+      tagId: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
+  });
+
+  const tagIds = followings.map((following) => following.tagId);
+
+  const posts = await postgres.postTag.findMany({
+    where: { tagId: { in: tagIds } },
+    select: {
+      postId: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return { followings: JSON.parse(JSON.stringify(posts)) };
 }
 
 const getTags = async ({ id }: { id: string | undefined }) => {
@@ -129,11 +159,12 @@ export const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit
   const { id } = user;
 
   //get user's interests
-  const [{ likes: userLikes }, { bookmarks: userBookmarks }, { history: userHistory }, { postTags: userTags}] = await Promise.all([
+  const [{ likes: userLikes }, { bookmarks: userBookmarks }, { history: userHistory }, { postTags: userTags}, { followings: userFollowings }] = await Promise.all([
     getLikes({id}),
     getBookmarks({id}),
     getHistory({id}),
-    getTags({id})
+    getTags({id}),
+    getFollowingsUsers({id}),
   ]);
 
   // Fetch the tags of the posts in parallel
@@ -145,6 +176,7 @@ export const getForYou = async ({ page = 0, limit = 10 }: { page?: number, limit
           ...userBookmarks.map((bookmark: any) => bookmark.postId),
           ...userHistory.map((history: any) => history.postId),
           ...userTags.map((tag: any) => tag.postId),
+          ...userFollowings.map((following: any) => following.postId),
         ],
       },
     },
