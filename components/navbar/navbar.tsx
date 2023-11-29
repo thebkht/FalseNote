@@ -31,7 +31,9 @@ function Navbar(notifications: any) {
           <Icons.logo className="md:block hidden h-7" />
           <Icons.logoIcon className="md:hidden block h-7" />
           <span className="sr-only">FalseNotes</span>
-          <Badge className="ml-1.5 md:ml-2" variant={"default"}>Beta</Badge>
+          {process.env.NEXT_PUBLIC_ENV == "beta" && (
+            <Badge className="ml-1.5 md:ml-2" variant={"default"}>Beta</Badge>
+          )}
         </Link>
 
         <div className="flex items-center gap-1 md:gap-4">
