@@ -47,6 +47,35 @@ const getHistory = async ({ id }: { id: string | undefined }) => {
 
   return { history: JSON.parse(JSON.stringify(history)) };
 }
+const getHistoryAuthorPost = async ({ id }: { id: string | undefined }) => {
+  const historyAuthor = await postgres.readingHistory.findMany({
+    where: { userId: id },
+    select: {
+      post: {
+        select: {
+          authorId: true,
+        }
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
+  });
+
+  const history = await postgres.post.findMany({
+    where: { authorId: { in: historyAuthor.map((history) => history.post.authorId) } },
+    select: {
+      id: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
+  });
+
+  return { history: JSON.parse(JSON.stringify(history)) };
+}
 const getFollowingsUsers = async ({ id }: { id: string | undefined }) => {
   const { followings: sessionFollowingsArray } = await getFollowings({ id });
   console.log(sessionFollowingsArray);
@@ -197,8 +226,10 @@ const sortedTagIds = Object.entries(tagCounts)
   .sort((a, b) => b[1] - a[1])
   .map(([tagId]) => tagId)
 
+  const { history: historyAuthor } = await getHistoryAuthorPost({id});
+
   const posts = await postgres.post.findMany({
-    where: { tags: { some: { tagId: { in: sortedTagIds } } } },
+    where: { tags: { some: { tagId: { in: sortedTagIds } } }, id: { in: historyAuthor.map((post: any) => post.id) } },
     select: { id: true },
   });
 
