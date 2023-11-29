@@ -42,18 +42,23 @@ export const getFollowingTags = async ({ id }: { id: string | undefined }) => {
 };
 
 export const getFollowings = async ({ id }: { id: string | undefined }) => {
-  const followings = await postgres.user.findFirst({
-    where: { id },
+
+  if (!id) {
+    return { followings: [] };
+  }
+  const followings = await postgres.follow.findMany({
+    where: { followerId: id },
     select: {
-      Followings: {
+      following: {
         include: {
-          following: true,
+          Followers: true,
+          Followings: true,
         },
       },
-      id: true,
     },
   });
-  return { followings: JSON.parse(JSON.stringify(followings?.Followings)) };
+
+  return { followings: JSON.parse(JSON.stringify(followings || [])) };
 };
 
 export const getFollowers = async ({ id }: { id: string | undefined }) => {

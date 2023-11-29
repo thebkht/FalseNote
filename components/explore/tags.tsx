@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { Separator } from '@radix-ui/react-context-menu';
 import { Button } from '../ui/button';
 import { EmptyPlaceholder } from '../empty-placeholder';
-import UserHorizontalCard from '../user-horizontal-card';
+import UserHorizontalCard from '../user-vertical-card';
 import UserHoverCard from '../user-hover-card';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
