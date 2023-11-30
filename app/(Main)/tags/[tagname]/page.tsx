@@ -4,9 +4,10 @@ import { getSessionUser } from "@/components/get-session-user";
 import TagDetails from "@/components/tags/details";
 import TagLatestPosts from "@/components/tags/latest-posts";
 import TagPopularPosts from "@/components/tags/post";
+import TagFollowers from "@/components/tags/users";
 import { Separator } from "@/components/ui/separator";
 import postgres from "@/lib/postgres";
-import { revalidatePath } from "next/cache";
+import { getFollowersByTag } from "@/lib/prisma/tags";
 import { redirect } from "next/navigation";
 
 export default async function TagPage({ params }: { params: { tagname: string } }) {
@@ -38,7 +39,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                },
                savedUsers: true,
                likes: true,
-               _count: { select: { comments: true, likes: true, savedUsers: true } },
+               _count: { select: { comments: true, likes: true, savedUsers: true, shares: true } },
           },
           orderBy: [
                { likes: { _count: 'desc' } },
@@ -65,7 +66,7 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                          Followings: true,
                     }
                },
-               _count: { select: { comments: true, likes: true, savedUsers: true } },
+               _count: { select: { comments: true, likes: true, savedUsers: true, shares: true } },
                savedUsers: true,
           },
           orderBy: {
@@ -75,6 +76,8 @@ export default async function TagPage({ params }: { params: { tagname: string } 
      });
      if (!tag) redirect("/404");
      const session = await getSessionUser();
+
+     const { followers } = await getFollowersByTag({ id: tag.id, limit: 5, session: session?.id });
      return (
           <>
                <div className="flex flex-col space-y-6 my-8">
@@ -85,6 +88,14 @@ export default async function TagPage({ params }: { params: { tagname: string } 
                               <TagPopularPosts posts={popularPosts} tag={tag} session={session} />
                          </>
                     )}
+                    {
+                         followers.length > 0 && (
+                              <>
+                                   <Separator />
+                                   <TagFollowers followers={followers} tag={tag} session={session} />
+                              </>
+                         )
+                    }
                     {
                          latestPosts.length > 0 && (
                               <>

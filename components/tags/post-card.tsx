@@ -27,6 +27,7 @@ import LoginDialog from "../login-dialog";
 import { Skeleton } from "../ui/skeleton";
 import { shimmer, toBase64 } from "@/lib/image";
 import { validate } from "@/lib/revalidate";
+import PostAnalyticsDialog from "../blog/post-analytics-dialog";
 
 export default function TagPostCard(
      { className, ...props }: React.ComponentPropsWithoutRef<typeof Card> & {
@@ -125,16 +126,16 @@ export default function TagPostCard(
                               <div className="">
                                    <div className="flex justify-between items-center">
                                         <div className="flex flex-1 items-center space-x-2.5">
-                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                             <div className="flex items-center space-x-1 text-muted-foreground">
                                                   {
                                                        props.session ? (
-                                                            <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)} disabled={props.session.id === props.post.authorId}>
+                                                            <Button variant="ghost" size={"icon"} className="hover:text-primary h-8 w-8 text-muted-foreground" onClick={() => like(props.post.id)} disabled={props.session.id === props.post.authorId}>
                                                                  <Icons.like className={`w-6 h-6 ${isLiked && 'fill-current'}`} />
                                                                  <span className="sr-only">Like</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
-                                                                 <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
+                                                                 <Button variant="ghost" size={"icon"} className="hover:text-primary h-8 w-8 text-muted-foreground">
                                                                       <Icons.like className={`w-6 h-6`} />
                                                                       <span className="sr-only">Like</span>
                                                                  </Button>
@@ -143,9 +144,9 @@ export default function TagPostCard(
                                                   }
                                                   <span>{formatNumberWithSuffix(props.post._count.likes)}</span>
                                              </div>
-                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                             <div className="flex items-center space-x-1 text-muted-foreground">
                                                   <Link href={`/@${props.post.author?.username}/${props.post.url}?commentsOpen=true`}>
-                                                       <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
+                                                       <Button variant="ghost" size={"icon"} className="hover:text-primary h-8 w-8 text-muted-foreground">
                                                             <Icons.commentBubble className="w-6 h-6" />
                                                             <span className="sr-only">Comment</span>
                                                        </Button>
@@ -154,28 +155,36 @@ export default function TagPostCard(
                                              </div>
                                         </div>
                                         <div className="flex items-center justify-around gap-2">
-
-                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                        {
+                                        props.post.published &&(
+                                             props.session?.id === props.post.authorId && (
+                                                  <div className="flex items-center space-x-1">
+                                                       <PostAnalyticsDialog post={props.post} />
+                                                  </div>
+                                             )
+                                        )
+                                   }
+                                             <div className="flex items-center space-x-1 text-muted-foreground">
                                                   {
                                                        props.session ? (
-                                                            <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                                 <Icons.bookmark className={`h-6 w-6 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
+                                                            <Button variant="ghost" size={"icon"} className="hover:text-primary h-8 w-8 text-muted-foreground">
+                                                                 <Icons.bookmark className={`h-5 w-5 ${isSaved && 'fill-current'}`} onClick={() => save(props.post.id)} />
                                                                  <span className="sr-only">Save</span>
                                                             </Button>
                                                        ) : (
                                                             <LoginDialog>
-                                                                 <Button variant="ghost" size={"icon"} className="h-8 w-8 text-muted-foreground">
-                                                                      <Icons.bookmark className={`h-6 w-6`} />
+                                                                 <Button variant="ghost" size={"icon"} className="hover:text-primary h-8 w-8 text-muted-foreground">
+                                                                      <Icons.bookmark className={`h-5 w-5`} />
                                                                       <span className="sr-only">Save</span>
                                                                  </Button>
                                                             </LoginDialog>
                                                        )
                                                   }
                                              </div>
-                                             <div className="flex items-center space-x-1 text-muted-foreground text-sm feedpost__action-btn">
+                                             <div className="flex items-center space-x-1 text-muted-foreground">
                                                   <PostMoreActions post={props.post} session={props.session}>
-                                                       <Button variant="ghost" size={"icon"} className=" text-muted-foreground">
-                                                            <Icons.moreHorizontal className="h-6 w-6" />
+                                                       <Button variant="ghost" size={"icon"} className="hover:text-primary text-muted-foreground">
+                                                            <Icons.moreHorizontal className="h-5 w-5" />
                                                             <span className="sr-only">More</span>
                                                        </Button>
                                                   </PostMoreActions>

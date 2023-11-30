@@ -107,7 +107,7 @@ export default async function PostLayout(
                          published: true,
                     },
                     include: {
-                         _count: { select: { comments: true, savedUsers: true, likes: true } },
+                         _count: { select: { comments: true, savedUsers: true, likes: true, shares: true } },
                          author: {
                               include: {
                                    Followers: true,
@@ -181,7 +181,7 @@ export default async function PostLayout(
                published: true,
           },
           include: {
-               _count: { select: { comments: true, savedUsers: true, likes: true } },
+               _count: { select: { comments: true, savedUsers: true, likes: true, shares: true } },
                author: {
                     include: {
                          Followers: true,

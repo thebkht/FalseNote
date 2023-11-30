@@ -42,18 +42,23 @@ export const getFollowingTags = async ({ id }: { id: string | undefined }) => {
 };
 
 export const getFollowings = async ({ id }: { id: string | undefined }) => {
-  const followings = await postgres.user.findFirst({
-    where: { id },
+
+  if (!id) {
+    return { followings: [] };
+  }
+  const followings = await postgres.follow.findMany({
+    where: { followerId: id },
     select: {
-      Followings: {
+      following: {
         include: {
-          following: true,
+          Followers: true,
+          Followings: true,
         },
       },
-      id: true,
     },
   });
-  return { followings: JSON.parse(JSON.stringify(followings?.Followings)) };
+
+  return { followings: JSON.parse(JSON.stringify(followings || [])) };
 };
 
 export const getFollowers = async ({ id }: { id: string | undefined }) => {
@@ -150,6 +155,15 @@ export const getBookmarks = async ({ id, limit = 5, page = 0 }: { id: string | u
             include: {
               author: true,
               savedUsers: true,
+              _count: {
+                select: {
+                 likes: true,
+                 savedUsers: true,
+                 readedUsers: true,
+                 shares: true,
+                 comments: true,
+                },
+              },
             }
           },
         },
@@ -176,6 +190,15 @@ export const getHistory = async ({ id, limit = 5, page = 0 }: { id: string | und
           post: {
             include: {
               author: true,
+              _count: {
+                select: {
+                 likes: true,
+                 savedUsers: true,
+                 readedUsers: true,
+                 shares: true,
+                 comments: true,
+                },
+              },
             }
           },
         },

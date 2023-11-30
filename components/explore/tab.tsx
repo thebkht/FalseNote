@@ -28,7 +28,7 @@ export default function ExploreTab({ activeTab = 'top', search }: { activeTab?: 
                                    Users
                                    </Link>
                               </TabsTrigger>
-                              <TabsTrigger value={'tags'} className="bg-muted data-[state=active]:border data-[state=active]:border-foreground" asChild>
+                              <TabsTrigger value={'tags'} className="bg-muted data-[state=active]:bg-secondary-foreground data-[state=active]shadow-sm data-[state=active]:text-secondary" asChild>
                                    <Link href={`/explore?tab=tags${search !== undefined ? `&search=${search}` : ''}`}>
                                    Tags
                                    </Link>

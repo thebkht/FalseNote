@@ -1,4 +1,6 @@
+import { User } from "@prisma/client";
 import postgres from "../postgres";
+import { getFollowings } from "./session";
 
 export const getTags = async ({
   id,
@@ -155,4 +157,58 @@ export async function getRelatedTags(tagName: string) {
   );
 
   return { tags: JSON.parse(JSON.stringify(relatedTags))};
+}
+
+export const getFollowersByUser = async ({
+  id,
+  page = 0,
+  limit = 10,
+}: {
+  id: string | undefined;
+  page?: number | undefined;
+  limit?: number | undefined;
+}) => {
+  const followers = await postgres.tag.findMany({
+    where: { followingtag: { some: { followerId: id } } },
+    take: limit,
+    skip: page * limit,
+    include: {
+      _count: { select: { posts: true, followingtag: true } },
+      followingtag: true,
+    },
+  });
+
+  return { followers: JSON.parse(JSON.stringify(followers)) };
+}
+
+export const getFollowersByTag = async ({
+  id,
+  page = 0,
+  limit = 10,
+  session,
+}: {
+  id: string | undefined;
+  page?: number | undefined;
+  limit?: number | undefined;
+  session: User["id"] | undefined;
+}) => {
+  const { followings: sessionFollowings } = await getFollowings({ id: session })
+  const sessionFollowingIds = sessionFollowings 
+  ? [...sessionFollowings.map((following: any) => following.following.id), session]
+  : [session];
+  const followers = await postgres.tagFollow.findMany({
+    where: { tagId: id, ...(session && { followerId: { not: { in: sessionFollowingIds } } }) },
+    take: limit,
+    skip: page * limit,
+    select: {
+      follower: {
+        include: {
+          _count: { select: { posts: true, Followers: true } },
+          Followers: true,
+        },
+      },
+    }
+  });
+
+  return { followers: JSON.parse(JSON.stringify(followers)) };
 }

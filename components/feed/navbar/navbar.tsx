@@ -28,22 +28,22 @@ export default function FeedTabs({ tabs, activeTab = 'foryou', children }: { tab
                     <div className="inline-flex h-10 items-center justify-center rounded-md bg-background p-1 text-muted-foreground w-full">
                          <ScrollArea className="w-full py-2">
                               <div className="inline-flex h-10 items-center justify-center rounded-md p-1 text-muted-foreground bg-transparent gap-2">
-                                   <div ref={firstTab} className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm bg-transparent">
+                                   <div ref={firstTab} className="cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm bg-transparent">
                                         <Link href={`/explore`}><Plus className="h-5 w-5" /></Link>
                                    </div>
-                                   <div className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == 'foryou' ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
+                                   <div className={`cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == 'foryou' ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
                                         router.replace('/feed')
                                    }}>
                                         For You
                                    </div>
-                                   <div className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == 'following' ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
+                                   <div className={`cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == 'following' ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
                                         router.replace('/feed?tab=following')
                                    }}>
                                         Following
                                    </div>
                                    {tabs?.map((item: any, index: number) => (
 
-                                        <div className={`inline-flex capitalize items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == item.tag.name ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
+                                        <div className={`cursor-pointer inline-flex capitalize items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${activeTab == item.tag.name ? 'bg-secondary-foreground shadow-sm text-secondary' : 'bg-muted'}`} onClick={() => {
                                              router.replace(`/feed?tab=${item.tag.name}`)
                                         }} key={item.tag.id}>
 

@@ -9,8 +9,11 @@ const baseQuery = {
        savedUsers: true,
        _count: {
          select: {
-           likes: true,
-           savedUsers: true,
+          likes: true,
+          savedUsers: true,
+          readedUsers: true,
+          shares: true,
+          comments: true,
          },
        },
        tags: {

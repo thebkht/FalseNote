@@ -36,6 +36,15 @@ const [latestPosts, tags, popularPosts] = await Promise.all([
       readingTime: true,
       publishedAt: true,
       cover: true,
+      _count: {
+        select: {
+         likes: true,
+         savedUsers: true,
+         readedUsers: true,
+         shares: true,
+         comments: true,
+        },
+      },
       author: {
         select: {
           username: true,

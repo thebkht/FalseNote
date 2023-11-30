@@ -29,6 +29,33 @@ export async function POST(req: Request) {
                id: isLiked.id,
           },
           });
+
+          const oneWeekAgo = new Date();
+          oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+          if (isLiked.createdAt > oneWeekAgo) {
+               const notification = await postgres.notification.findFirst({
+               where: {
+                    senderId: user.id,
+                    receiverId: post.authorId,
+                    type: "postLike",
+               },
+               orderBy: {
+                    createdAt: "desc",
+               },
+               select: {
+                    id: true,
+               },
+               });
+
+               if (notification) {
+               await postgres.notification.delete({
+                    where: {
+                    id: notification.id,
+                    },
+               });
+               }
+          }
+
           console.log("Deleted like");
      } else {
           await postgres.like.create({
@@ -45,6 +72,31 @@ export async function POST(req: Request) {
                },
           },
           });
+
+          const sender = await postgres.user.findUnique({
+          where: {
+               id: user.id,
+          },
+          });
+          const receiver = await postgres.user.findUnique({
+          where: {
+               id: post.authorId,
+          },
+          });
+          if (sender && receiver) {
+               const message = `"${post.title}"`;
+               const type = "postLike";
+
+               await postgres.notification.create({
+                    data: {
+                         content: message,
+                         type,
+                         url: `/@${sender.username}/${post.url}`,
+                         receiverId: receiver.id,
+                         senderId: sender.id,
+                    }
+               });
+          }
           console.log("Created like");
      }
      return new Response(null, { status: 200 });
