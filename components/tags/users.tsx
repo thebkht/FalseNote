@@ -21,37 +21,6 @@ export default function TagFollowers({ followers: initialFollowers, tag, session
      useEffect(() => {
           setFollowers(initialFollowers)
      }, [initialFollowers])
-     const settings = {
-          dots: false,
-          infinite: false,
-          draggable: true,
-          speed: 500,
-          slidesToShow: 5,
-          slidesToScroll: 1,
-          responsive: [
-               {
-                    breakpoint: 1024,
-                    settings: {
-                         slidesToShow: 4,
-                         slidesToScroll: 1,
-                    }
-               },
-               {
-                    breakpoint: 600,
-                    settings: {
-                         slidesToShow: 3,
-                         slidesToScroll: 3,
-                    }
-               },
-               {
-                    breakpoint: 480,
-                    settings: {
-                         slidesToShow: 1,
-                         slidesToScroll: 1
-                    }
-               }
-          ]
-     };
      return (
           <div className="flex justify-center w-full">
                <div className="mb-20 w-full">
@@ -59,23 +28,9 @@ export default function TagFollowers({ followers: initialFollowers, tag, session
                          <h2 className="text-2xl font-medium tracking-tight w-full">Who to follow</h2>
                     </div>
                     <div className="mt-6 mb-10">
-                         {/* <div className="flex md:grid md:grid-cols-3 overflow-x-hidden overflow-y-scroll lg:grid-cols-4 xl:grid-cols-5 py-0.5 items-center gap-6 justify-between">
-                              {
-                                   followers.map((follower: any) => (
-                                        <UserVerticalCard key={follower.id} user={follower.follower} session={session} />
-                                   ))
-                              }
-                         </div> */}
                          <Swiper
                               slidesPerView={5}
                               spaceBetween={24}
-                              navigation={
-                                   {
-                                        nextEl: '.swiper-button-next',
-                                        prevEl: '.swiper-button-prev'
-                                   }
-                              }
-                              modules={[Navigation]}
                               breakpoints={{
                                    1280: {
                                         slidesPerView: 5,
@@ -93,7 +48,11 @@ export default function TagFollowers({ followers: initialFollowers, tag, session
                                    640: {
                                         slidesPerView: 1,
                                         spaceBetween: 24,
-                                   }
+                                   },
+                                   320: {
+                                        slidesPerView: 1,
+                                        spaceBetween: 24,
+                                   },
                               }}
                               className="mySwiper"
                          >
